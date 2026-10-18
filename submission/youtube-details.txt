@@ -1,0 +1,30 @@
+Title
+AccessFinish | Keyboard repair to verified booking | Nebius x NVIDIA Hackathon
+
+Description
+AccessFinish connects a keyboard accessibility source repair to evidence that the user's task actually finished.
+
+This 91-second demonstration shows the review workbench, a three-edit proposal authored by NVIDIA Nemotron 3 Super on Nebius Token Factory, and a new read-only verification of the saved booking in an isolated Easy!Appointments development fixture.
+
+The operator supplied the defect diagnosis. The controller normalized source line endings without changing the semantic edits, built 83 JavaScript files, completed the keyboard booking, and verified storage and a fresh-browser reopen. This is one guided, exposed development case, not a general autonomous repair benchmark or a screen-reader user study.
+
+Working evidence replay: https://sultalfaifi.com/accessfinish/
+Public code: https://github.com/SultanAlfaifi/accessfinish
+Portable test build: https://github.com/SultanAlfaifi/accessfinish/releases/tag/v0.1.0
+
+Track: Coding and Agentic Engineering
+Built with NVIDIA Nemotron, Nebius Token Factory, Node.js, Docker, Playwright, PHP, MariaDB, and FFmpeg.
+
+The video is silent with English captions. It shows synthetic customer data and includes no music. AccessFinish workbench code is MIT licensed; Easy!Appointments case excerpts and derivative source patches retain GPL-3.0 attribution.
+
+Audience
+Professional developer demonstration; not made for children.
+
+Intended visibility
+Public, after the entrant reviews the final title, description, channel, and video.
+
+Local video
+../media/accessfinish-demo.mp4
+
+Current status
+Prepared only. No YouTube upload or public publication has been confirmed.

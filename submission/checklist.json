@@ -20,7 +20,7 @@
   "technology_feedback": "technology-feedback.md",
   "materials_language": "English",
   "devpost_submission": "not submitted",
-  "browser_blocker": "Windows Chrome control stopped because it could not establish the current URL confidently; no barrier bypass attempted",
+  "browser_blocker": "Chrome control recovered; Devpost is unauthenticated and waiting for the entrant to sign in manually.",
   "eligibility_declarations": "must be confirmed by entrant in submission form",
   "human_or_screen_reader_study": "not performed",
   "autonomous_defect_discovery": "not demonstrated"
