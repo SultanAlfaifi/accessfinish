@@ -2,6 +2,10 @@
 
 A keyboard-task repair workbench that connects a source proposal to evidence of a saved outcome.
 
+[Open the evidence replay](https://sultalfaifi.com/accessfinish/) · [Download the portable test build](https://github.com/SultanAlfaifi/accessfinish/releases/download/v0.1.0/accessfinish-test-build.zip) · [View the 91-second demo video](https://github.com/SultanAlfaifi/accessfinish/releases/download/v0.1.0/accessfinish-demo.mp4)
+
+![AccessFinish review workbench](media/workbench-preview.png)
+
 The development example is an Easy!Appointments booking: a non-focusable date control blocks keyboard entry, clearing a date needs a guard, and reopening an appointment must preserve its date. AccessFinish shows the source changes separately from the build, native keyboard interaction, database check, and fresh-browser reopen.
 
 ## Run the workbench

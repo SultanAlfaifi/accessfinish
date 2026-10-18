@@ -1,0 +1,19 @@
+AccessFinish submission handoff
+
+Prepared and public:
+Demo: https://sultalfaifi.com/accessfinish/
+Repository: https://github.com/SultanAlfaifi/accessfinish
+Portable test build: https://github.com/SultanAlfaifi/accessfinish/releases/download/v0.1.0/accessfinish-test-build.zip
+Video file: https://github.com/SultanAlfaifi/accessfinish/releases/download/v0.1.0/accessfinish-demo.mp4
+
+Remaining external steps:
+1. Review the 91.2-second English-captioned video and upload it publicly to YouTube. Suggested title: AccessFinish | Keyboard repair to verified booking | Nebius x NVIDIA Hackathon.
+2. Open https://nebiusglobalaihackathon.devpost.com/ in the entrant's existing Chrome session and create/edit the project submission.
+3. Use project-description.md for the description, technology-feedback.md for platform feedback, testing-instructions.md for access/setup, and the URLs above. Select Coding and Agentic Engineering.
+4. Add the public YouTube URL. Entrant must review eligibility, ownership and final declarations. No unverified claim about autonomous discovery or a user study should be added.
+5. Submit only after all fields and the final confirmation are reviewed. Verify the submitted state and retain the receipt/confirmation page.
+
+Deadline verified from the official rules on 18 October 2026: 30 October 2026, 20:00 Asia/Riyadh.
+Keep public judging materials accessible through the end of judging, 15 December 2026, 23:00 Asia/Riyadh.
+
+Current state: no Devpost submission and no YouTube upload have been performed by the assistant. Windows browser automation stopped because it could not confidently identify Chrome's current URL. The assistant did not bypass that barrier or extract browser cookies.
