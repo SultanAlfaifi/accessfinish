@@ -1,0 +1,59 @@
+{
+  "state": "NEMOTRON_FOCUSED_REPAIR_FAILED",
+  "at_utc": "2026-10-18T14:55:41.634Z",
+  "failure": "ERR_ASSERTION",
+  "model": "nvidia/nemotron-3-super-120b-a12b",
+  "model_requests": 1,
+  "known_usage": [
+    {
+      "completion_tokens": 1157,
+      "prompt_tokens": 1173,
+      "total_tokens": 2330,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": null,
+        "audio_tokens": null,
+        "reasoning_tokens": 717,
+        "rejected_prediction_tokens": null
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": null,
+        "cached_tokens": 0,
+        "created_cache_tokens": 0,
+        "multimodal_tokens": null
+      },
+      "prompt_cache_hit_tokens": 0,
+      "prompt_cache_miss_tokens": 1173
+    }
+  ],
+  "unknown_response_usage_count": 0,
+  "known_cost_usd_excluding_tax": 0.0013931999999999998,
+  "known_total_cost_usd_excluding_tax": 0.11114249999999999,
+  "limits": {
+    "requests": 2,
+    "input": 20000,
+    "output": 4096,
+    "per_response": 2048,
+    "seconds": 600,
+    "retries": 0,
+    "builds": 1,
+    "edits": 4
+  },
+  "shared_budget": {
+    "prior_cost_usd_excluding_tax": 0.1097493,
+    "combined_upper_with_100_percent_buffer": 0.23887139999999998,
+    "total_cap_usd": 0.25,
+    "prior_report": {
+      "path": "nemotron-saved-booking-verification-20261018.json",
+      "sha256": "40c384491525edd7767e1ebe02f30a8d76454e0b4f7cd2e4e938e6c64f470f9d"
+    }
+  },
+  "model_authored_source_edits": 3,
+  "operator_supplied_diagnosis": true,
+  "operator_source_patch_applied_during_model_run": false,
+  "booking_persisted": false,
+  "fresh_reopen_date": null,
+  "keyboard_workflow_status": null,
+  "counts_as_original_G3": false,
+  "general_autonomous_repair_proven": false,
+  "elapsed_ms": 20002
+}

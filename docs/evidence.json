@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "case": "Easy!Appointments keyboard booking",
+  "upstream_commit": "4bc7ecd51f3dade8e041558f2c23dda65bd6c43e",
+  "date": "2026-10-18",
+  "proposal": {
+    "reason": "Fix datepicker accessibility, handle empty selection, preserve date in manageMode.",
+    "edits": [
+      {
+        "path": "assets/js/pages/booking.js",
+        "old": "            onChange: (selectedDates) => {\r\n                App.Http.Booking.getAvailableHours(moment(selectedDates[0]).format('YYYY-MM-DD'));\r\n                App.Pages.Booking.updateConfirmFrame();\r\n            },",
+        "new": "            onChange: (selectedDates) => {\r\n                if (selectedDates.length) {\r\n                    App.Http.Booking.getAvailableHours(moment(selectedDates[0]).format('YYYY-MM-DD'));\r\n                    App.Pages.Booking.updateConfirmFrame();\r\n                }\r\n            },"
+      },
+      {
+        "path": "assets/js/pages/booking.js",
+        "old": "                const todayMoment = moment();\r\n\r\n                App.Utils.UI.setDateTimePickerValue($selectDate, todayMoment.toDate());\r\n\r\n                App.Http.Booking.getUnavailableDates(\r\n                    $selectProvider.val(),\r\n                    $selectService.val(),\r\n                    todayMoment.format('YYYY-MM-DD'),\r\n                );",
+        "new": "                let momentToUse = manageMode ? moment(App.Utils.UI.getDateTimePickerValue($selectDate)) : moment();\r\n                App.Utils.UI.setDateTimePickerValue($selectDate, momentToUse.toDate());\r\n                App.Http.Booking.getUnavailableDates(\r\n                    $selectProvider.val(),\r\n                    $selectService.val(),\r\n                    momentToUse.format('YYYY-MM-DD'),\r\n                );"
+      },
+      {
+        "path": "application/views/components/booking_time_step.php",
+        "old": "<div id=\"select-date\" class=\"mx-auto my-4\"></div>",
+        "new": "<input type=\"text\" id=\"select-date\" class=\"form-control mx-auto my-4\" aria-label=\"Select date\">"
+      }
+    ]
+  },
+  "source_author": "Nemotron · guided diagnosis",
+  "build_label": "83 files · build passed",
+  "repair_attribution": "NVIDIA Nemotron authored these three edits. The operator supplied the diagnosis; the controller normalized line endings, applied the edits and tested the outcome.",
+  "scope_note": "One exposed development case with an operator-provided diagnosis. No hidden-case benchmark, broad autonomous repair claim, or screen-reader user study.",
+  "booking_verified": true,
+  "booking": {
+    "id": "902",
+    "date": "2026-10-19",
+    "start": "09:00",
+    "end": "09:30",
+    "timezone": "Asia/Riyadh",
+    "service_id": 1,
+    "provider_id": 2,
+    "customer": {
+      "first_name": "Synthetic",
+      "last_name": "ExploratoryBooking",
+      "email": "exploratory-booking@example.invalid",
+      "phone_number": "0000000000"
+    }
+  },
+  "total_cost_usd_excluding_tax": 0.11114249999999999,
+  "controls": {
+    "appointments_unchanged": false,
+    "customers_unchanged": false,
+    "services_unchanged": true,
+    "providers_unchanged": true,
+    "snapshots_unchanged": false,
+    "existing_appointments_preserved": true,
+    "existing_customers_preserved": true
+  },
+  "reopened": {
+    "url": "http://127.0.0.1:8080/booking/reschedule/xaYro6HwVjfL",
+    "selected_date_iso": "2026-10-19",
+    "customer": "Synthetic",
+    "last": "ExploratoryBooking",
+    "db_unchanged": true
+  },
+  "normalization": "Line terminators only; no semantic source edit by operator",
+  "model": "nvidia/nemotron-3-super-120b-a12b",
+  "inference_provider": "Nebius Token Factory",
+  "public_evidence_paths": [
+    "../evidence/model-run.json",
+    "../evidence/normalized-replay.json",
+    "../evidence/independent-outcome.json"
+  ]
+}

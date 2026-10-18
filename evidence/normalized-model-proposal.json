@@ -1,0 +1,22 @@
+{
+  "reason": "Fix datepicker accessibility, handle empty selection, preserve date in manageMode.",
+  "edits": [
+    {
+      "path": "assets/js/pages/booking.js",
+      "old": "            onChange: (selectedDates) => {\r\n                App.Http.Booking.getAvailableHours(moment(selectedDates[0]).format('YYYY-MM-DD'));\r\n                App.Pages.Booking.updateConfirmFrame();\r\n            },",
+      "new": "            onChange: (selectedDates) => {\r\n                if (selectedDates.length) {\r\n                    App.Http.Booking.getAvailableHours(moment(selectedDates[0]).format('YYYY-MM-DD'));\r\n                    App.Pages.Booking.updateConfirmFrame();\r\n                }\r\n            },"
+    },
+    {
+      "path": "assets/js/pages/booking.js",
+      "old": "                const todayMoment = moment();\r\n\r\n                App.Utils.UI.setDateTimePickerValue($selectDate, todayMoment.toDate());\r\n\r\n                App.Http.Booking.getUnavailableDates(\r\n                    $selectProvider.val(),\r\n                    $selectService.val(),\r\n                    todayMoment.format('YYYY-MM-DD'),\r\n                );",
+      "new": "                let momentToUse = manageMode ? moment(App.Utils.UI.getDateTimePickerValue($selectDate)) : moment();\r\n                App.Utils.UI.setDateTimePickerValue($selectDate, momentToUse.toDate());\r\n                App.Http.Booking.getUnavailableDates(\r\n                    $selectProvider.val(),\r\n                    $selectService.val(),\r\n                    momentToUse.format('YYYY-MM-DD'),\r\n                );"
+    },
+    {
+      "path": "application/views/components/booking_time_step.php",
+      "old": "<div id=\"select-date\" class=\"mx-auto my-4\"></div>",
+      "new": "<input type=\"text\" id=\"select-date\" class=\"form-control mx-auto my-4\" aria-label=\"Select date\">"
+    }
+  ],
+  "semantic_changes_by_operator": false,
+  "normalization": "line terminators only; actual source is CRLF"
+}

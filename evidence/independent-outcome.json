@@ -1,0 +1,597 @@
+{
+  "id": "afiso-9e3b168564cd2232",
+  "state": "EXTERNAL_SYNTHETIC_BOOKING_OUTCOME_PASS",
+  "attribution": "independent_readonly_database_and_fresh_browser_observations",
+  "before_fixture_sha256": "c9121851fc5beced854060abad4ace1c0b58d2f2fc9a8e94789e9b3cbe57e4cf",
+  "runtime_pins": {
+    "tools_runtime": {
+      "path": "booking-tools-runtime.json",
+      "sha256": "1f28a1a3db04576f9910d345093127a7da64845b16cb6640d9684526a05e1285"
+    },
+    "browser_runtime": {
+      "path": "booking-browser-runtime.json",
+      "sha256": "f60d541adad224ba4cba24e030f8874490aff0ffb77c782ef916c1faa7c3cdf6"
+    }
+  },
+  "after": {
+    "snapshot": {
+      "appointments": [
+        {
+          "id": "900",
+          "start_datetime": "2026-10-19 10:00:00",
+          "end_datetime": "2026-10-19 10:30:00",
+          "id_users_provider": "2",
+          "id_users_customer": "900",
+          "id_services": "1",
+          "is_unavailability": "0",
+          "hash": "synthetic-reserved-slot",
+          "color": "#7cbae8",
+          "status": "",
+          "notes": "fixture reservation"
+        },
+        {
+          "id": "902",
+          "start_datetime": "2026-10-19 09:00:00",
+          "end_datetime": "2026-10-19 09:30:00",
+          "id_users_provider": "2",
+          "id_users_customer": "902",
+          "id_services": "1",
+          "is_unavailability": "0",
+          "hash": "xaYro6HwVjfL",
+          "color": "#7cbae8",
+          "status": "Booked",
+          "notes": ""
+        }
+      ],
+      "customers": [
+        {
+          "id": "1",
+          "first_name": "Synthetic",
+          "last_name": "QA",
+          "email": "admin@example.invalid",
+          "phone_number": null,
+          "id_roles": "1",
+          "address": "",
+          "city": "",
+          "zip_code": ""
+        },
+        {
+          "id": "2",
+          "first_name": "Jane",
+          "last_name": "Doe",
+          "email": "jane@example.org",
+          "phone_number": "+1 (000) 000-0000",
+          "id_roles": "2",
+          "address": "",
+          "city": "",
+          "zip_code": ""
+        },
+        {
+          "id": "3",
+          "first_name": "James",
+          "last_name": "Doe",
+          "email": "james@example.org",
+          "phone_number": "+1 (000) 000-0000",
+          "id_roles": "3",
+          "address": "",
+          "city": "",
+          "zip_code": ""
+        },
+        {
+          "id": "900",
+          "first_name": "Reserved",
+          "last_name": "Synthetic",
+          "email": "reserved@example.invalid",
+          "phone_number": "0000000000",
+          "id_roles": "3",
+          "address": "",
+          "city": "",
+          "zip_code": ""
+        },
+        {
+          "id": "902",
+          "first_name": "Synthetic",
+          "last_name": "ExploratoryBooking",
+          "email": "exploratory-booking@example.invalid",
+          "phone_number": "0000000000",
+          "id_roles": "3",
+          "address": "",
+          "city": "",
+          "zip_code": ""
+        }
+      ],
+      "services": [
+        {
+          "id": "1",
+          "name": "Service",
+          "duration": "30",
+          "slot_interval": "15",
+          "price": "0.00",
+          "color": "#7cbae8",
+          "is_private": "0"
+        },
+        {
+          "id": "2",
+          "name": "Fixture Alternate",
+          "duration": "45",
+          "slot_interval": "15",
+          "price": "12.50",
+          "color": "#7cbae8",
+          "is_private": "0"
+        }
+      ],
+      "providers": [
+        {
+          "id_users": "2",
+          "id_services": "1"
+        },
+        {
+          "id_users": "2",
+          "id_services": "2"
+        }
+      ]
+    },
+    "reader_write_denied": true,
+    "reader_system_schema_denied": true,
+    "uid": 1000
+  },
+  "post": {
+    "snapshot": {
+      "appointments": [
+        {
+          "id": "900",
+          "start_datetime": "2026-10-19 10:00:00",
+          "end_datetime": "2026-10-19 10:30:00",
+          "id_users_provider": "2",
+          "id_users_customer": "900",
+          "id_services": "1",
+          "is_unavailability": "0",
+          "hash": "synthetic-reserved-slot",
+          "color": "#7cbae8",
+          "status": "",
+          "notes": "fixture reservation"
+        },
+        {
+          "id": "902",
+          "start_datetime": "2026-10-19 09:00:00",
+          "end_datetime": "2026-10-19 09:30:00",
+          "id_users_provider": "2",
+          "id_users_customer": "902",
+          "id_services": "1",
+          "is_unavailability": "0",
+          "hash": "xaYro6HwVjfL",
+          "color": "#7cbae8",
+          "status": "Booked",
+          "notes": ""
+        }
+      ],
+      "customers": [
+        {
+          "id": "1",
+          "first_name": "Synthetic",
+          "last_name": "QA",
+          "email": "admin@example.invalid",
+          "phone_number": null,
+          "id_roles": "1",
+          "address": "",
+          "city": "",
+          "zip_code": ""
+        },
+        {
+          "id": "2",
+          "first_name": "Jane",
+          "last_name": "Doe",
+          "email": "jane@example.org",
+          "phone_number": "+1 (000) 000-0000",
+          "id_roles": "2",
+          "address": "",
+          "city": "",
+          "zip_code": ""
+        },
+        {
+          "id": "3",
+          "first_name": "James",
+          "last_name": "Doe",
+          "email": "james@example.org",
+          "phone_number": "+1 (000) 000-0000",
+          "id_roles": "3",
+          "address": "",
+          "city": "",
+          "zip_code": ""
+        },
+        {
+          "id": "900",
+          "first_name": "Reserved",
+          "last_name": "Synthetic",
+          "email": "reserved@example.invalid",
+          "phone_number": "0000000000",
+          "id_roles": "3",
+          "address": "",
+          "city": "",
+          "zip_code": ""
+        },
+        {
+          "id": "902",
+          "first_name": "Synthetic",
+          "last_name": "ExploratoryBooking",
+          "email": "exploratory-booking@example.invalid",
+          "phone_number": "0000000000",
+          "id_roles": "3",
+          "address": "",
+          "city": "",
+          "zip_code": ""
+        }
+      ],
+      "services": [
+        {
+          "id": "1",
+          "name": "Service",
+          "duration": "30",
+          "slot_interval": "15",
+          "price": "0.00",
+          "color": "#7cbae8",
+          "is_private": "0"
+        },
+        {
+          "id": "2",
+          "name": "Fixture Alternate",
+          "duration": "45",
+          "slot_interval": "15",
+          "price": "12.50",
+          "color": "#7cbae8",
+          "is_private": "0"
+        }
+      ],
+      "providers": [
+        {
+          "id_users": "2",
+          "id_services": "1"
+        },
+        {
+          "id_users": "2",
+          "id_services": "2"
+        }
+      ]
+    },
+    "reader_write_denied": true,
+    "reader_system_schema_denied": true,
+    "uid": 1000
+  },
+  "observations": {
+    "schema_version": 1,
+    "state": "OBSERVATIONS_COLLECTED",
+    "observer_path": "/trusted/container-booking-pilot-observer.cjs",
+    "observer_sha256": "988bb4c0577bab5ade854fccbf7cbd34d1f79000bf90bf3259ab162ca60582cd",
+    "booking_hash": "xaYro6HwVjfL",
+    "fresh_context": true,
+    "timezone": "UTC",
+    "chromium_sandbox": true,
+    "service_workers": "block",
+    "initial": {
+      "url": "http://127.0.0.1:8080/booking/reschedule/xaYro6HwVjfL",
+      "focus": {
+        "tag": "BODY",
+        "id": "",
+        "type": null
+      },
+      "date_inputs": [
+        {
+          "id": "select-date",
+          "type": "text",
+          "value": "19/10/2026",
+          "visible": false
+        }
+      ],
+      "flatpickr": [
+        {
+          "visible": false,
+          "month": "October",
+          "year": "2026",
+          "selected_days": [
+            {
+              "aria_label": "October 19, 2026",
+              "text": "19"
+            }
+          ]
+        }
+      ],
+      "customer": {
+        "first-name": null,
+        "last-name": null,
+        "email": null,
+        "phone-number": null
+      },
+      "selection": {
+        "select-service": "1",
+        "select-provider": "2"
+      },
+      "next1_visible": true,
+      "next2_visible": false,
+      "date": {
+        "selected_date_iso": null,
+        "evidence_kind": null,
+        "ambiguous": false
+      }
+    },
+    "after_selection": null,
+    "after_next1": {
+      "url": "http://127.0.0.1:8080/booking/reschedule/xaYro6HwVjfL",
+      "focus": {
+        "tag": "BODY",
+        "id": "",
+        "type": null
+      },
+      "date_inputs": [
+        {
+          "id": "select-date",
+          "type": "text",
+          "value": "19/10/2026",
+          "visible": true
+        }
+      ],
+      "flatpickr": [
+        {
+          "visible": true,
+          "month": "October",
+          "year": "2026",
+          "selected_days": [
+            {
+              "aria_label": "October 19, 2026",
+              "text": "19"
+            }
+          ]
+        }
+      ],
+      "customer": {
+        "first-name": null,
+        "last-name": null,
+        "email": null,
+        "phone-number": null
+      },
+      "selection": {
+        "select-service": null,
+        "select-provider": null
+      },
+      "next1_visible": false,
+      "next2_visible": true,
+      "date": {
+        "selected_date_iso": "2026-10-19",
+        "evidence_kind": "date_input+flatpickr_selected_day",
+        "ambiguous": false
+      }
+    },
+    "after_next2": {
+      "url": "http://127.0.0.1:8080/booking/reschedule/xaYro6HwVjfL",
+      "focus": {
+        "tag": "BODY",
+        "id": "",
+        "type": null
+      },
+      "date_inputs": [
+        {
+          "id": "select-date",
+          "type": "text",
+          "value": "19/10/2026",
+          "visible": false
+        }
+      ],
+      "flatpickr": [
+        {
+          "visible": false,
+          "month": "October",
+          "year": "2026",
+          "selected_days": [
+            {
+              "aria_label": "October 19, 2026",
+              "text": "19"
+            }
+          ]
+        }
+      ],
+      "customer": {
+        "first-name": "Synthetic",
+        "last-name": "ExploratoryBooking",
+        "email": "exploratory-booking@example.invalid",
+        "phone-number": "0000000000"
+      },
+      "selection": {
+        "select-service": null,
+        "select-provider": null
+      },
+      "next1_visible": false,
+      "next2_visible": false,
+      "date": {
+        "selected_date_iso": null,
+        "evidence_kind": null,
+        "ambiguous": false
+      }
+    },
+    "keyboard_actions": [
+      {
+        "key": "Tab",
+        "focused_id_before": ""
+      },
+      {
+        "key": "Tab",
+        "focused_id_before": "cancel-appointment"
+      },
+      {
+        "key": "Tab",
+        "focused_id_before": "select-service"
+      },
+      {
+        "key": "Tab",
+        "focused_id_before": "select-provider"
+      },
+      {
+        "key": "Enter",
+        "focused_id_before": "button-next-1"
+      },
+      {
+        "key": "Tab",
+        "focused_id_before": ""
+      },
+      {
+        "key": "Tab",
+        "focused_id_before": "select-date"
+      },
+      {
+        "key": "Tab",
+        "focused_id_before": "select-timezone"
+      },
+      {
+        "key": "Tab",
+        "focused_id_before": ""
+      },
+      {
+        "key": "Tab",
+        "focused_id_before": ""
+      },
+      {
+        "key": "Tab",
+        "focused_id_before": ""
+      },
+      {
+        "key": "Tab",
+        "focused_id_before": ""
+      },
+      {
+        "key": "Tab",
+        "focused_id_before": ""
+      },
+      {
+        "key": "Tab",
+        "focused_id_before": ""
+      },
+      {
+        "key": "Tab",
+        "focused_id_before": ""
+      },
+      {
+        "key": "Tab",
+        "focused_id_before": ""
+      },
+      {
+        "key": "Tab",
+        "focused_id_before": ""
+      },
+      {
+        "key": "Tab",
+        "focused_id_before": ""
+      },
+      {
+        "key": "Tab",
+        "focused_id_before": ""
+      },
+      {
+        "key": "Tab",
+        "focused_id_before": ""
+      },
+      {
+        "key": "Tab",
+        "focused_id_before": ""
+      },
+      {
+        "key": "Tab",
+        "focused_id_before": ""
+      },
+      {
+        "key": "Tab",
+        "focused_id_before": ""
+      },
+      {
+        "key": "Tab",
+        "focused_id_before": ""
+      },
+      {
+        "key": "Tab",
+        "focused_id_before": ""
+      },
+      {
+        "key": "Tab",
+        "focused_id_before": ""
+      },
+      {
+        "key": "Tab",
+        "focused_id_before": ""
+      },
+      {
+        "key": "Tab",
+        "focused_id_before": ""
+      },
+      {
+        "key": "Tab",
+        "focused_id_before": ""
+      },
+      {
+        "key": "Tab",
+        "focused_id_before": ""
+      },
+      {
+        "key": "Tab",
+        "focused_id_before": ""
+      },
+      {
+        "key": "Tab",
+        "focused_id_before": ""
+      },
+      {
+        "key": "Tab",
+        "focused_id_before": ""
+      },
+      {
+        "key": "Tab",
+        "focused_id_before": ""
+      },
+      {
+        "key": "Tab",
+        "focused_id_before": ""
+      },
+      {
+        "key": "Tab",
+        "focused_id_before": ""
+      },
+      {
+        "key": "Tab",
+        "focused_id_before": ""
+      },
+      {
+        "key": "Tab",
+        "focused_id_before": "button-back-2"
+      },
+      {
+        "key": "Enter",
+        "focused_id_before": "button-next-2"
+      }
+    ],
+    "blocked_requests": 2,
+    "duration_ms": 9129
+  },
+  "reopened": {
+    "url": "http://127.0.0.1:8080/booking/reschedule/xaYro6HwVjfL",
+    "selected_date_iso": "2026-10-19",
+    "customer": "Synthetic",
+    "last": "ExploratoryBooking",
+    "db_unchanged": true
+  },
+  "violations": [],
+  "evaluation": {
+    "pass": true,
+    "reasons": [],
+    "nochangecontrols": {
+      "appointments_unchanged": false,
+      "customers_unchanged": false,
+      "services_unchanged": true,
+      "providers_unchanged": true,
+      "snapshots_unchanged": false,
+      "existing_appointments_preserved": true,
+      "existing_customers_preserved": true
+    }
+  },
+  "model_calls": 0,
+  "paid_calls": 0,
+  "combined_nvidia_acceptance_evaluated": false,
+  "counts_as_nvidia_booking": false,
+  "counts_as_original_G3": false,
+  "live_repair_ready": false
+}

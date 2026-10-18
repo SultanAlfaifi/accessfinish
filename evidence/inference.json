@@ -1,0 +1,35 @@
+{
+  "model": "nvidia/nemotron-3-super-120b-a12b",
+  "http_status": 200,
+  "usage": {
+    "completion_tokens": 1157,
+    "prompt_tokens": 1173,
+    "total_tokens": 2330,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": null,
+      "reasoning_tokens": 717,
+      "rejected_prediction_tokens": null
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": null,
+      "cached_tokens": 0,
+      "created_cache_tokens": 0,
+      "multimodal_tokens": null
+    },
+    "prompt_cache_hit_tokens": 0,
+    "prompt_cache_miss_tokens": 1173
+  },
+  "tool_call": {
+    "arguments": "{\"reason\": \"Fix datepicker accessibility, handle empty selection, preserve date in manageMode.\", \"edits\": [{\"path\": \"assets/js/pages/booking.js\", \"old\": \"            onChange: (selectedDates) => {\\r\\n                App.Http.Booking.getAvailableHours(moment(selectedDates[0]).format('YYYY-MM-DD'));\\r\\n                App.Pages.Booking.updateConfirmFrame();\\r\\n            },\", \"new\": \"            onChange: (selectedDates) => {\\r\\n                if (selectedDates.length) {\\r\\n                    App.Http.Booking.getAvailableHours(moment(selectedDates[0]).format('YYYY-MM-DD'));\\r\\n                    App.Pages.Booking.updateConfirmFrame();\\r\\n                }\\r\\n            },\"}, {\"path\": \"assets/js/pages/booking.js\", \"old\": \"                const todayMoment = moment();\\r\\n\\r\\n                App.Utils.UI.setDateTimePickerValue($selectDate, todayMoment.toDate());\\r\\n\\r\\n                App.Http.Booking.getUnavailableDates(\\r\\n                    $selectProvider.val(),\\n                    $selectService.val(),\\n                    todayMoment.format('YYYY-MM-DD'),\\n                );\", \"new\": \"                let momentToUse = manageMode ? moment(App.Utils.UI.getDateTimePickerValue($selectDate)) : moment();\\n                App.Utils.UI.setDateTimePickerValue($selectDate, momentToUse.toDate());\\n                App.Http.Booking.getUnavailableDates(\\n                    $selectProvider.val(),\\n                    $selectService.val(),\\n                    momentToUse.format('YYYY-MM-DD'),\\n                );\"}, {\"path\": \"application/views/components/booking_time_step.php\", \"old\": \"<div id=\\\"select-date\\\" class=\\\"mx-auto my-4\\\"></div>\", \"new\": \"<input type=\\\"text\\\" id=\\\"select-date\\\" class=\\\"form-control mx-auto my-4\\\" aria-label=\\\"Select date\\\">\"}]}",
+    "name": "propose_source_edits"
+  },
+  "request_parameters": {
+    "temperature": 0,
+    "max_tokens": 2048,
+    "stream": false
+  },
+  "request_sha256": "acb1f4b8c0adb4c6c722996b600454f96fb89c5d441098c64d1a83664ffd3586",
+  "response_sha256": "db383a6271fb0f2fb93d14f152ce3ab0c4bd08b03f45548a19b79f185efe27d5",
+  "credentials_included": false
+}

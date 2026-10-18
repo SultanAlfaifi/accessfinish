@@ -1,0 +1,49 @@
+{
+  "raw_video": "raw/page@090cf900424cff7ca1162d83ecac365f.webm",
+  "captions": [
+    {
+      "at": 0.002,
+      "text": "AccessFinish connects a keyboard repair to evidence that the task actually finished.",
+      "tag": "ACCESSFINISH / DEVELOPMENT DEMONSTRATION"
+    },
+    {
+      "at": 9.03,
+      "text": "The booking date was mounted on a div. Keyboard users could not type a date.",
+      "tag": "1 / OBSERVE THE BLOCKAGE"
+    },
+    {
+      "at": 20.023,
+      "text": "Nemotron on Nebius authored three source edits after an operator supplied the diagnosis.",
+      "tag": "2 / REVIEW THE MODEL PROPOSAL"
+    },
+    {
+      "at": 37.016,
+      "text": "The controller normalized line endings, then built 83 JavaScript files and ran the keyboard booking.",
+      "tag": "EXACT SOURCE CHANGE / DETERMINISTIC EXECUTION"
+    },
+    {
+      "at": 47.057,
+      "text": "The stored appointment matched. A fresh browser reopened the same booking with the same date and customer.",
+      "tag": "3 / VERIFY THE SAVED OUTCOME"
+    },
+    {
+      "at": 58.017,
+      "text": "This is a new read-only check of the isolated database and a fresh browser. No new model request or booking.",
+      "tag": "LIVE VERIFICATION / NO PAID CALL"
+    },
+    {
+      "at": 74.001,
+      "text": "One guided development case. General autonomous repair and screen-reader usability remain unproven.",
+      "tag": "SCOPE / KEEP THE CLAIM PRECISE"
+    }
+  ],
+  "live_verification": "Live check passed · 2026-10-19 · 09:00–09:30 Asia/Riyadh · fresh reopen matched.",
+  "desktop_overflow": false,
+  "mobile_overflow": false,
+  "arabic_direction": "rtl",
+  "javascript_errors": [],
+  "music": false,
+  "audio": "silent, English captions",
+  "recorded_at_utc": "2026-10-18T15:10:50.321Z",
+  "limitations": "Footage reviews a recorded guided repair and performs a new live read-only saved-booking check. It does not show a new live model call."
+}

@@ -1,0 +1,29 @@
+{
+  "state": "NEMOTRON_AUTHORED_PATCH_NORMALIZED_REPLAY_BOOKING_PASS",
+  "failure": null,
+  "model": "nvidia/nemotron-3-super-120b-a12b",
+  "model_proposal": {
+    "path": "model-proposal.json",
+    "sha256": "c267bf41b559c29034784759904d6b8ac9f55a5dcb364866afee7697cadc2ac6"
+  },
+  "source_edits_authored_by": "NVIDIA Nemotron via Nebius",
+  "diagnosis_supplied_by_operator": true,
+  "line_endings_normalized_by_controller": true,
+  "semantic_patch_authored_by_operator": false,
+  "keyboard_workflow_status": "confirmation_observed",
+  "build": {
+    "status": "pass",
+    "files": 83,
+    "build_sha256": "8952d1c3d69f7f5b8d08e9e0e1efb4512eeaf7d20f35cc423827f02b5d51e22e",
+    "patch_cycles": 1,
+    "candidate_configuration_executed": false
+  },
+  "booking_persisted": true,
+  "fresh_reopen_date": "2026-10-19",
+  "model_calls_this_replay": 0,
+  "paid_calls_this_replay": 0,
+  "known_total_model_cost_usd_excluding_tax": 0.11114249999999999,
+  "counts_as_original_G3": false,
+  "general_autonomous_repair_proven": false,
+  "elapsed_ms": 47350
+}

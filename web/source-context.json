@@ -1,0 +1,10 @@
+[
+  {
+    "path": "assets/js/pages/booking.js",
+    "content": "            onChange: (selectedDates) => {\r\n                App.Http.Booking.getAvailableHours(moment(selectedDates[0]).format('YYYY-MM-DD'));\r\n                App.Pages.Booking.updateConfirmFrame();\r\n            },\n\n[Separate complete original fragment]\n\n                const todayMoment = moment();\r\n\r\n                App.Utils.UI.setDateTimePickerValue($selectDate, todayMoment.toDate());\r\n\r\n                App.Http.Booking.getUnavailableDates(\r\n                    $selectProvider.val(),\r\n                    $selectService.val(),\r\n                    todayMoment.format('YYYY-MM-DD'),\r\n                );"
+  },
+  {
+    "path": "application/views/components/booking_time_step.php",
+    "content": "<div id=\"select-date\" class=\"mx-auto my-4\"></div>"
+  }
+]
