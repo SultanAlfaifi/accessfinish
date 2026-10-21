@@ -1,7 +1,17 @@
 'use strict';
-// Copies the reviewed static assets only. Never rewrites the backend or UI code.
-const fs = require('node:fs'), path = require('node:path');
+// Versions local asset references and copies the reviewed static build.
+const fs = require('node:fs'), path = require('node:path'), crypto = require('node:crypto');
 const root = path.resolve(__dirname, '..');
+for (const name of ['index.html', 'review.html']) {
+  const file = path.join(root, 'web', name);
+  const html = fs.readFileSync(file, 'utf8').replace(/\b(src|href)="([a-zA-Z0-9_./-]+\.(?:js|css|json))(?:\?v=[a-f0-9]+)?"/g, (match, attribute, asset) => {
+    const input = path.resolve(root, 'web', asset);
+    if (!input.startsWith(path.join(root, 'web') + path.sep)) throw Error('Asset must stay within the static build.');
+    const version = crypto.createHash('sha256').update(fs.readFileSync(input)).digest('hex').slice(0, 16);
+    return `${attribute}="${asset}?v=${version}"`;
+  });
+  fs.writeFileSync(file, html);
+}
 function copyDirectory(source, destination) {
   fs.mkdirSync(destination, {recursive: true});
   for (const entry of fs.readdirSync(source, {withFileTypes: true})) {

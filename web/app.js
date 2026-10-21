@@ -10,7 +10,7 @@ function tab(name) {
   heading.tabIndex = -1; heading.focus({preventScroll: true}); panel.scrollIntoView({block: 'start'});
 }
 async function api(url, data) {
-  const response = await fetch(url, data === undefined ? {} : {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(data)});
+  const response = await fetch(url, data === undefined ? {cache: 'no-store'} : {cache: 'no-store', method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(data)});
   let value; try { value = await response.json(); } catch { throw Error('This action requires the local Node app. The recorded example remains available.'); }
   if (!response.ok) throw Error(value.error || 'The operation did not complete.'); return value;
 }
