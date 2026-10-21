@@ -3,7 +3,7 @@ const form = document.querySelector('#review-form'), status = document.querySele
 let started = null, feedback = null, caseIdentity = null;
 document.querySelector('#start-review').addEventListener('click', async () => {
   if (started) return;
-  const read = async file => { const response = await fetch(file); if (!response.ok) throw Error('The recorded review case could not be loaded.'); return response.json(); };
+  const read = async file => { const response = await fetch(file, {cache: 'no-store'}); if (!response.ok) throw Error('The recorded review case could not be loaded.'); return response.json(); };
   try {
     const [featured, files] = await Promise.all([read('featured-case.json'), read('source-context.json')]), run = await read(featured.recording);
     await AccessFinishRecording.validate({featured, files, run});
