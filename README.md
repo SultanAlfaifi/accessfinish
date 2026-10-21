@@ -4,7 +4,7 @@
 
 AccessFinish connects a reviewable NVIDIA Nemotron source proposal to an isolated build, native keyboard booking, read-only database checks, and a fresh-browser reopen. A plausible patch or a confirmation page alone cannot produce a verified result.
 
-This branch prepares **v0.2.0**. Its new evidence is local and packaged here; the [currently published replay](https://sultalfaifi.com/accessfinish/) and v0.1.0 release remain historical until the publication gate is completed. Track: **Coding and Agentic Engineering**.
+This branch prepares **v0.2.0**. Its evaluated source and evidence are available in [draft PR #1](https://github.com/SultanAlfaifi/accessfinish/pull/1); the [currently published replay](https://sultalfaifi.com/accessfinish/) and v0.1.0 release remain historical until the publication gate is completed. Track: **Coding and Agentic Engineering**.
 
 ## Review in a browser
 
@@ -20,7 +20,7 @@ Open **http://127.0.0.1:4178**. The optional browser-only developer review is at
 
 ## Run a new execution
 
-Requires **Node.js 22+** and a **local Docker Linux engine**. The app has no host npm dependencies. Setup downloads pinned official images and locked application dependencies; allow several GB of disk space. Linux amd64 containers have been tested through Windows Docker Desktop; the separate clean-runner workflow is pending verification.
+Requires **Node.js 22+** and a **local Docker Linux engine**. The app has no host npm dependencies. Setup downloads pinned official images and locked application dependencies; allow several GB of disk space. Linux amd64 execution has passed through Windows Docker Desktop and an independent fresh GitHub Linux runner.
 
 ```sh
 npm run demo:setup
@@ -72,9 +72,11 @@ node scripts/check-evidence.cjs
 npm run check:records
 ```
 
-The clean-environment workflow tests Node 22/24 on Windows/Linux, then builds the public fixture and replays all five retained proposals plus the original-source negative control on a fresh Linux runner. It must reproduce both verified results and the three failures at their expected stages. It needs no Nebius key and makes no model requests. Its actual outcome must be checked before claiming independent clean setup.
+The [independent clean-environment run](https://github.com/SultanAlfaifi/accessfinish/actions/runs/39623819548) passed Node 22/24 checks on Windows/Linux, then built the public fixture and replayed all five retained proposals on a fresh Linux runner. All five expected outcomes matched: two verified repairs and three failures at their expected stages. The original-source control remained blocked and left the selected database snapshots unchanged. It made no model requests. [Sanitized records and checksums](evidence/clean-execution-20261021/summary.json) are retained separately from the original model-generation trials.
 
 Source/app/database/compiler/browser/evaluator roles are separated. Candidate execution has no external network, no model-key environment, read-only roots, dropped capabilities, and CPU/memory/PID limits. The application receives only its synthetic fixture account. The independent reader has SELECT-only fixture access and explicitly checks that writes and system-schema access are denied. The reader never mounts the candidate source. Trusted setup builds official images; candidate npm scripts, Composer hooks, and model-generated shell commands are not run.
+
+Preservation checks cover only the appointment, customer, service, and provider columns selected by the reader's snapshots.
 
 ## License and attribution
 

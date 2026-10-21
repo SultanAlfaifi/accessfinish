@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "id": "run-08903976a7e00ca2f14d97bc4e0801b7",
+  "proposal_id": "proposal-d2bbcb201bdfd60b414c0530a54fce4a",
+  "proposal_sha256": "8a4ac2aa6532a80f7e3e3c75e07a1ecffdcc5ad11f85ee5fa3aa693c68ef3814",
+  "source_sha256": "398c85542878892ac7e555de74559964759e385bf8d0c181515d9126f13bef5c",
+  "proposal_origin": "recorded",
+  "approval": {
+    "reviewed": true,
+    "proposal_sha256": "8a4ac2aa6532a80f7e3e3c75e07a1ecffdcc5ad11f85ee5fa3aa693c68ef3814",
+    "at_utc": "2026-10-21T15:18:31.899Z"
+  },
+  "state": "failed",
+  "booking_verified": false,
+  "started_at_utc": "2026-10-21T15:18:31.899Z",
+  "stages": [
+    {
+      "state": "preparing",
+      "at_utc": "2026-10-21T15:18:31.946Z"
+    },
+    {
+      "state": "building",
+      "at_utc": "2026-10-21T15:18:37.682Z"
+    }
+  ],
+  "error": "Docker operation failed: lib/index.js:11110:23)\n    at Parser.parseMaybeUnaryOrPrivate (/trusted/node_modules/@babel/parser/lib/index.js:10963:61)\n    at Parser.parseExprOps (/trusted/node_modules/@babel/parser/lib/index.js:10968:23)\n    at Parser.parseMaybeConditional (/trusted/node_modules/@babel/parser/lib/index.js:10945:23)\n    at Parser.parseMaybeAssign (/trusted/node_modules/@babel/parser/lib/index.js:10895:21)\n    at Parser.parseExpressionBase (/trusted/node_modules/@babel/parser/lib/index.js:10848:23)\n    at /trusted/node_modules/@babel/parser/lib/index.js:10844:39\n    at Parser.allowInAnd (/trusted/node_modules/@babel/parser/lib/index.js:12495:16)\n    at Parser.parseExpression (/trusted/node_modules/@babel/parser/lib/index.js:10844:17)\n    at Parser.parseStatementContent (/trusted/node_modules/@babel/parser/lib/index.js:12971:23)\n    at Parser.parseStatementLike (/trusted/node_modules/@babel/parser/lib/index.js:12843:17)\n    at Parser.parseStatementListItem (/trusted/node_modu",
+  "finished_at_utc": "2026-10-21T15:18:40.244Z",
+  "duration_ms": 8345
+}

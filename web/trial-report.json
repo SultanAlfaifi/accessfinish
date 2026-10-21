@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_at_utc": "2026-10-21T15:13:08.072Z",
+  "generated_at_utc": "2026-10-21T15:46:30.296Z",
   "scope": "Repeated guided generation on one exposed source-repair case; not hidden cases or independent task families.",
   "frozen_procedure_directory": "evidence/competition-20261021/procedure",
   "post_evaluation_compatibility_record": "evidence/competition-20261021/post-evaluation-compatibility.json",
@@ -199,7 +199,7 @@
     "evidence/competition-20261021/procedure/lib/repair.cjs": "35774ff192402280e1d5bc7e243e1b9b47970e7dd8e3e052ab2b56c10853da7f",
     "evidence/competition-20261021/procedure/lib/case-source.cjs": "9e14f76b095ad871ab7ad03204f028fd049f173150e210d9b5dd9f6a4514e1b9",
     "evidence/competition-20261021/procedure/scripts/trial.cjs": "b6e1f35c0e0d520516274b3741de6d8b49679a209fdb183c2d61aa8511b920dd",
-    "evidence/competition-20261021/post-evaluation-compatibility.json": "9f6443d776a1610b4533094aa818b3876a3ee4eb6bfa6eb93b08ca7a8b330e02",
+    "evidence/competition-20261021/post-evaluation-compatibility.json": "fa0336600db30a98d7733fa6071a6a98bf2a717738c7c2555b236d875628a950",
     "evidence/competition-20261021/development-1/claim.json": "ccd92230e0962d11db5288e0566e8c0c8fd5287930d755d7322799f155798c89",
     "evidence/competition-20261021/development-1/inference.json": "22211ea94926bd52988221b9ee8bc833caf3c183aa0bb6ade45d427b4e6a096d",
     "evidence/competition-20261021/development-1/proposal.json": "1c041a8666c9ea88cfbea37c12558789340a6f2323e0688a5f2c29bd8cf847e3",

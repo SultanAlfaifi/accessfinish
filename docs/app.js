@@ -6,6 +6,8 @@ function tab(name) {
   for (const element of all('.tab-panel')) element.hidden = element.id !== name;
   for (const element of all('.stage')) { const active = element.dataset.tab === name; element.classList.toggle('active', active); element.setAttribute('aria-pressed', String(active)); }
   $('#panel-label').textContent = {blockage: '1 / OBSERVED BLOCKAGE', repair: '2 / SOURCE REVIEW', outcome: '3 / EXECUTION EVIDENCE'}[name];
+  const panel = $('#' + name), heading = panel.querySelector('h2');
+  heading.tabIndex = -1; heading.focus({preventScroll: true}); panel.scrollIntoView({block: 'start'});
 }
 async function api(url, data) {
   const response = await fetch(url, data === undefined ? {} : {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(data)});

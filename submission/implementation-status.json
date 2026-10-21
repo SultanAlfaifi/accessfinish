@@ -13,13 +13,15 @@
     "portable_fixture": "fresh_model_execution_and_original_negative_control_verified_2026-10-21",
     "proposal_bound_execution": "14_checks_passed_new_execution_verified_via_ui_and_prior_result_cleared_on_reselection",
     "frozen_evaluation": "complete_2_of_5_passed_on_one_guided_exposed_case",
-    "clean_environment_execution": "windows_linux_node_matrix_passed_initial_linux_payload_ownership_failure_fixed_full_recorded_replays_pending",
+    "clean_environment_execution": "verified_fresh_linux_runner_reproduced_all_5_recorded_outcomes_and_original_negative_control_no_model_calls",
     "two_independent_tester_sessions": "browser_only_form_prepared_requires_two_real_independent_developers",
-    "final_video": "not_started",
+    "final_video": "140_second_english_draft_rendered_technical_and_sampled_frame_checks_passed_entrant_playback_pending",
     "public_youtube_url": null,
     "devpost_receipt": null
   },
   "historical_evidence": "The October 18 recorded case remains unchanged. It does not validate a new run.",
+  "independent_clean_run": "https://github.com/SultanAlfaifi/accessfinish/actions/runs/39623819548",
+  "browser_only_review_form": "web/review.html; no participant responses collected",
   "new_findings": [
     "The archived three-edit proposal saved November 1 instead of the requested November 2 in a fresh cross-month fixture. The independent verifier rejected it.",
     "A mixed operator reference control (three archived model edits and two operator-authored calendar guards) passed storage and fresh-reopen checks for November 2, preserving an existing appointment. This is not counted as a fresh model repair."
