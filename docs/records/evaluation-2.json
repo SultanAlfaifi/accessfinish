@@ -1,0 +1,148 @@
+{
+  "claim": {
+    "phase": "evaluation",
+    "index": 2,
+    "at_utc": "2026-10-21T14:12:57.703Z",
+    "state": "failed",
+    "context_sha256": "398c85542878892ac7e555de74559964759e385bf8d0c181515d9126f13bef5c",
+    "proposal_id": "proposal-77b80dbd438f9802c0491eae48a1fc7e",
+    "proposal_sha256": "8a4ac2aa6532a80f7e3e3c75e07a1ecffdcc5ad11f85ee5fa3aa693c68ef3814",
+    "attempt_id": "d0c89e16-502e-4c5d-a756-293b30cb3ba1",
+    "estimated_cost_usd_excluding_tax": 0.0073241999999999995,
+    "run_id": "run-f7d58ef696cab887ff6fcf6bdd2a5b06",
+    "booking_verified": false,
+    "error": "Docker operation failed: lib/index.js:11110:23)\n    at Parser.parseMaybeUnaryOrPrivate (/trusted/node_modules/@babel/parser/lib/index.js:10963:61)\n    at Parser.parseExprOps (/trusted/node_modules/@babel/parser/lib/index.js:10968:23)\n    at Parser.parseMaybeConditional (/trusted/node_modules/@babel/parser/lib/index.js:10945:23)\n    at Parser.parseMaybeAssign (/trusted/node_modules/@babel/parser/lib/index.js:10895:21)\n    at Parser.parseExpressionBase (/trusted/node_modules/@babel/parser/lib/index.js:10848:23)\n    at /trusted/node_modules/@babel/parser/lib/index.js:10844:39\n    at Parser.allowInAnd (/trusted/node_modules/@babel/parser/lib/index.js:12495:16)\n    at Parser.parseExpression (/trusted/node_modules/@babel/parser/lib/index.js:10844:17)\n    at Parser.parseStatementContent (/trusted/node_modules/@babel/parser/lib/index.js:12971:23)\n    at Parser.parseStatementLike (/trusted/node_modules/@babel/parser/lib/index.js:12843:17)\n    at Parser.parseStatementListItem (/trusted/node_modu"
+  },
+  "run": {
+    "schema_version": 1,
+    "id": "run-f7d58ef696cab887ff6fcf6bdd2a5b06",
+    "proposal_id": "proposal-77b80dbd438f9802c0491eae48a1fc7e",
+    "proposal_sha256": "8a4ac2aa6532a80f7e3e3c75e07a1ecffdcc5ad11f85ee5fa3aa693c68ef3814",
+    "source_sha256": "398c85542878892ac7e555de74559964759e385bf8d0c181515d9126f13bef5c",
+    "proposal_origin": "nebius",
+    "approval": {
+      "reviewed": true,
+      "proposal_sha256": "8a4ac2aa6532a80f7e3e3c75e07a1ecffdcc5ad11f85ee5fa3aa693c68ef3814",
+      "at_utc": "2026-10-21T14:14:05.770Z"
+    },
+    "state": "failed",
+    "booking_verified": false,
+    "started_at_utc": "2026-10-21T14:14:05.770Z",
+    "stages": [
+      {
+        "state": "preparing",
+        "at_utc": "2026-10-21T14:14:06.235Z"
+      },
+      {
+        "state": "building",
+        "at_utc": "2026-10-21T14:14:14.019Z"
+      }
+    ],
+    "error": "Docker operation failed: lib/index.js:11110:23)\n    at Parser.parseMaybeUnaryOrPrivate (/trusted/node_modules/@babel/parser/lib/index.js:10963:61)\n    at Parser.parseExprOps (/trusted/node_modules/@babel/parser/lib/index.js:10968:23)\n    at Parser.parseMaybeConditional (/trusted/node_modules/@babel/parser/lib/index.js:10945:23)\n    at Parser.parseMaybeAssign (/trusted/node_modules/@babel/parser/lib/index.js:10895:21)\n    at Parser.parseExpressionBase (/trusted/node_modules/@babel/parser/lib/index.js:10848:23)\n    at /trusted/node_modules/@babel/parser/lib/index.js:10844:39\n    at Parser.allowInAnd (/trusted/node_modules/@babel/parser/lib/index.js:12495:16)\n    at Parser.parseExpression (/trusted/node_modules/@babel/parser/lib/index.js:10844:17)\n    at Parser.parseStatementContent (/trusted/node_modules/@babel/parser/lib/index.js:12971:23)\n    at Parser.parseStatementLike (/trusted/node_modules/@babel/parser/lib/index.js:12843:17)\n    at Parser.parseStatementListItem (/trusted/node_modu",
+    "finished_at_utc": "2026-10-21T14:14:15.966Z",
+    "duration_ms": 10196
+  },
+  "execution": {
+    "run_id": "run-f7d58ef696cab887ff6fcf6bdd2a5b06",
+    "proposal_sha256": "8a4ac2aa6532a80f7e3e3c75e07a1ecffdcc5ad11f85ee5fa3aa693c68ef3814",
+    "source_sha256": "398c85542878892ac7e555de74559964759e385bf8d0c181515d9126f13bef5c",
+    "fixture_fingerprint": "b51cb712f12f2c9601b96b7bcbb11d2ba644cd59a86ea395bf7e8185f7127c24",
+    "source_commit": "4bc7ecd51f3dade8e041558f2c23dda65bd6c43e",
+    "scenario": {
+      "date": "2026-11-02",
+      "start": "09:00",
+      "end": "09:30",
+      "timezone": "Asia/Riyadh",
+      "service_id": 1,
+      "provider_id": 2,
+      "customer": {
+        "first_name": "Synthetic",
+        "last_name": "ExploratoryBooking",
+        "email": "exploratory-booking@example.invalid",
+        "phone_number": "0000000000"
+      }
+    },
+    "booking_verified": false,
+    "proposal_origin": "nebius",
+    "native_keyboard_only": false,
+    "model_calls_during_execution": 0,
+    "execution_started_at_utc": "2026-10-21T14:14:06.235Z",
+    "applied_source": {
+      "state": "source_applied",
+      "files": [
+        {
+          "path": "assets/js/pages/booking.js",
+          "sha256": "e9ca817332908d661a44f808b2928981bee8edf14a094035656a9d8d327c0320"
+        },
+        {
+          "path": "application/views/components/booking_time_step.php",
+          "sha256": "82ca57422e2f2d7fde1d59be119eeb4470fc6494a769330beeab33f7a2a3a2e3"
+        }
+      ],
+      "changes": [
+        {
+          "path": "application/views/components/booking_time_step.php",
+          "old": "<div id=\"select-date\" class=\"mx-auto my-4\"></div>",
+          "new": "<label for=\"select-date\" class=\"form-label\">Date</label><input type=\"date\" id=\"select-date\" class=\"mx-auto my-4\">",
+          "before_sha256": "7d4371fd301a8a187ca8f5c88f86f09cfaf96872b7647a761338d34c7e6974ef",
+          "after_sha256": "82ca57422e2f2d7fde1d59be119eeb4470fc6494a769330beeab33f7a2a3a2e3"
+        },
+        {
+          "path": "assets/js/pages/booking.js",
+          "old": "            onChange: (selectedDates) => {\r\n                App.Http.Booking.getAvailableHours(moment(selectedDates[0]).format('YYYY-MM-DD'));\r\n                App.Pages.Booking.updateConfirmFrame();\r\n            },",
+          "new": "            onChange: (selectedDates) => {\r\n                if (!selectedDates || !selectedDates[0]) {\r\n                    return;\r\n                }\r\n                App.Http.Booking.getAvailableHours(moment(selectedDates[0]).format('YYYY-MM-DD'));\r\n                App.Pages.Booking.updateConfirmFrame();\r\n            },",
+          "before_sha256": "61569c5b53c2b1f56cf3bd7426dc98fd453f4c14390168920fa15dd6875ac1f5",
+          "after_sha256": "8013137c11773b44dcd70fc885dfd7ec20a18c442783f818f76aa637e3c996f9"
+        },
+        {
+          "path": "assets/js/pages/booking.js",
+          "old": "            // If we are on the first step, fetch unavailable dates and available hours for step 2.\r\n            if ($target.attr('data-step_index') === '1') {\r\n                const todayMoment = moment();\r\n\r\n                App.Utils.UI.setDateTimePickerValue($selectDate, todayMoment.toDate());\r\n\r\n                App.Http.Booking.getUnavailableDates(\r\n                    $selectProvider.val(),\r\n                    $selectService.val(),\r\n                    todayMoment.format('YYYY-MM-DD'),\r\n                );\r\n            }",
+          "new": "            // If we are on the first step, fetch unavailable dates and available hours for step 2.\r\n            if ($target.attr('data-step_index') === '1') {\r\n                if (!manageMode) {\r\n                    const todayMoment = moment();\r\n\r\n                    App.Utils.UI.setDateTimePickerValue($selectDate, todayMoment.toDate());\r\n\r\n                    App.Http.Booking.getUnavailableDates(\r\n                        $selectProvider.val(),\r\n                        $selectService.val(),\r\n                        todayMoment.format('YYYY-MM-DD'),\r\n                    );\r\n                }\r\n            }",
+          "before_sha256": "8013137c11773b44dcd70fc885dfd7ec20a18c442783f818f76aa637e3c996f9",
+          "after_sha256": "9c1af9bb5b15f59100015e643077dcf101eb3b359e7ad388c94ea88510dd460c"
+        },
+        {
+          "path": "assets/js/pages/booking.js",
+          "old": "            onMonthChange: (selectedDates, dateStr, instance) => {\r\n                $selectDate.parent().fadeTo(400, 0.3); // Change opacity during loading\r\n\r\n                if (monthTimeout) {\r\n                    clearTimeout(monthTimeout);\r\n                }\r\n\r\n                monthTimeout = setTimeout(() => {\r\n                    const previousMoment = moment(instance.selectedDates[0]);\r\n\r\n                    const displayedMonthMoment = moment(\r\n                        instance.currentYearElement.value +\r\n                            '-' +\r\n                            String(Number(instance.monthsDropdownContainer.value) + 1).padStart(2, '0') +\r\n                            '-01',\r\n                    );\r\n\r\n                    const monthChangeStep = detectDatepickerMonthChangeStep(previousMoment, displayedMonthMoment);\r\n\r\n                    App.Http.Booking.getUnavailableDates(\r\n                        $selectProvider.val(),\r\n                        $selectService.val(),\r\n                        displayedMonthMoment.format('YYYY-MM-DD'),\r\n                        monthChangeStep,\r\n                    );\r\n                }, 500);\r\n            },",
+          "new": "            onMonthChange: (selectedDates, dateStr, instance) => {\r\n                if ($selectDate.is(':focus')) {\r\n                    return;\r\n                }\r\n                $selectDate.parent().fadeTo(400, 0.3); // Change opacity during loading\r\n\r\n                if (monthTimeout) {\r\n                    clearTimeout(monthTimeout);\r\n                }\r\n\r\n                monthTimeout = setTimeout(() => {\r\n                    const previousMoment = moment(instance.selectedDates[0]);\r\n\r\n                    const displayedMonthMoment = moment(\r\n                        instance.currentYearElement.value +\r\n                            '-' +\r\n                            String(Number(instance.monthsDropdownContainer.value) + 1).padStart(2, '0') +\r\n                            '-01',\r\n                    );\r\n\r\n                    const monthChangeStep = detectDatepickerMonthChangeStep(previousMoment, displayedMonthMoment);\r\n\r\n                    App.Http.Booking.getUnavailableDates(\r\n                        $selectProvider.val(),\r\n                        $selectService.val(),\r\n                        displayedMonthMoment.format('YYYY-MM-DD'),\r\n                        monthChangeStep,\r\n                    );\r\n                }, 500);\r\n            }",
+          "before_sha256": "9c1af9bb5b15f59100015e643077dcf101eb3b359e7ad388c94ea88510dd460c",
+          "after_sha256": "3b0328353f73cab0e43fbf7327d42d0f12f64096eaac6a713c218b546027a04f"
+        },
+        {
+          "path": "assets/js/pages/booking.js",
+          "old": "            onYearChange: (selectedDates, dateStr, instance) => {\r\n                setTimeout(() => {\r\n                    const previousMoment = moment(instance.selectedDates[0]);\r\n\r\n                    const displayedMonthMoment = moment(\r\n                        instance.currentYearElement.value +\r\n                            '-' +\r\n                            String(Number(instance.monthsDropdownContainer.value) + 1).padStart(2, '0') +\r\n                            '-01',\r\n                    );\r\n\r\n                    const monthChangeStep = detectDatepickerMonthChangeStep(previousMoment, displayedMonthMoment);\r\n\r\n                    App.Http.Booking.getUnavailableDates(\r\n                        $selectProvider.val(),\r\n                        $selectService.val(),\r\n                        displayedMonthMoment.format('YYYY-MM-DD'),\r\n                        monthChangeStep,\r\n                    );\r\n                }, 500);\r\n            }",
+          "new": "            onYearChange: (selectedDates, dateStr, instance) => {\r\n                if ($selectDate.is(':focus')) {\r\n                    return;\r\n                }\r\n                setTimeout(() => {\r\n                    const previousMoment = moment(instance.selectedDates[0]);\r\n\r\n                    const displayedMonthMoment = moment(\r\n                        instance.currentYearElement.value +\r\n                            '-' +\r\n                            String(Number(instance.monthsDropdownContainer.value) + 1).padStart(2, '0') +\r\n                            '-01',\r\n                    );\r\n\r\n                    const monthChangeStep = detectDatepickerMonthChangeStep(previousMoment, displayedMonthMoment);\r\n\r\n                    App.Http.Booking.getUnavailableDates(\r\n                        $selectProvider.val(),\r\n                        $selectService.val(),\r\n                        displayedMonthMoment.format('YYYY-MM-DD'),\r\n                        monthChangeStep,\r\n                    );\r\n                }, 500);\r\n            }",
+          "before_sha256": "3b0328353f73cab0e43fbf7327d42d0f12f64096eaac6a713c218b546027a04f",
+          "after_sha256": "e9ca817332908d661a44f808b2928981bee8edf14a094035656a9d8d327c0320"
+        }
+      ]
+    },
+    "error": "Docker operation failed: lib/index.js:11110:23)\n    at Parser.parseMaybeUnaryOrPrivate (/trusted/node_modules/@babel/parser/lib/index.js:10963:61)\n    at Parser.parseExprOps (/trusted/node_modules/@babel/parser/lib/index.js:10968:23)\n    at Parser.parseMaybeConditional (/trusted/node_modules/@babel/parser/lib/index.js:10945:23)\n    at Parser.parseMaybeAssign (/trusted/node_modules/@babel/parser/lib/index.js:10895:21)\n    at Parser.parseExpressionBase (/trusted/node_modules/@babel/parser/lib/index.js:10848:23)\n    at /trusted/node_modules/@babel/parser/lib/index.js:10844:39\n    at Parser.allowInAnd (/trusted/node_modules/@babel/parser/lib/index.js:12495:16)\n    at Parser.parseExpression (/trusted/node_modules/@babel/parser/lib/index.js:10844:17)\n    at Parser.parseStatementContent (/trusted/node_modules/@babel/parser/lib/index.js:12971:23)\n    at Parser.parseStatementLike (/trusted/node_modules/@babel/parser/lib/index.js:12843:17)\n    at Parser.parseStatementListItem (/trusted/node_modules/@babel/parser/lib/index.js:12823:17)\n    at Parser.parseBlockOrModuleBlockBody (/trusted/node_modules/@babel/parser/lib/index.js:13392:61)\n    at Parser.parseBlockBody (/trusted/node_modules/@babel/parser/lib/index.js:13385:10)\n    at Parser.parseBlock (/trusted/node_modules/@babel/parser/lib/index.js:13373:10)\n    at Parser.parseFunctionBody (/trusted/node_modules/@babel/parser/lib/index.js:12174:24)\n    at Parser.parseFunctionBodyAndFinish (/trusted/node_modules/@babel/parser/lib/index.js:12160:10)\n    at /trusted/node_modules/@babel/parser/lib/index.js:13521:12\n    at Parser.withSmartMixTopicForbiddingContext (/trusted/node_modules/@babel/parser/lib/index.js:12477:14)\n    at Parser.parseFunction (/trusted/node_modules/@babel/parser/lib/index.js:13520:10)\n    at Parser.parseFunctionStatement (/trusted/node_modules/@babel/parser/lib/index.js:13201:17)\n    at Parser.parseStatementContent (/trusted/node_modules/@babel/parser/lib/index.js:12867:21)\n    at Parser.parseStatementLike (/trusted/node_modules/@babel/parser/lib/index.js:12843:17)\n    at Parser.parseStatementListItem (/trusted/node_modules/@babel/parser/lib/index.js:12823:17)\n    at Parser.parseBlockOrModuleBlockBody (/trusted/node_modules/@babel/parser/lib/index.js:13392:61)\n    at Parser.parseBlockBody (/trusted/node_modules/@babel/parser/lib/index.js:13385:10) {\n  code: 'BABEL_PARSE_ERROR',\n  reasonCode: 'UnexpectedToken',\n  loc: Position { line: 152, column: 12, index: 5605 },\n  pos: 5605,\n  syntaxPlugin: undefined\n}\n\nNode.js v22.23.3\n",
+    "execution_finished_at_utc": "2026-10-21T14:14:15.668Z",
+    "execution_duration_ms": 9433,
+    "resources": {
+      "containers": [
+        {
+          "role": "import",
+          "name": "run-f7d58ef696cab887ff6fcf6bdd2a5b06-import",
+          "id": "a25732ee6a3aba1fc5aad54db84a3eae5a9e55268978e43d2301e764a94428c6"
+        },
+        {
+          "role": "build",
+          "name": "run-f7d58ef696cab887ff6fcf6bdd2a5b06-build",
+          "id": "a443819616cff4d2747f99225e3db8c438ec6b3a2b44c957ce2da4bc2f2d53a4"
+        }
+      ],
+      "volumes": [
+        "run-f7d58ef696cab887ff6fcf6bdd2a5b06-source",
+        "run-f7d58ef696cab887ff6fcf6bdd2a5b06-db-data",
+        "run-f7d58ef696cab887ff6fcf6bdd2a5b06-db-socket",
+        "run-f7d58ef696cab887ff6fcf6bdd2a5b06-seed",
+        "run-f7d58ef696cab887ff6fcf6bdd2a5b06-reader",
+        "run-f7d58ef696cab887ff6fcf6bdd2a5b06-payload"
+      ],
+      "label": "org.accessfinish.run",
+      "run_id": "run-f7d58ef696cab887ff6fcf6bdd2a5b06"
+    }
+  }
+}

@@ -1,10 +1,86 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Inspect a blocked keyboard booking, review a source repair, and verify the saved result."><title>AccessFinish — finish the task</title><link rel="stylesheet" href="style.css"></head><body>
-<a class="skip" href="#main">Skip to workbench</a><header><a class="brand" href="./" aria-label="AccessFinish home"><span class="mark" aria-hidden="true">a<span>f</span></span>AccessFinish<span class="edition">REPAIR WORKBENCH</span></a><nav aria-label="Main"><a href="#evidence">Evidence</a><a href="#model">Model</a><a href="https://github.com/SultanAlfaifi/accessfinish">Source ↗</a><button id="language" class="quiet" type="button" lang="ar">العربية</button></nav></header>
-<main id="main"><section class="intro"><div><p class="eyebrow"><span></span> KEYBOARD ACCESS · BOOKING JOURNEY</p><h1 data-en="A task is finished<br>when the outcome is saved." data-ar="تكتمل المهمة<br>عندما تُحفظ النتيجة.">A task is finished<br>when the outcome is saved.</h1><p class="deck" data-en="Trace the blockage. Review the source repair. Verify the booking beyond the success screen." data-ar="تتبّع العطل، وراجع إصلاح المصدر، وتحقّق من الحجز بعد شاشة النجاح.">Trace the blockage. Review the source repair. Verify the booking beyond the success screen.</p></div><div class="key-art" aria-hidden="true"><span class="key-label">ONE KEY. A WHOLE JOURNEY.</span><kbd>tab<span>⇥</span></kbd><div class="key-path"><i></i><i></i><i></i><b>saved</b></div></div></section>
-<section class="workbench" aria-labelledby="task-heading"><aside class="task-panel"><p class="eyebrow">TASK UNDER REVIEW</p><h2 id="task-heading" data-en="Book an appointment" data-ar="حجز موعد">Book an appointment</h2><p>Easy!Appointments · public development case</p><dl class="task-details"><div><dt>Date</dt><dd>19 October 2026</dd></div><div><dt>Time</dt><dd>09:00–09:30 <small>Riyadh</small></dd></div><div><dt>Interaction</dt><dd>Keyboard only</dd></div></dl><div class="stages" aria-label="Review stages"><button class="stage active" data-tab="blockage" aria-pressed="true"><span>1</span><div><strong>Find the blockage</strong><small>A date you cannot type</small></div></button><button class="stage" data-tab="repair" aria-pressed="false"><span>2</span><div><strong>Review the repair</strong><small>Exact source changes</small></div></button><button class="stage" data-tab="outcome" aria-pressed="false"><span>3</span><div><strong>Verify the outcome</strong><small>Storage + fresh reopen</small></div></button></div><div class="provenance"><span class="mini-dot"></span><span id="recording-label">Recorded run · 18 Oct 2026</span></div></aside>
-<div class="inspection"><div class="inspection-head"><span id="panel-label">01 / OBSERVED BLOCKAGE</span><span class="case-id">AF · BOOKING</span></div><section id="blockage" class="tab-panel"><div class="issue-flag">KEYBOARD BLOCKED</div><h2>The calendar looks ready.<br>The keyboard has nowhere to go.</h2><p>The date selector was mounted on a non-focusable element. A successful page load could not complete the appointment.</p><div class="code-frame"><div class="code-caption"><span>booking_time_step.php</span><b>original source</b></div><pre><code>&lt;div id="select-date" class="mx-auto my-4"&gt;&lt;/div&gt;</code></pre><div class="focus-caption"><kbd>tab</kbd><span>Focus moves past the date control</span><b>↷</b></div></div><div class="note"><strong>Two more behaviors matter.</strong><p>Clearing the date must be safe. Reopening a booking must keep its original date.</p></div><button class="primary next-step" data-target="repair">Review the source repair <span>→</span></button></section>
-<section id="repair" class="tab-panel" hidden><div class="issue-flag blue">SOURCE PROPOSAL</div><h2>Small edits.<br>A reviewable change.</h2><p id="repair-attribution">The source proposal is shown with its author and test evidence.</p><div class="file-switch" id="file-switch"></div><div class="diff"><div class="diff-label">REMOVED</div><pre id="old-code"></pre><div class="diff-label added-label">ADDED</div><pre id="new-code"></pre></div><label class="approval"><input type="checkbox" id="approve"><span>I reviewed these exact changes.</span></label><button id="export-patch" class="secondary" disabled>Export reviewed patch ↓</button><p class="micro">Export creates a patch artifact. It does not edit your application.</p><button class="primary next-step" data-target="outcome">Inspect the saved outcome <span>→</span></button></section>
-<section id="outcome" class="tab-panel" hidden><div class="issue-flag success" id="result-flag">CHECKING EVIDENCE</div><h2>A receipt,<br>not just a green screen.</h2><div class="receipt"><div><span>APPOINTMENT</span><strong id="booking-id">#902</strong></div><h3>19 October 2026</h3><p>09:00–09:30 <span>Asia/Riyadh</span></p><dl><div><dt>Customer</dt><dd>Synthetic ExploratoryBooking</dd></div><div><dt>Service / Provider</dt><dd>1 / 2</dd></div></dl><div class="receipt-end"><span>✓</span> Saved and reopened with the same date</div></div><ul class="checks"><li>Stored appointment and customer matched</li><li>Fresh browser reopened the booking</li><li>Existing customers and appointments preserved</li><li>Database unchanged by the reopen check</li></ul><button id="verify-live" class="primary">Run local verification <span>↻</span></button><p id="verify-message" class="micro" aria-live="polite">Recorded evidence is available without an API key.</p><a class="text-link" href="evidence.json" download>Download the evidence record ↓</a></section>
-</div><aside class="evidence-panel" id="evidence"><p class="eyebrow">WHAT THE RECORD PROVES</p><div class="evidence-score"><span>saved</span><strong>≠</strong><span>assumed</span></div><ul class="evidence-facts"><li><span>Source</span><strong id="source-author">Loading…</strong></li><li><span>Build</span><strong id="build-state">Loading…</strong></li><li><span>Interaction</span><strong>Native keyboard</strong></li><li><span>Verifier</span><strong>Independent reader</strong></li></ul><div class="limits"><h3>Keep the claim precise.</h3><p id="scope-note">One exposed development case. This is not a hidden-case benchmark or a screen-reader user study.</p></div><div class="run-cost"><span>MODEL USAGE</span><strong id="cost">—</strong><small>estimated · before tax</small></div></aside></section>
-<section class="model-panel" id="model"><div><p class="eyebrow">NVIDIA NEMOTRON / NEBIUS TOKEN FACTORY</p><h2>Review a new proposal.</h2><p>Provide the two original booking source files as JSON. The model returns exact replacements for review. Source files are sent to Nebius only after you choose Analyze.</p></div><form id="analyze-form"><label for="source-files">Original source context</label><input type="file" id="source-files" accept="application/json,.json"><p class="micro">JSON: [{"path":"…","content":"…"}, …]. <a href="source-context.json" download>Download the development context</a>.</p><label class="approval"><input type="checkbox" id="model-consent" required><span>Send this source to Nebius for one paid model analysis.</span></label><button class="secondary" id="analyze-button" type="submit">Analyze with Nemotron →</button><p class="micro" id="model-message" aria-live="polite">Requires a server-side API key. No key is stored in this page.</p></form></section>
-<footer><span>AccessFinish · finish the task, verify the result.</span><span>Development prototype · synthetic customer data</span></footer></main><script src="app.js"></script></body></html>
+<!doctype html>
+<html lang="en" data-mode="recorded-review">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Review a Nemotron source repair, run a keyboard booking in isolation, and verify its stored outcome.">
+  <title>AccessFinish — finish the task</title><link rel="stylesheet" href="style.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to workbench</a>
+<header>
+  <a class="brand" href="./" aria-label="AccessFinish home"><span class="mark" aria-hidden="true">a<span>f</span></span>AccessFinish<span class="edition">REPAIR WORKBENCH</span></a>
+  <nav aria-label="Main"><a href="#recorded-evidence">Recorded evidence</a><a href="#model">Nemotron</a><a href="https://github.com/SultanAlfaifi/accessfinish">Source</a></nav>
+</header>
+<main id="main">
+  <section class="intro">
+    <div><h1>A source repair.<br>A booking you can prove.</h1><p class="deck">Review the change. Run the keyboard task. Check the saved appointment in storage and a fresh browser.</p><p class="environment-note" id="environment-note" role="status">Loading the workbench…</p></div>
+    <div class="key-art" aria-hidden="true"><span class="key-label">FOLLOW THE TASK TO ITS OUTCOME</span><kbd>tab<span>⇥</span></kbd><div class="key-path"><i></i><i></i><i></i><b>saved</b></div></div>
+  </section>
+  <section class="workbench" aria-labelledby="task-heading">
+    <aside class="task-panel">
+      <h2 id="task-heading">Book an appointment</h2><p>Easy!Appointments · guided development case</p>
+      <dl class="task-details"><div><dt>Date</dt><dd id="task-date">Future date, chosen at execution</dd></div><div><dt>Time</dt><dd>09:00–09:30 <small>Riyadh</small></dd></div><div><dt>Interaction</dt><dd>Keyboard only</dd></div></dl>
+      <div class="stages" aria-label="Review stages">
+        <button class="stage active" data-tab="blockage" aria-pressed="true"><span>1</span><div><strong>Inspect the blockage</strong><small>Understand the task</small></div></button>
+        <button class="stage" data-tab="repair" aria-pressed="false"><span>2</span><div><strong>Review and run</strong><small>Approve exact changes</small></div></button>
+        <button class="stage" data-tab="outcome" aria-pressed="false"><span>3</span><div><strong>Check the outcome</strong><small>Evidence for this run</small></div></button>
+      </div>
+      <div class="provenance"><span class="mini-dot"></span><span id="recording-label">No execution selected</span></div>
+    </aside>
+    <div class="inspection">
+      <div class="inspection-head"><span id="panel-label">1 / OBSERVED BLOCKAGE</span><span class="case-id">AF · BOOKING</span></div>
+      <section id="blockage" class="tab-panel">
+        <div class="issue-flag">KEYBOARD BLOCKED</div><h2>The calendar looks ready.<br>The keyboard has nowhere to go.</h2>
+        <p>The date selector is mounted on a non-focusable element. Loading the page does not prove a keyboard user can choose a future date and finish booking.</p>
+        <div class="code-frame"><div class="code-caption"><span>booking_time_step.php</span><b>original source</b></div><pre><code>&lt;div id="select-date" class="mx-auto my-4"&gt;&lt;/div&gt;</code></pre><div class="focus-caption"><kbd>tab</kbd><span>Focus moves past the date control</span></div></div>
+        <div class="note"><strong>The date must survive the whole task.</strong><p>Clearing the input must be safe. Reopening the saved appointment must retain its date.</p></div>
+        <button class="primary next-step" data-target="repair">Review the source repair</button>
+      </section>
+      <section id="repair" class="tab-panel" hidden>
+        <div class="issue-flag blue">SOURCE PROPOSAL</div><h2>Review the change.<br>Then put it to the test.</h2>
+        <p id="repair-attribution">Loading the recorded Nemotron proposal…</p>
+        <details id="model-request-record" hidden><summary>Inspect the Nemotron request record</summary><p class="micro" id="model-request-evidence"></p></details>
+        <button class="secondary" id="load-recorded">Use recorded Nemotron proposal</button>
+        <div class="file-switch" id="file-switch" aria-label="Proposed source edits"></div>
+        <div class="diff"><div class="diff-label">REMOVED</div><pre id="old-code"></pre><div class="diff-label added-label">ADDED</div><pre id="new-code"></pre></div>
+        <p class="micro" id="proposal-identity"></p>
+        <button id="inspect-recorded-run" class="secondary" hidden>Inspect this proposal's recorded execution</button>
+        <div id="local-execution-controls"><label class="approval"><input type="checkbox" id="approve"><span>I reviewed these exact changes and approve testing them in the isolated synthetic fixture.</span></label>
+        <div class="repair-actions"><button id="run-repair" class="primary" disabled>Run approved repair</button><button id="export-patch" class="secondary" disabled>Export reviewed patch</button></div></div>
+        <p class="micro" id="execution-message" role="status">The source proposal has not been executed. Recorded results appear separately below.</p>
+      </section>
+      <section id="outcome" class="tab-panel" hidden>
+        <div class="issue-flag blue" id="result-flag" role="status">NOT EXECUTED</div><h2>Evidence belongs<br>to one exact repair.</h2>
+        <p id="verify-message" role="status">Approve and run a proposal to obtain new execution evidence. The October 18 receipt does not verify your selected proposal.</p>
+        <ol class="execution-stages" id="execution-stages" aria-label="Execution progress"></ol>
+        <div id="outcome-detail" hidden>
+          <div class="receipt"><div><span>THIS RUN'S APPOINTMENT</span><strong id="booking-id"></strong></div><h3 id="booking-date"></h3><p id="booking-time"></p><dl><div><dt>Customer</dt><dd id="booking-customer"></dd></div><div><dt>Service / Provider</dt><dd id="booking-service"></dd></div></dl><div class="receipt-end" id="receipt-result"></div></div>
+          <ul class="checks" id="outcome-checks"></ul>
+        </div>
+        <p class="micro" id="run-identity"></p><button id="refresh-run" class="secondary" hidden>Refresh current run</button>
+        <button id="download-run" class="secondary" disabled>Download this run's evidence</button>
+      </section>
+    </div>
+    <aside class="evidence-panel" id="evidence">
+      <h3 id="proof-heading">What this run proves</h3><div class="evidence-score"><span>saved</span><strong>≠</strong><span>assumed</span></div>
+      <ul class="evidence-facts"><li><span>Proposal</span><strong id="source-author">Loading…</strong></li><li><span>Build</span><strong id="build-state">Not executed</strong></li><li><span>Interaction</span><strong id="interaction-state">Not executed</strong></li><li><span>Verifier</span><strong id="verifier-state">Not executed</strong></li></ul>
+      <div class="limits"><h3>Keep the claim precise.</h3><p id="scope-note">One guided, exposed development case. The diagnosis was supplied to the model. No general autonomous repair or screen-reader study is claimed.</p></div>
+      <div class="run-cost"><span>NEW MODEL USAGE</span><strong id="cost">$0</strong><small id="cost-note">Recorded proposal · no new inference</small></div>
+    </aside>
+  </section>
+  <section class="protocol-results" aria-labelledby="protocol-heading">
+    <h2 id="protocol-heading">Models propose. Outcomes decide.</h2>
+    <p id="protocol-summary">The frozen evaluation report will be included with the evaluated build.</p>
+    <div class="results-table" hidden id="protocol-table-wrap"><table><caption>Five repeated model requests on one exposed, guided case</caption><thead><tr><th>Trial</th><th>Build</th><th>Keyboard + reopen</th><th>Full procedure</th><th>Record</th></tr></thead><tbody id="protocol-rows"></tbody></table></div>
+    <p class="micro" id="protocol-limit">The diagnosis and repair direction were supplied. These are repeated attempts on one case, not a general repair benchmark.</p>
+    <a href="trial-report.json" download id="download-trial-report" hidden>Download all development and evaluation outcomes</a>
+  </section>
+  <section class="model-panel" id="model">
+    <div><h2 id="model-heading">Ask Nemotron for a new proposal.</h2><p>Uses NVIDIA Nemotron 3 Super through Nebius Token Factory. The diagnosis is supplied; the model proposes the source edits. Review is required before isolated execution.</p><p id="source-sharing-explanation">Keep the included case context or choose your own JSON for the two supported booking files. A request sends this source to Nebius and may incur a charge.</p></div>
+    <div id="replay-local-guide" hidden><h3>From review to a new execution</h3><p>The local build uses Node.js 22+ and a local Docker Linux engine. It prepares a fresh synthetic fixture and asks for approval of the exact patch before execution.</p><p>A new Nemotron proposal also needs server-side Nebius configuration, verified current pricing, and a request budget.</p><a href="https://github.com/SultanAlfaifi/accessfinish#run-a-new-execution">Read the local setup instructions</a></div>
+    <form id="analyze-form"><label for="source-files">Source context JSON (included case by default)</label><input type="file" id="source-files" accept="application/json,.json"><p class="micro"><a href="source-context.json" download>Download the included source context</a>.</p><label class="approval"><input type="checkbox" id="model-consent" required><span>Send this source to Nebius for one paid analysis. No automatic retry.</span></label><button class="secondary" id="analyze-button" type="submit" disabled>Analyze with Nemotron</button><p class="micro" id="model-message" role="status">Requires the local server, a server-side key, and verified current pricing.</p></form>
+  </section>
+  <details id="recorded-evidence" class="recorded-evidence"><summary>Inspect the separate October 18 recorded example</summary><p>This historical result belongs to its original run: appointment #902, October 19, 2026, 09:00–09:30 Asia/Riyadh. It was checked in storage and reopened in a fresh browser. Nemotron authored three edits after an operator supplied the diagnosis; only line endings were normalized by the controller.</p><p>This is recorded evidence, not a new model request or verification of your currently selected proposal.</p><a href="evidence.json" download>Download the historical evidence summary</a></details>
+  <footer><span>AccessFinish · finish the task, verify the result.</span><span>Development prototype · synthetic customer data</span></footer>
+</main><script src="recording.js"></script><script src="app.js"></script>
+</body></html>

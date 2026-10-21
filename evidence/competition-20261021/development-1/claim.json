@@ -1,0 +1,14 @@
+{
+  "phase": "development",
+  "index": 1,
+  "at_utc": "2026-10-21T13:46:16.364Z",
+  "state": "failed",
+  "context_sha256": "e9ebf7a9047bc2f3731837622803f18c75ed926047938552d1fd25e2dbbbeb9d",
+  "proposal_id": "proposal-e69ca6672f1743f927150c7892d2e101",
+  "proposal_sha256": "fbc1a4cf23858e7a1b86adf31acb11378fbf9d31baa930dc4a0afe9d3aac0b70",
+  "attempt_id": "a0df4287-a00c-40db-9fb7-424afe2221f9",
+  "estimated_cost_usd_excluding_tax": 0.0009107999999999999,
+  "run_id": "run-1732bf55b3441b93ca4100a9a2ffcd46",
+  "booking_verified": false,
+  "error": "Outcome verification failed: interaction_violation, expected_exactly_one_new_appointment, expected_exactly_one_new_customer, reopen_customer_mismatch, reopen_date_mismatch, reopen_db_preservation_not_verified"
+}

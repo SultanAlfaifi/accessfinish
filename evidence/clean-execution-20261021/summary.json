@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "source_commit": "fbd4a5d92d18cf961f102b5cbbbc3e7dd96e7c77",
+  "workflow_run_id": 39623819548,
+  "workflow_url": "https://github.com/SultanAlfaifi/accessfinish/actions/runs/39623819548",
+  "workflow_conclusion": "success",
+  "github_reported_artifact_digest": "sha256:a65e7fed6d03fe90ac92bcc4ec114f15543d4524e8256b60cc8ad86bc75a9475",
+  "unit_matrix": {
+    "operating_systems": [
+      "Windows",
+      "Linux"
+    ],
+    "node_versions": [
+      22,
+      24
+    ],
+    "all_passed": true
+  },
+  "original_source_control": {
+    "run_id": "run-a97c686b87a961ef9fcfcaa8d5467b7a",
+    "blocked_as_expected": true,
+    "database_unchanged": true
+  },
+  "recorded_proposals_replayed": 5,
+  "expected_outcomes_matched": 5,
+  "verified_repair_outcomes": 2,
+  "new_model_requests": 0,
+  "scope": "Independent automated clean public checkout and reproduction of recorded proposals. Not new model generation or an independent human usability session.",
+  "artifact_sha256": {
+    "execution-run-08903976a7e00ca2f14d97bc4e0801b7.json": "2647473063a055e51d171c3e2f76d27d3839942f774ff5617b1be6aae0442c76",
+    "execution-run-59d976b4133b9ab7d42419cf4c64941b.json": "1abccf1e776732ef1a0df85b530e2215195c38a1dfb4c36d185176e98d01e637",
+    "execution-run-a21ad260c0c4255cc52cbb1f6e595e61.json": "1fce3fc4465c300b1525b123099904552a22b491d2fa75e35dfc258a46bfad77",
+    "execution-run-a97c686b87a961ef9fcfcaa8d5467b7a.json": "c3f80993451ae509ed20fe1661fe7fc967f445803feeaf650a391ff95b953298",
+    "execution-run-b55c4fa3729b0c178893d9f2cdc14fb5.json": "2d3a9b3e72391f947b1b00c7dfdc8e8f3c0025837394c510e4d134103a82711e",
+    "execution-run-ed76d88598d2381261bcc65f201a1a21.json": "8ec359f411674710331fe181971e2fad1564fd631cb91b01e40b3e21611b49b8",
+    "recorded-proposal-replays.json": "31cd3d013838d183b123aab2b2a7f21b980694fce5c62fd7b6007d78fed0abff",
+    "run-08903976a7e00ca2f14d97bc4e0801b7.json": "3fce7c2832daa748ac2da9bb0dd80c4626b32443dd0d33cc0a73b36008f54008",
+    "run-59d976b4133b9ab7d42419cf4c64941b.json": "620ec5127a6b70315703b7be0a4eb413ff0bd4cca2230e3e7c64bfd071b3c184",
+    "run-a21ad260c0c4255cc52cbb1f6e595e61.json": "bff9620e56ae39d1948cd60ce5bdb8f177ea1d12912d90564b3c7b5727fb38cf",
+    "run-a97c686b87a961ef9fcfcaa8d5467b7a.json": "27514ce368071c36634ed957af128c385ce298998bf0ac78d17b7bdce0e855af",
+    "run-b55c4fa3729b0c178893d9f2cdc14fb5.json": "4b1afa14edb562a3513bce18ce65d65d8361c855e4930ac213ed692c90bfa03a",
+    "run-ed76d88598d2381261bcc65f201a1a21.json": "27c8c63e6362799171a00deb5a0f45f819f55cc10255d45af8981f1e6d01211b"
+  }
+}

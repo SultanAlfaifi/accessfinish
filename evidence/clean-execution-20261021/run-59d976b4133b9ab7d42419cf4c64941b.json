@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "id": "run-59d976b4133b9ab7d42419cf4c64941b",
+  "proposal_id": "proposal-a2cef24ead7d682bd3ba39f1e141658a",
+  "proposal_sha256": "16ea9a86027099fa595177b59fc3d934c7a5e96aefeb50ef74136ab4049a21a9",
+  "source_sha256": "398c85542878892ac7e555de74559964759e385bf8d0c181515d9126f13bef5c",
+  "proposal_origin": "recorded",
+  "approval": {
+    "reviewed": true,
+    "proposal_sha256": "16ea9a86027099fa595177b59fc3d934c7a5e96aefeb50ef74136ab4049a21a9",
+    "at_utc": "2026-10-21T15:17:31.669Z"
+  },
+  "state": "failed",
+  "booking_verified": false,
+  "started_at_utc": "2026-10-21T15:17:31.669Z",
+  "stages": [
+    {
+      "state": "preparing",
+      "at_utc": "2026-10-21T15:17:31.990Z"
+    },
+    {
+      "state": "building",
+      "at_utc": "2026-10-21T15:17:37.924Z"
+    },
+    {
+      "state": "booking",
+      "at_utc": "2026-10-21T15:17:49.486Z"
+    },
+    {
+      "state": "verifying",
+      "at_utc": "2026-10-21T15:18:01.965Z"
+    }
+  ],
+  "error": "Docker operation failed: {\"error\":\"Calendar navigation exceeded its bounded month budget.\",\"stage\":null}\n",
+  "finished_at_utc": "2026-10-21T15:18:30.955Z",
+  "duration_ms": 59286
+}

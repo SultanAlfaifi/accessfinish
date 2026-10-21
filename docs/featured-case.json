@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "authorship": "model",
+  "model": "nvidia/nemotron-3-super-120b-a12b",
+  "provider": "Nebius Token Factory",
+  "endpoint": "https://api.tokenfactory.nebius.com/v1/chat/completions",
+  "attempt_id": "7e1ab2fb-66bc-42dd-9418-58d7cdf98a84",
+  "usage": {
+    "completion_tokens": 2112,
+    "prompt_tokens": 12684,
+    "total_tokens": 14796,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": null,
+      "reasoning_tokens": 855,
+      "rejected_prediction_tokens": null
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": null,
+      "cached_tokens": 0,
+      "created_cache_tokens": 0,
+      "multimodal_tokens": null
+    },
+    "prompt_cache_hit_tokens": 0,
+    "prompt_cache_miss_tokens": 12684
+  },
+  "estimated_cost_usd_excluding_tax": 0.005706,
+  "generated_at_utc": "2026-10-21T14:20:35.914Z",
+  "proposal": {
+    "reason": "Replace non-focusable date div with accessible input, guard empty date selection, preserve date in manageMode, prevent month/year refresh when typing.",
+    "edits": [
+      {
+        "path": "assets/js/pages/booking.js",
+        "old": "onChange: (selectedDates) => {\n                App.Http.Booking.getAvailableHours(moment(selectedDates[0]).format('YYYY-MM-DD'));\n                App.Pages.Booking.updateConfirmFrame();\n            },",
+        "new": "onChange: (selectedDates) => {\n                if (!selectedDates || selectedDates.length === 0) {\n                    return;\n                }\n                App.Http.Booking.getAvailableHours(moment(selectedDates[0]).format('YYYY-MM-DD'));\n                App.Pages.Booking.updateConfirmFrame();\n            },"
+      },
+      {
+        "path": "assets/js/pages/booking.js",
+        "old": "onMonthChange: (selectedDates, dateStr, instance) => {\n                $selectDate.parent().fadeTo(400, 0.3); // Change opacity during loading\n\n                if (monthTimeout) {\n                    clearTimeout(monthTimeout);\n                }\n\n                monthTimeout = setTimeout(() => {\n                    const previousMoment = moment(instance.selectedDates[0]);\n\n                    const displayedMonthMoment = moment(\n                        instance.currentYearElement.value +\n                            '-' +\n                            String(Number(instance.monthsDropdownContainer.value) + 1).padStart(2, '0') +\n                            '-01',\n                    );\n\n                    const monthChangeStep = detectDatepickerMonthChangeStep(previousMoment, displayedMonthMoment);\n\n                    App.Http.Booking.getUnavailableDates(\n                        $selectProvider.val(),\n                        $selectService.val(),\n                        displayedMonthMoment.format('YYYY-MM-DD'),\n                        monthChangeStep,\n                    );\n                }, 500);\n            },",
+        "new": "onMonthChange: (selectedDates, dateStr, instance) => {\n                // Skip refresh when date input is focused (typing)\n                if ($selectDate.is(':focus')) {\n                    return;\n                }\n                $selectDate.parent().fadeTo(400, 0.3); // Change opacity during loading\n\n                if (monthTimeout) {\n                    clearTimeout(monthTimeout);\n                }\n\n                monthTimeout = setTimeout(() => {\n                    const previousMoment = moment(instance.selectedDates[0]);\n\n                    const displayedMonthMoment = moment(\n                        instance.currentYearElement.value +\n                            '-' +\n                            String(Number(instance.monthsDropdownContainer.value) + 1).padStart(2, '0') +\n                            '-01',\n                    );\n\n                    const monthChangeStep = detectDatepickerMonthChangeStep(previousMoment, displayedMonthMoment);\n\n                    App.Http.Booking.getUnavailableDates(\n                        $selectProvider.val(),\n                        $selectService.val(),\n                        displayedMonthMoment.format('YYYY-MM-DD'),\n                        monthChangeStep,\n                    );\n                }, 500);\n            },"
+      },
+      {
+        "path": "assets/js/pages/booking.js",
+        "old": "onYearChange: (selectedDates, dateStr, instance) => {\n                setTimeout(() => {\n                    const previousMoment = moment(instance.selectedDates[0]);\n\n                    const displayedMonthMoment = moment(\n                        instance.currentYearElement.value +\n                            '-' +\n                            String(Number(instance.monthsDropdownContainer.value) + 1).padStart(2, '0') +\n                            '-01',\n                    );\n\n                    const monthChangeStep = detectDatepickerMonthChangeStep(previousMoment, displayedMonthMoment);\n\n                    App.Http.Booking.getUnavailableDates(\n                        $selectProvider.val(),\n                        $selectService.val(),\n                        displayedMonthMoment.format('YYYY-MM-DD'),\n                        monthChangeStep,\n                    );\n                }, 500);\n            },",
+        "new": "onYearChange: (selectedDates, dateStr, instance) => {\n                // Skip refresh when date input is focused (typing)\n                if ($selectDate.is(':focus')) {\n                    return;\n                }\n                setTimeout(() => {\n                    const previousMoment = moment(instance.selectedDates[0]);\n\n                    const displayedMonthMoment = moment(\n                        instance.currentYearElement.value +\n                            '-' +\n                            String(Number(instance.monthsDropdownContainer.value) + 1).padStart(2, '0') +\n                            '-01',\n                    );\n\n                    const monthChangeStep = detectDatepickerMonthChangeStep(previousMoment, displayedMonthMoment);\n\n                    App.Http.Booking.getUnavailableDates(\n                        $selectProvider.val(),\n                        $selectService.val(),\n                        displayedMonthMoment.format('YYYY-MM-DD'),\n                        monthChangeStep,\n                    );\n                }, 500);\n            },"
+      },
+      {
+        "path": "assets/js/pages/booking.js",
+        "old": "    App.Utils.UI.setDateTimePickerValue($selectDate, todayMoment.toDate());",
+        "new": "    if (!manageMode) {\n        App.Utils.UI.setDateTimePickerValue($selectDate, todayMoment.toDate());\n    }"
+      },
+      {
+        "path": "application/views/components/booking_time_step.php",
+        "old": "<div id=\"select-date\" class=\"mx-auto my-4\"></div>",
+        "new": "<input type=\"date\" id=\"select-date\" class=\"form-control mx-auto my-4\" aria-label=\"<?= lang('appointment_date') ?>\">"
+      }
+    ]
+  },
+  "proposal_sha256": "8e7b485a36a94e2ac5ea3d6e7f43d5a8c180748e233349494d8515e5f563aca5",
+  "source_sha256": "398c85542878892ac7e555de74559964759e385bf8d0c181515d9126f13bef5c",
+  "recording": "records/featured-run.json",
+  "evaluation_index": 4,
+  "selection": "A passing demonstration example. Prefer a month guard before the opacity change. All five evaluation outcomes remain in the report."
+}

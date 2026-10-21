@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "frozen_code_commit": "2c29cda5e0f943692607cb15b7e2fd4d51b2c8bc",
+  "file": "lib/fixture.cjs",
+  "before_digest": "2359025504482e14987daf0cc54fed67fd69bc1e45600ca398c6465fb6ca863b",
+  "after_digest": "72831e3944ab4bca85f7daf6a9c6c9d4db5ca35d3b2849aeada9b6b29c68035f",
+  "reason": "The independent Linux runner retained host ownership on mode-0600 payload files. The existing CHOWN capability is used to make the trusted import worker their owner before copying them.",
+  "only_change": {
+    "old": "cp -a /opt/original/. /vol/source/;",
+    "new": "chown -R 0:0 /payload; cp -a /opt/original/. /vol/source/;"
+  },
+  "semantic_model_edits_changed": false,
+  "outcome_acceptance_logic_changed": false,
+  "additional_model_requests": 0,
+  "independent_replay_status": "verified",
+  "independent_replay_url": "https://github.com/SultanAlfaifi/accessfinish/actions/runs/39623819548",
+  "independent_replay_result": {
+    "recorded_proposals": 5,
+    "expected_outcomes_matched": 5,
+    "verified_repairs": 2,
+    "original_source_control_blocked": true,
+    "new_model_requests": 0
+  }
+}

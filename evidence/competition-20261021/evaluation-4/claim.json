@@ -1,0 +1,14 @@
+{
+  "phase": "evaluation",
+  "index": 4,
+  "at_utc": "2026-10-21T14:20:05.538Z",
+  "state": "verified",
+  "context_sha256": "398c85542878892ac7e555de74559964759e385bf8d0c181515d9126f13bef5c",
+  "proposal_id": "proposal-17ff480855101560ac8107f5bd428377",
+  "proposal_sha256": "8e7b485a36a94e2ac5ea3d6e7f43d5a8c180748e233349494d8515e5f563aca5",
+  "attempt_id": "7e1ab2fb-66bc-42dd-9418-58d7cdf98a84",
+  "estimated_cost_usd_excluding_tax": 0.005706,
+  "run_id": "run-049e3e26b5b6444794d6a04b04f089b3",
+  "booking_verified": true,
+  "error": null
+}

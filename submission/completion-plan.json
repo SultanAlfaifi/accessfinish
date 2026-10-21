@@ -1,0 +1,92 @@
+{
+  "as_of": "2026-10-21",
+  "language": "English",
+  "official_overview": "https://nebiusglobalaihackathon.devpost.com/",
+  "official_rules": "https://nebiusglobalaihackathon.devpost.com/rules",
+  "internal_submission_target_riyadh": "2026-10-28T20:00:00+03:00",
+  "official_deadline_riyadh": "2026-10-30T20:00:00+03:00",
+  "winning_is_not_guaranteed": true,
+  "criteria": [
+    {
+      "name": "Technological Implementation",
+      "proof": "Nemotron on Token Factory; exact approval binding; isolated build and native task; independent DB and fresh reopen; all five frozen outcomes retained",
+      "remaining": "Package the verified source build and preserve the public release receipt"
+    },
+    {
+      "name": "Design",
+      "proof": "English three-stage flow; recorded execution labelled explicitly; proposal changes clear prior results; browser-only review form",
+      "remaining": "Two independent browser-only sessions and fixes for observed blockers; internal desktop and effective 390 by 844 checks passed"
+    },
+    {
+      "name": "Potential Impact",
+      "proof": "Specific developer and accessibility-QA audience; original booking blockage and preserved expected business outcome",
+      "remaining": "Collect two real browser-only usefulness/comprehension observations; report sample size and limits without inventing time saved or adoption"
+    },
+    {
+      "name": "Quality of the Idea",
+      "proof": "Outcome acceptance follows the task into storage and a fresh session; a plausible patch and keyboard success can still fail regression checks",
+      "remaining": "Show one failure and one verified result clearly in the final demo and description"
+    }
+  ],
+  "ordered_gates": [
+    {
+      "id": 1,
+      "work": "Technical core and frozen measurements",
+      "state": "complete",
+      "acceptance": "14 unit checks; frozen procedure and artifact hashes; 2 of 5 full passes with all failures; original-source negative control; zero unknown model usage"
+    },
+    {
+      "id": 2,
+      "work": "Independent automated clean setup",
+      "state": "complete",
+      "acceptance": "Fresh public checkout builds and executes the recorded model proposal plus negative control; immutable CI run URL and sanitized artifacts retained",
+      "evidence": "https://github.com/SultanAlfaifi/accessfinish/actions/runs/39623819548"
+    },
+    {
+      "id": 3,
+      "work": "Review-build publication",
+      "state": "review_build_ready_awaits_final_publication_approval",
+      "acceptance": "Prepared review assets deployed at the exact public URL and checked anonymously on desktop/mobile"
+    },
+    {
+      "id": 4,
+      "work": "Two independent browser-only developer reviews",
+      "state": "form_and_protocol_prepared",
+      "acceptance": "Two actual independent participants; bound run IDs; uncoached comprehension answers, blockers, assistance and usefulness; no installation/execution claim"
+    },
+    {
+      "id": 5,
+      "work": "Final English demo and test build",
+      "state": "140_second_video_technical_and_sampled_frame_checks_passed_test_build_packaging_in_progress",
+      "acceptance": "120-150 second captioned working walkthrough; actual measured evidence and limits; metadata/full decode/visual checks; clean archive opens and passes required checks"
+    },
+    {
+      "id": 6,
+      "work": "Public judging assets",
+      "state": "pending_final_review",
+      "acceptance": "Reviewed repository/release and test build; public YouTube video under three minutes; exact links anonymously verified"
+    },
+    {
+      "id": 7,
+      "work": "Devpost submission",
+      "state": "not_submitted",
+      "acceptance": "Entrant reviews eligibility, ownership, team/city and declarations; final submission approval; submitted status and receipt or project URL verified"
+    },
+    {
+      "id": 8,
+      "work": "Judging availability",
+      "state": "pending_submission",
+      "acceptance": "Keep repository, review, test build and public video accessible through the previously confirmed judging period; no automatic unrequested monitoring"
+    }
+  ],
+  "actual_tester_results": [],
+  "public_youtube_url": null,
+  "devpost_receipt": null,
+  "budget": {
+    "additional_ceiling_usd": 5,
+    "approved_requests": 8,
+    "requests_consumed": 8,
+    "estimated_model_cost_usd_excluding_tax": 0.0394581,
+    "automatic_retries": 0
+  }
+}

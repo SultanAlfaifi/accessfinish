@@ -1,0 +1,14 @@
+{
+  "phase": "evaluation",
+  "index": 5,
+  "at_utc": "2026-10-21T14:25:31.389Z",
+  "state": "failed",
+  "context_sha256": "398c85542878892ac7e555de74559964759e385bf8d0c181515d9126f13bef5c",
+  "proposal_id": "proposal-1ac82f6da898691ad47462da2bc4842b",
+  "proposal_sha256": "3b34fef79cf14f390fb54a8899ee6b94ecde973fdc0095f9315b51ef5f04fb49",
+  "attempt_id": "2773ed65-3a06-4bb8-9410-22b356666f0f",
+  "estimated_cost_usd_excluding_tax": 0.006534,
+  "run_id": "run-e2e193fc5be33d091e67488afa72e34b",
+  "booking_verified": false,
+  "error": "Docker operation failed: lib/index.js:11110:23)\n    at Parser.parseMaybeUnaryOrPrivate (/trusted/node_modules/@babel/parser/lib/index.js:10963:61)\n    at Parser.parseExprOps (/trusted/node_modules/@babel/parser/lib/index.js:10968:23)\n    at Parser.parseMaybeConditional (/trusted/node_modules/@babel/parser/lib/index.js:10945:23)\n    at Parser.parseMaybeAssign (/trusted/node_modules/@babel/parser/lib/index.js:10895:21)\n    at Parser.parseExpressionBase (/trusted/node_modules/@babel/parser/lib/index.js:10848:23)\n    at /trusted/node_modules/@babel/parser/lib/index.js:10844:39\n    at Parser.allowInAnd (/trusted/node_modules/@babel/parser/lib/index.js:12495:16)\n    at Parser.parseExpression (/trusted/node_modules/@babel/parser/lib/index.js:10844:17)\n    at Parser.parseStatementContent (/trusted/node_modules/@babel/parser/lib/index.js:12971:23)\n    at Parser.parseStatementLike (/trusted/node_modules/@babel/parser/lib/index.js:12843:17)\n    at Parser.parseStatementListItem (/trusted/node_modu"
+}

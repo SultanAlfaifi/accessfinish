@@ -1,0 +1,1971 @@
+{
+  "claim": {
+    "phase": "evaluation",
+    "index": 1,
+    "at_utc": "2026-10-21T14:08:13.597Z",
+    "state": "failed",
+    "context_sha256": "398c85542878892ac7e555de74559964759e385bf8d0c181515d9126f13bef5c",
+    "proposal_id": "proposal-c05f527c8e204a64b6707585fe562bfd",
+    "proposal_sha256": "16ea9a86027099fa595177b59fc3d934c7a5e96aefeb50ef74136ab4049a21a9",
+    "attempt_id": "3235abb6-a8e0-4867-9986-7bf2a9090a3c",
+    "estimated_cost_usd_excluding_tax": 0.0067293,
+    "run_id": "run-e05950dc3c144269ebb6660a8de12f38",
+    "booking_verified": false,
+    "error": "Docker operation failed: {\"error\":\"Calendar navigation exceeded its bounded month budget.\",\"stage\":null}\n"
+  },
+  "run": {
+    "schema_version": 1,
+    "id": "run-e05950dc3c144269ebb6660a8de12f38",
+    "proposal_id": "proposal-c05f527c8e204a64b6707585fe562bfd",
+    "proposal_sha256": "16ea9a86027099fa595177b59fc3d934c7a5e96aefeb50ef74136ab4049a21a9",
+    "source_sha256": "398c85542878892ac7e555de74559964759e385bf8d0c181515d9126f13bef5c",
+    "proposal_origin": "nebius",
+    "approval": {
+      "reviewed": true,
+      "proposal_sha256": "16ea9a86027099fa595177b59fc3d934c7a5e96aefeb50ef74136ab4049a21a9",
+      "at_utc": "2026-10-21T14:10:54.570Z"
+    },
+    "state": "failed",
+    "booking_verified": false,
+    "started_at_utc": "2026-10-21T14:10:54.571Z",
+    "stages": [
+      {
+        "state": "preparing",
+        "at_utc": "2026-10-21T14:10:55.034Z"
+      },
+      {
+        "state": "building",
+        "at_utc": "2026-10-21T14:11:00.715Z"
+      },
+      {
+        "state": "booking",
+        "at_utc": "2026-10-21T14:11:13.274Z"
+      },
+      {
+        "state": "verifying",
+        "at_utc": "2026-10-21T14:11:25.542Z"
+      }
+    ],
+    "error": "Docker operation failed: {\"error\":\"Calendar navigation exceeded its bounded month budget.\",\"stage\":null}\n",
+    "finished_at_utc": "2026-10-21T14:11:56.124Z",
+    "duration_ms": 61553
+  },
+  "execution": {
+    "run_id": "run-e05950dc3c144269ebb6660a8de12f38",
+    "proposal_sha256": "16ea9a86027099fa595177b59fc3d934c7a5e96aefeb50ef74136ab4049a21a9",
+    "source_sha256": "398c85542878892ac7e555de74559964759e385bf8d0c181515d9126f13bef5c",
+    "fixture_fingerprint": "b51cb712f12f2c9601b96b7bcbb11d2ba644cd59a86ea395bf7e8185f7127c24",
+    "source_commit": "4bc7ecd51f3dade8e041558f2c23dda65bd6c43e",
+    "scenario": {
+      "date": "2026-11-02",
+      "start": "09:00",
+      "end": "09:30",
+      "timezone": "Asia/Riyadh",
+      "service_id": 1,
+      "provider_id": 2,
+      "customer": {
+        "first_name": "Synthetic",
+        "last_name": "ExploratoryBooking",
+        "email": "exploratory-booking@example.invalid",
+        "phone_number": "0000000000"
+      }
+    },
+    "booking_verified": false,
+    "proposal_origin": "nebius",
+    "native_keyboard_only": true,
+    "model_calls_during_execution": 0,
+    "execution_started_at_utc": "2026-10-21T14:10:55.034Z",
+    "applied_source": {
+      "state": "source_applied",
+      "files": [
+        {
+          "path": "assets/js/pages/booking.js",
+          "sha256": "a209d38aad2ccedb32ac045fde6f3ddc415d11005c79d6e6c6a3198c40983d0a"
+        },
+        {
+          "path": "application/views/components/booking_time_step.php",
+          "sha256": "aab1daf1529e14c9686b696da3b8546a2e6edf93588c49205ad23f608a3f3cd6"
+        }
+      ],
+      "changes": [
+        {
+          "path": "application/views/components/booking_time_step.php",
+          "old": "<div id=\"select-date\" class=\"mx-auto my-4\"></div>",
+          "new": "<label for=\"select-date\" class=\"visually-hidden\">Select date</label><input type=\"text\" id=\"select-date\" class=\"mx-auto my-4\">",
+          "before_sha256": "7d4371fd301a8a187ca8f5c88f86f09cfaf96872b7647a761338d34c7e6974ef",
+          "after_sha256": "aab1daf1529e14c9686b696da3b8546a2e6edf93588c49205ad23f608a3f3cd6"
+        },
+        {
+          "path": "assets/js/pages/booking.js",
+          "old": "onChange: (selectedDates) => {\r\n                App.Http.Booking.getAvailableHours(moment(selectedDates[0]).format('YYYY-MM-DD'));\r\n                App.Pages.Booking.updateConfirmFrame();\r\n            },",
+          "new": "onChange: (selectedDates) => {\r\n                if (!selectedDates || !selectedDates.length) {\r\n                    return;\r\n                }\r\n                App.Http.Booking.getAvailableHours(moment(selectedDates[0]).format('YYYY-MM-DD'));\r\n                App.Pages.Booking.updateConfirmFrame();\r\n            },",
+          "before_sha256": "61569c5b53c2b1f56cf3bd7426dc98fd453f4c14390168920fa15dd6875ac1f5",
+          "after_sha256": "6b496767d867cf39dabc7a7f69e8765a64acff15de8e96b6adb3d66df6d09aed"
+        },
+        {
+          "path": "assets/js/pages/booking.js",
+          "old": "if ($target.attr('data-step_index') === '1') {\r\n                const todayMoment = moment();\r\n\r\n                App.Utils.UI.setDateTimePickerValue($selectDate, todayMoment.toDate());\r\n\r\n                App.Http.Booking.getUnavailableDates(\r\n                    $selectProvider.val(),\r\n                    $selectService.val(),\r\n                    todayMoment.format('YYYY-MM-DD'),\r\n                );\r\n            }",
+          "new": "if ($target.attr('data-step_index') === '1') {\r\n                const todayMoment = moment();\r\n\r\n                if (!manageMode) {\r\n                    App.Utils.UI.setDateTimePickerValue($selectDate, todayMoment.toDate());\r\n                }\r\n\r\n                App.Http.Booking.getUnavailableDates(\r\n                    $selectProvider.val(),\r\n                    $selectService.val(),\r\n                    todayMoment.format('YYYY-MM-DD'),\r\n                );\r\n            }",
+          "before_sha256": "6b496767d867cf39dabc7a7f69e8765a64acff15de8e96b6adb3d66df6d09aed",
+          "after_sha256": "6c9d82877c6f4a4c44ecf140086b9f31f718bf4bf34d9ae1ffb9e23eed9a519f"
+        },
+        {
+          "path": "assets/js/pages/booking.js",
+          "old": "App.Utils.UI.setDateTimePickerValue($selectDate, new Date());\r\n\r\n        const browserTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;\r\n        const isTimezoneSupported = $selectTimezone.find(`option[value=\"${browserTimezone}\"]`).length > 0;\r\n        $selectTimezone.val(isTimezoneSupported ? browserTimezone : 'UTC');",
+          "new": "App.Utils.UI.setDateTimePickerValue($selectDate, new Date());\r\n\r\n        // Prevent month/year refresh when user is typing date\r\n        let userTypingTimeout;\r\n        $selectDate.on('input', () => {\r\n            clearTimeout(userTypingTimeout);\r\n            userTypingTimeout = setTimeout(() => {\r\n                userTyping = false;\r\n            }, 500);\r\n            userTyping = true;\r\n        });\r\n\r\n        const browserTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;\r\n        const isTimezoneSupported = $selectTimezone.find(`option[value=\"${browserTimezone}\"]`).length > 0;\r\n        $selectTimezone.val(isTimezoneSupported ? browserTimezone : 'UTC');",
+          "before_sha256": "6c9d82877c6f4a4c44ecf140086b9f31f718bf4bf34d9ae1ffb9e23eed9a519f",
+          "after_sha256": "e1a3e006af4b589f01f4bcf240fc975de8df4f5575863b24ff4ccadfc3fc4395"
+        },
+        {
+          "path": "assets/js/pages/booking.js",
+          "old": "onMonthChange: (selectedDates, dateStr, instance) => {\r\n                $selectDate.parent().fadeTo(400, 0.3); // Change opacity during loading\r\n\r\n                if (monthTimeout) {\r\n                    clearTimeout(monthTimeout);\r\n                }\r\n\r\n                monthTimeout = setTimeout(() => {\r\n                    const previousMoment = moment(instance.selectedDates[0]);\r\n\r\n                    const displayedMonthMoment = moment(\r\n                        instance.currentYearElement.value +\r\n                            '-' +\r\n                            String(Number(instance.monthsDropdownContainer.value) + 1).padStart(2, '0') +\r\n                            '-01',\r\n                    );\r\n\r\n                    const monthChangeStep = detectDatepickerMonthChangeStep(previousMoment, displayedMonthMoment);\r\n\r\n                    App.Http.Booking.getUnavailableDates(\r\n                        $selectProvider.val(),\r\n                        $selectService.val(),\r\n                        displayedMonthMoment.format('YYYY-MM-DD'),\r\n                        monthChangeStep,\r\n                    );\r\n                }, 500);\r\n            },",
+          "new": "onMonthChange: (selectedDates, dateStr, instance) => {\r\n                if (userTyping) {\r\n                    return;\r\n                }\r\n                $selectDate.parent().fadeTo(400, 0.3); // Change opacity during loading\r\n\r\n                if (monthTimeout) {\r\n                    clearTimeout(monthTimeout);\r\n                }\r\n\r\n                monthTimeout = setTimeout(() => {\r\n                    const previousMoment = moment(instance.selectedDates[0]);\r\n\r\n                    const displayedMonthMoment = moment(\r\n                        instance.currentYearElement.value +\r\n                            '-' +\r\n                            String(Number(instance.monthsDropdownContainer.value) + 1).padStart(2, '0') +\r\n                            '-01',\r\n                    );\r\n\r\n                    const monthChangeStep = detectDatepickerMonthChangeStep(previousMoment, displayedMonthMoment);\r\n\r\n                    App.Http.Booking.getUnavailableDates(\r\n                        $selectProvider.val(),\r\n                        $selectService.val(),\r\n                        displayedMonthMoment.format('YYYY-MM-DD'),\r\n                        monthChangeStep,\r\n                    );\r\n                }, 500);\r\n            },",
+          "before_sha256": "e1a3e006af4b589f01f4bcf240fc975de8df4f5575863b24ff4ccadfc3fc4395",
+          "after_sha256": "f6f34dc74c6e4e0e02b9b89f70be3779e6cd4af76f7741f7827f6ce8fb5c4cb1"
+        },
+        {
+          "path": "assets/js/pages/booking.js",
+          "old": "onYearChange: (selectedDates, dateStr, instance) => {\r\n                setTimeout(() => {\r\n                    const previousMoment = moment(instance.selectedDates[0]);\r\n\r\n                    const displayedMonthMoment = moment(\r\n                        instance.currentYearElement.value +\r\n                            '-' +\r\n                            String(Number(instance.monthsDropdownContainer.value) + 1).padStart(2, '0') +\r\n                            '-01',\r\n                    );\r\n\r\n                    const monthChangeStep = detectDatepickerMonthChangeStep(previousMoment, displayedMonthMoment);\r\n\r\n                    App.Http.Booking.getUnavailableDates(\r\n                        $selectProvider.val(),\r\n                        $selectService.val(),\r\n                        displayedMonthMoment.format('YYYY-MM-DD'),\r\n                        monthChangeStep,\r\n                    );\r\n                }, 500);\r\n            },",
+          "new": "onYearChange: (selectedDates, dateStr, instance) => {\r\n                if (userTyping) {\r\n                    return;\r\n                }\r\n                setTimeout(() => {\r\n                    const previousMoment = moment(instance.selectedDates[0]);\r\n\r\n                    const displayedMonthMoment = moment(\r\n                        instance.currentYearElement.value +\r\n                            '-' +\r\n                            String(Number(instance.monthsDropdownContainer.value) + 1).padStart(2, '0') +\r\n                            '-01',\r\n                    );\r\n\r\n                    const monthChangeStep = detectDatepickerMonthChangeStep(previousMoment, displayedMonthMoment);\r\n\r\n                    App.Http.Booking.getUnavailableDates(\r\n                        $selectProvider.val(),\r\n                        $selectService.val(),\r\n                        displayedMonthMoment.format('YYYY-MM-DD'),\r\n                        monthChangeStep,\r\n                    );\r\n                }, 500);\r\n            }",
+          "before_sha256": "f6f34dc74c6e4e0e02b9b89f70be3779e6cd4af76f7741f7827f6ce8fb5c4cb1",
+          "after_sha256": "a209d38aad2ccedb32ac045fde6f3ddc415d11005c79d6e6c6a3198c40983d0a"
+        }
+      ]
+    },
+    "build": {
+      "status": "TRUSTED_BUILD_PASS",
+      "candidate_configuration_executed": false,
+      "rows": [
+        {
+          "path": "assets/js/app.js",
+          "input_sha256": "f33d04b2f446cf82ee7d096e4c5650cfe3f12b5088bf581dfd455526652c4ef2",
+          "output_sha256": "66f09be3dc70ff33153836277a3f7fe5f05718786ba275f4751e720f1661b47f"
+        },
+        {
+          "path": "assets/js/components/appointment_status_options.js",
+          "input_sha256": "393ca09ac8471c29a9cfd7ed1268d8de23087a41c5407b428e9484e5d81b10f2",
+          "output_sha256": "e246591ca22f8a2402a553633cf79a33117cdd806c5ebff5e048d98fb507a0d4"
+        },
+        {
+          "path": "assets/js/components/appointments_modal.js",
+          "input_sha256": "86765476c43414c26a1f974454c26152f0dbe3e0223f0c59325377d1e7ad1e5a",
+          "output_sha256": "a6e002e16ff9e6270100821c825125473fd293c09ba1bd998d925d72bf02f1c5"
+        },
+        {
+          "path": "assets/js/components/color_selection.js",
+          "input_sha256": "dd1a4135652210abe4d6112465021c41c6f826914f47c6b8e911f80924104da5",
+          "output_sha256": "2bc1fa72bcaa77d561b4dfe8def01f2f664f39e25b8e6c0de8ab3d8d7f4f105a"
+        },
+        {
+          "path": "assets/js/components/ldap_import_modal.js",
+          "input_sha256": "5ae682ddab3c06fed5c4d31894c06e5d0acfb711f680a488d5f82a4850c41e6d",
+          "output_sha256": "8a7a14f95dc39171f292dadc73d9eb43de8c88a7a30a378ccbb85db5242b6309"
+        },
+        {
+          "path": "assets/js/components/unavailabilities_modal.js",
+          "input_sha256": "23d86ce95905598099fb9725ca02e69c15370d334e4f9496763cf441e228acf8",
+          "output_sha256": "b8207011f22dfba05b6696e165d5060791f7a644734957b3bd276ab87f6a8369"
+        },
+        {
+          "path": "assets/js/components/working_plan_exceptions_modal.js",
+          "input_sha256": "a547e6220a55137ce3ba8d4830ef5112be11e89dad48a3eab918e9f84512c790",
+          "output_sha256": "857d3fd31d9d8a4dfe87d298192141dcb34b7fd8ad955152674c1387552a2f14"
+        },
+        {
+          "path": "assets/js/http/account_http_client.js",
+          "input_sha256": "ce81e2f98d2b6b7b5faa2efccfa236972a8a047a10bb452db7d890837703c4b3",
+          "output_sha256": "883774e4e810a76f09e1e6b61b22b90d3badb834342488a6afbcefef05ac0320"
+        },
+        {
+          "path": "assets/js/http/admins_http_client.js",
+          "input_sha256": "518cae7a087c9dadab8c05dd2bdf95e2eb41237f2cb5c6e653ce931e96b019bc",
+          "output_sha256": "20b20a969d2c56544e0c9b4e3281ce4bd151a4fb9c85a755f5c726ba4ca47c7a"
+        },
+        {
+          "path": "assets/js/http/altcha_settings_http_client.js",
+          "input_sha256": "561e9075734f3ee2227732d6db5a20ab44b70ada602185afa6cb20a2d63de78d",
+          "output_sha256": "85eed43e41ef15778b11a7eb6cd6c13bdcd6179d9c3df80a496ce8becfe181e4"
+        },
+        {
+          "path": "assets/js/http/api_settings_http_client.js",
+          "input_sha256": "49c7763959050152b01dc5008687a03ad147ed6e0166cd5ecf0b998c51eabeff",
+          "output_sha256": "d71c6b4d08acd1c1d638c703ebf7f9b44afbaa818323670c3c0fc582c7da7d90"
+        },
+        {
+          "path": "assets/js/http/appointments_http_client.js",
+          "input_sha256": "1447c5a9821b08df7e55b295cf72a3b5b30d6abb6301cb1ac8cb0968470dde98",
+          "output_sha256": "5b2fb49a1132140ecebdeedf0bfced8263dc37b3c847914acf86e45eaa7357f4"
+        },
+        {
+          "path": "assets/js/http/blocked_periods_http_client.js",
+          "input_sha256": "4661fd5a12bd5c82937a29d832c4fd736090164a8b287fcfd72ad793c56287ec",
+          "output_sha256": "d7220e7a1835f6ae12bb292556751508bb075c1609f1b45f752bc52a5608fd70"
+        },
+        {
+          "path": "assets/js/http/booking_http_client.js",
+          "input_sha256": "1914a9a395cc234e279e505d11244694a86feb96ef444dfe0f5c10bf9f23baf9",
+          "output_sha256": "7af990a9b0b08e1e80779c89e1619371506313bf315b4e00630cc52ae940b53e"
+        },
+        {
+          "path": "assets/js/http/booking_settings_http_client.js",
+          "input_sha256": "bd867817bc00546482630cd1510b47f6c79baa0ec1d55347258f3543fce046b7",
+          "output_sha256": "f0193a4a3de514cc696b50f8ba09cc08b66ae81221af62c7f0fcfecebdd18725"
+        },
+        {
+          "path": "assets/js/http/business_settings_http_client.js",
+          "input_sha256": "db4c2e6f74c573bd115c500515fb0f327fb324f63b0aa41b7db697fba6e5eea7",
+          "output_sha256": "4561f66184746a5adc5bb8dc96f2c3f38173623ffcf91f2ea023b24bc3a12c46"
+        },
+        {
+          "path": "assets/js/http/caldav_http_client.js",
+          "input_sha256": "eeb39a01cfb69422ea4c8178843cb95560b8ca197b094543b450a14065560b4b",
+          "output_sha256": "a5bf0e5903c5e7d65c2cd29a072c6392b2a888899ee1f85afed96d28cb5f9b1a"
+        },
+        {
+          "path": "assets/js/http/calendar_http_client.js",
+          "input_sha256": "9a8744f3f17d7e773c993f4b111f300b21614e78ff7dac8beed1ef71c71abde2",
+          "output_sha256": "68c1d5841dc46bc3b191e3ff6f0d2d70042b34eb96a46cec711b1c374ed8da63"
+        },
+        {
+          "path": "assets/js/http/customers_http_client.js",
+          "input_sha256": "1161934edc2f7a0015724121e3b2b8ffc9993c740e53030ba3a0ebab36a20e0d",
+          "output_sha256": "7ba49d0a620a30096fd2dbb2e5da0491656cc483951e2a863d4b2111163ff967"
+        },
+        {
+          "path": "assets/js/http/general_settings_http_client.js",
+          "input_sha256": "19d7b602e2e6506239ee0422b55df308579d156da416d4a5425c46320b029517",
+          "output_sha256": "5f75188bd22a813258eed3f78f5899b343ceceab22ca2e769e31cd1eded1c3aa"
+        },
+        {
+          "path": "assets/js/http/google_analytics_settings_http_client.js",
+          "input_sha256": "6dcae32c57c80980aed5b657ce501417367e74af05231bac346f87d0a6254758",
+          "output_sha256": "95faa502786f9efacb1cf9483aa518881acb5d9157fda0dc1a95cc6412cb33cb"
+        },
+        {
+          "path": "assets/js/http/google_calendar_settings_http_client.js",
+          "input_sha256": "6a9eb62b3ff89532dac2b632211cbcee4887361f34a93f43a3f548736e3a47e4",
+          "output_sha256": "1d85693a74c333d0f8472cd25465d1d5fc3dad08cd6e15591dd7c17220eb8472"
+        },
+        {
+          "path": "assets/js/http/google_http_client.js",
+          "input_sha256": "8283e2482be6d64c0e44fa4cfb84337aa019aff86fda0434472dcce896ba22e6",
+          "output_sha256": "96e43ea864748c12bf33f7506129212ffc170798eeffd0212827e9246796ed1f"
+        },
+        {
+          "path": "assets/js/http/jitsi_settings_http_client.js",
+          "input_sha256": "6d6c8502f48b9e7eb4401c7679d6d4a9c51636c9c0c6f09e311cadf4020ad722",
+          "output_sha256": "bfbdb104129f0714e9a5d56edd769350d724591fe5f75dae0497bd4119fef8fe"
+        },
+        {
+          "path": "assets/js/http/ldap_settings_http_client.js",
+          "input_sha256": "91288b529449cf38e817356a35c0b58a0136fe11e18ad0d5e7e5cd9452fdca78",
+          "output_sha256": "cea8342ddc77a7df8c0f4ad999d59674baaf043470ace65917913183ea1adf66"
+        },
+        {
+          "path": "assets/js/http/legal_settings_http_client.js",
+          "input_sha256": "11feab6105e5a6d92ca1e539c9c33a5ea7d4f298acfbc6b178c91efe9dae610a",
+          "output_sha256": "6041eff1450a78f2ac655a911289452707caf6e3548ba541add4246a9d0ecfc6"
+        },
+        {
+          "path": "assets/js/http/localization_http_client.js",
+          "input_sha256": "4fed0816748544318ae5c956e83cab245259c09cbb2d9872925a0e0a6b91d98b",
+          "output_sha256": "26575205a569ea2c4ac123ad6b977e536bb6eaa2e3e1a9026d02a1ea73a3dbfb"
+        },
+        {
+          "path": "assets/js/http/login_http_client.js",
+          "input_sha256": "af3adb2d5ee78e696a549ae3aa99af59c8d005af6a81a9da0d6ed32e413be320",
+          "output_sha256": "b408962615830c135acf9a799ee64a1435c616b46ae215097a046e29e647e235"
+        },
+        {
+          "path": "assets/js/http/matomo_analytics_settings_http_client.js",
+          "input_sha256": "c7376cac3abd33a0eb41eeb6f8371d9bd5a150cd735b155c0e652d5174f666e2",
+          "output_sha256": "00f3dae27d22ff284e5411c04a294ee17dac1e32c77eab747763349fe7b47293"
+        },
+        {
+          "path": "assets/js/http/password_reset_http_client.js",
+          "input_sha256": "8dfed7113b80e4982b073f7f6aad687e172dfa5228db3ce5e394bfc2dcc3bb79",
+          "output_sha256": "f01ffadd3a005b775408a29b3353a918c9edcd6bc25c969c8e122c4395a14940"
+        },
+        {
+          "path": "assets/js/http/providers_http_client.js",
+          "input_sha256": "d104247f75deb4afa10629f9df036d90435d97d711323dee9332b45fa868d05e",
+          "output_sha256": "957ac2004f217e42e63092be66e6c04771e9033f618bd542274e13695ad17218"
+        },
+        {
+          "path": "assets/js/http/recovery_http_client.js",
+          "input_sha256": "bac282bb412d39a304483bab81f65416708bd0590ae62cdeca12ec82ddf0f94d",
+          "output_sha256": "54b1b3c6bc0f408095e7400624fcd19372c7194801c5ca8bd38e446b7be89469"
+        },
+        {
+          "path": "assets/js/http/secretaries_http_client.js",
+          "input_sha256": "d9c199621e33efb263f8ed93ac3504684c52dd0b345420be21ba7a2c56b022b3",
+          "output_sha256": "71be41097b5439dd3f3788824ff299ddf7654fb5c51078941163947485d391e8"
+        },
+        {
+          "path": "assets/js/http/service_categories_http_client.js",
+          "input_sha256": "bde22e15f14e636792d2d2c3ad417fda68ad1bce550fb9f7b107402da415240b",
+          "output_sha256": "49d45911b8f5acfde626ba3f691baa8d4eeea945bf5c4143eae2df43091026b7"
+        },
+        {
+          "path": "assets/js/http/services_http_client.js",
+          "input_sha256": "70ea26333d18e12046f9fb4ccb0755492db596fd99bb6984ef42ce06def0830b",
+          "output_sha256": "03a498aba28a222d39d4e5688bb0412cd0cc817dde0cc792e1449f2f72f11379"
+        },
+        {
+          "path": "assets/js/http/settings_http_client.js",
+          "input_sha256": "d95e9232cfb68ee5bdc7e926c6d2ac5e39bbb7d4a2499215c8b7a6c0b25d44fa",
+          "output_sha256": "0607022a29c957bb8032dc914edac73db07eb6f4bfd952047353286d3d7a9e1b"
+        },
+        {
+          "path": "assets/js/http/unavailabilities_http_client.js",
+          "input_sha256": "a9ac89a4ef5e35a8a869f287085197e0bbed5211bb5833b1e930a139634289ac",
+          "output_sha256": "ea295939e2af7599f67c14d43716a44eb7f7b00894fe7a81d5b23159861b8d66"
+        },
+        {
+          "path": "assets/js/http/webhooks_http_client.js",
+          "input_sha256": "3ff6c1bc1144567b721564be318a045dc86d3782d3aec6c724958017787ad8c9",
+          "output_sha256": "9ee1308ca91005e883d0d99a57687d9bd6e49017465959f9809a403d2916d318"
+        },
+        {
+          "path": "assets/js/layouts/account_layout.js",
+          "input_sha256": "af3cb2a3d44d052d43739796c4729037648356bb5ec714118d69abf10b82c1d0",
+          "output_sha256": "051a00afc24715369407d8ab39be61c641c5d2107e68e71e5371783447f42568"
+        },
+        {
+          "path": "assets/js/layouts/backend_layout.js",
+          "input_sha256": "2995c9f4d338f7444f0d766e196ece87b9a21be6d52bdc398cbabcd5e49bb434",
+          "output_sha256": "1f9876c95ad217d9535098c266d18971858782b79332ed5c354459fe4be1572e"
+        },
+        {
+          "path": "assets/js/layouts/booking_layout.js",
+          "input_sha256": "040b82f7107259c58090112944401f53773b319cdf9bf24a4ca5eed8ee4d6cba",
+          "output_sha256": "a43c6371bd59c1085123a9e26dc05ddb0ae950f6104fe94772d3b2417a0bdc49"
+        },
+        {
+          "path": "assets/js/layouts/message_layout.js",
+          "input_sha256": "da7d5837a1562eff1985c9c22b616e57b1a1deff1821835a429e0f34236f077d",
+          "output_sha256": "85139dd709bf778f0d597628a27417dee0dfc069a1a9ae0059e253b0531fadce"
+        },
+        {
+          "path": "assets/js/pages/account.js",
+          "input_sha256": "4d75960038f1e9f2677b40b4b4b98b2b6d40b2cc88d8ccb370caef94a7ce9d36",
+          "output_sha256": "f801976695142135cc04e6e58e537b8b43c3e3b890b49b53891f8243219c9662"
+        },
+        {
+          "path": "assets/js/pages/admins.js",
+          "input_sha256": "eef1fa6c1d089dd3f7220ee19bc4f323f84d1ef68231b845393727780482e7f0",
+          "output_sha256": "86e56647e5c58ac7f771c0a033d0b597cfd2fd372452aa72f10abb475dfd2b2f"
+        },
+        {
+          "path": "assets/js/pages/altcha_settings.js",
+          "input_sha256": "35b65230ed1814493e2126e13f0b8f2e28bda275448220231f5fecab7a32560d",
+          "output_sha256": "566a2f591393c37a75958ebb6239594e5ec5490824a1cdf06ed258dc9180b63c"
+        },
+        {
+          "path": "assets/js/pages/api_settings.js",
+          "input_sha256": "dbbdc5c977b0f04cf243ce88c3e047594dbbfe31419af5e90a8af1f3cc3bb54f",
+          "output_sha256": "6f8e877e73b77c1f92c3f1fecf3ebcd4815df2708207b4093f05c2cbc5e6e070"
+        },
+        {
+          "path": "assets/js/pages/blocked_periods.js",
+          "input_sha256": "4fd1ff98b5823ff78f1170aaf2b2ed3ad79d0d7f95ec780849398a78716ee299",
+          "output_sha256": "5e7f1d6c615d7c409adb20895fee4f2f9de7a4e820ca3aa1d030c2ea1b3f4f4c"
+        },
+        {
+          "path": "assets/js/pages/booking.js",
+          "input_sha256": "a209d38aad2ccedb32ac045fde6f3ddc415d11005c79d6e6c6a3198c40983d0a",
+          "output_sha256": "9522adc5e71d9fa42fc74cca6dc9e25afe0c6e0794b7df3b06c21f708ffc32bf"
+        },
+        {
+          "path": "assets/js/pages/booking_settings.js",
+          "input_sha256": "a36d0d9ae199ccacd339f11b5b6c426c972572884103c2c1dece58859e70deac",
+          "output_sha256": "4cf48aece8561bfe7ebc816beab3006c5e7e9dab56032707af9931697541dd93"
+        },
+        {
+          "path": "assets/js/pages/business_settings.js",
+          "input_sha256": "16bc2c5625a7dbfa1995ddd644f273c459cf27f8d1e322185585fb1679dd499f",
+          "output_sha256": "09fa9f23fc37e70c54f214b902d501cd38b59da1b50edfc1705018379063adf8"
+        },
+        {
+          "path": "assets/js/pages/calendar.js",
+          "input_sha256": "eedfd44307ddc56d44b55fff5532c7f18783de82f3e19a00bb38f564caa8e793",
+          "output_sha256": "492ba82f7cdfe151b039a7c984abb46e8a9854d08b4d09b32c78070b12c0d6b8"
+        },
+        {
+          "path": "assets/js/pages/customers.js",
+          "input_sha256": "3d5c8355d5e7c79640eabd3b1804c151f182652cefc07c4990a94a9d3ff9110e",
+          "output_sha256": "967e6d3d9e1ce49fb746f4c829c8af8945d0e8502e9290d6733a60c265a3a5a1"
+        },
+        {
+          "path": "assets/js/pages/general_settings.js",
+          "input_sha256": "d8881e5693b7d2002806d24653257004f18626c9a9d39f87efb3c141d4dca15a",
+          "output_sha256": "8c2f1cbdfef8ca109dce572d260f8d112e8ba17cae4f9dec97c1b7394d1750bb"
+        },
+        {
+          "path": "assets/js/pages/google_analytics_settings.js",
+          "input_sha256": "dfb486bb13e2f04d12aa3fde08e2cfd746b7698a850dae18ccf10fe12058cd26",
+          "output_sha256": "f6748baee2c67c80243f72ac2765a7e4546f6152fa14d05c1a34a8eac3afeddd"
+        },
+        {
+          "path": "assets/js/pages/google_calendar_settings.js",
+          "input_sha256": "c930044fdf7b9a551ee8c298cb7c055d14cf743f3555cc1ed49905c197f66fd4",
+          "output_sha256": "e36885755fabd589ac5e0ac2a538678ab3ef9f97fb815addd0cc1417173049ae"
+        },
+        {
+          "path": "assets/js/pages/installation.js",
+          "input_sha256": "307421cb88f3a75cc41d2d7c238f9ce08419c6d6ca32e942bffe27945e464949",
+          "output_sha256": "aade612a3bead9a78a56d5aefbef41cc733d3e55be26b294fc4536260e5b3392"
+        },
+        {
+          "path": "assets/js/pages/jitsi_settings.js",
+          "input_sha256": "ab86ab230dcca5d07625b0b3a29d4fca968bf697a03f116ed8de01d1b03fb0e1",
+          "output_sha256": "99dade76b0cca52ecc8fe89b882717989d96e10f999991e0f0e8e15cf1e29f14"
+        },
+        {
+          "path": "assets/js/pages/ldap_settings.js",
+          "input_sha256": "5a2e51362457506c27f69df1a5085297d45dee211a4aedb6ccc5105c344715b4",
+          "output_sha256": "547849d4ebaa5f80752ce885ff030c0fd8738c40d50c63c7751226d3f1c58762"
+        },
+        {
+          "path": "assets/js/pages/legal_settings.js",
+          "input_sha256": "d692be68838b99c30063a11a32dceb1a8cb767583cdf259a54279303c6c4ae3d",
+          "output_sha256": "5511c2148a96925be8b811e310439597b9047129b1c7df9d3b02dddcb91398be"
+        },
+        {
+          "path": "assets/js/pages/login.js",
+          "input_sha256": "33cc6fc549b430ea46f6d152c96dca059c2a2c88f72a51e30d8784d35c5c0f28",
+          "output_sha256": "30e44369d963119b9087bb9dcd13f28469471c445aeb1bf048b45c916b663ef3"
+        },
+        {
+          "path": "assets/js/pages/matomo_analytics_settings.js",
+          "input_sha256": "1803ddcd99d7e91ec3e20a30523fb113ee7224fa0bbaf1822102cf7544f93d11",
+          "output_sha256": "6740113cbb769a60e0b248a926659c314620a99e42d4dbe2d08be86ac2667552"
+        },
+        {
+          "path": "assets/js/pages/password_reset.js",
+          "input_sha256": "7b9d720d0e6c31699a35963d54d51356c203d5447b7adb8c6212dcce3404b67b",
+          "output_sha256": "d5eaecef9840a5c8b2533d55958e6f02760906c1295f59c2bcc4ad4c6fbe6706"
+        },
+        {
+          "path": "assets/js/pages/providers.js",
+          "input_sha256": "480d95116cea981f1ad206709d24f50cda1355b92d371f9ce6277af18bb3f813",
+          "output_sha256": "f5cc02558df85580e50b2de69ffeebd5a9d45296a90609a0b4e1acea6a5590bd"
+        },
+        {
+          "path": "assets/js/pages/recovery.js",
+          "input_sha256": "239c9c28c8d3e9b6d8e80097cb3435e12e765d49155ba819fe7accba4181b7d9",
+          "output_sha256": "91262a04185a192583b10c5096088822461ebf5f2c7c57b011390790c50d81c0"
+        },
+        {
+          "path": "assets/js/pages/secretaries.js",
+          "input_sha256": "8beebdffb886126bb263c62ea0db8a92357e50b3588a044f3098fd72833f6f62",
+          "output_sha256": "d3b801fa24cab501fac2a2ee12c502544bae2c6f6173b4e1d12fa9688d8e7069"
+        },
+        {
+          "path": "assets/js/pages/service_categories.js",
+          "input_sha256": "c5b837b55949adbf7576905de9cdfbabe5b9f05ff98ec2fb08c98d3e41bb2138",
+          "output_sha256": "81f57f4bf4002d043f6500eda30aa7f719db299a3d40a6471b167b5fae7fa123"
+        },
+        {
+          "path": "assets/js/pages/services.js",
+          "input_sha256": "07183bbc6f9a2b67ca0d8917ff0eba7baa2549e37296d5513864305f56eb80e7",
+          "output_sha256": "9330c0446baa418e48a84b99cafaf2153f6dedcbdcbace53b1c8ec479b9e4df3"
+        },
+        {
+          "path": "assets/js/pages/webhooks.js",
+          "input_sha256": "fc4bce67f97117f92e41c1cefcb6e7c190f1aadf2ae39a7293cd3423e02d90e4",
+          "output_sha256": "6a21c7022e36636b7dd8b831759a306e05000f56dae50c165e6cd34e2de893a7"
+        },
+        {
+          "path": "assets/js/utils/altcha.js",
+          "input_sha256": "809e5d881ce8cd63dcf2dd37de3b13ab25ddfc534d7ec05150e5138a2572dcb4",
+          "output_sha256": "2277ba25b96b4e168538944b447a7f0c59da5adbe699fd9e58527bbc8789e84e"
+        },
+        {
+          "path": "assets/js/utils/calendar_default_view.js",
+          "input_sha256": "7491a543582a13840b1c83154a115eef2cd1944e98493ec691d9a1ca5aeb6b77",
+          "output_sha256": "8c2f355376744e346f3e919a786df0131d23c0005cc291dad272b2af9fa3f9b4"
+        },
+        {
+          "path": "assets/js/utils/calendar_event_popover.js",
+          "input_sha256": "f173de5c55736b3ed3cc82e1140e1f519edcdedc95b38cbefec7e02e0b3e780c",
+          "output_sha256": "1548ff20ade47bd7712c2aa0878fab29ac850434153be521d3cad6258d20a5a6"
+        },
+        {
+          "path": "assets/js/utils/calendar_sync.js",
+          "input_sha256": "4fb0a60bd475423dc360d4b6de5847353ba0783d0d506fb0d58398052019119a",
+          "output_sha256": "157c2477ae56e462d31394440c70a9ed62422b574af82e9cdbe8faa2a5644125"
+        },
+        {
+          "path": "assets/js/utils/calendar_table_view.js",
+          "input_sha256": "0fdc7a0b6e80f7568adf0967b4c82de27b757149b9d6d55b4271decb29e54fc5",
+          "output_sha256": "8280ccfea094c7392b530c50b23abb8f4a9414f9ecd0b48feb3c6df0bab65060"
+        },
+        {
+          "path": "assets/js/utils/date.js",
+          "input_sha256": "a1cf8cdf7cbbb3979e5908e04ea2b126f871f7168f9b6d3791b719d864a5f2be",
+          "output_sha256": "736efa362917f6283dd0a3fb27f82f16b847cdc9b8f0ec48d7e19976ed8aba2e"
+        },
+        {
+          "path": "assets/js/utils/file.js",
+          "input_sha256": "6b05334d00390a0128508ff6977b96238cedf4dc469e38e2c1a0483dedf4d362",
+          "output_sha256": "e3aecba02bcc17987f8a66201ed5a59c2240bd64f1a84f4705a98dccbebb6aa4"
+        },
+        {
+          "path": "assets/js/utils/http.js",
+          "input_sha256": "4a43ead76d2fb71e8845343cefb9e8cb88edee0f4de823a48843eae252cc1071",
+          "output_sha256": "b73b78a713753fb1b767dd403e85d243586585c426dba7e46b982e21cff47b80"
+        },
+        {
+          "path": "assets/js/utils/lang.js",
+          "input_sha256": "c4f43a16382bfda50a23caf32af3fb08df11082cba580781db86585c35d6d6eb",
+          "output_sha256": "b1551801e4e86c1570977ec76056a5de534127eea513b9f05e1e91aaddc23a69"
+        },
+        {
+          "path": "assets/js/utils/message.js",
+          "input_sha256": "6af58badc3ab207507580888b2adfd122bc10d086b6576ffeacbc278fee2ec9e",
+          "output_sha256": "7999a7704008a39a1ab6cff06d86c1434ea71ab649ccf7836b7d1328b818ce3e"
+        },
+        {
+          "path": "assets/js/utils/string.js",
+          "input_sha256": "78c1d20e8e8c29b429caa94f691c5c594dcc2cd2096f2c11f8380729ed5c0214",
+          "output_sha256": "318419a88c028fdd1d10e55ac6d67f1d6090dbff45b7d0d2146decb6e52533cf"
+        },
+        {
+          "path": "assets/js/utils/ui.js",
+          "input_sha256": "56b824b878a2178b2d53b08de57fc39f426649b25c0c7c7c5747ca7406e076d3",
+          "output_sha256": "a473c33bea37fcb41a3a68afe6ae5836c352e3c8b6b48a00bbd278fa2f134a6c"
+        },
+        {
+          "path": "assets/js/utils/url.js",
+          "input_sha256": "2c457a2f1880a846d37744b3b34c111bbc26e89038f2fef23ebacd37b30b74e7",
+          "output_sha256": "200c11ae9ddd655718e28c1eab81e11bfcd6dfb594b3e7fcb3a3d25206ea1b9e"
+        },
+        {
+          "path": "assets/js/utils/validation.js",
+          "input_sha256": "7992829bf48731ddf0712b8f5330cbc45695e1f3c5dd6cddaaaa7ffcd59a2ae0",
+          "output_sha256": "8f12a3859e666bfa6b2a3cddd6e222f72b22424ad9858c5dc29c922fdc7d0ff4"
+        },
+        {
+          "path": "assets/js/utils/working_plan.js",
+          "input_sha256": "bd22cfaf71ce8dfb3d73432f7075a286fe30151df5c613dc1a2e7cad9ea60707",
+          "output_sha256": "094fdff457583683693ea89f47097d3e741d8486b5370c22bb63e0cb7b17d2af"
+        }
+      ]
+    },
+    "before": {
+      "appointments": [
+        {
+          "id": "900",
+          "start_datetime": "2026-11-02 10:00:00",
+          "end_datetime": "2026-11-02 10:30:00",
+          "id_users_provider": "2",
+          "id_users_customer": "900",
+          "id_services": "1",
+          "is_unavailability": "0",
+          "hash": "SyntheticReservedSlot",
+          "color": "#7cbae8",
+          "status": "Booked",
+          "notes": "Preservation control"
+        }
+      ],
+      "customers": [
+        {
+          "id": "1",
+          "first_name": "Synthetic",
+          "last_name": "QA",
+          "email": "admin@example.invalid",
+          "phone_number": null,
+          "id_roles": "1",
+          "address": "",
+          "city": "",
+          "zip_code": ""
+        },
+        {
+          "id": "2",
+          "first_name": "Jane",
+          "last_name": "Doe",
+          "email": "provider@example.invalid",
+          "phone_number": "+1 (000) 000-0000",
+          "id_roles": "2",
+          "address": "",
+          "city": "",
+          "zip_code": ""
+        },
+        {
+          "id": "3",
+          "first_name": "James",
+          "last_name": "Doe",
+          "email": "existing-customer@example.invalid",
+          "phone_number": "+1 (000) 000-0000",
+          "id_roles": "3",
+          "address": "",
+          "city": "",
+          "zip_code": ""
+        },
+        {
+          "id": "900",
+          "first_name": "Reserved",
+          "last_name": "Synthetic",
+          "email": "reserved@example.invalid",
+          "phone_number": "0000000000",
+          "id_roles": "3",
+          "address": "",
+          "city": "",
+          "zip_code": ""
+        }
+      ],
+      "services": [
+        {
+          "id": "1",
+          "name": "Service",
+          "duration": "30",
+          "slot_interval": "15",
+          "price": "0.00",
+          "color": "#7cbae8",
+          "is_private": "0"
+        },
+        {
+          "id": "2",
+          "name": "Fixture Alternate",
+          "duration": "45",
+          "slot_interval": "15",
+          "price": "12.50",
+          "color": "#7cbae8",
+          "is_private": "0"
+        }
+      ],
+      "providers": [
+        {
+          "id_users": "2",
+          "id_services": "1"
+        },
+        {
+          "id_users": "2",
+          "id_services": "2"
+        }
+      ]
+    },
+    "keyboard": {
+      "workflow": {
+        "status": "confirmation_observed",
+        "submitted": true,
+        "native_keyboard_only": true
+      },
+      "last_observation": {
+        "url": "http://127.0.0.1:8080/index.php/booking_confirmation/of/UjpzveWJoZDM",
+        "title": "Success | Easy!Appointments",
+        "focus": {
+          "tag": "BODY",
+          "id": "",
+          "role": null,
+          "text": "\n\n    \n        \n\n            \n\n    \n        \n            \n        \n\n        Your appointment has been successfully registered!\n\n        \n            An email with the appointment details has been sent",
+          "type": null,
+          "value": null
+        },
+        "body": "Your appointment has been successfully registered!\n\nAn email with the appointment details has been sent to you.\n\nPlease check your spam folder if the email does not arrive within a few minutes.\n\n Go To Booking Page\nAdd to Google Calendar\nPowered by Easy!Appointments",
+        "inputs": [],
+        "links": [],
+        "workflow": {
+          "status": "confirmation_observed",
+          "submitted": true,
+          "native_keyboard_only": true
+        }
+      },
+      "keyboard_actions": [
+        {
+          "command": "start"
+        },
+        {
+          "command": "press",
+          "key": "Tab"
+        },
+        {
+          "command": "press",
+          "key": "Home"
+        },
+        {
+          "command": "press",
+          "key": "ArrowDown"
+        },
+        {
+          "command": "press",
+          "key": "ArrowDown"
+        },
+        {
+          "command": "press",
+          "key": "Tab"
+        },
+        {
+          "command": "press",
+          "key": "Tab"
+        },
+        {
+          "command": "press",
+          "key": "Enter"
+        },
+        {
+          "command": "inspect"
+        },
+        {
+          "command": "inspect"
+        },
+        {
+          "command": "inspect"
+        },
+        {
+          "command": "inspect"
+        },
+        {
+          "command": "inspect"
+        },
+        {
+          "command": "inspect"
+        },
+        {
+          "command": "inspect"
+        },
+        {
+          "command": "inspect"
+        },
+        {
+          "command": "inspect"
+        },
+        {
+          "command": "inspect"
+        },
+        {
+          "command": "inspect"
+        },
+        {
+          "command": "inspect"
+        },
+        {
+          "command": "inspect"
+        },
+        {
+          "command": "inspect"
+        },
+        {
+          "command": "inspect"
+        },
+        {
+          "command": "inspect"
+        },
+        {
+          "command": "press",
+          "key": "Tab"
+        },
+        {
+          "command": "inspect"
+        },
+        {
+          "command": "press",
+          "key": "Control+A"
+        },
+        {
+          "command": "inspect"
+        },
+        {
+          "command": "type",
+          "text": "02/11/2026"
+        },
+        {
+          "command": "press",
+          "key": "Enter"
+        },
+        {
+          "command": "inspect"
+        },
+        {
+          "command": "press",
+          "key": "Tab"
+        },
+        {
+          "command": "inspect"
+        },
+        {
+          "command": "inspect"
+        },
+        {
+          "command": "press",
+          "key": "Tab"
+        },
+        {
+          "command": "inspect"
+        },
+        {
+          "command": "press",
+          "key": "Enter"
+        },
+        {
+          "command": "inspect"
+        },
+        {
+          "command": "press",
+          "key": "Tab"
+        },
+        {
+          "command": "inspect"
+        },
+        {
+          "command": "press",
+          "key": "Tab"
+        },
+        {
+          "command": "inspect"
+        },
+        {
+          "command": "press",
+          "key": "Tab"
+        },
+        {
+          "command": "inspect"
+        },
+        {
+          "command": "press",
+          "key": "Tab"
+        },
+        {
+          "command": "inspect"
+        },
+        {
+          "command": "press",
+          "key": "Tab"
+        },
+        {
+          "command": "inspect"
+        },
+        {
+          "command": "press",
+          "key": "Tab"
+        },
+        {
+          "command": "inspect"
+        },
+        {
+          "command": "press",
+          "key": "Tab"
+        },
+        {
+          "command": "inspect"
+        },
+        {
+          "command": "press",
+          "key": "Tab"
+        },
+        {
+          "command": "inspect"
+        },
+        {
+          "command": "press",
+          "key": "Tab"
+        },
+        {
+          "command": "inspect"
+        },
+        {
+          "command": "press",
+          "key": "Tab"
+        },
+        {
+          "command": "inspect"
+        },
+        {
+          "command": "press",
+          "key": "Tab"
+        },
+        {
+          "command": "inspect"
+        },
+        {
+          "command": "press",
+          "key": "Tab"
+        },
+        {
+          "command": "inspect"
+        },
+        {
+          "command": "press",
+          "key": "Tab"
+        },
+        {
+          "command": "inspect"
+        },
+        {
+          "command": "press",
+          "key": "Tab"
+        },
+        {
+          "command": "inspect"
+        },
+        {
+          "command": "press",
+          "key": "Tab"
+        },
+        {
+          "command": "inspect"
+        },
+        {
+          "command": "press",
+          "key": "Tab"
+        },
+        {
+          "command": "inspect"
+        },
+        {
+          "command": "press",
+          "key": "Tab"
+        },
+        {
+          "command": "inspect"
+        },
+        {
+          "command": "press",
+          "key": "Tab"
+        },
+        {
+          "command": "inspect"
+        },
+        {
+          "command": "press",
+          "key": "Tab"
+        },
+        {
+          "command": "inspect"
+        },
+        {
+          "command": "press",
+          "key": "Tab"
+        },
+        {
+          "command": "inspect"
+        },
+        {
+          "command": "press",
+          "key": "Tab"
+        },
+        {
+          "command": "inspect"
+        },
+        {
+          "command": "press",
+          "key": "Tab"
+        },
+        {
+          "command": "inspect"
+        },
+        {
+          "command": "press",
+          "key": "Tab"
+        },
+        {
+          "command": "inspect"
+        },
+        {
+          "command": "press",
+          "key": "Tab"
+        },
+        {
+          "command": "inspect"
+        },
+        {
+          "command": "press",
+          "key": "Tab"
+        },
+        {
+          "command": "inspect"
+        },
+        {
+          "command": "press",
+          "key": "Tab"
+        },
+        {
+          "command": "inspect"
+        },
+        {
+          "command": "press",
+          "key": "Tab"
+        },
+        {
+          "command": "inspect"
+        },
+        {
+          "command": "press",
+          "key": "Tab"
+        },
+        {
+          "command": "inspect"
+        },
+        {
+          "command": "press",
+          "key": "Tab"
+        },
+        {
+          "command": "inspect"
+        },
+        {
+          "command": "press",
+          "key": "Tab"
+        },
+        {
+          "command": "inspect"
+        },
+        {
+          "command": "press",
+          "key": "Tab"
+        },
+        {
+          "command": "inspect"
+        },
+        {
+          "command": "press",
+          "key": "Tab"
+        },
+        {
+          "command": "inspect"
+        },
+        {
+          "command": "press",
+          "key": "Tab"
+        },
+        {
+          "command": "inspect"
+        },
+        {
+          "command": "press",
+          "key": "Enter"
+        },
+        {
+          "command": "inspect"
+        },
+        {
+          "command": "inspect"
+        },
+        {
+          "command": "inspect"
+        },
+        {
+          "command": "inspect"
+        },
+        {
+          "command": "press",
+          "key": "Tab"
+        },
+        {
+          "command": "inspect"
+        },
+        {
+          "command": "press",
+          "key": "Control+A"
+        },
+        {
+          "command": "inspect"
+        },
+        {
+          "command": "type",
+          "text": "Synthetic"
+        },
+        {
+          "command": "press",
+          "key": "Tab"
+        },
+        {
+          "command": "inspect"
+        },
+        {
+          "command": "press",
+          "key": "Control+A"
+        },
+        {
+          "command": "inspect"
+        },
+        {
+          "command": "type",
+          "text": "ExploratoryBooking"
+        },
+        {
+          "command": "press",
+          "key": "Tab"
+        },
+        {
+          "command": "inspect"
+        },
+        {
+          "command": "press",
+          "key": "Control+A"
+        },
+        {
+          "command": "inspect"
+        },
+        {
+          "command": "type",
+          "text": "exploratory-booking@example.invalid"
+        },
+        {
+          "command": "press",
+          "key": "Tab"
+        },
+        {
+          "command": "inspect"
+        },
+        {
+          "command": "press",
+          "key": "Control+A"
+        },
+        {
+          "command": "inspect"
+        },
+        {
+          "command": "type",
+          "text": "0000000000"
+        },
+        {
+          "command": "press",
+          "key": "Tab"
+        },
+        {
+          "command": "inspect"
+        },
+        {
+          "command": "press",
+          "key": "Tab"
+        },
+        {
+          "command": "inspect"
+        },
+        {
+          "command": "press",
+          "key": "Tab"
+        },
+        {
+          "command": "inspect"
+        },
+        {
+          "command": "press",
+          "key": "Tab"
+        },
+        {
+          "command": "inspect"
+        },
+        {
+          "command": "press",
+          "key": "Tab"
+        },
+        {
+          "command": "inspect"
+        },
+        {
+          "command": "press",
+          "key": "Tab"
+        },
+        {
+          "command": "inspect"
+        },
+        {
+          "command": "press",
+          "key": "Tab"
+        },
+        {
+          "command": "inspect"
+        },
+        {
+          "command": "press",
+          "key": "Enter"
+        },
+        {
+          "command": "inspect"
+        },
+        {
+          "command": "inspect"
+        },
+        {
+          "command": "inspect"
+        },
+        {
+          "command": "inspect"
+        },
+        {
+          "command": "press",
+          "key": "Tab"
+        },
+        {
+          "command": "inspect"
+        },
+        {
+          "command": "press",
+          "key": "Tab"
+        },
+        {
+          "command": "inspect"
+        },
+        {
+          "command": "press",
+          "key": "Enter"
+        },
+        {
+          "command": "inspect"
+        },
+        {
+          "command": "inspect"
+        }
+      ],
+      "native_keyboard_only": true,
+      "submissions": 1
+    },
+    "after": {
+      "appointments": [
+        {
+          "id": "900",
+          "start_datetime": "2026-11-02 10:00:00",
+          "end_datetime": "2026-11-02 10:30:00",
+          "id_users_provider": "2",
+          "id_users_customer": "900",
+          "id_services": "1",
+          "is_unavailability": "0",
+          "hash": "SyntheticReservedSlot",
+          "color": "#7cbae8",
+          "status": "Booked",
+          "notes": "Preservation control"
+        },
+        {
+          "id": "901",
+          "start_datetime": "2026-11-02 09:00:00",
+          "end_datetime": "2026-11-02 09:30:00",
+          "id_users_provider": "2",
+          "id_users_customer": "901",
+          "id_services": "1",
+          "is_unavailability": "0",
+          "hash": "UjpzveWJoZDM",
+          "color": "#7cbae8",
+          "status": "Booked",
+          "notes": ""
+        }
+      ],
+      "customers": [
+        {
+          "id": "1",
+          "first_name": "Synthetic",
+          "last_name": "QA",
+          "email": "admin@example.invalid",
+          "phone_number": null,
+          "id_roles": "1",
+          "address": "",
+          "city": "",
+          "zip_code": ""
+        },
+        {
+          "id": "2",
+          "first_name": "Jane",
+          "last_name": "Doe",
+          "email": "provider@example.invalid",
+          "phone_number": "+1 (000) 000-0000",
+          "id_roles": "2",
+          "address": "",
+          "city": "",
+          "zip_code": ""
+        },
+        {
+          "id": "3",
+          "first_name": "James",
+          "last_name": "Doe",
+          "email": "existing-customer@example.invalid",
+          "phone_number": "+1 (000) 000-0000",
+          "id_roles": "3",
+          "address": "",
+          "city": "",
+          "zip_code": ""
+        },
+        {
+          "id": "900",
+          "first_name": "Reserved",
+          "last_name": "Synthetic",
+          "email": "reserved@example.invalid",
+          "phone_number": "0000000000",
+          "id_roles": "3",
+          "address": "",
+          "city": "",
+          "zip_code": ""
+        },
+        {
+          "id": "901",
+          "first_name": "Synthetic",
+          "last_name": "ExploratoryBooking",
+          "email": "exploratory-booking@example.invalid",
+          "phone_number": "0000000000",
+          "id_roles": "3",
+          "address": "",
+          "city": "",
+          "zip_code": ""
+        }
+      ],
+      "services": [
+        {
+          "id": "1",
+          "name": "Service",
+          "duration": "30",
+          "slot_interval": "15",
+          "price": "0.00",
+          "color": "#7cbae8",
+          "is_private": "0"
+        },
+        {
+          "id": "2",
+          "name": "Fixture Alternate",
+          "duration": "45",
+          "slot_interval": "15",
+          "price": "12.50",
+          "color": "#7cbae8",
+          "is_private": "0"
+        }
+      ],
+      "providers": [
+        {
+          "id_users": "2",
+          "id_services": "1"
+        },
+        {
+          "id_users": "2",
+          "id_services": "2"
+        }
+      ]
+    },
+    "observer": {
+      "schema_version": 1,
+      "state": "OBSERVATIONS_COLLECTED",
+      "observer_path": "/trusted/container-booking-pilot-observer.cjs",
+      "observer_sha256": "988bb4c0577bab5ade854fccbf7cbd34d1f79000bf90bf3259ab162ca60582cd",
+      "booking_hash": "UjpzveWJoZDM",
+      "fresh_context": true,
+      "timezone": "UTC",
+      "chromium_sandbox": true,
+      "service_workers": "block",
+      "initial": {
+        "url": "http://127.0.0.1:8080/booking/reschedule/UjpzveWJoZDM",
+        "focus": {
+          "tag": "BODY",
+          "id": "",
+          "type": null
+        },
+        "date_inputs": [
+          {
+            "id": "select-date",
+            "type": "text",
+            "value": "02/11/2026",
+            "visible": false
+          }
+        ],
+        "flatpickr": [
+          {
+            "visible": false,
+            "month": "November",
+            "year": "2026",
+            "selected_days": [
+              {
+                "aria_label": "November 2, 2026",
+                "text": "2"
+              }
+            ]
+          }
+        ],
+        "customer": {
+          "first-name": null,
+          "last-name": null,
+          "email": null,
+          "phone-number": null
+        },
+        "selection": {
+          "select-service": "1",
+          "select-provider": "2"
+        },
+        "next1_visible": true,
+        "next2_visible": false,
+        "date": {
+          "selected_date_iso": null,
+          "evidence_kind": null,
+          "ambiguous": false
+        }
+      },
+      "after_selection": null,
+      "after_next1": {
+        "url": "http://127.0.0.1:8080/booking/reschedule/UjpzveWJoZDM",
+        "focus": {
+          "tag": "BUTTON",
+          "id": "button-next-1",
+          "type": "button"
+        },
+        "date_inputs": [
+          {
+            "id": "select-date",
+            "type": "text",
+            "value": "02/11/2026",
+            "visible": true
+          }
+        ],
+        "flatpickr": [
+          {
+            "visible": true,
+            "month": "November",
+            "year": "2026",
+            "selected_days": [
+              {
+                "aria_label": "November 2, 2026",
+                "text": "2"
+              }
+            ]
+          }
+        ],
+        "customer": {
+          "first-name": null,
+          "last-name": null,
+          "email": null,
+          "phone-number": null
+        },
+        "selection": {
+          "select-service": null,
+          "select-provider": null
+        },
+        "next1_visible": false,
+        "next2_visible": true,
+        "date": {
+          "selected_date_iso": "2026-11-02",
+          "evidence_kind": "date_input+flatpickr_selected_day",
+          "ambiguous": false
+        }
+      },
+      "after_next2": {
+        "url": "http://127.0.0.1:8080/booking/reschedule/UjpzveWJoZDM",
+        "focus": {
+          "tag": "BODY",
+          "id": "",
+          "type": null
+        },
+        "date_inputs": [
+          {
+            "id": "select-date",
+            "type": "text",
+            "value": "02/11/2026",
+            "visible": false
+          }
+        ],
+        "flatpickr": [
+          {
+            "visible": false,
+            "month": "November",
+            "year": "2026",
+            "selected_days": [
+              {
+                "aria_label": "November 2, 2026",
+                "text": "2"
+              }
+            ]
+          }
+        ],
+        "customer": {
+          "first-name": "Synthetic",
+          "last-name": "ExploratoryBooking",
+          "email": "exploratory-booking@example.invalid",
+          "phone-number": "0000000000"
+        },
+        "selection": {
+          "select-service": null,
+          "select-provider": null
+        },
+        "next1_visible": false,
+        "next2_visible": false,
+        "date": {
+          "selected_date_iso": null,
+          "evidence_kind": null,
+          "ambiguous": false
+        }
+      },
+      "keyboard_actions": [
+        {
+          "key": "Tab",
+          "focused_id_before": ""
+        },
+        {
+          "key": "Tab",
+          "focused_id_before": "cancel-appointment"
+        },
+        {
+          "key": "Tab",
+          "focused_id_before": "select-service"
+        },
+        {
+          "key": "Tab",
+          "focused_id_before": "select-provider"
+        },
+        {
+          "key": "Enter",
+          "focused_id_before": "button-next-1"
+        },
+        {
+          "key": "Tab",
+          "focused_id_before": ""
+        },
+        {
+          "key": "Tab",
+          "focused_id_before": "select-date"
+        },
+        {
+          "key": "Tab",
+          "focused_id_before": "select-timezone"
+        },
+        {
+          "key": "Tab",
+          "focused_id_before": ""
+        },
+        {
+          "key": "Tab",
+          "focused_id_before": ""
+        },
+        {
+          "key": "Tab",
+          "focused_id_before": ""
+        },
+        {
+          "key": "Tab",
+          "focused_id_before": ""
+        },
+        {
+          "key": "Tab",
+          "focused_id_before": ""
+        },
+        {
+          "key": "Tab",
+          "focused_id_before": ""
+        },
+        {
+          "key": "Tab",
+          "focused_id_before": ""
+        },
+        {
+          "key": "Tab",
+          "focused_id_before": ""
+        },
+        {
+          "key": "Tab",
+          "focused_id_before": ""
+        },
+        {
+          "key": "Tab",
+          "focused_id_before": ""
+        },
+        {
+          "key": "Tab",
+          "focused_id_before": ""
+        },
+        {
+          "key": "Tab",
+          "focused_id_before": ""
+        },
+        {
+          "key": "Tab",
+          "focused_id_before": ""
+        },
+        {
+          "key": "Tab",
+          "focused_id_before": ""
+        },
+        {
+          "key": "Tab",
+          "focused_id_before": ""
+        },
+        {
+          "key": "Tab",
+          "focused_id_before": ""
+        },
+        {
+          "key": "Tab",
+          "focused_id_before": ""
+        },
+        {
+          "key": "Tab",
+          "focused_id_before": ""
+        },
+        {
+          "key": "Tab",
+          "focused_id_before": ""
+        },
+        {
+          "key": "Tab",
+          "focused_id_before": ""
+        },
+        {
+          "key": "Tab",
+          "focused_id_before": ""
+        },
+        {
+          "key": "Tab",
+          "focused_id_before": ""
+        },
+        {
+          "key": "Tab",
+          "focused_id_before": ""
+        },
+        {
+          "key": "Tab",
+          "focused_id_before": ""
+        },
+        {
+          "key": "Tab",
+          "focused_id_before": ""
+        },
+        {
+          "key": "Tab",
+          "focused_id_before": ""
+        },
+        {
+          "key": "Tab",
+          "focused_id_before": ""
+        },
+        {
+          "key": "Tab",
+          "focused_id_before": ""
+        },
+        {
+          "key": "Tab",
+          "focused_id_before": ""
+        },
+        {
+          "key": "Tab",
+          "focused_id_before": "button-back-2"
+        },
+        {
+          "key": "Enter",
+          "focused_id_before": "button-next-2"
+        }
+      ],
+      "blocked_requests": 2,
+      "duration_ms": 9171
+    },
+    "post_reopen": {
+      "appointments": [
+        {
+          "id": "900",
+          "start_datetime": "2026-11-02 10:00:00",
+          "end_datetime": "2026-11-02 10:30:00",
+          "id_users_provider": "2",
+          "id_users_customer": "900",
+          "id_services": "1",
+          "is_unavailability": "0",
+          "hash": "SyntheticReservedSlot",
+          "color": "#7cbae8",
+          "status": "Booked",
+          "notes": "Preservation control"
+        },
+        {
+          "id": "901",
+          "start_datetime": "2026-11-02 09:00:00",
+          "end_datetime": "2026-11-02 09:30:00",
+          "id_users_provider": "2",
+          "id_users_customer": "901",
+          "id_services": "1",
+          "is_unavailability": "0",
+          "hash": "UjpzveWJoZDM",
+          "color": "#7cbae8",
+          "status": "Booked",
+          "notes": ""
+        }
+      ],
+      "customers": [
+        {
+          "id": "1",
+          "first_name": "Synthetic",
+          "last_name": "QA",
+          "email": "admin@example.invalid",
+          "phone_number": null,
+          "id_roles": "1",
+          "address": "",
+          "city": "",
+          "zip_code": ""
+        },
+        {
+          "id": "2",
+          "first_name": "Jane",
+          "last_name": "Doe",
+          "email": "provider@example.invalid",
+          "phone_number": "+1 (000) 000-0000",
+          "id_roles": "2",
+          "address": "",
+          "city": "",
+          "zip_code": ""
+        },
+        {
+          "id": "3",
+          "first_name": "James",
+          "last_name": "Doe",
+          "email": "existing-customer@example.invalid",
+          "phone_number": "+1 (000) 000-0000",
+          "id_roles": "3",
+          "address": "",
+          "city": "",
+          "zip_code": ""
+        },
+        {
+          "id": "900",
+          "first_name": "Reserved",
+          "last_name": "Synthetic",
+          "email": "reserved@example.invalid",
+          "phone_number": "0000000000",
+          "id_roles": "3",
+          "address": "",
+          "city": "",
+          "zip_code": ""
+        },
+        {
+          "id": "901",
+          "first_name": "Synthetic",
+          "last_name": "ExploratoryBooking",
+          "email": "exploratory-booking@example.invalid",
+          "phone_number": "0000000000",
+          "id_roles": "3",
+          "address": "",
+          "city": "",
+          "zip_code": ""
+        }
+      ],
+      "services": [
+        {
+          "id": "1",
+          "name": "Service",
+          "duration": "30",
+          "slot_interval": "15",
+          "price": "0.00",
+          "color": "#7cbae8",
+          "is_private": "0"
+        },
+        {
+          "id": "2",
+          "name": "Fixture Alternate",
+          "duration": "45",
+          "slot_interval": "15",
+          "price": "12.50",
+          "color": "#7cbae8",
+          "is_private": "0"
+        }
+      ],
+      "providers": [
+        {
+          "id_users": "2",
+          "id_services": "1"
+        },
+        {
+          "id_users": "2",
+          "id_services": "2"
+        }
+      ]
+    },
+    "booking": {
+      "id": "901",
+      "start_datetime": "2026-11-02 09:00:00",
+      "end_datetime": "2026-11-02 09:30:00",
+      "id_users_provider": "2",
+      "id_users_customer": "901",
+      "id_services": "1",
+      "is_unavailability": "0",
+      "hash": "UjpzveWJoZDM",
+      "color": "#7cbae8",
+      "status": "Booked",
+      "notes": ""
+    },
+    "evaluation": {
+      "pass": true,
+      "reasons": [],
+      "nochangecontrols": {
+        "appointments_unchanged": false,
+        "customers_unchanged": false,
+        "services_unchanged": true,
+        "providers_unchanged": true,
+        "snapshots_unchanged": false,
+        "existing_appointments_preserved": true,
+        "existing_customers_preserved": true
+      }
+    },
+    "keyboard_booking_verified": true,
+    "controls": {
+      "before": {
+        "appointments": [
+          {
+            "id": "900",
+            "start_datetime": "2026-11-02 10:00:00",
+            "end_datetime": "2026-11-02 10:30:00",
+            "id_users_provider": "2",
+            "id_users_customer": "900",
+            "id_services": "1",
+            "is_unavailability": "0",
+            "hash": "SyntheticReservedSlot",
+            "color": "#7cbae8",
+            "status": "Booked",
+            "notes": "Preservation control"
+          },
+          {
+            "id": "901",
+            "start_datetime": "2026-11-02 09:00:00",
+            "end_datetime": "2026-11-02 09:30:00",
+            "id_users_provider": "2",
+            "id_users_customer": "901",
+            "id_services": "1",
+            "is_unavailability": "0",
+            "hash": "UjpzveWJoZDM",
+            "color": "#7cbae8",
+            "status": "Booked",
+            "notes": ""
+          }
+        ],
+        "customers": [
+          {
+            "id": "1",
+            "first_name": "Synthetic",
+            "last_name": "QA",
+            "email": "admin@example.invalid",
+            "phone_number": null,
+            "id_roles": "1",
+            "address": "",
+            "city": "",
+            "zip_code": ""
+          },
+          {
+            "id": "2",
+            "first_name": "Jane",
+            "last_name": "Doe",
+            "email": "provider@example.invalid",
+            "phone_number": "+1 (000) 000-0000",
+            "id_roles": "2",
+            "address": "",
+            "city": "",
+            "zip_code": ""
+          },
+          {
+            "id": "3",
+            "first_name": "James",
+            "last_name": "Doe",
+            "email": "existing-customer@example.invalid",
+            "phone_number": "+1 (000) 000-0000",
+            "id_roles": "3",
+            "address": "",
+            "city": "",
+            "zip_code": ""
+          },
+          {
+            "id": "900",
+            "first_name": "Reserved",
+            "last_name": "Synthetic",
+            "email": "reserved@example.invalid",
+            "phone_number": "0000000000",
+            "id_roles": "3",
+            "address": "",
+            "city": "",
+            "zip_code": ""
+          },
+          {
+            "id": "901",
+            "first_name": "Synthetic",
+            "last_name": "ExploratoryBooking",
+            "email": "exploratory-booking@example.invalid",
+            "phone_number": "0000000000",
+            "id_roles": "3",
+            "address": "",
+            "city": "",
+            "zip_code": ""
+          }
+        ],
+        "services": [
+          {
+            "id": "1",
+            "name": "Service",
+            "duration": "30",
+            "slot_interval": "15",
+            "price": "0.00",
+            "color": "#7cbae8",
+            "is_private": "0"
+          },
+          {
+            "id": "2",
+            "name": "Fixture Alternate",
+            "duration": "45",
+            "slot_interval": "15",
+            "price": "12.50",
+            "color": "#7cbae8",
+            "is_private": "0"
+          }
+        ],
+        "providers": [
+          {
+            "id_users": "2",
+            "id_services": "1"
+          },
+          {
+            "id_users": "2",
+            "id_services": "2"
+          }
+        ]
+      },
+      "pointer_date": "2026-11-09",
+      "pointer_customer": {
+        "first_name": "Synthetic",
+        "last_name": "PointerControl",
+        "email": "pointer-control@example.invalid",
+        "phone_number": "0000000000"
+      }
+    },
+    "error": "Docker operation failed: {\"error\":\"Calendar navigation exceeded its bounded month budget.\",\"stage\":null}\n",
+    "execution_finished_at_utc": "2026-10-21T14:11:54.266Z",
+    "execution_duration_ms": 59232,
+    "resources": {
+      "containers": [
+        {
+          "role": "import",
+          "name": "run-e05950dc3c144269ebb6660a8de12f38-import",
+          "id": "25dac64e5884d8498c5114dc3dce3124dde885c0f82f5675762a01c63df4e8c1"
+        },
+        {
+          "role": "build",
+          "name": "run-e05950dc3c144269ebb6660a8de12f38-build",
+          "id": "493faaae9317560031e6251cc3060336644fc39f12b39016fc9bd1d3bbd00ace"
+        },
+        {
+          "role": "database",
+          "name": "run-e05950dc3c144269ebb6660a8de12f38-database",
+          "id": "34744c62321445cc3a91d6d8c76e7968439c7eadc177baf005bd8b71f55819b7"
+        },
+        {
+          "role": "evaluator",
+          "name": "run-e05950dc3c144269ebb6660a8de12f38-evaluator",
+          "id": "305dd28bdd3f035fd9b8413ceec4bb0576ba14428af408cde46c4405b67f1e1d"
+        },
+        {
+          "role": "app",
+          "name": "run-e05950dc3c144269ebb6660a8de12f38-app",
+          "id": "069c943c843e76820aa68d24dd9749652b0dbe882a972687cfda38e52ea7edbb"
+        },
+        {
+          "role": "keyboard",
+          "name": "run-e05950dc3c144269ebb6660a8de12f38-keyboard",
+          "id": "845160c2681269f03587d86707ad63c4fd33c2f9a94a07c668a8d81318a6d95f"
+        },
+        {
+          "role": "observer",
+          "name": "run-e05950dc3c144269ebb6660a8de12f38-observer",
+          "id": "b943f055d68739289535910f7639aa33c81808b54be31b7d0c187b874159bbcd"
+        },
+        {
+          "role": "controls",
+          "name": "run-e05950dc3c144269ebb6660a8de12f38-controls",
+          "id": "9f02781d25b6631ce04f29a381036c5815c23d16531fe4852a7371d9dc0de61d"
+        }
+      ],
+      "volumes": [
+        "run-e05950dc3c144269ebb6660a8de12f38-source",
+        "run-e05950dc3c144269ebb6660a8de12f38-db-data",
+        "run-e05950dc3c144269ebb6660a8de12f38-db-socket",
+        "run-e05950dc3c144269ebb6660a8de12f38-seed",
+        "run-e05950dc3c144269ebb6660a8de12f38-reader",
+        "run-e05950dc3c144269ebb6660a8de12f38-payload"
+      ],
+      "label": "org.accessfinish.run",
+      "run_id": "run-e05950dc3c144269ebb6660a8de12f38"
+    }
+  }
+}

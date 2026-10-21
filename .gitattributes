@@ -1,0 +1,13 @@
+# Preserve the byte hashes of the frozen procedure and fixture across platforms.
+/lib/model.cjs -text
+/lib/fixture.cjs -text
+/lib/docker.cjs -text
+/lib/runs.cjs -text
+/lib/repair.cjs -text
+/lib/case-source.cjs -text
+/scripts/trial.cjs -text
+/integration/portable/* -text
+/evidence/competition-20261021/** -text
+/web/featured-case.json -text
+/web/trial-report.json -text
+/web/records/* -text

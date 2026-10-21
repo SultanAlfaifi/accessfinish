@@ -1,0 +1,9 @@
+{
+  "upstream": "https://github.com/alextselegidis/easyappointments",
+  "commit": "4bc7ecd51f3dade8e041558f2c23dda65bd6c43e",
+  "archive": "easyappointments-source.tar.gz",
+  "sha256": "6f0ecea2aca69be6249edec30f870ef62d31428214de7fd93a9b3163873dcce5",
+  "license": "GPL-3.0",
+  "source_defects_injected": false,
+  "fixture": "Synthetic business data. Login password hashes and salts disabled; all contacts use reserved example domains."
+}

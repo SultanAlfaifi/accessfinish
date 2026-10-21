@@ -1,7 +1,11 @@
-# Technology feedback
+# Feedback from the measured AccessFinish experiment
 
-Nebius Token Factory made it possible to call an NVIDIA open model through a familiar chat-completions interface and record tool calls and token usage without managing a GPU deployment. Nemotron produced small source proposals that could be handed to a deterministic executor.
+We used NVIDIA Nemotron 3 Super through Nebius Token Factory's chat-completions endpoint to propose literal source edits. The operator supplied the diagnosis and repair direction. Structured tool calls made it practical to constrain source paths, preview exact edits, bind approval to a proposal hash, and keep model output away from shell execution.
 
-Our experiments also showed why application-level verification remains necessary. Some earlier responses exhausted a bounded tool loop without a useful patch. A later proposal included mixed CRLF/LF anchors, so exact replacement correctly refused it. Clearer source fragments and line-ending normalization helped turn the recorded proposal into a verified booking outcome. The model generated the semantic edits; it did not replace the trusted compiler, browser executor, or read-only database evaluator.
+Across three development requests and five frozen requests on one exposed case, all eight responses reported usable token counts. Estimated additional cost at the account prices checked on October 21 was $0.0394581 before tax. We retained failed-request reservations and made no automatic retries. Reasoning tokens were included in reported completion usage; the cost estimate used the full reported completion count.
 
-Useful improvements would include more actionable structured tool errors, explicit input-reservation guidance, and easier account-level hard spending caps for small experiments. AccessFinish currently enforces a local reservation guard; it does not present that guard as a provider-enforced billing limit.
+Two of five frozen proposals passed the full build, keyboard outcome, database, fresh-reopen, regression, and runtime checks. Two proposed JavaScript edits did not compile. One proposal passed the main keyboard task but failed calendar navigation. These are observations from one guided case, not a general comparison or model benchmark.
+
+The most useful platform improvements for this workflow would be easily exportable per-request billing/usage receipts, an explicit model-revision identifier, and source-edit examples that preserve syntactic boundaries around callbacks. We would also value stronger structured-edit validation before execution. These are feature requests; we have not established whether equivalent facilities exist elsewhere in the platform.
+
+Token Factory supplied model inference. We did not deploy the workbench on Nebius AI Cloud or use Serverless Jobs/Endpoints, and we do not claim that those services accelerated the build. Local deterministic orchestration, Docker, Playwright, PHP, and MariaDB supplied execution and outcome verification.

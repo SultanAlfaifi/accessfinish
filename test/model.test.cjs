@@ -1,0 +1,20 @@
+'use strict';
+const test = require('node:test'), assert = require('node:assert/strict');
+const fs = require('node:fs'), os = require('node:os'), path = require('node:path');
+const {analyze, MODEL} = require('../lib/model.cjs');
+const files = require('../web/source-context.json'), proposal = require('../web/evidence.json').proposal;
+test('retains failed-request reservations, validates usage, and never retries a provider failure', async t => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'accessfinish-budget-'));
+  const names = ['NEBIUS_API_KEY', 'NEBIUS_PRICE_VERIFIED_AT', 'NEBIUS_INPUT_USD_PER_MILLION', 'NEBIUS_OUTPUT_USD_PER_MILLION', 'AF_MODEL_BUDGET_USD', 'AF_MAX_MODEL_REQUESTS'];
+  const before = Object.fromEntries(names.map(key => [key, process.env[key]])), realFetch = global.fetch;
+  t.after(() => { global.fetch = realFetch; for (const key of names) { if (before[key] === undefined) delete process.env[key]; else process.env[key] = before[key]; } fs.rmSync(root, {recursive: true, force: true}); });
+  Object.assign(process.env, {NEBIUS_API_KEY: 'test-only-not-a-real-key', NEBIUS_PRICE_VERIFIED_AT: new Date().toISOString(), NEBIUS_INPUT_USD_PER_MILLION: '.3', NEBIUS_OUTPUT_USD_PER_MILLION: '.9', AF_MODEL_BUDGET_USD: '5', AF_MAX_MODEL_REQUESTS: '2'});
+  let requests = 0;
+  global.fetch = async () => { requests++; return new Response('{}', {status: 503}); };
+  await assert.rejects(analyze({files}, {root}), /provider rejected/); assert.equal(requests, 1);
+  let ledger = JSON.parse(fs.readFileSync(path.join(root, 'model-spend.json'))); assert.equal(ledger.attempts.length, 1); assert.ok(ledger.reserved_usd > 0); const reserved = ledger.reserved_usd;
+  global.fetch = async () => { requests++; return new Response(JSON.stringify({model: MODEL, usage: {prompt_tokens: 100, completion_tokens: 100, total_tokens: 200}, choices: [{finish_reason: 'tool_calls', message: {tool_calls: [{function: {name: 'propose_repair', arguments: JSON.stringify(proposal)}}]}}]})); };
+  const result = await analyze({files}, {root}); assert.equal(requests, 2); assert.equal(result.preview.changes.length, 3);
+  ledger = JSON.parse(fs.readFileSync(path.join(root, 'model-spend.json'))); assert.ok(ledger.reserved_usd > reserved); assert.equal(ledger.attempts[1].status, 'proposal_validated');
+  await assert.rejects(analyze({files}, {root}), /limit is exhausted/); assert.equal(requests, 2);
+});
