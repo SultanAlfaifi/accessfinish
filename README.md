@@ -4,7 +4,7 @@
 
 AccessFinish connects a reviewable NVIDIA Nemotron source proposal to an isolated build, native keyboard booking, read-only database checks, and a fresh-browser reopen. A plausible patch or a confirmation page alone cannot produce a verified result.
 
-This branch prepares **v0.2.0**. Its evaluated source and evidence are available in [draft PR #1](https://github.com/SultanAlfaifi/accessfinish/pull/1); the [currently published replay](https://sultalfaifi.com/accessfinish/) and v0.1.0 release remain historical until the publication gate is completed. Track: **Coding and Agentic Engineering**.
+**v0.2.0 review build:** [browser-only review](https://sultalfaifi.com/accessfinish/) · [merged source and evaluation evidence](https://github.com/SultanAlfaifi/accessfinish/pull/1). The downloadable v0.1.0 release remains a historical build; the final v0.2.0 judging release and public video are pending. Track: **Coding and Agentic Engineering**.
 
 ## Review in a browser
 
