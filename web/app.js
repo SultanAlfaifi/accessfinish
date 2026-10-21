@@ -166,6 +166,8 @@ async function init() {
   $('#local-execution-controls').hidden = !localMode;
   $('#analyze-form').hidden = !localMode; $('#replay-local-guide').hidden = localMode;
   if (!localMode) {
+    $('#model-heading').textContent = 'Run a new repair in the local build.';
+    $('#source-sharing-explanation').textContent = 'This browser review shows recorded edits and their matching evidence. The local build can request a new proposal using your server-side Nebius configuration.';
     $('[data-tab="repair"] strong').textContent = 'Review the source'; $('[data-tab="repair"] small').textContent = 'Exact recorded changes';
     $('#source-files').disabled = true;
   }
