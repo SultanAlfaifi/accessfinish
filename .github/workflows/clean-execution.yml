@@ -1,7 +1,7 @@
 name: Clean setup and recorded-proposal execution
 on:
   push:
-    branches: [codex/competition-readiness, codex/submission]
+    branches: [codex/submission]
   pull_request:
   workflow_dispatch:
 permissions:
@@ -43,8 +43,8 @@ jobs:
           node-version: 22
       - name: Build isolated fixture from public pinned inputs
         run: npm run demo:setup
-      - name: Execute the recorded model proposal in a fresh fixture
-        run: npm run demo:check
+      - name: Replay all five retained proposals in fresh fixtures
+        run: node scripts/ci-replay-evaluation.cjs
       - name: Verify the original source remains a negative control
         run: node scripts/demo-check.cjs --original
       - name: Export synthetic run records only

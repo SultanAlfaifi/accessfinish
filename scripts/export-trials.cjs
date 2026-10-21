@@ -14,6 +14,13 @@ const ledger = read('model-spend.json'), protocol = read('trials/frozen-protocol
 assert.equal(ledger.attempts.length, 8, 'The approved 3 + 5 request set must be terminal before final export.');
 assert.equal(ledger.attempts.filter(row => row.phase === 'evaluation').length, 5);
 publish(prefix + '/frozen-protocol.json', protocol);
+for (const key of Object.keys(protocol.inputs.procedure_hashes)) {
+  const relative = key.startsWith('../') ? key.slice(3) : 'scripts/' + key.slice(2), file = prefix + '/procedure/' + relative;
+  const bytes = fs.readFileSync(path.join(project, file));
+  assert.equal(digest(bytes.toString('utf8')), protocol.inputs.procedure_hashes[key], 'Frozen snapshot changed: ' + file);
+  hashes[file] = sha(bytes);
+}
+hashes[prefix + '/post-evaluation-compatibility.json'] = sha(fs.readFileSync(path.join(project, prefix, 'post-evaluation-compatibility.json')));
 for (const phase of ['development', 'evaluation']) {
   const attempts = ledger.attempts.filter(row => row.phase === phase), count = phase === 'development' ? 3 : 5;
   for (let index = 1; index <= count; index++) {
@@ -55,10 +62,13 @@ assert.ok(passed.length, 'No model proposal passed the full protocol. Do not pac
 const featuredRow = passed.find(row => row._proposal.proposal.edits.some(edit => edit.new.includes("$selectDate.is(':focus')") && edit.new.indexOf("$selectDate.is(':focus')") < edit.new.indexOf('.fadeTo('))) || passed[0];
 publish('web/records/featured-run.json', featuredRow._run);
 publish('web/featured-case.json', {schema_version: 1, authorship: 'model', model: featuredRow._proposal.model,
+  provider: 'Nebius Token Factory', endpoint: 'https://api.tokenfactory.nebius.com/v1/chat/completions', attempt_id: featuredRow.attempt_id,
+  usage: featuredRow._proposal.usage, estimated_cost_usd_excluding_tax: featuredRow.estimated_cost_usd_excluding_tax,
   generated_at_utc: featuredRow._proposal.created_at_utc, proposal: featuredRow._proposal.proposal, proposal_sha256: featuredRow.proposal_sha256,
   source_sha256: featuredRow._proposal.source_sha256, recording: 'records/featured-run.json', evaluation_index: featuredRow.index,
   selection: 'A passing demonstration example. Prefer a month guard before the opacity change. All five evaluation outcomes remain in the report.'});
 const report = {schema_version: 1, generated_at_utc: new Date().toISOString(), scope: 'Repeated guided generation on one exposed source-repair case; not hidden cases or independent task families.',
+  frozen_procedure_directory: prefix + '/procedure', post_evaluation_compatibility_record: prefix + '/post-evaluation-compatibility.json',
   diagnosis_and_repair_direction: 'operator supplied', automatic_retries: 0, semantic_model_edits_changed_by_operator: false,
   development_requests: 3, evaluation_requests: 5, evaluation_passed: passed.length, evaluation_failed: 5 - passed.length,
   distinct_evaluation_cases: 1, featured_evaluation_index: featuredRow.index, request_limit: 8, additional_budget_usd: 5,

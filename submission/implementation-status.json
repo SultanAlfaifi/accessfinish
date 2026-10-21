@@ -13,7 +13,7 @@
     "portable_fixture": "fresh_model_execution_and_original_negative_control_verified_2026-10-21",
     "proposal_bound_execution": "14_checks_passed_new_execution_verified_via_ui_and_prior_result_cleared_on_reselection",
     "frozen_evaluation": "complete_2_of_5_passed_on_one_guided_exposed_case",
-    "clean_environment_execution": "workflow_prepared_not_yet_run",
+    "clean_environment_execution": "windows_linux_node_matrix_passed_initial_linux_payload_ownership_failure_fixed_full_recorded_replays_pending",
     "two_independent_tester_sessions": "browser_only_form_prepared_requires_two_real_independent_developers",
     "final_video": "not_started",
     "public_youtube_url": null,

@@ -1,7 +1,9 @@
 {
   "schema_version": 1,
-  "generated_at_utc": "2026-10-21T14:29:31.582Z",
+  "generated_at_utc": "2026-10-21T15:13:08.072Z",
   "scope": "Repeated guided generation on one exposed source-repair case; not hidden cases or independent task families.",
+  "frozen_procedure_directory": "evidence/competition-20261021/procedure",
+  "post_evaluation_compatibility_record": "evidence/competition-20261021/post-evaluation-compatibility.json",
   "diagnosis_and_repair_direction": "operator supplied",
   "automatic_retries": 0,
   "semantic_model_edits_changed_by_operator": false,
@@ -190,6 +192,14 @@
   ],
   "artifact_sha256": {
     "evidence/competition-20261021/frozen-protocol.json": "363c033b2d4670910a42b03b8807c0caa4772c81ae95ad81d40f401536d09e30",
+    "evidence/competition-20261021/procedure/lib/model.cjs": "09b56462b6e79480b18d8cfc3b33e77364f80bb985b3b1b5ecdd5bf04d34e3ed",
+    "evidence/competition-20261021/procedure/lib/fixture.cjs": "b635fff21bc98ba8dd8fde946f33690f283c6a47851b13219276b6069436e84b",
+    "evidence/competition-20261021/procedure/lib/docker.cjs": "197673cd7d84d64877beded5c5f243630c7d60c91f4d2febf06f7271f0a72ce0",
+    "evidence/competition-20261021/procedure/lib/runs.cjs": "ef293b2286e2514591a4f159d2d0a71230bb557f8d5b2ca854942422dc1fd889",
+    "evidence/competition-20261021/procedure/lib/repair.cjs": "35774ff192402280e1d5bc7e243e1b9b47970e7dd8e3e052ab2b56c10853da7f",
+    "evidence/competition-20261021/procedure/lib/case-source.cjs": "9e14f76b095ad871ab7ad03204f028fd049f173150e210d9b5dd9f6a4514e1b9",
+    "evidence/competition-20261021/procedure/scripts/trial.cjs": "b6e1f35c0e0d520516274b3741de6d8b49679a209fdb183c2d61aa8511b920dd",
+    "evidence/competition-20261021/post-evaluation-compatibility.json": "9f6443d776a1610b4533094aa818b3876a3ee4eb6bfa6eb93b08ca7a8b330e02",
     "evidence/competition-20261021/development-1/claim.json": "ccd92230e0962d11db5288e0566e8c0c8fd5287930d755d7322799f155798c89",
     "evidence/competition-20261021/development-1/inference.json": "22211ea94926bd52988221b9ee8bc833caf3c183aa0bb6ade45d427b4e6a096d",
     "evidence/competition-20261021/development-1/proposal.json": "1c041a8666c9ea88cfbea37c12558789340a6f2323e0688a5f2c29bd8cf847e3",
@@ -233,6 +243,6 @@
     "evidence/competition-20261021/evaluation-5/execution.json": "4c693a57b2c0831c5499affa936c5b640d1fd4e61456bb2360f02a3d2a6bbd83",
     "web/records/evaluation-5.json": "e0003e7672cb1b81792cc5c3754059fa98e2a8c68c0d06fdf8ed8865db5e1cd3",
     "web/records/featured-run.json": "7aa704f5db2bfd70d30ce4da62383c7c0418a087b363027b72afcf6f62c81005",
-    "web/featured-case.json": "68f3963f7f3f82f30b7bbaeb10dd6f4b6c13da4e69c34c68b4376e6fd42fd90f"
+    "web/featured-case.json": "0c7f305a57d61e96ea737f2dcefcd6a2a5a089e58977905f084018b426b2cab2"
   }
 }

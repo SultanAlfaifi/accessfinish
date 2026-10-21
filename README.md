@@ -54,6 +54,8 @@ The source-sharing checkbox permits one request containing the supplied source. 
 
 On **21 October 2026**, three development requests were followed by **five frozen evaluation requests on one exposed case**. The prompt, source context, fixture, model integration, executor, and evaluator procedure were bound by hashes before evaluation.
 
+The [exact frozen procedure](evidence/competition-20261021/procedure/) is archived. A subsequent [Linux compatibility fix](evidence/competition-20261021/post-evaluation-compatibility.json) changes only ownership of private fixture files during trusted import. It changes neither model edits nor outcome acceptance logic. Reproduction with the current executor is tracked separately from the five original model-generation trials.
+
 **2/5 passed the full procedure.** Two proposals failed to compile. One saved and reopened the keyboard booking correctly but failed calendar navigation in the regression check. All failures remain in the [trial report](web/trial-report.json) and [raw evidence](evidence/competition-20261021/). No model-authored semantic edits were changed by the operator.
 
 The featured passing example is evaluation **4**, with five Nemotron edits. It built 83 JavaScript files and verified **2 November 2026, 09:00–09:30 Asia/Riyadh**, then passed a separate pointer booking and reopen, reserved-slot exclusion, clear-date error check, preservation checks, and inspected container boundaries. Both application browsers were deliberately UTC, so the stored Riyadh time also had to match correctly.
@@ -70,7 +72,7 @@ node scripts/check-evidence.cjs
 npm run check:records
 ```
 
-The clean-environment workflow tests Node 22/24 on Windows/Linux, then builds the public fixture and executes the recorded proposal plus the original-source negative control on a fresh Linux runner. It needs no Nebius key and makes no model requests. Its actual outcome must be checked before claiming independent clean setup.
+The clean-environment workflow tests Node 22/24 on Windows/Linux, then builds the public fixture and replays all five retained proposals plus the original-source negative control on a fresh Linux runner. It must reproduce both verified results and the three failures at their expected stages. It needs no Nebius key and makes no model requests. Its actual outcome must be checked before claiming independent clean setup.
 
 Source/app/database/compiler/browser/evaluator roles are separated. Candidate execution has no external network, no model-key environment, read-only roots, dropped capabilities, and CPU/memory/PID limits. The application receives only its synthetic fixture account. The independent reader has SELECT-only fixture access and explicitly checks that writes and system-schema access are denied. The reader never mounts the candidate source. Trusted setup builds official images; candidate npm scripts, Composer hooks, and model-generated shell commands are not run.
 

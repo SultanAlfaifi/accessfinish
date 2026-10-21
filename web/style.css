@@ -14,3 +14,6 @@ body{font-size:16px}.environment-note{font-size:13px;color:var(--muted);max-widt
 .results-table th{font-size:12px;letter-spacing:.04em;background:#f2f5fa}
 #inspect-recorded-run{margin:20px 0 10px}
 #proposal-identity,#run-identity{overflow-wrap:anywhere}
+#model-request-record{margin:12px 0 18px;padding:12px 14px;background:#f3f6fc;border:1px solid var(--line);border-radius:6px;font-size:13px}
+#model-request-record summary{cursor:pointer;font-weight:600}
+#model-request-evidence{white-space:pre-wrap;margin:12px 0 0}

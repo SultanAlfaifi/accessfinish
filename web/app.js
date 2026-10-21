@@ -44,6 +44,12 @@ function selectProposal(value, record, isRecordedCase = false) {
     button.addEventListener('click', () => renderEdit(index)); $('#file-switch').append(button);
   }); renderEdit(Math.max(0, value.edits.findIndex(edit => edit.path.endsWith('.php'))));
   const fresh = record?.origin === 'nebius';
+  const requestRecord = fresh ? record : featured;
+  $('#model-request-record').hidden = !requestRecord?.usage || !requestRecord?.attempt_id;
+  $('#model-request-evidence').textContent = requestRecord?.usage ?
+    (fresh ? 'This request' : 'Recorded request · no new inference') + '\nProvider: Nebius Token Factory\nModel: ' + requestRecord.model +
+    '\nAttempt: ' + requestRecord.attempt_id + '\nInput tokens: ' + requestRecord.usage.prompt_tokens + '\nCompletion tokens: ' + requestRecord.usage.completion_tokens +
+    '\nEstimated request cost before tax: $' + Number(requestRecord.estimated_cost_usd_excluding_tax).toFixed(6) : '';
   $('#proposal-identity').textContent = 'Proposal SHA-256: ' + (record?.proposal_sha256 || featured?.proposal_sha256 || 'Available after local registration');
   const amended = isRecordedCase && featured?.authorship === 'operator_amended_model';
   const date = featured?.generated_at_utc ? new Date(featured.generated_at_utc).toLocaleDateString('en-US', {timeZone: 'Asia/Riyadh', month: 'long', day: 'numeric', year: 'numeric'}) : 'October 18, 2026';
@@ -160,7 +166,7 @@ async function init() {
     $('#environment-note').textContent = fixtureReady ? 'Local workbench · isolated execution ready · synthetic data only' : 'Local workbench · run npm run demo:setup to prepare isolated execution';
     $('#model-message').textContent = modelReady ? 'One paid request. Review the returned source changes before execution.' : 'Configure a server-side Nebius key, verified current prices, and the request budget to enable generation.';
   } catch {
-    $('#environment-note').textContent = 'Published evidence replay · download the local build for new execution';
+    $('#environment-note').textContent = 'Browser-only recorded review · new execution requires the local build';
     $('#model-message').textContent = 'Fresh generation requires the local Node app and server-side Nebius configuration.';
   }
   $('#local-execution-controls').hidden = !localMode;

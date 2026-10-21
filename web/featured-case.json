@@ -2,6 +2,29 @@
   "schema_version": 1,
   "authorship": "model",
   "model": "nvidia/nemotron-3-super-120b-a12b",
+  "provider": "Nebius Token Factory",
+  "endpoint": "https://api.tokenfactory.nebius.com/v1/chat/completions",
+  "attempt_id": "7e1ab2fb-66bc-42dd-9418-58d7cdf98a84",
+  "usage": {
+    "completion_tokens": 2112,
+    "prompt_tokens": 12684,
+    "total_tokens": 14796,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": null,
+      "reasoning_tokens": 855,
+      "rejected_prediction_tokens": null
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": null,
+      "cached_tokens": 0,
+      "created_cache_tokens": 0,
+      "multimodal_tokens": null
+    },
+    "prompt_cache_hit_tokens": 0,
+    "prompt_cache_miss_tokens": 12684
+  },
+  "estimated_cost_usd_excluding_tax": 0.005706,
   "generated_at_utc": "2026-10-21T14:20:35.914Z",
   "proposal": {
     "reason": "Replace non-focusable date div with accessible input, guard empty date selection, preserve date in manageMode, prevent month/year refresh when typing.",
