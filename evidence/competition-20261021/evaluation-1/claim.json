@@ -1,0 +1,14 @@
+{
+  "phase": "evaluation",
+  "index": 1,
+  "at_utc": "2026-10-21T14:08:13.597Z",
+  "state": "failed",
+  "context_sha256": "398c85542878892ac7e555de74559964759e385bf8d0c181515d9126f13bef5c",
+  "proposal_id": "proposal-c05f527c8e204a64b6707585fe562bfd",
+  "proposal_sha256": "16ea9a86027099fa595177b59fc3d934c7a5e96aefeb50ef74136ab4049a21a9",
+  "attempt_id": "3235abb6-a8e0-4867-9986-7bf2a9090a3c",
+  "estimated_cost_usd_excluding_tax": 0.0067293,
+  "run_id": "run-e05950dc3c144269ebb6660a8de12f38",
+  "booking_verified": false,
+  "error": "Docker operation failed: {\"error\":\"Calendar navigation exceeded its bounded month budget.\",\"stage\":null}\n"
+}

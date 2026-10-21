@@ -1,0 +1,110 @@
+{
+  "run_id": "run-e2e193fc5be33d091e67488afa72e34b",
+  "proposal_sha256": "3b34fef79cf14f390fb54a8899ee6b94ecde973fdc0095f9315b51ef5f04fb49",
+  "source_sha256": "398c85542878892ac7e555de74559964759e385bf8d0c181515d9126f13bef5c",
+  "fixture_fingerprint": "b51cb712f12f2c9601b96b7bcbb11d2ba644cd59a86ea395bf7e8185f7127c24",
+  "source_commit": "4bc7ecd51f3dade8e041558f2c23dda65bd6c43e",
+  "scenario": {
+    "date": "2026-11-02",
+    "start": "09:00",
+    "end": "09:30",
+    "timezone": "Asia/Riyadh",
+    "service_id": 1,
+    "provider_id": 2,
+    "customer": {
+      "first_name": "Synthetic",
+      "last_name": "ExploratoryBooking",
+      "email": "exploratory-booking@example.invalid",
+      "phone_number": "0000000000"
+    }
+  },
+  "booking_verified": false,
+  "proposal_origin": "nebius",
+  "native_keyboard_only": false,
+  "model_calls_during_execution": 0,
+  "execution_started_at_utc": "2026-10-21T14:27:36.445Z",
+  "applied_source": {
+    "state": "source_applied",
+    "files": [
+      {
+        "path": "assets/js/pages/booking.js",
+        "sha256": "04ca5295aab16a6c1185a00c78c2db73a360a9ef8c0d8789fbc8850763e4a1a3"
+      },
+      {
+        "path": "application/views/components/booking_time_step.php",
+        "sha256": "bfa9149bf0dd01b0ebc20c9ae445c82cc61fa5950007fce3e36ac0a02f900459"
+      }
+    ],
+    "changes": [
+      {
+        "path": "application/views/components/booking_time_step.php",
+        "old": "<div id=\"select-date\" class=\"mx-auto my-4\"></div>",
+        "new": "<label for=\"select-date\" class=\"visually-hidden\">Date</label><input type=\"text\" id=\"select-date\" class=\"flatpickr-input\" />",
+        "before_sha256": "7d4371fd301a8a187ca8f5c88f86f09cfaf96872b7647a761338d34c7e6974ef",
+        "after_sha256": "bfa9149bf0dd01b0ebc20c9ae445c82cc61fa5950007fce3e36ac0a02f900459"
+      },
+      {
+        "path": "assets/js/pages/booking.js",
+        "old": "onChange: (selectedDates) => {\r\n                App.Http.Booking.getAvailableHours(moment(selectedDates[0]).format('YYYY-MM-DD'));\r\n                App.Pages.Booking.updateConfirmFrame();\r\n            },",
+        "new": "onChange: (selectedDates) => {\r\n                if (!selectedDates || selectedDates.length === 0) {\r\n                    return;\r\n                }\r\n                App.Http.Booking.getAvailableHours(moment(selectedDates[0]).format('YYYY-MM-DD'));\r\n                App.Pages.Booking.updateConfirmFrame();\r\n            },",
+        "before_sha256": "61569c5b53c2b1f56cf3bd7426dc98fd453f4c14390168920fa15dd6875ac1f5",
+        "after_sha256": "7a21f7f004bb1cf599d3e433c22add7299ab666b40a5725b4cb9742a20713b6e"
+      },
+      {
+        "path": "assets/js/pages/booking.js",
+        "old": "if ($target.attr('data-step_index') === '1') {\r\n                const todayMoment = moment();\r\n\r\n                App.Utils.UI.setDateTimePickerValue($selectDate, todayMoment.toDate());\r\n\r\n                App.Http.Booking.getUnavailableDates(\r\n                    $selectProvider.val(),\r\n                    $selectService.val(),\r\n                    todayMoment.format('YYYY-MM-DD'),\r\n                );\r\n            }",
+        "new": "if ($target.attr('data-step_index') === '1') {\r\n                const todayMoment = moment();\r\n\r\n                if (!manageMode) {\r\n                    App.Utils.UI.setDateTimePickerValue($selectDate, todayMoment.toDate());\r\n                }\r\n\r\n                App.Http.Booking.getUnavailableDates(\r\n                    $selectProvider.val(),\r\n                    $selectService.val(),\r\n                    todayMoment.format('YYYY-MM-DD'),\r\n                );\r\n            }",
+        "before_sha256": "7a21f7f004bb1cf599d3e433c22add7299ab666b40a5725b4cb9742a20713b6e",
+        "after_sha256": "757417b9707aade2c251fac1b49bafa26dfc867d643397fde2bde85f11a9c004"
+      },
+      {
+        "path": "assets/js/pages/booking.js",
+        "old": "const $selectDate = $('#select-date');\r\n    const $selectService = $('#select-service');",
+        "new": "const $selectDate = $('#select-date');\r\n    const $selectService = $('#select-service');\r\n    let dateInputTyping = false;",
+        "before_sha256": "757417b9707aade2c251fac1b49bafa26dfc867d643397fde2bde85f11a9c004",
+        "after_sha256": "1bbb278a3d05c3a7f30cb142d2754fb4a9be18946217182dfdf924a7e1724618"
+      },
+      {
+        "path": "assets/js/pages/booking.js",
+        "old": "App.Utils.UI.setDateTimePickerValue($selectDate, new Date());\r\n\r\n        const browserTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;",
+        "new": "App.Utils.UI.setDateTimePickerValue($selectDate, new Date());\r\n\r\n        $selectDate.on('input', () => {\r\n            dateInputTyping = true;\r\n            setTimeout(() => { dateInputTyping = false; }, 500);\r\n        });\r\n\r\n        const browserTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;",
+        "before_sha256": "1bbb278a3d05c3a7f30cb142d2754fb4a9be18946217182dfdf924a7e1724618",
+        "after_sha256": "ba6bdacefc89ad1a797f4407c62221c6f400db6331b08c4bc3647f623039fc3f"
+      },
+      {
+        "path": "assets/js/pages/booking.js",
+        "old": "onMonthChange: (selectedDates, dateStr, instance) => {\r\n                $selectDate.parent().fadeTo(400, 0.3); // Change opacity during loading\r\n\r\n                if (monthTimeout) {\r\n                    clearTimeout(monthTimeout);\r\n                }\r\n\r\n                monthTimeout = setTimeout(() => {\r\n                    const previousMoment = moment(instance.selectedDates[0]);\r\n\r\n                    const displayedMonthMoment = moment(\r\n                        instance.currentYearElement.value +\r\n                            '-' +\r\n                            String(Number(instance.monthsDropdownContainer.value) + 1).padStart(2, '0') +\r\n                            '-01',\r\n                    );\r\n\r\n                    const monthChangeStep = detectDatepickerMonthChangeStep(previousMoment, displayedMonthMoment);\r\n\r\n                    App.Http.Booking.getUnavailableDates(\r\n                        $selectProvider.val(),\r\n                        $selectService.val(),\r\n                        displayedMonthMoment.format('YYYY-MM-DD'),\r\n                        monthChangeStep,\r\n                    );\r\n                }, 500);\r\n            },",
+        "new": "onMonthChange: (selectedDates, dateStr, instance) => {\r\n                if (dateInputTyping) {\r\n                    return;\r\n                }\r\n                $selectDate.parent().fadeTo(400, 0.3); // Change opacity during loading\r\n\r\n                if (monthTimeout) {\r\n                    clearTimeout(monthTimeout);\r\n                }\r\n\r\n                monthTimeout = setTimeout(() => {\r\n                    const previousMoment = moment(instance.selectedDates[0]);\r\n\r\n                    const displayedMonthMoment = moment(\r\n                        instance.currentYearElement.value +\r\n                            '-' +\r\n                            String(Number(instance.monthsDropdownContainer.value) + 1).padStart(2, '0') +\r\n                            '-01',\r\n                    );\r\n\r\n                    const monthChangeStep = detectDatepickerMonthChangeStep(previousMoment, displayedMonthMoment);\r\n\r\n                    App.Http.Booking.getUnavailableDates(\r\n                        $selectProvider.val(),\r\n                        $selectService.val(),\r\n                        displayedMonthMoment.format('YYYY-MM-DD'),\r\n                        monthChangeStep,\r\n                    );\r\n                }, 500);\r\n            }",
+        "before_sha256": "ba6bdacefc89ad1a797f4407c62221c6f400db6331b08c4bc3647f623039fc3f",
+        "after_sha256": "04ca5295aab16a6c1185a00c78c2db73a360a9ef8c0d8789fbc8850763e4a1a3"
+      }
+    ]
+  },
+  "error": "Docker operation failed: lib/index.js:11110:23)\n    at Parser.parseMaybeUnaryOrPrivate (/trusted/node_modules/@babel/parser/lib/index.js:10963:61)\n    at Parser.parseExprOps (/trusted/node_modules/@babel/parser/lib/index.js:10968:23)\n    at Parser.parseMaybeConditional (/trusted/node_modules/@babel/parser/lib/index.js:10945:23)\n    at Parser.parseMaybeAssign (/trusted/node_modules/@babel/parser/lib/index.js:10895:21)\n    at Parser.parseExpressionBase (/trusted/node_modules/@babel/parser/lib/index.js:10848:23)\n    at /trusted/node_modules/@babel/parser/lib/index.js:10844:39\n    at Parser.allowInAnd (/trusted/node_modules/@babel/parser/lib/index.js:12495:16)\n    at Parser.parseExpression (/trusted/node_modules/@babel/parser/lib/index.js:10844:17)\n    at Parser.parseStatementContent (/trusted/node_modules/@babel/parser/lib/index.js:12971:23)\n    at Parser.parseStatementLike (/trusted/node_modules/@babel/parser/lib/index.js:12843:17)\n    at Parser.parseStatementListItem (/trusted/node_modules/@babel/parser/lib/index.js:12823:17)\n    at Parser.parseBlockOrModuleBlockBody (/trusted/node_modules/@babel/parser/lib/index.js:13392:61)\n    at Parser.parseBlockBody (/trusted/node_modules/@babel/parser/lib/index.js:13385:10)\n    at Parser.parseBlock (/trusted/node_modules/@babel/parser/lib/index.js:13373:10)\n    at Parser.parseFunctionBody (/trusted/node_modules/@babel/parser/lib/index.js:12174:24)\n    at Parser.parseFunctionBodyAndFinish (/trusted/node_modules/@babel/parser/lib/index.js:12160:10)\n    at /trusted/node_modules/@babel/parser/lib/index.js:13521:12\n    at Parser.withSmartMixTopicForbiddingContext (/trusted/node_modules/@babel/parser/lib/index.js:12477:14)\n    at Parser.parseFunction (/trusted/node_modules/@babel/parser/lib/index.js:13520:10)\n    at Parser.parseFunctionStatement (/trusted/node_modules/@babel/parser/lib/index.js:13201:17)\n    at Parser.parseStatementContent (/trusted/node_modules/@babel/parser/lib/index.js:12867:21)\n    at Parser.parseStatementLike (/trusted/node_modules/@babel/parser/lib/index.js:12843:17)\n    at Parser.parseStatementListItem (/trusted/node_modules/@babel/parser/lib/index.js:12823:17)\n    at Parser.parseBlockOrModuleBlockBody (/trusted/node_modules/@babel/parser/lib/index.js:13392:61)\n    at Parser.parseBlockBody (/trusted/node_modules/@babel/parser/lib/index.js:13385:10) {\n  code: 'BABEL_PARSE_ERROR',\n  reasonCode: 'UnexpectedToken',\n  loc: Position { line: 153, column: 12, index: 5639 },\n  pos: 5639,\n  syntaxPlugin: undefined\n}\n\nNode.js v22.23.3\n",
+  "execution_finished_at_utc": "2026-10-21T14:27:46.343Z",
+  "execution_duration_ms": 9898,
+  "resources": {
+    "containers": [
+      {
+        "role": "import",
+        "name": "run-e2e193fc5be33d091e67488afa72e34b-import",
+        "id": "37fbe522370d48a9110ca70f86f0206fd934684be8a6fb005e8690d38c4f2f43"
+      },
+      {
+        "role": "build",
+        "name": "run-e2e193fc5be33d091e67488afa72e34b-build",
+        "id": "dcae659795b479b0c28c8e86b1f759aadf373c451a4c2f799658493cca35eff2"
+      }
+    ],
+    "volumes": [
+      "run-e2e193fc5be33d091e67488afa72e34b-source",
+      "run-e2e193fc5be33d091e67488afa72e34b-db-data",
+      "run-e2e193fc5be33d091e67488afa72e34b-db-socket",
+      "run-e2e193fc5be33d091e67488afa72e34b-seed",
+      "run-e2e193fc5be33d091e67488afa72e34b-reader",
+      "run-e2e193fc5be33d091e67488afa72e34b-payload"
+    ],
+    "label": "org.accessfinish.run",
+    "run_id": "run-e2e193fc5be33d091e67488afa72e34b"
+  }
+}

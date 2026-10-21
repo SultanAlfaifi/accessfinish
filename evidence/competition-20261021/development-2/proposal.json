@@ -1,0 +1,121 @@
+{
+  "id": "proposal-a4bdad2e16317b2a266061d11ca398ba",
+  "created_at_utc": "2026-10-21T13:50:39.594Z",
+  "origin": "nebius",
+  "model": "nvidia/nemotron-3-super-120b-a12b",
+  "usage": {
+    "completion_tokens": 2938,
+    "prompt_tokens": 1414,
+    "total_tokens": 4352,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": null,
+      "reasoning_tokens": 1522,
+      "rejected_prediction_tokens": null
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": null,
+      "cached_tokens": 0,
+      "created_cache_tokens": 0,
+      "multimodal_tokens": null
+    },
+    "prompt_cache_hit_tokens": 0,
+    "prompt_cache_miss_tokens": 1414
+  },
+  "estimated_cost_usd_excluding_tax": 0.0030684,
+  "diagnosis": "operator_supplied",
+  "source_sha256": "e9ebf7a9047bc2f3731837622803f18c75ed926047938552d1fd25e2dbbbeb9d",
+  "proposal_sha256": "7bb47b513cb995abd0e3244edfd0133b2764d8660fad354acd3d993e9b502a4c",
+  "files": [
+    {
+      "path": "assets/js/pages/booking.js",
+      "content": "            onChange: (selectedDates) => {\r\n                App.Http.Booking.getAvailableHours(moment(selectedDates[0]).format('YYYY-MM-DD'));\r\n                App.Pages.Booking.updateConfirmFrame();\r\n            },\r\n\r\n// Separate complete original fragment\r\n\r\n            onMonthChange: (selectedDates, dateStr, instance) => {\r\n                $selectDate.parent().fadeTo(400, 0.3); // Change opacity during loading\r\n\r\n                if (monthTimeout) {\r\n                    clearTimeout(monthTimeout);\r\n                }\r\n\r\n                monthTimeout = setTimeout(() => {\r\n                    const previousMoment = moment(instance.selectedDates[0]);\r\n\r\n                    const displayedMonthMoment = moment(\r\n                        instance.currentYearElement.value +\r\n                            '-' +\r\n                            String(Number(instance.monthsDropdownContainer.value) + 1).padStart(2, '0') +\r\n                            '-01',\r\n                    );\r\n\r\n                    const monthChangeStep = detectDatepickerMonthChangeStep(previousMoment, displayedMonthMoment);\r\n\r\n                    App.Http.Booking.getUnavailableDates(\r\n                        $selectProvider.val(),\r\n                        $selectService.val(),\r\n                        displayedMonthMoment.format('YYYY-MM-DD'),\r\n                        monthChangeStep,\r\n                    );\r\n                }, 500);\r\n            },\r\n\r\n            onYearChange: (selectedDates, dateStr, instance) => {\r\n                setTimeout(() => {\r\n                    const previousMoment = moment(instance.selectedDates[0]);\r\n\r\n                    const displayedMonthMoment = moment(\r\n                        instance.currentYearElement.value +\r\n                            '-' +\r\n                            String(Number(instance.monthsDropdownContainer.value) + 1).padStart(2, '0') +\r\n                            '-01',\r\n                    );\r\n\r\n                    const monthChangeStep = detectDatepickerMonthChangeStep(previousMoment, displayedMonthMoment);\r\n\r\n                    App.Http.Booking.getUnavailableDates(\r\n                        $selectProvider.val(),\r\n                        $selectService.val(),\r\n                        displayedMonthMoment.format('YYYY-MM-DD'),\r\n                        monthChangeStep,\r\n                    );\r\n                }, 500);\r\n            },\r\n\r\n// Separate complete original fragment\r\n\r\n                const todayMoment = moment();\r\n\r\n                App.Utils.UI.setDateTimePickerValue($selectDate, todayMoment.toDate());\r\n\r\n                App.Http.Booking.getUnavailableDates(\r\n                    $selectProvider.val(),\r\n                    $selectService.val(),\r\n                    todayMoment.format('YYYY-MM-DD'),\r\n                );"
+    },
+    {
+      "path": "application/views/components/booking_time_step.php",
+      "content": "<div id=\"select-date\" class=\"mx-auto my-4\"></div>"
+    }
+  ],
+  "proposal": {
+    "reason": "Replace non-focusable div with accessible date input, guard empty date selections, preserve appointment date in manageMode, and retain typed date during month/year updates.",
+    "edits": [
+      {
+        "path": "assets/js/pages/booking.js",
+        "old": "            onChange: (selectedDates) => {\n                App.Http.Booking.getAvailableHours(moment(selectedDates[0]).format('YYYY-MM-DD'));\n                App.Pages.Booking.updateConfirmFrame();\n            },",
+        "new": "            onChange: (selectedDates) => {\n                if (!selectedDates || selectedDates.length === 0) return;\n                App.Http.Booking.getAvailableHours(moment(selectedDates[0]).format('YYYY-MM-DD'));\n                App.Pages.Booking.updateConfirmFrame();\n            },"
+      },
+      {
+        "path": "assets/js/pages/booking.js",
+        "old": "            onMonthChange: (selectedDates, dateStr, instance) => {\n                $selectDate.parent().fadeTo(400, 0.3); // Change opacity during loading\n\n                if (monthTimeout) {\n                    clearTimeout(monthTimeout);\n                }\n\n                monthTimeout = setTimeout(() => {\n                    const previousMoment = moment(instance.selectedDates[0]);\n\n                    const displayedMonthMoment = moment(\n                        instance.currentYearElement.value +\n                            '-' +\n                            String(Number(instance.monthsDropdownContainer.value) + 1).padStart(2, '0') +\n                            '-01',\n                    );\n\n                    const monthChangeStep = detectDatepickerMonthChangeStep(previousMoment, displayedMonthMoment);\n\n                    App.Http.Booking.getUnavailableDates(\n                        $selectProvider.val(),\n                        $selectService.val(),\n                        displayedMonthMoment.format('YYYY-MM-DD'),\n                        monthChangeStep,\n                    );\n                }, 500);\n            },",
+        "new": "            onMonthChange: (selectedDates, dateStr, instance) => {\n                $selectDate.parent().fadeTo(400, 0.3); // Change opacity during loading\n\n                if (monthTimeout) {\n                    clearTimeout(monthTimeout);\n                }\n\n                monthTimeout = setTimeout(() => {\n                    const previousMoment = moment(instance.selectedDates[0]);\n                    const userDate = moment(instance.selectedDates[0]); // preserve typed date\n\n                    const displayedMonthMoment = moment(\n                        instance.currentYearElement.value +\n                            '-' +\n                            String(Number(instance.monthsDropdownContainer.value) + 1).padStart(2, '0') +\n                            '-01',\n                    );\n\n                    const monthChangeStep = detectDatepickerMonthChangeStep(previousMoment, displayedMonthMoment);\n\n                    App.Http.Booking.getUnavailableDates(\n                        $selectProvider.val(),\n                        $selectService.val(),\n                        displayedMonthMoment.format('YYYY-MM-DD'),\n                        monthChangeStep,\n                    );\n\n                    // Restore user-typed date if still valid\n                    if (userDate.isValid()) {\n                        instance.setDate(userDate.toDate());\n                    }\n                }, 500);\n            },"
+      },
+      {
+        "path": "assets/js/pages/booking.js",
+        "old": "            onYearChange: (selectedDates, dateStr, instance) => {\n                setTimeout(() => {\n                    const previousMoment = moment(instance.selectedDates[0]);\n\n                    const displayedMonthMoment = moment(\n                        instance.currentYearElement.value +\n                            '-' +\n                            String(Number(instance.monthsDropdownContainer.value) + 1).padStart(2, '0') +\n                            '-01',\n                    );\n\n                    const monthChangeStep = detectDatepickerMonthChangeStep(previousMoment, displayedMonthMoment);\n\n                    App.Http.Booking.getUnavailableDates(\n                        $selectProvider.val(),\n                        $selectService.val(),\n                        displayedMonthMoment.format('YYYY-MM-DD'),\n                        monthChangeStep,\n                    );\n                }, 500);\n            },",
+        "new": "            onYearChange: (selectedDates, dateStr, instance) => {\n                setTimeout(() => {\n                    const previousMoment = moment(instance.selectedDates[0]);\n                    const userDate = moment(instance.selectedDates[0]); // preserve typed date\n\n                    const displayedMonthMoment = moment(\n                        instance.currentYearElement.value +\n                            '-' +\n                            String(Number(instance.monthsDropdownContainer.value) + 1).padStart(2, '0') +\n                            '-01',\n                    );\n\n                    const monthChangeStep = detectDatepickerMonthChangeStep(previousMoment, displayedMonthMoment);\n\n                    App.Http.Booking.getUnavailableDates(\n                        $selectProvider.val(),\n                        $selectService.val(),\n                        displayedMonthMoment.format('YYYY-MM-DD'),\n                        monthChangeStep,\n                    );\n\n                    // Restore user-typed date if still valid\n                    if (userDate.isValid()) {\n                        instance.setDate(userDate.toDate());\n                    }\n                }, 500);\n            },"
+      },
+      {
+        "path": "assets/js/pages/booking.js",
+        "old": "                const todayMoment = moment();\n\n                App.Utils.UI.setDateTimePickerValue($selectDate, todayMoment.toDate());\n\n                App.Http.Booking.getUnavailableDates(\n                    $selectProvider.val(),\n                    $selectService.val(),\n                    todayMoment.format('YYYY-MM-DD'),\n                );",
+        "new": "                if (!manageMode) {\n                    const todayMoment = moment();\n\n                    App.Utils.UI.setDateTimePickerValue($selectDate, todayMoment.toDate());\n\n                    App.Http.Booking.getUnavailableDates(\n                        $selectProvider.val(),\n                        $selectService.val(),\n                        todayMoment.format('YYYY-MM-DD'),\n                    );\n                }"
+      },
+      {
+        "path": "application/views/components/booking_time_step.php",
+        "old": "<div id=\"select-date\" class=\"mx-auto my-4\"></div>",
+        "new": "<label for=\"select-date\" class=\"block mb-2\">Appointment Date</label>\n<input type=\"date\" id=\"select-date\" class=\"mx-auto my-4\" />"
+      }
+    ]
+  },
+  "preview": {
+    "reason": "Replace non-focusable div with accessible date input, guard empty date selections, preserve appointment date in manageMode, and retain typed date during month/year updates.",
+    "changes": [
+      {
+        "path": "assets/js/pages/booking.js",
+        "old": "            onChange: (selectedDates) => {\r\n                App.Http.Booking.getAvailableHours(moment(selectedDates[0]).format('YYYY-MM-DD'));\r\n                App.Pages.Booking.updateConfirmFrame();\r\n            },",
+        "new": "            onChange: (selectedDates) => {\r\n                if (!selectedDates || selectedDates.length === 0) return;\r\n                App.Http.Booking.getAvailableHours(moment(selectedDates[0]).format('YYYY-MM-DD'));\r\n                App.Pages.Booking.updateConfirmFrame();\r\n            },",
+        "before_sha256": "1a860d926c87faf22d23d5a6f90f884e9ee02a059a72bb7f852cd87af46961dc",
+        "after_sha256": "52e827d67106d75701257eeb8ba6615fad1f50fa957ff5d2d9d4b514bbd89c61"
+      },
+      {
+        "path": "assets/js/pages/booking.js",
+        "old": "            onMonthChange: (selectedDates, dateStr, instance) => {\r\n                $selectDate.parent().fadeTo(400, 0.3); // Change opacity during loading\r\n\r\n                if (monthTimeout) {\r\n                    clearTimeout(monthTimeout);\r\n                }\r\n\r\n                monthTimeout = setTimeout(() => {\r\n                    const previousMoment = moment(instance.selectedDates[0]);\r\n\r\n                    const displayedMonthMoment = moment(\r\n                        instance.currentYearElement.value +\r\n                            '-' +\r\n                            String(Number(instance.monthsDropdownContainer.value) + 1).padStart(2, '0') +\r\n                            '-01',\r\n                    );\r\n\r\n                    const monthChangeStep = detectDatepickerMonthChangeStep(previousMoment, displayedMonthMoment);\r\n\r\n                    App.Http.Booking.getUnavailableDates(\r\n                        $selectProvider.val(),\r\n                        $selectService.val(),\r\n                        displayedMonthMoment.format('YYYY-MM-DD'),\r\n                        monthChangeStep,\r\n                    );\r\n                }, 500);\r\n            },",
+        "new": "            onMonthChange: (selectedDates, dateStr, instance) => {\r\n                $selectDate.parent().fadeTo(400, 0.3); // Change opacity during loading\r\n\r\n                if (monthTimeout) {\r\n                    clearTimeout(monthTimeout);\r\n                }\r\n\r\n                monthTimeout = setTimeout(() => {\r\n                    const previousMoment = moment(instance.selectedDates[0]);\r\n                    const userDate = moment(instance.selectedDates[0]); // preserve typed date\r\n\r\n                    const displayedMonthMoment = moment(\r\n                        instance.currentYearElement.value +\r\n                            '-' +\r\n                            String(Number(instance.monthsDropdownContainer.value) + 1).padStart(2, '0') +\r\n                            '-01',\r\n                    );\r\n\r\n                    const monthChangeStep = detectDatepickerMonthChangeStep(previousMoment, displayedMonthMoment);\r\n\r\n                    App.Http.Booking.getUnavailableDates(\r\n                        $selectProvider.val(),\r\n                        $selectService.val(),\r\n                        displayedMonthMoment.format('YYYY-MM-DD'),\r\n                        monthChangeStep,\r\n                    );\r\n\r\n                    // Restore user-typed date if still valid\r\n                    if (userDate.isValid()) {\r\n                        instance.setDate(userDate.toDate());\r\n                    }\r\n                }, 500);\r\n            },",
+        "before_sha256": "52e827d67106d75701257eeb8ba6615fad1f50fa957ff5d2d9d4b514bbd89c61",
+        "after_sha256": "57edb5fdc0ede311ca8b81a380b976f5dc8c259b5299fcd326624a90c2107277"
+      },
+      {
+        "path": "assets/js/pages/booking.js",
+        "old": "            onYearChange: (selectedDates, dateStr, instance) => {\r\n                setTimeout(() => {\r\n                    const previousMoment = moment(instance.selectedDates[0]);\r\n\r\n                    const displayedMonthMoment = moment(\r\n                        instance.currentYearElement.value +\r\n                            '-' +\r\n                            String(Number(instance.monthsDropdownContainer.value) + 1).padStart(2, '0') +\r\n                            '-01',\r\n                    );\r\n\r\n                    const monthChangeStep = detectDatepickerMonthChangeStep(previousMoment, displayedMonthMoment);\r\n\r\n                    App.Http.Booking.getUnavailableDates(\r\n                        $selectProvider.val(),\r\n                        $selectService.val(),\r\n                        displayedMonthMoment.format('YYYY-MM-DD'),\r\n                        monthChangeStep,\r\n                    );\r\n                }, 500);\r\n            },",
+        "new": "            onYearChange: (selectedDates, dateStr, instance) => {\r\n                setTimeout(() => {\r\n                    const previousMoment = moment(instance.selectedDates[0]);\r\n                    const userDate = moment(instance.selectedDates[0]); // preserve typed date\r\n\r\n                    const displayedMonthMoment = moment(\r\n                        instance.currentYearElement.value +\r\n                            '-' +\r\n                            String(Number(instance.monthsDropdownContainer.value) + 1).padStart(2, '0') +\r\n                            '-01',\r\n                    );\r\n\r\n                    const monthChangeStep = detectDatepickerMonthChangeStep(previousMoment, displayedMonthMoment);\r\n\r\n                    App.Http.Booking.getUnavailableDates(\r\n                        $selectProvider.val(),\r\n                        $selectService.val(),\r\n                        displayedMonthMoment.format('YYYY-MM-DD'),\r\n                        monthChangeStep,\r\n                    );\r\n\r\n                    // Restore user-typed date if still valid\r\n                    if (userDate.isValid()) {\r\n                        instance.setDate(userDate.toDate());\r\n                    }\r\n                }, 500);\r\n            },",
+        "before_sha256": "57edb5fdc0ede311ca8b81a380b976f5dc8c259b5299fcd326624a90c2107277",
+        "after_sha256": "5bcadbbd118bdf1da1121495171e1a068f20b6589c09037c4c6cd11a1a296422"
+      },
+      {
+        "path": "assets/js/pages/booking.js",
+        "old": "                const todayMoment = moment();\r\n\r\n                App.Utils.UI.setDateTimePickerValue($selectDate, todayMoment.toDate());\r\n\r\n                App.Http.Booking.getUnavailableDates(\r\n                    $selectProvider.val(),\r\n                    $selectService.val(),\r\n                    todayMoment.format('YYYY-MM-DD'),\r\n                );",
+        "new": "                if (!manageMode) {\r\n                    const todayMoment = moment();\r\n\r\n                    App.Utils.UI.setDateTimePickerValue($selectDate, todayMoment.toDate());\r\n\r\n                    App.Http.Booking.getUnavailableDates(\r\n                        $selectProvider.val(),\r\n                        $selectService.val(),\r\n                        todayMoment.format('YYYY-MM-DD'),\r\n                    );\r\n                }",
+        "before_sha256": "5bcadbbd118bdf1da1121495171e1a068f20b6589c09037c4c6cd11a1a296422",
+        "after_sha256": "95844e4c05a75595c643376e1e94f31a6479c0df1a7a1181d276b0ef7ef8798b"
+      },
+      {
+        "path": "application/views/components/booking_time_step.php",
+        "old": "<div id=\"select-date\" class=\"mx-auto my-4\"></div>",
+        "new": "<label for=\"select-date\" class=\"block mb-2\">Appointment Date</label>\n<input type=\"date\" id=\"select-date\" class=\"mx-auto my-4\" />",
+        "before_sha256": "ce9fa2a278a9c13daea7003d10d69963ac2778f8959c281f5254ce0195a7c959",
+        "after_sha256": "feaef44dee40df5ef37195abe40d3059e4a8269edc17cf0cd309b7c9cf9876cd"
+      }
+    ],
+    "files": [
+      {
+        "path": "assets/js/pages/booking.js",
+        "content": "            onChange: (selectedDates) => {\r\n                if (!selectedDates || selectedDates.length === 0) return;\r\n                App.Http.Booking.getAvailableHours(moment(selectedDates[0]).format('YYYY-MM-DD'));\r\n                App.Pages.Booking.updateConfirmFrame();\r\n            },\r\n\r\n// Separate complete original fragment\r\n\r\n            onMonthChange: (selectedDates, dateStr, instance) => {\r\n                $selectDate.parent().fadeTo(400, 0.3); // Change opacity during loading\r\n\r\n                if (monthTimeout) {\r\n                    clearTimeout(monthTimeout);\r\n                }\r\n\r\n                monthTimeout = setTimeout(() => {\r\n                    const previousMoment = moment(instance.selectedDates[0]);\r\n                    const userDate = moment(instance.selectedDates[0]); // preserve typed date\r\n\r\n                    const displayedMonthMoment = moment(\r\n                        instance.currentYearElement.value +\r\n                            '-' +\r\n                            String(Number(instance.monthsDropdownContainer.value) + 1).padStart(2, '0') +\r\n                            '-01',\r\n                    );\r\n\r\n                    const monthChangeStep = detectDatepickerMonthChangeStep(previousMoment, displayedMonthMoment);\r\n\r\n                    App.Http.Booking.getUnavailableDates(\r\n                        $selectProvider.val(),\r\n                        $selectService.val(),\r\n                        displayedMonthMoment.format('YYYY-MM-DD'),\r\n                        monthChangeStep,\r\n                    );\r\n\r\n                    // Restore user-typed date if still valid\r\n                    if (userDate.isValid()) {\r\n                        instance.setDate(userDate.toDate());\r\n                    }\r\n                }, 500);\r\n            },\r\n\r\n            onYearChange: (selectedDates, dateStr, instance) => {\r\n                setTimeout(() => {\r\n                    const previousMoment = moment(instance.selectedDates[0]);\r\n                    const userDate = moment(instance.selectedDates[0]); // preserve typed date\r\n\r\n                    const displayedMonthMoment = moment(\r\n                        instance.currentYearElement.value +\r\n                            '-' +\r\n                            String(Number(instance.monthsDropdownContainer.value) + 1).padStart(2, '0') +\r\n                            '-01',\r\n                    );\r\n\r\n                    const monthChangeStep = detectDatepickerMonthChangeStep(previousMoment, displayedMonthMoment);\r\n\r\n                    App.Http.Booking.getUnavailableDates(\r\n                        $selectProvider.val(),\r\n                        $selectService.val(),\r\n                        displayedMonthMoment.format('YYYY-MM-DD'),\r\n                        monthChangeStep,\r\n                    );\r\n\r\n                    // Restore user-typed date if still valid\r\n                    if (userDate.isValid()) {\r\n                        instance.setDate(userDate.toDate());\r\n                    }\r\n                }, 500);\r\n            },\r\n\r\n// Separate complete original fragment\r\n\r\n                if (!manageMode) {\r\n                    const todayMoment = moment();\r\n\r\n                    App.Utils.UI.setDateTimePickerValue($selectDate, todayMoment.toDate());\r\n\r\n                    App.Http.Booking.getUnavailableDates(\r\n                        $selectProvider.val(),\r\n                        $selectService.val(),\r\n                        todayMoment.format('YYYY-MM-DD'),\r\n                    );\r\n                }"
+      },
+      {
+        "path": "application/views/components/booking_time_step.php",
+        "content": "<label for=\"select-date\" class=\"block mb-2\">Appointment Date</label>\n<input type=\"date\" id=\"select-date\" class=\"mx-auto my-4\" />"
+      }
+    ],
+    "applied_to_host": false
+  },
+  "applied_to_host": false
+}

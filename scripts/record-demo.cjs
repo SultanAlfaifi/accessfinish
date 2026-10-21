@@ -1,4 +1,5 @@
 'use strict';
+throw Error('Archived v0.1 recorder. Its language and live-check controls were replaced. Use the v0.2 capture manifest; this script is retained only as historical source.');
 // Records only the project-owned local workbench. Does not access a user browser profile.
 const fs=require('fs'),path=require('path'),assert=require('assert/strict');
 const {chromium}=require(process.env.PLAYWRIGHT_MODULE||'playwright'),out=path.resolve(__dirname,'../media'),raw=path.join(out,'raw'),review=path.join(out,'review');fs.mkdirSync(raw,{recursive:true});fs.mkdirSync(review,{recursive:true});

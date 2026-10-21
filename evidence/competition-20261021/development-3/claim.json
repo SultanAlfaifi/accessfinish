@@ -1,0 +1,8 @@
+{
+  "phase": "development",
+  "index": 3,
+  "at_utc": "2026-10-21T13:53:52.311Z",
+  "state": "generation_failed",
+  "context_sha256": "e9ebf7a9047bc2f3731837622803f18c75ed926047938552d1fd25e2dbbbeb9d",
+  "error": "The replacement anchor must match exactly once."
+}

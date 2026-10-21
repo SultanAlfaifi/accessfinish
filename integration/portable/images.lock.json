@@ -1,0 +1,22 @@
+{
+  "node": {
+    "tag": "node:22-bookworm-slim",
+    "digest": "node@sha256:c3de60bf2f9dd0ac6370e6117950ff62d6e339527e7472301c9c78a017978392"
+  },
+  "php": {
+    "tag": "php:8.4.24-cli-bookworm",
+    "digest": "php@sha256:6003a0607eea6dc61d04723d3e60347c8481ffb2f09dbf85bf427b9ce0c25629"
+  },
+  "composer": {
+    "tag": "composer:2",
+    "digest": "composer@sha256:af98f42dfff7c68ba8d53c2164fd9fde1087b7d449514baa38c418b1f6bc4bac"
+  },
+  "browser": {
+    "tag": "mcr.microsoft.com/playwright:v1.62.1-noble",
+    "digest": "mcr.microsoft.com/playwright@sha256:dcc5531e97840b9b5e794f2814476b21571c5124a3fca2267d73041f56e7580e"
+  },
+  "database": {
+    "tag": "mariadb:11.4.8",
+    "digest": "mariadb@sha256:bc474f00629f0123c10f9e1bca193a45d18af15a274cf0656acda64f1086c3b6"
+  }
+}

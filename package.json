@@ -1,1 +1,18 @@
-{"name":"accessfinish","version":"0.1.0","private":true,"description":"A keyboard-task repair workbench with independently verified booking outcomes.","license":"MIT","engines":{"node":">=22"},"scripts":{"start":"node server.cjs","test":"node --test test/*.test.cjs"}}
+{
+  "name": "accessfinish",
+  "version": "0.2.0",
+  "private": true,
+  "description": "A keyboard-task repair workbench with independently verified booking outcomes.",
+  "license": "MIT",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "start": "node server.cjs",
+    "test": "node --test test/*.test.cjs",
+    "demo:setup": "node scripts/demo-setup.cjs",
+    "demo:check": "node scripts/demo-check.cjs",
+    "replay": "node scripts/replay-preview.cjs",
+    "check:records": "node scripts/check-trials.cjs"
+  }
+}

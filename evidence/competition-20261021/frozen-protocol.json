@@ -1,0 +1,29 @@
+{
+  "inputs": {
+    "model": "nvidia/nemotron-3-super-120b-a12b",
+    "context_sha256": "398c85542878892ac7e555de74559964759e385bf8d0c181515d9126f13bef5c",
+    "fixture_fingerprint": "b51cb712f12f2c9601b96b7bcbb11d2ba644cd59a86ea395bf7e8185f7127c24",
+    "procedure_hashes": {
+      "../lib/model.cjs": "83c120dfff12fa741e6606fe848c06cad83acab18ceb932fb54b8a38f58b2257",
+      "../lib/fixture.cjs": "2359025504482e14987daf0cc54fed67fd69bc1e45600ca398c6465fb6ca863b",
+      "../lib/docker.cjs": "b0e63f7a62ebd6181f6aff36806b80e23ea8e7909059ea6cd0cb2867d97124c3",
+      "../lib/runs.cjs": "9ba662ebf88ab6b6e14b5b4d65807ab297f75f21839e3089176c44851fa510d1",
+      "../lib/repair.cjs": "793c3843dce4ea0a33d06b203882d6407a3a99b25e1adb7f7a36f7828730cd21",
+      "../lib/case-source.cjs": "7a6d12147b2f423cbcfa9ccb60bb536c2f1544ca30157a951a7e7ff254f22dbd",
+      "./trial.cjs": "99bb40a853b9fda5ebe6371f4d9da401e1debeb29d52020476549b2598e0bab7"
+    }
+  },
+  "trials": 5,
+  "at_utc": "2026-10-21T14:08:13.227Z",
+  "exposed_guided_case": true,
+  "hidden_benchmark": false,
+  "diagnosis_and_repair_direction": "operator supplied",
+  "development_requests": 3,
+  "automatic_retries": 0,
+  "protocol_changes_after_development": [
+    "Complete original files replace source excerpts containing artificial separator comments.",
+    "Output reservation increased to 8192 tokens within the existing per-request budget.",
+    "Pointer booking, clear-date, reserved-slot and runtime-boundary checks added."
+  ],
+  "success_definition": "Exact anchored repair, trusted build, native keyboard booking, SELECT-only database match, fresh browser reopen, preservation of existing records, pointer regression booking, reserved-slot exclusion, cleared-date error check, and inspected container boundaries all pass."
+}

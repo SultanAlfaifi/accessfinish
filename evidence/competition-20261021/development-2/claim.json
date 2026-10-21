@@ -1,0 +1,14 @@
+{
+  "phase": "development",
+  "index": 2,
+  "at_utc": "2026-10-21T13:50:06.792Z",
+  "state": "failed",
+  "context_sha256": "e9ebf7a9047bc2f3731837622803f18c75ed926047938552d1fd25e2dbbbeb9d",
+  "proposal_id": "proposal-a4bdad2e16317b2a266061d11ca398ba",
+  "proposal_sha256": "7bb47b513cb995abd0e3244edfd0133b2764d8660fad354acd3d993e9b502a4c",
+  "attempt_id": "cd13395b-51e1-4d33-92bb-fddf70fb9a93",
+  "estimated_cost_usd_excluding_tax": 0.0030684,
+  "run_id": "run-b6bcbe2265dbf63f2163260a88440c1a",
+  "booking_verified": false,
+  "error": "Outcome verification failed: wrong_start_datetime, wrong_end_datetime_or_duration, reopen_date_mismatch"
+}
