@@ -8,6 +8,8 @@ AccessFinish connects a reviewable NVIDIA Nemotron source proposal to an isolate
 
 ## Review in a browser
 
+Start with the [three-minute judging guide](submission/judge-guide.md) for the exact review path, evidence identities and fresh-execution commands.
+
 The published experience is a **recorded evidence review**. Inspect the blocked date control, review the exact patch, open its matching execution, and inspect all five evaluation outcomes. Opening a recording starts no model request, build, booking, or fresh verification.
 
 For a local preview without Docker or an API key:

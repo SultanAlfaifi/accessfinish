@@ -1,0 +1,98 @@
+{
+  "schema_version": 1,
+  "file": "accessfinish-demo-v02.mp4",
+  "technical_report": "review-technical-v02.json",
+  "technical_status": "passed",
+  "visual": {
+    "contact_sheet": "review/contact-v02.jpg",
+    "sampled_seconds": [
+      0,
+      8,
+      20,
+      32,
+      40,
+      46,
+      52,
+      58,
+      62,
+      67,
+      77,
+      87,
+      98,
+      104,
+      108,
+      118,
+      122,
+      132,
+      139,
+      139.967
+    ],
+    "full_size_encoded_frames_inspected": [
+      53,
+      110
+    ],
+    "representative_compositor_preview_seconds": 2,
+    "findings": "English captions fit. Recorded model provenance, the exact patch, approval checkbox and hash, actual execution states, saved date/time, preservation checks, and all five evaluation outcomes are visible. Source captures retain edited timing; no speed claim is made.",
+    "continuous_full_playback": "Continuous human viewing not performed; entrant playback pending. Full-duration normal-speed playback with periodic observations completed without a reported player error.",
+    "normal_speed_player_run": {
+      "scope": "Full-duration normal-speed player run with periodic observations; continuous human viewing and entrant approval remain pending",
+      "observations": [
+        {
+          "duration": 140,
+          "ended": false,
+          "error": null,
+          "paused": false,
+          "rate": 1,
+          "ready_state": 4,
+          "time": 0.263253
+        },
+        {
+          "duration": 140,
+          "ended": false,
+          "error": null,
+          "paused": false,
+          "rate": 1,
+          "time": 75.843516
+        },
+        {
+          "duration": 140,
+          "ended": true,
+          "error": null,
+          "paused": true,
+          "rate": 1,
+          "time": 140
+        },
+        {
+          "duration": 140,
+          "ended": false,
+          "error": null,
+          "paused": false,
+          "rate": 1,
+          "time": 116.722487
+        },
+        {
+          "duration": 140,
+          "ended": true,
+          "error": null,
+          "paused": true,
+          "rate": 1,
+          "time": 140
+        }
+      ]
+    }
+  },
+  "claims": {
+    "new_model_call_in_video": false,
+    "new_isolated_execution_in_video": true,
+    "execution_run_id": "run-9c34bf83fb3c7409d2da1537aa8427f3",
+    "source_revision": "fbd4a5d",
+    "capture_type": "actual UI captures with edited timing",
+    "operator_supplied_diagnosis_and_repair_direction": true,
+    "frozen_generation_full_passes": 2,
+    "frozen_generation_attempts": 5,
+    "distinct_exposed_cases": 1
+  },
+  "publication_approval": "pending",
+  "public_youtube_url": null,
+  "render_sha256": "4b964ffc0e1a7ae3dc0d08ad7090db8fefd6f3bc859d5e31f0eeba7a24fdb368"
+}

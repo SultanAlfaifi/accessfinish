@@ -1,0 +1,457 @@
+{
+  "schema_version": 1,
+  "source_revision": "fbd4a5d",
+  "capture_tool": "CUA browser screenshot API",
+  "capture_mode": "Edited walkthrough using actual UI states sampled during execution; not a continuous-frame recording or speed benchmark.",
+  "model_call_in_video": false,
+  "fresh_isolated_execution_in_video": true,
+  "execution_clicked_at_utc": "2026-10-21T15:23:34.745Z",
+  "verified_run_id": "run-9c34bf83fb3c7409d2da1537aa8427f3",
+  "proposal_sha256": "8e7b485a36a94e2ac5ea3d6e7f43d5a8c180748e233349494d8515e5f563aca5",
+  "states": [
+    {
+      "id": "01-opening",
+      "file": "01-opening.jpg",
+      "at_utc": "2026-10-21T15:18:33.695Z",
+      "viewport": {
+        "height": 818,
+        "width": 1454
+      }
+    },
+    {
+      "id": "02-blockage",
+      "file": "02-blockage.jpg",
+      "at_utc": "2026-10-21T15:21:29.770Z",
+      "viewport": {
+        "height": 818,
+        "width": 1454,
+        "x": 0,
+        "y": 427.2727355957031
+      }
+    },
+    {
+      "id": "03-model-record",
+      "file": "03-model-record.jpg",
+      "at_utc": "2026-10-21T15:21:30.472Z",
+      "viewport": {
+        "height": 818,
+        "width": 1454,
+        "x": 0,
+        "y": 323.8636474609375
+      }
+    },
+    {
+      "id": "04-date-input",
+      "file": "04-date-input.jpg",
+      "at_utc": "2026-10-21T15:21:31.173Z",
+      "viewport": {
+        "height": 818,
+        "width": 1454,
+        "x": 0,
+        "y": 443.1818237304687
+      }
+    },
+    {
+      "id": "05-calendar-guard",
+      "file": "05-calendar-guard.jpg",
+      "at_utc": "2026-10-21T15:21:31.623Z",
+      "viewport": {
+        "height": 818,
+        "width": 1454,
+        "x": 0,
+        "y": 443.1818237304687
+      }
+    },
+    {
+      "id": "06-preserve-date",
+      "file": "06-preserve-date.jpg",
+      "at_utc": "2026-10-21T15:21:32.048Z",
+      "viewport": {
+        "height": 818,
+        "width": 1454,
+        "x": 0,
+        "y": 443.1818237304687
+      }
+    },
+    {
+      "id": "07-approved-hash",
+      "file": "07-approved-hash.jpg",
+      "at_utc": "2026-10-21T15:23:34.745Z",
+      "timestamp_source": "CUA capture file modification time"
+    },
+    {
+      "id": "09-verified-outcome",
+      "file": "09-verified-outcome.jpg",
+      "at_utc": "2026-10-21T15:30:46.543Z",
+      "viewport": {
+        "height": 818,
+        "width": 1454,
+        "y": 580.3870544433594
+      }
+    },
+    {
+      "id": "10-all-outcomes",
+      "file": "10-all-outcomes.jpg",
+      "at_utc": "2026-10-21T15:29:47.604Z",
+      "viewport": {
+        "height": 818,
+        "width": 1454,
+        "y": 1362.6384582519531
+      }
+    }
+  ],
+  "execution_frames": [
+    {
+      "index": 0,
+      "file": "live-000.jpg",
+      "at_ms": 149,
+      "flag": "QUEUED",
+      "identity": "Run: run-9c34bf83fb3c7409d2da1537aa8427f3\nProposal SHA-256: 8e7b485a36a94e2ac5ea3d6e7f43d5a8c180748e233349494d8515e5f563aca5"
+    },
+    {
+      "index": 1,
+      "file": "live-001.jpg",
+      "at_ms": 1143,
+      "flag": "PREPARING",
+      "identity": "Run: run-9c34bf83fb3c7409d2da1537aa8427f3\nProposal SHA-256: 8e7b485a36a94e2ac5ea3d6e7f43d5a8c180748e233349494d8515e5f563aca5"
+    },
+    {
+      "index": 2,
+      "file": "live-002.jpg",
+      "at_ms": 2137,
+      "flag": "PREPARING",
+      "identity": "Run: run-9c34bf83fb3c7409d2da1537aa8427f3\nProposal SHA-256: 8e7b485a36a94e2ac5ea3d6e7f43d5a8c180748e233349494d8515e5f563aca5"
+    },
+    {
+      "index": 3,
+      "file": "live-003.jpg",
+      "at_ms": 3137,
+      "flag": "PREPARING",
+      "identity": "Run: run-9c34bf83fb3c7409d2da1537aa8427f3\nProposal SHA-256: 8e7b485a36a94e2ac5ea3d6e7f43d5a8c180748e233349494d8515e5f563aca5"
+    },
+    {
+      "index": 4,
+      "file": "live-004.jpg",
+      "at_ms": 4134,
+      "flag": "PREPARING",
+      "identity": "Run: run-9c34bf83fb3c7409d2da1537aa8427f3\nProposal SHA-256: 8e7b485a36a94e2ac5ea3d6e7f43d5a8c180748e233349494d8515e5f563aca5"
+    },
+    {
+      "index": 5,
+      "file": "live-005.jpg",
+      "at_ms": 5135,
+      "flag": "PREPARING",
+      "identity": "Run: run-9c34bf83fb3c7409d2da1537aa8427f3\nProposal SHA-256: 8e7b485a36a94e2ac5ea3d6e7f43d5a8c180748e233349494d8515e5f563aca5"
+    },
+    {
+      "index": 6,
+      "file": "live-006.jpg",
+      "at_ms": 6138,
+      "flag": "PREPARING",
+      "identity": "Run: run-9c34bf83fb3c7409d2da1537aa8427f3\nProposal SHA-256: 8e7b485a36a94e2ac5ea3d6e7f43d5a8c180748e233349494d8515e5f563aca5"
+    },
+    {
+      "index": 7,
+      "file": "live-007.jpg",
+      "at_ms": 7143,
+      "flag": "BUILDING",
+      "identity": "Run: run-9c34bf83fb3c7409d2da1537aa8427f3\nProposal SHA-256: 8e7b485a36a94e2ac5ea3d6e7f43d5a8c180748e233349494d8515e5f563aca5"
+    },
+    {
+      "index": 8,
+      "file": "live-008.jpg",
+      "at_ms": 8137,
+      "flag": "BUILDING",
+      "identity": "Run: run-9c34bf83fb3c7409d2da1537aa8427f3\nProposal SHA-256: 8e7b485a36a94e2ac5ea3d6e7f43d5a8c180748e233349494d8515e5f563aca5"
+    },
+    {
+      "index": 9,
+      "file": "live-009.jpg",
+      "at_ms": 9135,
+      "flag": "BUILDING",
+      "identity": "Run: run-9c34bf83fb3c7409d2da1537aa8427f3\nProposal SHA-256: 8e7b485a36a94e2ac5ea3d6e7f43d5a8c180748e233349494d8515e5f563aca5"
+    },
+    {
+      "index": 10,
+      "file": "live-010.jpg",
+      "at_ms": 10136,
+      "flag": "BUILDING",
+      "identity": "Run: run-9c34bf83fb3c7409d2da1537aa8427f3\nProposal SHA-256: 8e7b485a36a94e2ac5ea3d6e7f43d5a8c180748e233349494d8515e5f563aca5"
+    },
+    {
+      "index": 11,
+      "file": "live-011.jpg",
+      "at_ms": 11137,
+      "flag": "BUILDING",
+      "identity": "Run: run-9c34bf83fb3c7409d2da1537aa8427f3\nProposal SHA-256: 8e7b485a36a94e2ac5ea3d6e7f43d5a8c180748e233349494d8515e5f563aca5"
+    },
+    {
+      "index": 12,
+      "file": "live-012.jpg",
+      "at_ms": 12135,
+      "flag": "BUILDING",
+      "identity": "Run: run-9c34bf83fb3c7409d2da1537aa8427f3\nProposal SHA-256: 8e7b485a36a94e2ac5ea3d6e7f43d5a8c180748e233349494d8515e5f563aca5"
+    },
+    {
+      "index": 13,
+      "file": "live-013.jpg",
+      "at_ms": 13136,
+      "flag": "BUILDING",
+      "identity": "Run: run-9c34bf83fb3c7409d2da1537aa8427f3\nProposal SHA-256: 8e7b485a36a94e2ac5ea3d6e7f43d5a8c180748e233349494d8515e5f563aca5"
+    },
+    {
+      "index": 14,
+      "file": "live-014.jpg",
+      "at_ms": 14136,
+      "flag": "BUILDING",
+      "identity": "Run: run-9c34bf83fb3c7409d2da1537aa8427f3\nProposal SHA-256: 8e7b485a36a94e2ac5ea3d6e7f43d5a8c180748e233349494d8515e5f563aca5"
+    },
+    {
+      "index": 15,
+      "file": "live-015.jpg",
+      "at_ms": 15137,
+      "flag": "BUILDING",
+      "identity": "Run: run-9c34bf83fb3c7409d2da1537aa8427f3\nProposal SHA-256: 8e7b485a36a94e2ac5ea3d6e7f43d5a8c180748e233349494d8515e5f563aca5"
+    },
+    {
+      "index": 16,
+      "file": "live-016.jpg",
+      "at_ms": 16134,
+      "flag": "BUILDING",
+      "identity": "Run: run-9c34bf83fb3c7409d2da1537aa8427f3\nProposal SHA-256: 8e7b485a36a94e2ac5ea3d6e7f43d5a8c180748e233349494d8515e5f563aca5"
+    },
+    {
+      "index": 17,
+      "file": "live-017.jpg",
+      "at_ms": 17135,
+      "flag": "BUILDING",
+      "identity": "Run: run-9c34bf83fb3c7409d2da1537aa8427f3\nProposal SHA-256: 8e7b485a36a94e2ac5ea3d6e7f43d5a8c180748e233349494d8515e5f563aca5"
+    },
+    {
+      "index": 18,
+      "file": "live-018.jpg",
+      "at_ms": 18135,
+      "flag": "BUILDING",
+      "identity": "Run: run-9c34bf83fb3c7409d2da1537aa8427f3\nProposal SHA-256: 8e7b485a36a94e2ac5ea3d6e7f43d5a8c180748e233349494d8515e5f563aca5"
+    },
+    {
+      "index": 19,
+      "file": "live-019.jpg",
+      "at_ms": 19136,
+      "flag": "BOOKING",
+      "identity": "Run: run-9c34bf83fb3c7409d2da1537aa8427f3\nProposal SHA-256: 8e7b485a36a94e2ac5ea3d6e7f43d5a8c180748e233349494d8515e5f563aca5"
+    },
+    {
+      "index": 20,
+      "file": "live-020.jpg",
+      "at_ms": 33166,
+      "flag": "VERIFYING",
+      "identity": "Run: run-9c34bf83fb3c7409d2da1537aa8427f3\nProposal SHA-256: 8e7b485a36a94e2ac5ea3d6e7f43d5a8c180748e233349494d8515e5f563aca5"
+    },
+    {
+      "index": 21,
+      "file": "live-021.jpg",
+      "at_ms": 33302,
+      "flag": "VERIFYING",
+      "identity": "Run: run-9c34bf83fb3c7409d2da1537aa8427f3\nProposal SHA-256: 8e7b485a36a94e2ac5ea3d6e7f43d5a8c180748e233349494d8515e5f563aca5"
+    },
+    {
+      "index": 22,
+      "file": "live-022.jpg",
+      "at_ms": 33447,
+      "flag": "VERIFYING",
+      "identity": "Run: run-9c34bf83fb3c7409d2da1537aa8427f3\nProposal SHA-256: 8e7b485a36a94e2ac5ea3d6e7f43d5a8c180748e233349494d8515e5f563aca5"
+    },
+    {
+      "index": 23,
+      "file": "live-023.jpg",
+      "at_ms": 33589,
+      "flag": "VERIFYING",
+      "identity": "Run: run-9c34bf83fb3c7409d2da1537aa8427f3\nProposal SHA-256: 8e7b485a36a94e2ac5ea3d6e7f43d5a8c180748e233349494d8515e5f563aca5"
+    },
+    {
+      "index": 24,
+      "file": "live-024.jpg",
+      "at_ms": 33730,
+      "flag": "VERIFYING",
+      "identity": "Run: run-9c34bf83fb3c7409d2da1537aa8427f3\nProposal SHA-256: 8e7b485a36a94e2ac5ea3d6e7f43d5a8c180748e233349494d8515e5f563aca5"
+    },
+    {
+      "index": 25,
+      "file": "live-025.jpg",
+      "at_ms": 33875,
+      "flag": "VERIFYING",
+      "identity": "Run: run-9c34bf83fb3c7409d2da1537aa8427f3\nProposal SHA-256: 8e7b485a36a94e2ac5ea3d6e7f43d5a8c180748e233349494d8515e5f563aca5"
+    },
+    {
+      "index": 26,
+      "file": "live-026.jpg",
+      "at_ms": 33999,
+      "flag": "VERIFYING",
+      "identity": "Run: run-9c34bf83fb3c7409d2da1537aa8427f3\nProposal SHA-256: 8e7b485a36a94e2ac5ea3d6e7f43d5a8c180748e233349494d8515e5f563aca5"
+    },
+    {
+      "index": 27,
+      "file": "live-027.jpg",
+      "at_ms": 34145,
+      "flag": "VERIFYING",
+      "identity": "Run: run-9c34bf83fb3c7409d2da1537aa8427f3\nProposal SHA-256: 8e7b485a36a94e2ac5ea3d6e7f43d5a8c180748e233349494d8515e5f563aca5"
+    },
+    {
+      "index": 28,
+      "file": "live-028.jpg",
+      "at_ms": 34293,
+      "flag": "VERIFYING",
+      "identity": "Run: run-9c34bf83fb3c7409d2da1537aa8427f3\nProposal SHA-256: 8e7b485a36a94e2ac5ea3d6e7f43d5a8c180748e233349494d8515e5f563aca5"
+    },
+    {
+      "index": 29,
+      "file": "live-029.jpg",
+      "at_ms": 34432,
+      "flag": "VERIFYING",
+      "identity": "Run: run-9c34bf83fb3c7409d2da1537aa8427f3\nProposal SHA-256: 8e7b485a36a94e2ac5ea3d6e7f43d5a8c180748e233349494d8515e5f563aca5"
+    },
+    {
+      "index": 30,
+      "file": "live-030.jpg",
+      "at_ms": 34564,
+      "flag": "VERIFYING",
+      "identity": "Run: run-9c34bf83fb3c7409d2da1537aa8427f3\nProposal SHA-256: 8e7b485a36a94e2ac5ea3d6e7f43d5a8c180748e233349494d8515e5f563aca5"
+    },
+    {
+      "index": 31,
+      "file": "live-031.jpg",
+      "at_ms": 34702,
+      "flag": "VERIFYING",
+      "identity": "Run: run-9c34bf83fb3c7409d2da1537aa8427f3\nProposal SHA-256: 8e7b485a36a94e2ac5ea3d6e7f43d5a8c180748e233349494d8515e5f563aca5"
+    },
+    {
+      "index": 32,
+      "file": "live-032.jpg",
+      "at_ms": 34833,
+      "flag": "VERIFYING",
+      "identity": "Run: run-9c34bf83fb3c7409d2da1537aa8427f3\nProposal SHA-256: 8e7b485a36a94e2ac5ea3d6e7f43d5a8c180748e233349494d8515e5f563aca5"
+    },
+    {
+      "index": 33,
+      "file": "live-033.jpg",
+      "at_ms": 34975,
+      "flag": "VERIFYING",
+      "identity": "Run: run-9c34bf83fb3c7409d2da1537aa8427f3\nProposal SHA-256: 8e7b485a36a94e2ac5ea3d6e7f43d5a8c180748e233349494d8515e5f563aca5"
+    },
+    {
+      "index": 34,
+      "file": "live-034.jpg",
+      "at_ms": 35111,
+      "flag": "VERIFYING",
+      "identity": "Run: run-9c34bf83fb3c7409d2da1537aa8427f3\nProposal SHA-256: 8e7b485a36a94e2ac5ea3d6e7f43d5a8c180748e233349494d8515e5f563aca5"
+    },
+    {
+      "index": 35,
+      "file": "live-035.jpg",
+      "at_ms": 35236,
+      "flag": "VERIFYING",
+      "identity": "Run: run-9c34bf83fb3c7409d2da1537aa8427f3\nProposal SHA-256: 8e7b485a36a94e2ac5ea3d6e7f43d5a8c180748e233349494d8515e5f563aca5"
+    },
+    {
+      "index": 36,
+      "file": "live-036.jpg",
+      "at_ms": 36131,
+      "flag": "VERIFYING",
+      "identity": "Run: run-9c34bf83fb3c7409d2da1537aa8427f3\nProposal SHA-256: 8e7b485a36a94e2ac5ea3d6e7f43d5a8c180748e233349494d8515e5f563aca5"
+    },
+    {
+      "index": 37,
+      "file": "live-037.jpg",
+      "at_ms": 37146,
+      "flag": "VERIFYING",
+      "identity": "Run: run-9c34bf83fb3c7409d2da1537aa8427f3\nProposal SHA-256: 8e7b485a36a94e2ac5ea3d6e7f43d5a8c180748e233349494d8515e5f563aca5"
+    },
+    {
+      "index": 38,
+      "file": "live-038.jpg",
+      "at_ms": 38133,
+      "flag": "VERIFYING",
+      "identity": "Run: run-9c34bf83fb3c7409d2da1537aa8427f3\nProposal SHA-256: 8e7b485a36a94e2ac5ea3d6e7f43d5a8c180748e233349494d8515e5f563aca5"
+    },
+    {
+      "index": 39,
+      "file": "live-039.jpg",
+      "at_ms": 39131,
+      "flag": "VERIFYING",
+      "identity": "Run: run-9c34bf83fb3c7409d2da1537aa8427f3\nProposal SHA-256: 8e7b485a36a94e2ac5ea3d6e7f43d5a8c180748e233349494d8515e5f563aca5"
+    },
+    {
+      "index": 40,
+      "file": "live-040.jpg",
+      "at_ms": 109359,
+      "flag": "VERIFIED FOR THIS RUN",
+      "identity": "Run: run-9c34bf83fb3c7409d2da1537aa8427f3\nProposal SHA-256: 8e7b485a36a94e2ac5ea3d6e7f43d5a8c180748e233349494d8515e5f563aca5"
+    },
+    {
+      "index": 41,
+      "file": "live-041.jpg",
+      "at_ms": 110331,
+      "flag": "VERIFIED FOR THIS RUN",
+      "identity": "Run: run-9c34bf83fb3c7409d2da1537aa8427f3\nProposal SHA-256: 8e7b485a36a94e2ac5ea3d6e7f43d5a8c180748e233349494d8515e5f563aca5"
+    },
+    {
+      "index": 42,
+      "file": "live-042.jpg",
+      "at_ms": 111347,
+      "flag": "VERIFIED FOR THIS RUN",
+      "identity": "Run: run-9c34bf83fb3c7409d2da1537aa8427f3\nProposal SHA-256: 8e7b485a36a94e2ac5ea3d6e7f43d5a8c180748e233349494d8515e5f563aca5"
+    },
+    {
+      "index": 43,
+      "file": "live-043.jpg",
+      "at_ms": 112342,
+      "flag": "VERIFIED FOR THIS RUN",
+      "identity": "Run: run-9c34bf83fb3c7409d2da1537aa8427f3\nProposal SHA-256: 8e7b485a36a94e2ac5ea3d6e7f43d5a8c180748e233349494d8515e5f563aca5"
+    },
+    {
+      "index": 44,
+      "file": "live-044.jpg",
+      "at_ms": 113330,
+      "flag": "VERIFIED FOR THIS RUN",
+      "identity": "Run: run-9c34bf83fb3c7409d2da1537aa8427f3\nProposal SHA-256: 8e7b485a36a94e2ac5ea3d6e7f43d5a8c180748e233349494d8515e5f563aca5"
+    },
+    {
+      "index": 45,
+      "file": "live-045.jpg",
+      "at_ms": 114328,
+      "flag": "VERIFIED FOR THIS RUN",
+      "identity": "Run: run-9c34bf83fb3c7409d2da1537aa8427f3\nProposal SHA-256: 8e7b485a36a94e2ac5ea3d6e7f43d5a8c180748e233349494d8515e5f563aca5"
+    },
+    {
+      "index": 46,
+      "file": "live-046.jpg",
+      "at_ms": 115326,
+      "flag": "VERIFIED FOR THIS RUN",
+      "identity": "Run: run-9c34bf83fb3c7409d2da1537aa8427f3\nProposal SHA-256: 8e7b485a36a94e2ac5ea3d6e7f43d5a8c180748e233349494d8515e5f563aca5"
+    },
+    {
+      "index": 47,
+      "file": "live-047.jpg",
+      "at_ms": 116342,
+      "flag": "VERIFIED FOR THIS RUN",
+      "identity": "Run: run-9c34bf83fb3c7409d2da1537aa8427f3\nProposal SHA-256: 8e7b485a36a94e2ac5ea3d6e7f43d5a8c180748e233349494d8515e5f563aca5"
+    },
+    {
+      "index": 48,
+      "file": "live-048.jpg",
+      "at_ms": 117326,
+      "flag": "VERIFIED FOR THIS RUN",
+      "identity": "Run: run-9c34bf83fb3c7409d2da1537aa8427f3\nProposal SHA-256: 8e7b485a36a94e2ac5ea3d6e7f43d5a8c180748e233349494d8515e5f563aca5"
+    },
+    {
+      "index": 49,
+      "file": "live-049.jpg",
+      "at_ms": 118329,
+      "flag": "VERIFIED FOR THIS RUN",
+      "identity": "Run: run-9c34bf83fb3c7409d2da1537aa8427f3\nProposal SHA-256: 8e7b485a36a94e2ac5ea3d6e7f43d5a8c180748e233349494d8515e5f563aca5"
+    }
+  ],
+  "audio": "silent; English captions; no music",
+  "private_account_content_captured": false
+}
