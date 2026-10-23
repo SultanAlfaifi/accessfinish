@@ -2,14 +2,15 @@
 const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict'),cp=require('node:child_process'),crypto=require('node:crypto');
 const root=path.resolve(__dirname,'..');
 const read=file=>JSON.parse(fs.readFileSync(path.join(root,file),'utf8'));
+const normalized=text=>text.replace(/\r\n/g,'\n');
 const fields=read('submission/devpost-fields.json'),status=read('submission/implementation-status.json');
 const records=JSON.parse(cp.execFileSync(process.execPath,[path.join(root,'scripts/check-trials.cjs')],{encoding:'utf8',cwd:root}));
 assert.equal(fields.evidence.complete_passes,records.evaluation_passed);
 assert.equal(fields.evidence.frozen_attempts,records.evaluation_attempts);
 assert.equal(fields.evidence.exposed_cases,records.distinct_cases);
 assert.equal(fields.evidence.total_requests,records.evaluation_attempts+records.retained_development_attempts);
-assert.equal(fields.description,fs.readFileSync(path.join(root,'submission/project-description.md'),'utf8'));
-assert.equal(fields.technology_feedback,fs.readFileSync(path.join(root,'submission/technology-feedback.md'),'utf8'));
+assert.equal(normalized(fields.description),normalized(fs.readFileSync(path.join(root,'submission/project-description.md'),'utf8')));
+assert.equal(normalized(fields.technology_feedback),normalized(fs.readFileSync(path.join(root,'submission/technology-feedback.md'),'utf8')));
 assert.ok(fields.tagline.length>0&&fields.tagline.length<=120);
 assert.ok(fs.readFileSync(path.join(root,'submission/youtube-details.txt'),'utf8').includes('140-second'));
 let stagedAssets=0;
