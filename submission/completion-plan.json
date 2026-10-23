@@ -56,26 +56,26 @@
     {
       "id": 4,
       "work": "Two independent browser-only developer reviews",
-      "state": "form_and_protocol_prepared",
+      "state": "awaiting_two_agreed_developer_responses",
       "acceptance": "Two actual independent participants; bound run IDs; uncoached comprehension answers, blockers, assistance and usefulness; no installation/execution claim",
       "review_form_url": "https://sultalfaifi.com/accessfinish/review.html"
     },
     {
       "id": 5,
       "work": "Final English demo and test build",
-      "state": "140_second_video_and_clean_test_archive_prepared_entrant_continuous_playback_pending",
-      "acceptance": "120-150 second captioned working walkthrough; actual measured evidence and limits; metadata/full decode/visual checks; clean archive opens and passes required checks"
+      "state": "117_8_second_narrated_v03_uploaded_private",
+      "acceptance": "Under-three-minute English narrated walkthrough; actual measurements and limits; full decode, audio and sampled-frame checks; entrant final watch/listen remains pending"
     },
     {
       "id": 6,
       "work": "Public judging assets",
-      "state": "pending_final_review",
+      "state": "hold_for_two_browser_reviews_then_final_publication_approval",
       "acceptance": "Reviewed repository/release and test build; public YouTube video under three minutes; exact links anonymously verified"
     },
     {
       "id": 7,
       "work": "Devpost submission",
-      "state": "not_submitted",
+      "state": "not_submitted_resolve_previously_registered_account_after_reviews",
       "acceptance": "Entrant reviews eligibility, ownership, team/city and declarations; final submission approval; submitted status and receipt or project URL verified"
     },
     {
@@ -95,5 +95,14 @@
     "estimated_model_cost_usd_excluding_tax": 0.0394581,
     "automatic_retries": 0
   },
-  "checkpoint_utc": "2026-10-23T13:59:46.353Z"
+  "checkpoint_utc": "2026-10-23T17:28:34.499292+00:00",
+  "private_youtube_url": "https://youtu.be/Ma9cEARXV2g",
+  "hold_until_browser_reviews": true,
+  "current_strengthening_revision": {
+    "case": "customer-phone deliberately seeded fault",
+    "comparison": "6 paired variants / 12 executions / equal correctness outcomes",
+    "new_model": "1 guided generation / 2 verified execution replays / $0.0041457 estimated before tax",
+    "presentation": "English Aiden v04 / 109.5 seconds / full entrant playback pending",
+    "publication": "Current two-case source and media prepared locally; no updated public demo or video yet"
+  }
 }

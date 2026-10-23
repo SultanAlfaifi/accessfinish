@@ -6,6 +6,10 @@ Across three development requests and five frozen requests on one exposed case, 
 
 Two of five frozen proposals passed the full build, keyboard outcome, database, fresh-reopen, regression, and runtime checks. Two proposed JavaScript edits did not compile. One proposal passed the main keyboard task but failed calendar navigation. These are observations from one guided case, not a general comparison or model benchmark.
 
+On October 23, one separately approved request repaired a deliberately seeded phone-serialization fault with an operator-supplied diagnosis. Its literal edit passed both the AccessFinish and conventional test-only execution flows, including storage, fresh reopen and a different-phone regression. The provider reported 12,658 input and 387 completion tokens, for an estimated $0.0041457 before tax at the public prices checked that day. There were no retries. One generation replayed twice remains one generation; it is not pooled with the original five frozen trials.
+
+Separately, a six-pair comparison used identical correctness checks in twelve executions. Both workflows agreed on all outcomes. This supports AccessFinish's approval/evidence integration story, rather than an accuracy advantage for the same underlying tests.
+
 The most useful platform improvements for this workflow would be easily exportable per-request billing/usage receipts, an explicit model-revision identifier, and source-edit examples that preserve syntactic boundaries around callbacks. We would also value stronger structured-edit validation before execution. These are feature requests; we have not established whether equivalent facilities exist elsewhere in the platform.
 
 Token Factory supplied model inference. We did not deploy the workbench on Nebius AI Cloud or use Serverless Jobs/Endpoints, and we do not claim that those services accelerated the build. Local deterministic orchestration, Docker, Playwright, PHP, and MariaDB supplied execution and outcome verification.

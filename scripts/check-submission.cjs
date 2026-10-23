@@ -3,7 +3,7 @@ const fs=require('node:fs'),path=require('node:path'),assert=require('node:asser
 const root=path.resolve(__dirname,'..');
 const read=file=>JSON.parse(fs.readFileSync(path.join(root,file),'utf8'));
 const normalized=text=>text.replace(/\r\n/g,'\n');
-const fields=read('submission/devpost-fields.json'),status=read('submission/implementation-status.json');
+const fields=read('submission/devpost-fields.json'),status=read('submission/implementation-status.json'),checklist=read('submission/checklist.json');
 const records=JSON.parse(cp.execFileSync(process.execPath,[path.join(root,'scripts/check-trials.cjs')],{encoding:'utf8',cwd:root}));
 assert.equal(fields.evidence.complete_passes,records.evaluation_passed);
 assert.equal(fields.evidence.frozen_attempts,records.evaluation_attempts);
@@ -12,12 +12,15 @@ assert.equal(fields.evidence.total_requests,records.evaluation_attempts+records.
 assert.equal(normalized(fields.description),normalized(fs.readFileSync(path.join(root,'submission/project-description.md'),'utf8')));
 assert.equal(normalized(fields.technology_feedback),normalized(fs.readFileSync(path.join(root,'submission/technology-feedback.md'),'utf8')));
 assert.ok(fields.tagline.length>0&&fields.tagline.length<=120);
-assert.ok(fs.readFileSync(path.join(root,'submission/youtube-details.txt'),'utf8').includes('140-second'));
+assert.ok(checklist.video_duration_seconds>0&&checklist.video_duration_seconds<=180);
+assert.ok(fs.readFileSync(path.join(root,'submission/youtube-details.txt'),'utf8').includes(`${Math.round(checklist.video_duration_seconds)}-second`));
+if(fields.private_youtube_url&&fields.private_youtube_url===fields.public_youtube_url)assert.equal(fields.youtube_public_verified,true);
 let stagedAssets=0;
 if(process.argv.includes('--local-assets')){
- const manifest=read('artifacts/release-v0.2.0/release-manifest.json');
- for(const asset of manifest.assets){const bytes=fs.readFileSync(path.join(root,'artifacts/release-v0.2.0',asset.name));assert.equal(bytes.length,asset.bytes);assert.equal(crypto.createHash('sha256').update(bytes).digest('hex'),asset.sha256);stagedAssets++}
- assert.equal(manifest.video.seconds,140);assert.equal(manifest.video.new_model_request,false);
+ const directory=checklist.prepared_release_directory||'artifacts/release-v0.2.0';
+ const manifest=read(directory+'/release-manifest.json');
+ for(const asset of manifest.assets){const bytes=fs.readFileSync(path.join(root,directory,asset.name));assert.equal(bytes.length,asset.bytes);assert.equal(crypto.createHash('sha256').update(bytes).digest('hex'),asset.sha256);stagedAssets++}
+ assert.equal(manifest.video.seconds,checklist.video_duration_seconds);assert.equal(manifest.video.new_model_request,false);
 }
 const pending=[];
 if(status.independent_browser_reviews_completed!==2)pending.push('Two real independent browser reviews and observed fixes');

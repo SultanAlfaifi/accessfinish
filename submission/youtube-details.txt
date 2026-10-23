@@ -1,39 +1,24 @@
 Title
-AccessFinish | AI source repair to verified booking | Nebius x NVIDIA
+AccessFinish | Know which AI fix you can accept | Nebius x NVIDIA
 
 Description
-AccessFinish helps developers and accessibility QA engineers review AI-generated source repairs and verify the intended booking outcome.
+A booking can be confirmed while the wrong phone is saved. AccessFinish connects an AI source proposal, approval of its exact version, and independent execution evidence.
 
-NVIDIA Nemotron 3 Super on Nebius Token Factory proposed five source edits for a keyboard booking case in Easy!Appointments. The diagnosis and repair direction were supplied. After exact approval, AccessFinish built a fresh isolated fixture, performed the keyboard task, checked the saved appointment through a separate SELECT-only reader, and reopened it in a fresh browser. Preservation and regression controls also had to pass.
+This 110-second English demo shows a deliberately seeded phone fault in Easy!Appointments, a new guided NVIDIA Nemotron 3 Super repair through Nebius Token Factory, and a hardcoded negative control that fails a different-phone check.
 
-This 140-second demonstration uses actual UI captures with edited timing. It shows a new isolated execution of a recorded model proposal. It makes no new model request and is not a speed benchmark.
+Six paired variants used the same isolated build, browser task, read-only database reader, fresh reopen and regression checks in twelve executions. Conventional tests and AccessFinish agreed on every correctness outcome. The difference is the integrated approval and evidence workflow; conventional CI can add this integration too. No accuracy advantage or measured time saving is claimed.
 
-All five frozen attempts on this one guided, exposed case are retained: two complete passes, two build failures and one calendar-navigation failure. Independent browser reviews are pending. No general repair accuracy, screen-reader study, measured time saving or adoption is claimed.
+The new phone proposal is one guided generation replayed twice. The original date-case model evaluation remains separately 2/5 full passes. Two exposed cases in one app, including one seeded fault, do not establish autonomous diagnosis or general repair accuracy. Independent browser reviews remain pending.
 
-Browser review: https://sultalfaifi.com/accessfinish/
-Code, setup and evidence: https://github.com/SultanAlfaifi/accessfinish
-Track: Coding and Agentic Engineering
-Original workbench and orchestration: MIT. Easy!Appointments: separately attributed GPL-3.0 upstream software.
+Source and evidence: https://github.com/SultanAlfaifi/accessfinish
+Earlier published date-case review: https://sultalfaifi.com/accessfinish/
+The two-case revision is prepared locally; the public demo has not been updated yet.
+Track: Coding and Agentic Engineering.
+Original workbench/orchestration: MIT. Easy!Appointments: separately attributed GPL-3.0.
+English synthetic narration: Qwen3-TTS 0.6B CustomVoice / Aiden, generated locally. No music.
 
-0:00 The booking task
-0:08 The keyboard blockage
-0:20 Nemotron on Token Factory
-0:32 Exact source review
-0:52 Approval bound to the patch
-0:58 Fresh isolated execution
-1:38 Saved booking and independent checks
-1:58 All five outcomes and limits
-2:12 Source and next steps
-
-Language
-English captions. Silent: no voiceover or music.
-
-Audience
-Professional developer demonstration; not made for children.
-
-Local video
-../media/accessfinish-demo-v02.mp4
-Duration: 140 seconds (2:20).
-
-Publication state
-Prepared for review. Public YouTube publication requires the entrant's final approval. A private upload or saved draft is not a public video or submitted entry.
+Current state
+v04 file: media/v04/accessfinish-demo-v04.mp4, 109.5 seconds.
+This metadata is prepared for review. No v04 upload or publication has occurred.
+Existing PRIVATE v03 upload: https://youtu.be/Ma9cEARXV2g (older 117.8-second revision).
+Full entrant watch/listen, two independent reviews, final public-video approval and final submission remain pending.

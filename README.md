@@ -1,16 +1,22 @@
 # AccessFinish
 
-**AI repair, checked against the task that matters.**
+**Know which AI fix you can accept.**
 
 AccessFinish connects a reviewable NVIDIA Nemotron source proposal to an isolated build, native keyboard booking, read-only database checks, and a fresh-browser reopen. A plausible patch or a confirmation page alone cannot produce a verified result.
 
-**v0.2.0 review build:** [browser-only review](https://sultalfaifi.com/accessfinish/) · [merged source and evaluation evidence](https://github.com/SultanAlfaifi/accessfinish/pull/1). The downloadable v0.1.0 release remains a historical build; the final v0.2.0 judging release and public video are pending. Track: **Coding and Agentic Engineering**.
+Conventional tests check behavior. AccessFinish connects the proposed repair, your approval of its exact version, and the resulting evidence. The [two-case comparison](docs/two-case-comparison.md) uses identical correctness checks in both workflows: **six paired variants, twelve isolated executions, equal outcomes**. The demonstrated distinction is the integrated repair decision. Conventional CI can add the same integration.
+
+The current branch adds a second, **deliberately seeded phone fault** in the same real application. One new guided Nemotron proposal repaired it and passed both workflows in **two execution replays**. The original **2/5** date-case model evaluation remains separate. Inspect the [comparison records](web/comparison.json) and [new model record](web/phone-model-report.json).
+
+**Published v0.2.0 date-case review:** [browser-only review](https://sultalfaifi.com/accessfinish/) · [merged source and original evaluation](https://github.com/SultanAlfaifi/accessfinish/pull/1). The new two-case workbench and v04 film are review work on this branch; that public URL does not yet contain this revision. The downloadable v0.1.0 release is historical. Final release and public video remain pending. Track: **Coding and Agentic Engineering**.
 
 ## Review in a browser
 
 Start with the [three-minute judging guide](submission/judge-guide.md) for the exact review path, evidence identities and fresh-execution commands.
 
 The published experience is a **recorded evidence review**. Inspect the blocked date control, review the exact patch, open its matching execution, and inspect all five evaluation outcomes. Opening a recording starts no model request, build, booking, or fresh verification.
+
+In the current local revision, select **Saved customer phone** to inspect the new model repair and its matching receipt. **Compare with tests** opens all six paired outcomes and their raw records. The failed original stores `0000000000` after the customer enters `0000000042`. A hardcoded repair passes that example but fails the different-phone control, `0000000073`.
 
 For a local preview without Docker or an API key:
 
@@ -54,6 +60,8 @@ The source-sharing checkbox permits one request containing the supplied source. 
 
 ## Measured evidence
 
+The October 23 comparison and phone generation are documented separately in [the method and results](docs/two-case-comparison.md). The comparison makes no model requests. The additional guided phone generation used one request, with an estimated cost of **$0.0041457 before tax**, then passed two execution replays. It is neither a second frozen benchmark nor autonomous defect discovery.
+
 On **21 October 2026**, three development requests were followed by **five frozen evaluation requests on one exposed case**. The prompt, source context, fixture, model integration, executor, and evaluator procedure were bound by hashes before evaluation.
 
 The [exact frozen procedure](evidence/competition-20261021/procedure/) is archived. A subsequent [Linux compatibility fix](evidence/competition-20261021/post-evaluation-compatibility.json) changes only ownership of private fixture files during trusted import. It changes neither model edits nor outcome acceptance logic. Reproduction with the current executor is tracked separately from the five original model-generation trials.
@@ -72,9 +80,13 @@ These measurements do not establish general autonomous repair, hidden-case perfo
 npm test
 node scripts/check-evidence.cjs
 npm run check:records
+npm run check:comparison
+npm run check:phone-model
 ```
 
 The [independent clean-environment run](https://github.com/SultanAlfaifi/accessfinish/actions/runs/39623819548) passed Node 22/24 checks on Windows/Linux, then built the public fixture and replayed all five retained proposals on a fresh Linux runner. All five expected outcomes matched: two verified repairs and three failures at their expected stages. The original-source control remained blocked and left the selected database snapshots unchanged. It made no model requests. [Sanitized records and checksums](evidence/clean-execution-20261021/summary.json) are retained separately from the original model-generation trials.
+
+That historical CI run predates the two-case extension. The current workflow additionally validates the separate comparison/model artifacts and executes a fresh phone reference repair plus a hardcoded negative control. Check the exact branch commit's Actions result before treating the extension as independently reproduced.
 
 Source/app/database/compiler/browser/evaluator roles are separated. Candidate execution has no external network, no model-key environment, read-only roots, dropped capabilities, and CPU/memory/PID limits. The application receives only its synthetic fixture account. The independent reader has SELECT-only fixture access and explicitly checks that writes and system-schema access are denied. The reader never mounts the candidate source. Trusted setup builds official images; candidate npm scripts, Composer hooks, and model-generated shell commands are not run.
 

@@ -11,3 +11,13 @@
 /web/featured-case.json -text
 /web/trial-report.json -text
 /web/records/* -text
+/lib/cases.cjs -text
+/scripts/conventional-tests.cjs -text
+/scripts/compare-workflows.cjs -text
+/scripts/phone-model-trial.cjs -text
+/scripts/phone-model-execute.cjs -text
+/evidence/extension-20261023*/** -text
+/evidence/phone-model-20261023/** -text
+/web/cases/* -text
+/web/comparison.json -text
+/web/phone-model-report.json -text

@@ -1,0 +1,8 @@
+{
+  "verified_at_utc": "2026-10-23T18:03:10.661Z",
+  "source": "https://tokenfactory.nebius.com/models/catalog/text2text/nvidia%2Fnemotron-3-super-120b-a12b",
+  "method": "Read the official public model catalog in the browser; 1M Input $0.30 and 1M Output $0.90",
+  "input_usd_per_million": 0.3,
+  "output_usd_per_million": 0.9,
+  "scope": "Public base pricing; final cost is estimated from provider token usage, excluding tax"
+}

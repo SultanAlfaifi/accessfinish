@@ -2,23 +2,24 @@
 <html lang="en" data-mode="recorded-review">
 <head>
   <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="description" content="Review a Nemotron source repair, run a keyboard booking in isolation, and verify its stored outcome.">
+  <meta name="description" content="Connect an AI code proposal to your approval, the same end-to-end tests, and evidence for the exact repair.">
   <title>AccessFinish — finish the task</title><link rel="stylesheet" href="style.css?v=c7587e819116ed8f">
 </head>
 <body>
 <a class="skip" href="#main">Skip to workbench</a>
 <header>
   <a class="brand" href="./" aria-label="AccessFinish home"><span class="mark" aria-hidden="true">a<span>f</span></span>AccessFinish<span class="edition">REPAIR WORKBENCH</span></a>
-  <nav aria-label="Main"><a href="#recorded-evidence">Recorded evidence</a><a href="#model">Nemotron</a><a href="https://github.com/SultanAlfaifi/accessfinish">Source</a></nav>
+  <nav aria-label="Main"><a href="#workflow-comparison">Compare with tests</a><a href="#recorded-evidence">Evidence</a><a href="https://github.com/SultanAlfaifi/accessfinish">Source</a></nav>
 </header>
 <main id="main">
   <section class="intro">
-    <div><h1>A source repair.<br>A booking you can prove.</h1><p class="deck">Review the change. Run the keyboard task. Check the saved appointment in storage and a fresh browser.</p><p class="environment-note" id="environment-note" role="status">Loading the workbench…</p></div>
-    <div class="key-art" aria-hidden="true"><span class="key-label">FOLLOW THE TASK TO ITS OUTCOME</span><kbd>tab<span>⇥</span></kbd><div class="key-path"><i></i><i></i><i></i><b>saved</b></div></div>
+    <div><h1>Know which AI fix<br>you can accept.</h1><p class="deck">Review an AI code change. Approve its exact version. Inspect independent test evidence for that repair.</p><p class="intro-difference">Conventional tests check behavior. AccessFinish connects the proposal, your approval, and the result.</p><div class="intro-actions"><a class="primary" href="#repair-workbench">Review a repair</a><a class="secondary" href="#workflow-comparison">See the comparison</a></div><p class="environment-note" id="environment-note" role="status">Loading the workbench…</p></div>
+    <ol class="repair-path" aria-label="The repair decision"><li><strong>AI proposes</strong><span>A code change you can inspect</span></li><li><strong>You approve</strong><span>One exact version of the patch</span></li><li><strong>Tests decide</strong><span>Stored data, reopen, and regressions</span></li><li><strong>Evidence stays attached</strong><span>Including rejected repairs</span></li></ol>
   </section>
-  <section class="workbench" aria-labelledby="task-heading">
+  <section class="workbench" id="repair-workbench" aria-labelledby="task-heading">
     <aside class="task-panel">
-      <h2 id="task-heading">Book an appointment</h2><p>Easy!Appointments · guided development case</p>
+      <label class="case-picker" for="repair-case">Choose a repair case<select id="repair-case" disabled><option value="keyboard-date">Keyboard date selection</option><option value="customer-phone">Saved customer phone</option></select></label>
+      <h2 id="task-heading">Book an appointment</h2><p id="case-description">Easy!Appointments · guided upstream case</p>
       <dl class="task-details"><div><dt>Date</dt><dd id="task-date">Future date, chosen at execution</dd></div><div><dt>Time</dt><dd>09:00–09:30 <small>Riyadh</small></dd></div><div><dt>Interaction</dt><dd>Keyboard only</dd></div></dl>
       <div class="stages" aria-label="Review stages">
         <button class="stage active" data-tab="blockage" aria-pressed="true"><span>1</span><div><strong>Inspect the blockage</strong><small>Understand the task</small></div></button>
@@ -30,10 +31,10 @@
     <div class="inspection">
       <div class="inspection-head"><span id="panel-label">1 / OBSERVED BLOCKAGE</span><span class="case-id">AF · BOOKING</span></div>
       <section id="blockage" class="tab-panel">
-        <div class="issue-flag">KEYBOARD BLOCKED</div><h2>The calendar looks ready.<br>The keyboard has nowhere to go.</h2>
-        <p>The date selector is mounted on a non-focusable element. Loading the page does not prove a keyboard user can choose a future date and finish booking.</p>
-        <div class="code-frame"><div class="code-caption"><span>booking_time_step.php</span><b>original source</b></div><pre><code>&lt;div id="select-date" class="mx-auto my-4"&gt;&lt;/div&gt;</code></pre><div class="focus-caption"><kbd>tab</kbd><span>Focus moves past the date control</span></div></div>
-        <div class="note"><strong>The date must survive the whole task.</strong><p>Clearing the input must be safe. Reopening the saved appointment must retain its date.</p></div>
+        <div class="issue-flag" id="case-flag">KEYBOARD BLOCKED</div><h2 id="case-problem-title">The calendar looks ready.<br>The keyboard has nowhere to go.</h2>
+        <p id="case-problem">The date selector is mounted on a non-focusable element. Loading the page does not prove a keyboard user can choose a future date and finish booking.</p>
+        <div class="code-frame"><div class="code-caption"><span id="case-source-name">booking_time_step.php</span><b id="case-source-provenance">original source</b></div><pre><code id="case-source-fragment">&lt;div id="select-date" class="mx-auto my-4"&gt;&lt;/div&gt;</code></pre><div class="focus-caption" id="case-visible-symptom"><kbd>tab</kbd><span>Focus moves past the date control</span></div></div>
+        <div class="note"><strong id="case-check-title">The date must survive the whole task.</strong><p id="case-check-detail">Clearing the input must be safe. Reopening the saved appointment must retain its date.</p></div>
         <button class="primary next-step" data-target="repair">Review the source repair</button>
       </section>
       <section id="repair" class="tab-panel" hidden>
@@ -54,7 +55,7 @@
         <p id="verify-message" role="status">Approve and run a proposal to obtain new execution evidence. The October 18 receipt does not verify your selected proposal.</p>
         <ol class="execution-stages" id="execution-stages" aria-label="Execution progress"></ol>
         <div id="outcome-detail" hidden>
-          <div class="receipt"><div><span>THIS RUN'S APPOINTMENT</span><strong id="booking-id"></strong></div><h3 id="booking-date"></h3><p id="booking-time"></p><dl><div><dt>Customer</dt><dd id="booking-customer"></dd></div><div><dt>Service / Provider</dt><dd id="booking-service"></dd></div></dl><div class="receipt-end" id="receipt-result"></div></div>
+          <div class="receipt"><div><span>THIS RUN'S APPOINTMENT</span><strong id="booking-id"></strong></div><h3 id="booking-date"></h3><p id="booking-time"></p><dl><div><dt>Customer</dt><dd id="booking-customer"></dd></div><div><dt>Service / Provider</dt><dd id="booking-service"></dd></div><div><dt>Entered phone</dt><dd id="expected-phone"></dd></div><div><dt>Stored phone</dt><dd id="stored-phone"></dd></div><div><dt>Reopened phone</dt><dd id="reopened-phone"></dd></div></dl><div class="receipt-end" id="receipt-result"></div></div>
           <ul class="checks" id="outcome-checks"></ul>
         </div>
         <p class="micro" id="run-identity"></p><button id="refresh-run" class="secondary" hidden>Refresh current run</button>
@@ -68,17 +69,26 @@
       <div class="run-cost"><span>NEW MODEL USAGE</span><strong id="cost">$0</strong><small id="cost-note">Recorded proposal · no new inference</small></div>
     </aside>
   </section>
+  <section class="workflow-comparison" id="workflow-comparison" aria-labelledby="comparison-heading">
+    <h2 id="comparison-heading">Same tests. A different repair workflow.</h2>
+    <p>Both workflows use the same isolated build, keyboard task, independent database reader, fresh-browser reopen, and regression checks. Good conventional tests can detect these failures too.</p>
+    <div class="results-table"><table><caption>What this comparison measures</caption><thead><tr><th scope="col">Capability</th><th scope="col">Conventional test-only CLI</th><th scope="col">AccessFinish workbench</th></tr></thead><tbody><tr><th scope="row">Detect a broken booking or wrong phone</th><td>Same checks</td><td>Same checks</td></tr><tr><th scope="row">Review the AI's proposed code change</th><td>Outside the test runner</td><td>Built into the repair flow</td></tr><tr><th scope="row">Require approval of the exact patch</th><td>Additional workflow integration</td><td>Required before execution</td></tr><tr><th scope="row">Attach the decision to proposal and run</th><td>Source and patch hashes in CLI output</td><td>Approval, source, patch, and run bound together</td></tr></tbody></table></div>
+    <p id="comparison-status" role="status">The two-case comparison is being executed. No comparative outcome is claimed yet.</p>
+    <div class="results-table" id="comparison-results" hidden><table><caption>Measured outcomes on two exposed development cases</caption><thead><tr><th scope="col">Case / variant</th><th scope="col">Conventional tests</th><th scope="col">AccessFinish</th></tr></thead><tbody id="comparison-rows"></tbody></table></div>
+    <p class="micro">This compares a test-only CLI with the integrated workbench. Conventional CI can add approval and evidence links too. No measured time saving, accuracy advantage, or general repair success rate is claimed.</p><a href="comparison.json" id="comparison-download" hidden>Download the comparison evidence</a>
+    <p id="phone-model-status" hidden></p><a href="phone-model-report.json" id="phone-model-download" hidden>Inspect the separate new Nemotron result</a>
+  </section>
   <section class="protocol-results" aria-labelledby="protocol-heading">
-    <h2 id="protocol-heading">Models propose. Outcomes decide.</h2>
+    <h2 id="protocol-heading">Original date-case model evaluation</h2>
     <p id="protocol-summary">The frozen evaluation report will be included with the evaluated build.</p>
     <div class="results-table" hidden id="protocol-table-wrap"><table><caption>Five repeated model requests on one exposed, guided case</caption><thead><tr><th>Trial</th><th>Build</th><th>Keyboard + reopen</th><th>Full procedure</th><th>Record</th></tr></thead><tbody id="protocol-rows"></tbody></table></div>
     <p class="micro" id="protocol-limit">The diagnosis and repair direction were supplied. These are repeated attempts on one case, not a general repair benchmark.</p>
     <a href="trial-report.json?v=bcc5a3f252e21a89" download id="download-trial-report" hidden>Download all development and evaluation outcomes</a>
   </section>
   <section class="model-panel" id="model">
-    <div><h2 id="model-heading">Ask Nemotron for a new proposal.</h2><p>Uses NVIDIA Nemotron 3 Super through Nebius Token Factory. The diagnosis is supplied; the model proposes the source edits. Review is required before isolated execution.</p><p id="source-sharing-explanation">Keep the included case context or choose your own JSON for the two supported booking files. A request sends this source to Nebius and may incur a charge.</p></div>
+    <div><h2 id="model-heading">Ask Nemotron for a new proposal.</h2><p>Uses NVIDIA Nemotron 3 Super through Nebius Token Factory. The diagnosis is supplied; the model proposes the source edits. Review is required before isolated execution.</p><p id="source-sharing-explanation">A request sends the selected case's complete source to Nebius and may incur a charge. New generation is separate from replaying a recorded repair.</p></div>
     <div id="replay-local-guide" hidden><h3>From review to a new execution</h3><p>The local build uses Node.js 22+ and a local Docker Linux engine. It prepares a fresh synthetic fixture and asks for approval of the exact patch before execution.</p><p>A new Nemotron proposal also needs server-side Nebius configuration, verified current pricing, and a request budget.</p><a href="https://github.com/SultanAlfaifi/accessfinish#run-a-new-execution">Read the local setup instructions</a></div>
-    <form id="analyze-form"><label for="source-files">Source context JSON (included case by default)</label><input type="file" id="source-files" accept="application/json,.json"><p class="micro"><a href="source-context.json?v=98ad60a8ed77437f" download>Download the included source context</a>.</p><label class="approval"><input type="checkbox" id="model-consent" required><span>Send this source to Nebius for one paid analysis. No automatic retry.</span></label><button class="secondary" id="analyze-button" type="submit" disabled>Analyze with Nemotron</button><p class="micro" id="model-message" role="status">Requires the local server, a server-side key, and verified current pricing.</p></form>
+    <form id="analyze-form"><label for="source-files">Optional matching copy of the selected case source</label><input type="file" id="source-files" accept="application/json,.json"><p class="micro"><a id="case-source-download" href="source-context.json?v=98ad60a8ed77437f" download>Download the selected case source</a>.</p><label class="approval"><input type="checkbox" id="model-consent" required><span>Send this source to Nebius for one paid analysis. No automatic retry.</span></label><button class="secondary" id="analyze-button" type="submit" disabled>Analyze with Nemotron</button><p class="micro" id="model-message" role="status">Requires the local server, a server-side key, and verified current pricing.</p></form>
   </section>
   <details id="recorded-evidence" class="recorded-evidence"><summary>Inspect the separate October 18 recorded example</summary><p>This historical result belongs to its original run: appointment #902, October 19, 2026, 09:00–09:30 Asia/Riyadh. It was checked in storage and reopened in a fresh browser. Nemotron authored three edits after an operator supplied the diagnosis; only line endings were normalized by the controller.</p><p>This is recorded evidence, not a new model request or verification of your currently selected proposal.</p><a href="evidence.json?v=ed9cc93646edcc55" download>Download the historical evidence summary</a></details>
   <footer><span>AccessFinish · finish the task, verify the result.</span><span>Development prototype · synthetic customer data</span></footer>

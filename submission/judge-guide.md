@@ -2,6 +2,18 @@
 
 For developers and accessibility QA engineers evaluating an AI-generated UI patch, AccessFinish follows the intended keyboard booking into storage and a fresh browser session.
 
+**Current revision:** the two-case workbench and English v04 film add a phone-data failure and a fair conventional-test comparison. These changes are prepared on the review branch; the published URL below is the earlier date-case build until separately approved deployment. Start the current revision with `npm run replay` and open `http://127.0.0.1:4178`.
+
+## Review the new distinction first
+
+1. Read the opening: **Know which AI fix you can accept.** AccessFinish links a proposed change, exact-patch approval and execution evidence.
+2. Select **Saved customer phone**. The fault is deliberately seeded: a confirmation can appear while `0000000000` is saved instead of the entered `0000000042`.
+3. Review the one-edit Nemotron repair and inspect its matching recorded execution. Stored and reopened phone values match; a second phone, `0000000073`, passes the regression control. This is one guided generation replayed twice, not autonomous discovery or two model generations.
+4. Open **Compare with tests**. Six paired variants used identical checks in twelve executions. Both workflows rejected the wrong-phone and hardcoded controls and produced the same correctness outcomes. AccessFinish additionally rejected missing/stale approvals and attached approval to the source, patch and run. Conventional CI can add that integration too.
+5. Inspect the separate **Original date-case model evaluation**: two full passes from five guided attempts. The original counts remain unchanged.
+
+Method, authorship, full records, reproduction and limits: [two-case comparison](../docs/two-case-comparison.md). The v04 film lasts 109.5 seconds with local English Aiden narration; entrant full watch/listen remains pending.
+
 ## A three-minute review
 
 1. Open the [browser workbench](https://sultalfaifi.com/accessfinish/). It needs no account or installation and explicitly reviews recorded evidence.

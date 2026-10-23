@@ -1,0 +1,61 @@
+{
+  "outputs": [
+    {
+      "path": "web/records/comparison-customer-phone-original-conventional.json",
+      "sha256": "450efa7ac3b96b8d07e4cad9755f7473f044b570eb050a051e489de13394198b"
+    },
+    {
+      "path": "web/records/comparison-customer-phone-original-accessfinish.json",
+      "sha256": "0252df4746236abe2aba304dc2e9ded7742330fa6556c3588b8bb2b2b54d1616"
+    },
+    {
+      "path": "web/records/comparison-customer-phone-repaired-accessfinish.json",
+      "sha256": "c56e3796372d36daa7e7f36bbb51d7a4a1f897ce67f7cd633309a31d99b149f2"
+    },
+    {
+      "path": "web/records/comparison-customer-phone-repaired-conventional.json",
+      "sha256": "c4d1bf39e8bce15329a2a6f2e1fc2847abba7c22109c4bb50e108badbeb3bdbe"
+    },
+    {
+      "path": "web/records/comparison-customer-phone-hardcoded-conventional.json",
+      "sha256": "25a3561bfef59253b0eed11f13dff784b4dc13d91eb636aa491d0b36f421eaf7"
+    },
+    {
+      "path": "web/records/comparison-customer-phone-hardcoded-accessfinish.json",
+      "sha256": "dff8001059f04e46462e66e3ea978179c87eb88b74a08bdf5a409bc21bd4a44f"
+    },
+    {
+      "path": "web/records/comparison-keyboard-date-original-accessfinish.json",
+      "sha256": "f5ab7ab93c935c90a07a52f7ef0db63434ba6d3bf150b457438330ff11f377ea"
+    },
+    {
+      "path": "web/records/comparison-keyboard-date-original-conventional.json",
+      "sha256": "087626e89d2bc0a4de7332974bba012c246c378c40f9c858f6a24b2fa8acea7a"
+    },
+    {
+      "path": "web/records/comparison-keyboard-date-repaired-conventional.json",
+      "sha256": "4f7c11f880b561ad8f6e5cb41cd4086d3ccbbc9a8381cf52b0d75b709ba37e7b"
+    },
+    {
+      "path": "web/records/comparison-keyboard-date-repaired-accessfinish.json",
+      "sha256": "4d11f7ba5f5ae464d5cf5e2264588e66adc5069530bc14713d068efbc814fec1"
+    },
+    {
+      "path": "web/records/comparison-keyboard-date-regression-accessfinish.json",
+      "sha256": "0cb4abff6210b0c62d9c05e0f222abf417b186e161765629e6af7c795ebbf244"
+    },
+    {
+      "path": "web/records/comparison-keyboard-date-regression-conventional.json",
+      "sha256": "e6bb8c3ac03d082667113fade09c7611e8491caf48fb5fee5e473c7b1d20090f"
+    },
+    {
+      "path": "web/comparison.json",
+      "sha256": "547b86e6764c0564702b200aab94e0d6f5207f66429ab2abb5b20cd6ca8e0fd8"
+    },
+    {
+      "path": "web/cases/customer-phone-reference.json",
+      "sha256": "da7daf3412f598bc0e8a37c8555625bd952110372a4cb49f34202af7b07faf78"
+    }
+  ],
+  "new_model_calls": 0
+}
