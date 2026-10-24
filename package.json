@@ -13,6 +13,13 @@
     "demo:setup": "node scripts/demo-setup.cjs",
     "demo:check": "node scripts/demo-check.cjs",
     "replay": "node scripts/replay-preview.cjs",
-    "check:records": "node scripts/check-trials.cjs"
+    "check:records": "node scripts/check-trials.cjs",
+    "check:submission": "node scripts/check-submission.cjs",
+    "review:video": "node scripts/review-demo.cjs",
+    "test:repair": "node scripts/conventional-tests.cjs",
+    "compare:prepare": "node scripts/compare-workflows.cjs --output evidence/extension-20261023-r2 --prepare",
+    "compare:run": "node scripts/compare-workflows.cjs --output evidence/extension-20261023-r2",
+    "check:comparison": "node scripts/check-comparison.cjs",
+    "check:phone-model": "node scripts/check-phone-model.cjs"
   }
 }

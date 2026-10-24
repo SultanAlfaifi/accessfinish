@@ -1,0 +1,18 @@
+{
+  "file": "accessfinish-demo-v04.mp4",
+  "sha256": "c22497cb3c2599ca88b965f9949925a2999e40722b205c79a9c7892c83cd47e8",
+  "width": 1600,
+  "height": 900,
+  "fps": 30,
+  "frames": 3285,
+  "duration_seconds": 109.5,
+  "narration_seconds": 108.28,
+  "music": false,
+  "audio": "Local Qwen3-TTS 0.6B Aiden; actual beat timings; no word timestamps",
+  "evidence_sources": [
+    "web/comparison.json",
+    "web/phone-model-report.json",
+    "web/cases/customer-phone.json"
+  ],
+  "publication": "Local review cut; not uploaded by this renderer"
+}

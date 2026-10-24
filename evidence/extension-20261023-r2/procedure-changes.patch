@@ -1,0 +1,143 @@
+diff --git a/lib/fixture.cjs b/lib/fixture.cjs
+index bc146a6..c11bd22 100644
+--- a/lib/fixture.cjs
++++ b/lib/fixture.cjs
+@@ -63,13 +63,19 @@ function common(id, name, {user = '1000:1000', network = 'none', memory = '768m'
+ }
+ async function execute({run, proposal, update, root = runtimeRoot(), original = false}) {
+   await localEngine(); const prepared = preparation(root), id = run.id;
++  const selectedCase = require('./cases.cjs').caseDefinition(proposal.case_id || 'keyboard-date');
++  if ((run.case_id || 'keyboard-date') !== selectedCase.id || run.source_sha256 !== digest(selectedCase.files) || digest(proposal.files) !== run.source_sha256)
++    throw Error('The execution source does not match the selected case.');
++  if (digest(proposal.proposal) !== run.proposal_sha256) throw Error('The execution proposal changed before application.');
+   if (!/^run-[a-f0-9]{32}$/.test(id)) throw Error('Invalid isolated run ID.');
+   const dir = path.join(root, 'execution', id); fs.mkdirSync(dir, {recursive: true});
+   const secretDir = path.join(dir, 'private'); fs.mkdirSync(secretDir, {mode: 0o700});
+   const containers = [], volumes = [], manifest = {run_id: id, proposal_sha256: run.proposal_sha256, source_sha256: run.source_sha256,
+     fixture_fingerprint: prepared.fingerprint, source_commit: prepared.source.commit, scenario: scenario(), booking_verified: false,
++    case_id: selectedCase.id, case_provenance: selectedCase.provenance, original_source_control: original, candidate_applied: !original,
+     proposal_origin: proposal.origin, native_keyboard_only: false, model_calls_during_execution: 0, execution_started_at_utc: new Date().toISOString()};
+   const save = () => write(path.join(dir, 'evidence.json'), manifest);
++  if (selectedCase.customer) Object.assign(manifest.scenario.customer, selectedCase.customer);
+   const create = async (role, args, image, command, options = {}) => {
+     const name = id + '-' + role;
+     const container = await docker(['create', ...common(id, name, options), ...args, image, ...command]);
+@@ -105,6 +111,13 @@ async function execute({run, proposal, update, root = runtimeRoot(), original =
+       ...volume(v.seed, '/vol/seed'), ...volume(v.reader, '/vol/reader'), ...volume(v.payload, '/payload'), '--cap-add', 'CHOWN'], prepared.images.php,
+     ['sh', '-eu', '-c', 'chown -R 0:0 /payload; cp -a /opt/original/. /vol/source/; cp /payload/config.php /vol/source/config.php; mkdir -p /vol/source/storage; cp /payload/01-init.sql /payload/root-password /vol/seed/; cp /payload/reader.json /vol/reader/reader.json; chmod 777 /vol/db-socket; chown -R 1000:1000 /vol/source /vol/reader; chown -R 999:999 /vol/db-data /vol/db-socket /vol/seed'], {user: '0:0'});
+     await docker(['cp', payload + path.sep + '.', init + ':/payload']); await start(init);
++    if (selectedCase.preparation) {
++      const seeded = await docker(['run', '-i', '--rm', ...common(id, id + '-seed-case'), ...volume(v.source, '/app'), prepared.images.compiler, 'node', '/trusted/apply-patch.cjs'],
++        {input: JSON.stringify(selectedCase.preparation), timeout: 60000});
++      manifest.case_preparation = JSON.parse(seeded);
++      if (digest(manifest.case_preparation.files) !== digest(selectedCase.files.map(f => ({path: f.path, sha256: sha(f.content)}))))
++        throw Error('The prepared fixture does not match its frozen case source.');
++    }
+     if (!original) {
+       const applied = await docker(['run', '-i', '--rm', ...common(id, id + '-apply'), ...volume(v.source, '/app'), prepared.images.compiler, 'node', '/trusted/apply-patch.cjs'], {input: JSON.stringify(proposal.proposal), timeout: 60000});
+       manifest.applied_source = JSON.parse(applied);
+@@ -162,6 +175,7 @@ async function execute({run, proposal, update, root = runtimeRoot(), original =
+     if (manifest.keyboard_booking_verified) {
+       const pointerDate = new Date(manifest.scenario.date + 'T12:00:00Z'); pointerDate.setUTCDate(pointerDate.getUTCDate() + 7);
+       const pointerCustomer = {...manifest.scenario.customer, last_name: 'PointerControl', email: 'pointer-control@example.invalid'};
++      if (selectedCase.pointerPhone) pointerCustomer.phone_number = selectedCase.pointerPhone;
+       manifest.controls = {before: manifest.post_reopen, pointer_date: pointerDate.toISOString().slice(0, 10), pointer_customer: pointerCustomer};
+       manifest.controls.browser = await browser('controls', 'controls', {scenario: {...manifest.scenario, pointer_date: manifest.controls.pointer_date, pointer_customer: pointerCustomer}});
+       manifest.controls.after = await snapshot(evaluator);
+@@ -191,7 +205,9 @@ async function execute({run, proposal, update, root = runtimeRoot(), original =
+     if (!manifest.booking_verified) manifest.error = 'Outcome verification failed: ' + (manifest.evaluation.reasons.join(', ') || 'regression controls or runtime boundaries did not pass');
+     save(); return manifest;
+   } catch (error) {
+-    manifest.booking_verified = false; manifest.error = error.message; save(); throw error;
++    // Failed workers remain failed, but retain the completed stages and reader
++    // evidence so a regression is reviewable instead of losing its result.
++    manifest.booking_verified = false; manifest.error = error.message; save(); return manifest;
+   } finally {
+     manifest.execution_finished_at_utc = new Date().toISOString();
+     manifest.execution_duration_ms = Date.parse(manifest.execution_finished_at_utc) - Date.parse(manifest.execution_started_at_utc);
+diff --git a/lib/model.cjs b/lib/model.cjs
+index be138ed..6f63c40 100644
+--- a/lib/model.cjs
++++ b/lib/model.cjs
+@@ -16,13 +16,15 @@ async function analyze(payload, {root = runtimeRoot()} = {}) {
+   if (!readiness()) throw Error('Verify current pricing and set NEBIUS_PRICE_VERIFIED_AT, NEBIUS_INPUT_USD_PER_MILLION and NEBIUS_OUTPUT_USD_PER_MILLION. No paid call was made.');
+   if (inFlight) throw Error('One model request is already running.');
+   validateFiles(payload.files);
++  const selectedCase = require('./cases.cjs').caseDefinition(payload.case_id || 'keyboard-date');
++  if (digest(payload.files) !== digest(selectedCase.files)) throw Error('Model source must match the selected case. No paid call was made.');
+   const inputPrice = Number(process.env.NEBIUS_INPUT_USD_PER_MILLION), outputPrice = Number(process.env.NEBIUS_OUTPUT_USD_PER_MILLION);
+   const cap = Number(process.env.AF_MODEL_BUDGET_USD || .25), maxRequests = Number(process.env.AF_MAX_MODEL_REQUESTS || 8);
+   if (!Number.isFinite(cap) || cap <= 0 || cap > 5 || !Number.isInteger(maxRequests) || maxRequests < 1 || maxRequests > 8) throw Error('Configure a budget up to $5 and at most eight requests.');
+   const def = {type: 'function', function: {name: 'propose_repair', description: 'Propose literal replacements for human review. Does not apply or execute anything.',
+     parameters: {type: 'object', properties: {reason: {type: 'string'}, edits: {type: 'array', minItems: 1, maxItems: 6, items: {type: 'object',
+       properties: {path: {type: 'string', enum: PATHS}, old: {type: 'string'}, new: {type: 'string'}}, required: ['path', 'old', 'new'], additionalProperties: false}}}, required: ['reason', 'edits'], additionalProperties: false}}};
+-  const request = {model: MODEL, messages: [{role: 'system', content: SYSTEM}, {role: 'user', content: JSON.stringify({task: 'Repair keyboard date selection and retain the date when reopening a booking.', files: payload.files})}],
++  const request = {model: MODEL, messages: [{role: 'system', content: selectedCase.modelSystem || SYSTEM}, {role: 'user', content: JSON.stringify({task: selectedCase.task, files: payload.files})}],
+     tools: [def], tool_choice: {type: 'function', function: {name: 'propose_repair'}}, temperature: 0, max_tokens: 8192, stream: false};
+   const reservedInput = Buffer.byteLength(JSON.stringify(request)) + 1500;
+   if (reservedInput > 100000) throw Error('The complete source exceeds the 100,000-token conservative input reservation limit.');
+@@ -32,7 +34,7 @@ async function analyze(payload, {root = runtimeRoot()} = {}) {
+   const ledger = fs.existsSync(ledgerFile) ? JSON.parse(fs.readFileSync(ledgerFile, 'utf8')) : {schema_version: 1, reserved_usd: 0, attempts: []};
+   if (!Number.isFinite(ledger.reserved_usd) || !Array.isArray(ledger.attempts) || ledger.reserved_usd + upper > cap || ledger.attempts.length >= maxRequests) throw Error('The model budget or request limit is exhausted. No paid call was made.');
+   const attempt = {id: crypto.randomUUID(), at_utc: new Date().toISOString(), model: MODEL, request_sha256: digest(request), reserved_usd: upper,
+-    input_price_usd_per_million: inputPrice, output_price_usd_per_million: outputPrice,
++    input_price_usd_per_million: inputPrice, output_price_usd_per_million: outputPrice, case_id: selectedCase.id,
+     phase: ['development', 'evaluation'].includes(process.env.AF_TRIAL_PHASE) ? process.env.AF_TRIAL_PHASE : 'interactive', status: 'reserved_outcome_unknown'};
+   ledger.attempts.push(attempt); ledger.reserved_usd += upper;
+   const save = () => fs.writeFileSync(ledgerFile, JSON.stringify(ledger, null, 2) + '\n', {mode: 0o600});
+@@ -54,7 +56,7 @@ async function analyze(payload, {root = runtimeRoot()} = {}) {
+     fs.writeFileSync(path.join(root, 'model-responses', attempt.id + '.json'), JSON.stringify({attempt_id: attempt.id, request, response: data}, null, 2) + '\n', {mode: 0o600, flag: 'wx'});
+     if (data.model !== MODEL || data.choices?.[0]?.finish_reason !== 'tool_calls' || data.choices[0].message.tool_calls.length !== 1 || call?.function.name !== 'propose_repair') throw Error('The model response did not match the repair contract.');
+     const proposal = JSON.parse(call.function.arguments), checked = preview(payload.files, proposal); attempt.status = 'proposal_validated';
+-    return {attempt_id: attempt.id, proposal, preview: checked, model: MODEL, usage, estimated_cost_usd_excluding_tax: attempt.estimated_cost_usd_excluding_tax, reserved_usd: upper, applied_to_host: false};
++    return {attempt_id: attempt.id, case_id: selectedCase.id, proposal, preview: checked, model: MODEL, usage, estimated_cost_usd_excluding_tax: attempt.estimated_cost_usd_excluding_tax, reserved_usd: upper, applied_to_host: false};
+   } catch (error) { attempt.error = String(error.message).slice(0, 400); throw error; }
+   finally { attempt.finished_at_utc = new Date().toISOString(); save(); inFlight = false; }
+ }
+diff --git a/lib/runs.cjs b/lib/runs.cjs
+index 22f3434..02c3cfd 100644
+--- a/lib/runs.cjs
++++ b/lib/runs.cjs
+@@ -58,12 +58,13 @@ function createRunStore({root = runtimeRoot(), execute} = {}) {
+       run.finished_at_utc = new Date().toISOString(); save('runs', run);
+     }
+   }
+-  function register({files, proposal, origin, model = null, usage = null, estimated_cost_usd_excluding_tax = null}) {
++  function register({files, proposal, origin, model = null, usage = null, estimated_cost_usd_excluding_tax = null, case_id = 'keyboard-date'}) {
+     if (!['recorded', 'nebius', 'operator_reference'].includes(origin)) throw Error('Unknown proposal provenance.');
++    if (!['keyboard-date', 'customer-phone'].includes(case_id)) throw Error('Unknown repair case.');
+     const checked = preview(files, proposal);
+     const item = {
+       id: 'proposal-' + crypto.randomBytes(16).toString('hex'), created_at_utc: new Date().toISOString(),
+-      origin, model, usage, estimated_cost_usd_excluding_tax,
++      origin, model, usage, estimated_cost_usd_excluding_tax, case_id,
+       diagnosis: 'operator_supplied', source_sha256: digest(files), proposal_sha256: digest(proposal),
+       files, proposal, preview: checked, applied_to_host: false,
+     };
+@@ -85,7 +86,7 @@ function createRunStore({root = runtimeRoot(), execute} = {}) {
+     const run = {
+       schema_version: 1, id: 'run-' + crypto.randomBytes(16).toString('hex'), proposal_id,
+       proposal_sha256: proposal.proposal_sha256, source_sha256: proposal.source_sha256,
+-      proposal_origin: proposal.origin, approval: {reviewed: true, proposal_sha256: approved_proposal_sha256,
++      proposal_origin: proposal.origin, case_id: proposal.case_id || 'keyboard-date', approval: {reviewed: true, proposal_sha256: approved_proposal_sha256,
+         at_utc: new Date().toISOString()}, state: 'queued', booking_verified: false,
+       started_at_utc: new Date().toISOString(), stages: [],
+     };
+@@ -98,7 +99,7 @@ function createRunStore({root = runtimeRoot(), execute} = {}) {
+       try {
+         const result = await execute({run: structuredClone(run), proposal: structuredClone(proposal), update, root});
+         if (result?.run_id !== run.id || result?.proposal_sha256 !== run.proposal_sha256 ||
+-            result?.source_sha256 !== run.source_sha256) throw Error('The executor returned evidence for a different repair.');
++            result?.source_sha256 !== run.source_sha256 || (result?.case_id || 'keyboard-date') !== run.case_id) throw Error('The executor returned evidence for a different repair.');
+         run.result = result;
+         run.booking_verified = result.booking_verified === true;
+         run.state = run.booking_verified ? 'verified' : 'failed';
+@@ -116,7 +117,7 @@ function createRunStore({root = runtimeRoot(), execute} = {}) {
+   }
+   function getRun(id) {
+     const run = read('runs', id), proposal = getProposal(run.proposal_id);
+-    if (run.proposal_sha256 !== proposal.proposal_sha256 || run.source_sha256 !== proposal.source_sha256 ||
++    if ((run.case_id || 'keyboard-date') !== (proposal.case_id || 'keyboard-date') || run.proposal_sha256 !== proposal.proposal_sha256 || run.source_sha256 !== proposal.source_sha256 ||
+         run.approval?.proposal_sha256 !== proposal.proposal_sha256 || run.approval?.reviewed !== true)
+       throw Error('Run evidence is not bound to the approved proposal.');
+     return run;

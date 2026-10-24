@@ -1,0 +1,20 @@
+{
+  "exit_code": 0,
+  "error": null,
+  "wall_seconds": 251.031,
+  "peak_host_process_tree_mib": 2050.0,
+  "observed_worker_pids": [
+    2768,
+    69816,
+    46944,
+    21704,
+    24304,
+    46204,
+    66644
+  ],
+  "worker_processes_still_running": [],
+  "worker_processes_exited": true,
+  "checked_at_utc": "2026-10-23T17:07:29.931077+00:00",
+  "owned_worker_pids_in_driver": [],
+  "gpu_release_confirmed_by_process_exit_and_driver": true
+}

@@ -1,0 +1,76 @@
+{
+  "schema_version": 1,
+  "file": "accessfinish-demo-v02.mp4",
+  "status": "passed",
+  "checks": [
+    {
+      "name": "frames",
+      "passed": true,
+      "actual": 4200,
+      "expected": 4200
+    },
+    {
+      "name": "width",
+      "passed": true,
+      "actual": 1600,
+      "expected": 1600
+    },
+    {
+      "name": "height",
+      "passed": true,
+      "actual": 900,
+      "expected": 900
+    },
+    {
+      "name": "average_fps",
+      "passed": true,
+      "actual": 30,
+      "expected": 30
+    },
+    {
+      "name": "duration",
+      "passed": true,
+      "actual": 140,
+      "expected": 140
+    }
+  ],
+  "visual_qa": "not_performed",
+  "full_decode": {
+    "status": "passed",
+    "returncode": 0,
+    "diagnostics": "",
+    "scope": "selected video stream and all audio streams, entire duration"
+  },
+  "alpha": {
+    "evidence": "pixel_format_metadata_only; decoded alpha not verified",
+    "decoded_channel": null,
+    "nonopaque_pixels_observed": null,
+    "pixel_format_hint": "yuv420p"
+  },
+  "tools": {
+    "ffprobe": "C:\\ffmpeg\\bin\\ffprobe.EXE",
+    "ffmpeg": "C:\\ffmpeg\\bin\\ffmpeg.EXE"
+  },
+  "media": {
+    "video_stream_index": 0,
+    "video_stream_count": 1,
+    "audio_stream_count": 0,
+    "width": 1600,
+    "height": 900,
+    "fps": 30,
+    "fps_basis": "avg_frame_rate",
+    "duration": 140,
+    "duration_basis": "video_stream",
+    "pixel_format": "yuv420p",
+    "codec": "h264"
+  },
+  "frame_count": {
+    "status": "read",
+    "video_stream_index": 0,
+    "basis": "ffprobe -count_frames; decoded nb_read_frames, not nb_frames metadata",
+    "actual": 4200
+  },
+  "duration_tolerance_seconds": 0.03333333333333333,
+  "exit_code": 0,
+  "sha256": "4b964ffc0e1a7ae3dc0d08ad7090db8fefd6f3bc859d5e31f0eeba7a24fdb368"
+}

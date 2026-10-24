@@ -1,30 +1,24 @@
 Title
-AccessFinish | Keyboard repair to verified booking | Nebius x NVIDIA Hackathon
+AccessFinish | Know which AI fix you can accept | Nebius x NVIDIA
 
 Description
-AccessFinish connects a keyboard accessibility source repair to evidence that the user's task actually finished.
+A booking can be confirmed while the wrong phone is saved. AccessFinish connects an AI source proposal, approval of its exact version, and independent execution evidence.
 
-This 91-second demonstration shows the review workbench, a three-edit proposal authored by NVIDIA Nemotron 3 Super on Nebius Token Factory, and a new read-only verification of the saved booking in an isolated Easy!Appointments development fixture.
+This 110-second English demo shows a deliberately seeded phone fault in Easy!Appointments, a new guided NVIDIA Nemotron 3 Super repair through Nebius Token Factory, and a hardcoded negative control that fails a different-phone check.
 
-The operator supplied the defect diagnosis. The controller normalized source line endings without changing the semantic edits, built 83 JavaScript files, completed the keyboard booking, and verified storage and a fresh-browser reopen. This is one guided, exposed development case, not a general autonomous repair benchmark or a screen-reader user study.
+Six paired variants used the same isolated build, browser task, read-only database reader, fresh reopen and regression checks in twelve executions. Conventional tests and AccessFinish agreed on every correctness outcome. The difference is the integrated approval and evidence workflow; conventional CI can add this integration too. No accuracy advantage or measured time saving is claimed.
 
-Working evidence replay: https://sultalfaifi.com/accessfinish/
-Public code: https://github.com/SultanAlfaifi/accessfinish
-Portable test build: https://github.com/SultanAlfaifi/accessfinish/releases/tag/v0.1.0
+The new phone proposal is one guided generation replayed twice. The original date-case model evaluation remains separately 2/5 full passes. Two exposed cases in one app, including one seeded fault, do not establish autonomous diagnosis or general repair accuracy. Independent browser reviews remain pending.
 
-Track: Coding and Agentic Engineering
-Built with NVIDIA Nemotron, Nebius Token Factory, Node.js, Docker, Playwright, PHP, MariaDB, and FFmpeg.
+Source and evidence: https://github.com/SultanAlfaifi/accessfinish
+Earlier published date-case review: https://sultalfaifi.com/accessfinish/
+The two-case revision is prepared locally; the public demo has not been updated yet.
+Track: Coding and Agentic Engineering.
+Original workbench/orchestration: MIT. Easy!Appointments: separately attributed GPL-3.0.
+English synthetic narration: Qwen3-TTS 0.6B CustomVoice / Aiden, generated locally. No music.
 
-The video is silent with English captions. It shows synthetic customer data and includes no music. AccessFinish workbench code is MIT licensed; Easy!Appointments case excerpts and derivative source patches retain GPL-3.0 attribution.
-
-Audience
-Professional developer demonstration; not made for children.
-
-Intended visibility
-Public, after the entrant reviews the final title, description, channel, and video.
-
-Local video
-../media/accessfinish-demo.mp4
-
-Current status
-Prepared only. No YouTube upload or public publication has been confirmed.
+Current state
+v04 file: media/v04/accessfinish-demo-v04.mp4, 109.5 seconds.
+This metadata is prepared for review. No v04 upload or publication has occurred.
+Existing PRIVATE v03 upload: https://youtu.be/Ma9cEARXV2g (older 117.8-second revision).
+Full entrant watch/listen, two independent reviews, final public-video approval and final submission remain pending.

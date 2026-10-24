@@ -1,0 +1,65 @@
+1
+00:00:00,000 --> 00:00:07,600
+Booking confirmed. But the saved phone is wrong. An
+AI fix needs more than a convincing answer.
+
+2
+00:00:07,780 --> 00:00:16,340
+AccessFinish connects a proposed code change to your
+review, approval of that exact patch, and
+independent execution evidence.
+
+3
+00:00:16,520 --> 00:00:29,880
+For our second case, we deliberately seeded a phone
+serialization fault. One new NVIDIA Nemotron 3 Super
+proposal, through Nebius Token Factory, repaired it
+with an operator-supplied diagnosis.
+
+4
+00:00:30,060 --> 00:00:40,220
+The entered phone was saved exactly, including
+leading zeroes, and reopened in a fresh browser. A
+different phone also passed the regression control.
+
+5
+00:00:40,400 --> 00:00:49,120
+A hardcoded reference repair passed the first
+booking, then failed the different-phone check. Both
+failures and successes remain visible.
+
+6
+00:00:49,300 --> 00:00:59,380
+We compared AccessFinish with a conventional
+test-only workflow using the same build, browser,
+database reader, reopen, and regression checks.
+
+7
+00:00:59,560 --> 00:01:13,080
+Across six paired variants and twelve isolated
+executions, both workflows agreed on every
+correctness outcome. The new Nemotron proposal also
+passed both workflows in two additional replays.
+
+8
+00:01:13,260 --> 00:01:25,900
+The difference is the repair decision. AccessFinish
+rejected missing and stale approvals, then attached
+each accepted approval to its exact source, patch,
+and run.
+
+9
+00:01:26,080 --> 00:01:32,720
+The original keyboard date case remains separate:
+two complete passes from five guided model attempts.
+
+10
+00:01:32,900 --> 00:01:43,620
+These are two exposed cases in one application,
+including one deliberately seeded fault. They do not
+establish general repair accuracy or time savings.
+
+11
+00:01:43,800 --> 00:01:48,280
+AccessFinish. Review the change. Know which repair
+you can accept.

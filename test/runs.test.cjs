@@ -54,3 +54,13 @@ test('scenario uses a future Monday at least seven days ahead in Riyadh', () => 
     assert.ok(delta >= 7 && delta <= 13); assert.equal(new Date(s.date).getUTCDay(), 1); assert.equal(s.timezone, 'Asia/Riyadh');
   }
 });
+
+test('a result for the date case cannot verify an approved phone-case proposal', async t => {
+  const {store} = fixture(t, async ({run}) => ({run_id: run.id, proposal_sha256: run.proposal_sha256,
+    source_sha256: run.source_sha256, case_id: 'keyboard-date', booking_verified: true}));
+  const phone = require('../lib/cases.cjs').caseDefinition('customer-phone');
+  const item = store.register({files: phone.files, proposal: require('../lib/cases.cjs').phoneReference(), origin: 'operator_reference', case_id: phone.id});
+  const run = store.start({proposal_id: item.id, reviewed: true, approved_proposal_sha256: item.proposal_sha256});
+  const result = await finished(store, run.id);
+  assert.equal(result.state, 'failed'); assert.match(result.error, /different repair/);
+});

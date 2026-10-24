@@ -1,0 +1,57 @@
+{
+  "mixed_file": "narration-ui-mix.wav",
+  "mixed_sha256": "8744f037c36c62b5cc2a355cb049b73982813823cae3822c9e4dca79b4e09f4c",
+  "narration_sha256": "1ae430526786ff5b3912e32550cce75da41496733a9bc98b5529156a82ca525b",
+  "sample_rate": 48000,
+  "duration_seconds": 117.0,
+  "peak_amplitude": 0.891510009765625,
+  "cues": [
+    {
+      "seconds": 5.3608,
+      "purpose": "Tab focus on Service in labelled task illustration",
+      "peak_amplitude": 0.025
+    },
+    {
+      "seconds": 6.612,
+      "purpose": "Tab focus skips Date to Continue in labelled task illustration",
+      "peak_amplitude": 0.03
+    },
+    {
+      "seconds": 45.19,
+      "purpose": "Show exact approval hash source crop",
+      "peak_amplitude": 0.02
+    },
+    {
+      "seconds": 63.3944,
+      "purpose": "Keyboard task confirmed",
+      "peak_amplitude": 0.019
+    },
+    {
+      "seconds": 66.0192,
+      "purpose": "Storage-reader check confirmed",
+      "peak_amplitude": 0.019
+    },
+    {
+      "seconds": 68.644,
+      "purpose": "Fresh-browser reopen confirmed",
+      "peak_amplitude": 0.019
+    }
+  ],
+  "provenance": "Original procedural noise synthesis in scripts/mix-v03-audio.py; no external samples",
+  "music": false,
+  "word_timestamps": false,
+  "timing_source": "Actual narration beat boundaries and the renderer visual-event fractions; no inferred word alignment",
+  "loudness_measurement": {
+    "input_i": "-16.02",
+    "input_tp": "-0.99",
+    "input_lra": "4.10",
+    "input_thresh": "-26.52",
+    "output_i": "-16.07",
+    "output_tp": "-1.00",
+    "output_lra": "4.10",
+    "output_thresh": "-26.56",
+    "normalization_type": "dynamic",
+    "target_offset": "0.07"
+  },
+  "listening_review": "pending_user"
+}

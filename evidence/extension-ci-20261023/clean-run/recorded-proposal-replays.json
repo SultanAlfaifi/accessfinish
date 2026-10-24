@@ -1,0 +1,116 @@
+{
+  "schema_version": 1,
+  "kind": "recorded_proposal_reproduction",
+  "new_model_requests": 0,
+  "generated_at_utc": "2026-10-23T18:38:41.555Z",
+  "replayed_proposals": 5,
+  "expected_outcomes_matched": 5,
+  "verified_repair_outcomes": 2,
+  "observations": [
+    {
+      "evaluation_index": 1,
+      "recorded_proposal_sha256": "16ea9a86027099fa595177b59fc3d934c7a5e96aefeb50ef74136ab4049a21a9",
+      "replay_run_id": "run-b0d73474c41ead9a38a721a19cbb75db",
+      "expected": {
+        "build_pass": true,
+        "keyboard_booking_pass": true,
+        "regression_controls_pass": false,
+        "overall_pass": false
+      },
+      "observed": {
+        "build_pass": true,
+        "keyboard_booking_pass": true,
+        "regression_controls_pass": false,
+        "overall_pass": false
+      },
+      "expected_last_stage": "verifying",
+      "observed_last_stage": "verifying",
+      "expected_outcome_observed": true,
+      "error": "Docker operation failed: {\"error\":\"Calendar navigation exceeded its bounded month budget.\",\"stage\":null}\n"
+    },
+    {
+      "evaluation_index": 2,
+      "recorded_proposal_sha256": "8a4ac2aa6532a80f7e3e3c75e07a1ecffdcc5ad11f85ee5fa3aa693c68ef3814",
+      "replay_run_id": "run-e5fd2f41e4c638318793a40da9efd07a",
+      "expected": {
+        "build_pass": false,
+        "keyboard_booking_pass": false,
+        "regression_controls_pass": false,
+        "overall_pass": false
+      },
+      "observed": {
+        "build_pass": false,
+        "keyboard_booking_pass": false,
+        "regression_controls_pass": false,
+        "overall_pass": false
+      },
+      "expected_last_stage": "building",
+      "observed_last_stage": "building",
+      "expected_outcome_observed": true,
+      "error": "Docker operation failed: lib/index.js:11110:23)\n    at Parser.parseMaybeUnaryOrPrivate (/trusted/node_modules/@babel/parser/lib/index.js:10963:61)\n    at Parser.parseExprOps (/trusted/node_modules/@babel/parser/lib/index.js:10968:23)\n    at Parser.parseMaybeConditional (/trusted/node_modules/@babel/parser/lib/index.js:10945:23)\n    at Parser.parseMaybeAssign (/trusted/node_modules/@babel/parser/lib/index.js:10895:21)\n    at Parser.parseExpressionBase (/trusted/node_modules/@babel/parser/lib/index.js:10848:23)\n    at /trusted/node_modules/@babel/parser/lib/index.js:10844:39\n    at Parser.allowInAnd (/trusted/node_modules/@babel/parser/lib/index.js:12495:16)\n    at Parser.parseExpression (/trusted/node_modules/@babel/parser/lib/index.js:10844:17)\n    at Parser.parseStatementContent (/trusted/node_modules/@babel/parser/lib/index.js:12971:23)\n    at Parser.parseStatementLike (/trusted/node_modules/@babel/parser/lib/index.js:12843:17)\n    at Parser.parseStatementListItem (/trusted/node_modules/@babel/parser/lib/index.js:12823:17)\n    at Parser.parseBlockOrModuleBlockBody (/trusted/node_modules/@babel/parser/lib/index.js:13392:61)\n    at Parser.parseBlockBody (/trusted/node_modules/@babel/parser/lib/index.js:13385:10)\n    at Parser.parseBlock (/trusted/node_modules/@babel/parser/lib/index.js:13373:10)\n    at Parser.parseFunctionBody (/trusted/node_modules/@babel/parser/lib/index.js:12174:24)\n    at Parser.parseFunctionBodyAndFinish (/trusted/node_modules/@babel/parser/lib/index.js:12160:10)\n    at /trusted/node_modules/@babel/parser/lib/index.js:13521:12\n    at Parser.withSmartMixTopicForbiddingContext (/trusted/node_modules/@babel/parser/lib/index.js:12477:14)\n    at Parser.parseFunction (/trusted/node_modules/@babel/parser/lib/index.js:13520:10)\n    at Parser.parseFunctionStatement (/trusted/node_modules/@babel/parser/lib/index.js:13201:17)\n    at Parser.parseStatementContent (/trusted/node_modules/@babel/parser/lib/index.js:12867:21)\n    at Parser.parseStatementLike (/trusted/node_modules/@babel/parser/lib/index.js:12843:17)\n    at Parser.parseStatementListItem (/trusted/node_modules/@babel/parser/lib/index.js:12823:17)\n    at Parser.parseBlockOrModuleBlockBody (/trusted/node_modules/@babel/parser/lib/index.js:13392:61)\n    at Parser.parseBlockBody (/trusted/node_modules/@babel/parser/lib/index.js:13385:10) {\n  code: 'BABEL_PARSE_ERROR',\n  reasonCode: 'UnexpectedToken',\n  loc: Position { line: 152, column: 12, index: 5605 },\n  pos: 5605,\n  syntaxPlugin: undefined\n}\n\nNode.js v22.23.3\n"
+    },
+    {
+      "evaluation_index": 3,
+      "recorded_proposal_sha256": "453251ec40ee70bda2c10ec180f73193d1e61a27f9012ff6f6dcd3e6284fac19",
+      "replay_run_id": "run-ecfbeedfc52cf335a5668d020cfc854d",
+      "expected": {
+        "build_pass": true,
+        "keyboard_booking_pass": true,
+        "regression_controls_pass": true,
+        "overall_pass": true
+      },
+      "observed": {
+        "build_pass": true,
+        "keyboard_booking_pass": true,
+        "regression_controls_pass": true,
+        "overall_pass": true
+      },
+      "expected_last_stage": "verifying",
+      "observed_last_stage": "verifying",
+      "expected_outcome_observed": true,
+      "error": null
+    },
+    {
+      "evaluation_index": 4,
+      "recorded_proposal_sha256": "8e7b485a36a94e2ac5ea3d6e7f43d5a8c180748e233349494d8515e5f563aca5",
+      "replay_run_id": "run-37a1c4307047548de7e8717fce188d0d",
+      "expected": {
+        "build_pass": true,
+        "keyboard_booking_pass": true,
+        "regression_controls_pass": true,
+        "overall_pass": true
+      },
+      "observed": {
+        "build_pass": true,
+        "keyboard_booking_pass": true,
+        "regression_controls_pass": true,
+        "overall_pass": true
+      },
+      "expected_last_stage": "verifying",
+      "observed_last_stage": "verifying",
+      "expected_outcome_observed": true,
+      "error": null
+    },
+    {
+      "evaluation_index": 5,
+      "recorded_proposal_sha256": "3b34fef79cf14f390fb54a8899ee6b94ecde973fdc0095f9315b51ef5f04fb49",
+      "replay_run_id": "run-da52c9cf5a77c8e146f42e618ba8d1dd",
+      "expected": {
+        "build_pass": false,
+        "keyboard_booking_pass": false,
+        "regression_controls_pass": false,
+        "overall_pass": false
+      },
+      "observed": {
+        "build_pass": false,
+        "keyboard_booking_pass": false,
+        "regression_controls_pass": false,
+        "overall_pass": false
+      },
+      "expected_last_stage": "building",
+      "observed_last_stage": "building",
+      "expected_outcome_observed": true,
+      "error": "Docker operation failed: lib/index.js:11110:23)\n    at Parser.parseMaybeUnaryOrPrivate (/trusted/node_modules/@babel/parser/lib/index.js:10963:61)\n    at Parser.parseExprOps (/trusted/node_modules/@babel/parser/lib/index.js:10968:23)\n    at Parser.parseMaybeConditional (/trusted/node_modules/@babel/parser/lib/index.js:10945:23)\n    at Parser.parseMaybeAssign (/trusted/node_modules/@babel/parser/lib/index.js:10895:21)\n    at Parser.parseExpressionBase (/trusted/node_modules/@babel/parser/lib/index.js:10848:23)\n    at /trusted/node_modules/@babel/parser/lib/index.js:10844:39\n    at Parser.allowInAnd (/trusted/node_modules/@babel/parser/lib/index.js:12495:16)\n    at Parser.parseExpression (/trusted/node_modules/@babel/parser/lib/index.js:10844:17)\n    at Parser.parseStatementContent (/trusted/node_modules/@babel/parser/lib/index.js:12971:23)\n    at Parser.parseStatementLike (/trusted/node_modules/@babel/parser/lib/index.js:12843:17)\n    at Parser.parseStatementListItem (/trusted/node_modules/@babel/parser/lib/index.js:12823:17)\n    at Parser.parseBlockOrModuleBlockBody (/trusted/node_modules/@babel/parser/lib/index.js:13392:61)\n    at Parser.parseBlockBody (/trusted/node_modules/@babel/parser/lib/index.js:13385:10)\n    at Parser.parseBlock (/trusted/node_modules/@babel/parser/lib/index.js:13373:10)\n    at Parser.parseFunctionBody (/trusted/node_modules/@babel/parser/lib/index.js:12174:24)\n    at Parser.parseFunctionBodyAndFinish (/trusted/node_modules/@babel/parser/lib/index.js:12160:10)\n    at /trusted/node_modules/@babel/parser/lib/index.js:13521:12\n    at Parser.withSmartMixTopicForbiddingContext (/trusted/node_modules/@babel/parser/lib/index.js:12477:14)\n    at Parser.parseFunction (/trusted/node_modules/@babel/parser/lib/index.js:13520:10)\n    at Parser.parseFunctionStatement (/trusted/node_modules/@babel/parser/lib/index.js:13201:17)\n    at Parser.parseStatementContent (/trusted/node_modules/@babel/parser/lib/index.js:12867:21)\n    at Parser.parseStatementLike (/trusted/node_modules/@babel/parser/lib/index.js:12843:17)\n    at Parser.parseStatementListItem (/trusted/node_modules/@babel/parser/lib/index.js:12823:17)\n    at Parser.parseBlockOrModuleBlockBody (/trusted/node_modules/@babel/parser/lib/index.js:13392:61)\n    at Parser.parseBlockBody (/trusted/node_modules/@babel/parser/lib/index.js:13385:10) {\n  code: 'BABEL_PARSE_ERROR',\n  reasonCode: 'UnexpectedToken',\n  loc: Position { line: 153, column: 12, index: 5639 },\n  pos: 5639,\n  syntaxPlugin: undefined\n}\n\nNode.js v22.23.3\n"
+    }
+  ]
+}

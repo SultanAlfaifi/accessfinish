@@ -1,0 +1,46 @@
+{
+  "version": "v03",
+  "state": "local_narrated_review_cut_rendered",
+  "language": "English",
+  "purpose": "Engaging judge-facing product demonstration with concrete keyboard-booking stakes and evidence-bound payoff",
+  "target_seconds": [
+    110,
+    135
+  ],
+  "spec": {
+    "width": 1600,
+    "height": 900,
+    "fps": 30
+  },
+  "visual_thesis": "Follow one requested appointment from a skipped date control through exact source review to independently verified storage and reopen.",
+  "direction": "Warm paper, deep ink, cobalt task carrier, restrained vermilion for failure, emerald for verified evidence; editorial type and deliberate camera crops",
+  "motion": "Task card carries date and time across scenes; Tab-key pulses explain the blockage; cropped real UI supports review; three independent checks converge on the saved appointment; all five outcomes remain visible",
+  "source_assets": "../raw/v02 and ../capture-v02.json; actual project-owned UI captures of synthetic data, preserved unchanged",
+  "recorded_execution_run": "run-9c34bf83fb3c7409d2da1537aa8427f3",
+  "proposal_sha256": "8e7b485a36a94e2ac5ea3d6e7f43d5a8c180748e233349494d8515e5f563aca5",
+  "claim_boundary": "Actual recorded UI captures with edited timing and clearly labelled explanatory illustrations. No new Nemotron request, no new execution, no speed claim, no autonomous defect discovery, no general benchmark or screen-reader study.",
+  "frozen_result": {
+    "complete_passes": 2,
+    "attempts": 5,
+    "guided_exposed_cases": 1
+  },
+  "audio": {
+    "narration_provider": "local_qwen3_tts",
+    "model": "Qwen/Qwen3-TTS-12Hz-0.6B-CustomVoice",
+    "model_revision": "85e237c12c027371202489a0ec509ded67b5e4b5",
+    "default_voice": "Aiden",
+    "candidate_voices": [
+      "Ryan",
+      "Aiden"
+    ],
+    "auditions": "../../artifacts/qwen-tts-audition-20261023/listening-copies.json",
+    "rejected_model": "gradium/phonon-31m-en q8: Easton, Zoey and Alfie rejected by the user after listening",
+    "generation_state": "Full Aiden narration generated locally; final listening review pending",
+    "elevenlabs_state": "initial request and one approved retry returned rate-limit errors; no completed audio asset; no further paid retries authorized",
+    "effects": "Six quiet original procedural UI accents; synthesis source and cue timings retained in audio-mix.json",
+    "music": false,
+    "actual_narration_seconds": 117.0
+  },
+  "publication": "Local review first. Existing private YouTube uploads and release remain unchanged until replacement is explicitly approved.",
+  "final_video": "accessfinish-demo-v03.mp4"
+}

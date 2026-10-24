@@ -28,10 +28,13 @@ jobs:
       - run: npm test
       - run: node scripts/check-evidence.cjs
       - run: node scripts/check-trials.cjs
+      - run: npm run check:comparison
+      - run: npm run check:phone-model
+      - run: npm run check:submission
   isolated-booking:
     needs: checks
     runs-on: ubuntu-latest
-    timeout-minutes: 25
+    timeout-minutes: 35
     env:
       AF_RUNTIME_DIR: .runtime
     steps:
@@ -43,10 +46,12 @@ jobs:
           node-version: 22
       - name: Build isolated fixture from public pinned inputs
         run: npm run demo:setup
-      - name: Replay all five retained proposals in fresh fixtures
+      - name: Replay five retained decisions and report exact-stage comparison
         run: node scripts/ci-replay-evaluation.cjs
       - name: Verify the original source remains a negative control
         run: node scripts/demo-check.cjs --original
+      - name: Reproduce phone controls and the retained Nemotron repair
+        run: node scripts/ci-check-extension.cjs
       - name: Export synthetic run records only
         if: always()
         run: node scripts/ci-report.cjs
@@ -54,5 +59,7 @@ jobs:
         if: always()
         with:
           name: clean-execution-evidence
-          path: artifacts/clean-run/*.json
+          path: |
+            artifacts/clean-run/*.json
+            artifacts/extension-ci/*.json
           retention-days: 60

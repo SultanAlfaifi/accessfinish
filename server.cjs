@@ -26,6 +26,16 @@ function createServer({root = runtimeRoot(), execute = fixture.execute} = {}) {
         return send(res, 200, {mode: 'local', model: model.MODEL, model_ready: model.readiness(), fixture_ready: fixtureReady, execution_busy: store.busy(), new_execution_available: fixtureReady});
       }
       if (req.method === 'POST' && url.pathname === '/api/proposals/recorded') {
+        const input = await body(req);
+        if (input.case_id === 'customer-phone') {
+          const selected = require('./lib/cases.cjs').caseDefinition(input.case_id);
+          const bundle = path.join(web, 'cases/customer-phone.json');
+          const retained = fs.existsSync(bundle) ? JSON.parse(fs.readFileSync(bundle, 'utf8')) : null;
+          return send(res, 201, store.register({files: selected.files, proposal: retained?.featured?.proposal || require('./lib/cases.cjs').phoneReference(),
+            origin: retained?.featured?.authorship === 'model' ? 'recorded' : 'operator_reference',
+            model: retained?.featured?.model || null, case_id: selected.id}));
+        }
+        if (input.case_id && input.case_id !== 'keyboard-date') throw Error('Unknown repair case.');
         const files = JSON.parse(fs.readFileSync(path.join(web, 'source-context.json'), 'utf8'));
         const featuredFile = path.join(web, 'featured-case.json');
         const evidence = JSON.parse(fs.readFileSync(fs.existsSync(featuredFile) ? featuredFile : path.join(web, 'evidence.json'), 'utf8'));
@@ -33,7 +43,7 @@ function createServer({root = runtimeRoot(), execute = fixture.execute} = {}) {
       }
       if (req.method === 'POST' && url.pathname === '/api/analyze') {
         const input = await body(req), result = await model.analyze(input, {root});
-        const proposal = store.register({files: input.files, proposal: result.proposal, origin: 'nebius', model: result.model, usage: result.usage, estimated_cost_usd_excluding_tax: result.estimated_cost_usd_excluding_tax});
+        const proposal = store.register({files: input.files, proposal: result.proposal, origin: 'nebius', model: result.model, usage: result.usage, estimated_cost_usd_excluding_tax: result.estimated_cost_usd_excluding_tax, case_id: result.case_id});
         return send(res, 200, {...result, ...proposal, proposal_id: proposal.id});
       }
       if (req.method === 'POST' && url.pathname === '/api/preview') { const input = await body(req); return send(res, 200, preview(input.files, input.proposal)); }

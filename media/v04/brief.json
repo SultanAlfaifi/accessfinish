@@ -1,0 +1,33 @@
+{
+  "version": "v04",
+  "language": "English",
+  "state": "rendered_technical_and_sampled_frame_checks_passed_entrant_playback_pending",
+  "purpose": "Explain the workflow distinction immediately and demonstrate a second repair case with a fair conventional-test comparison",
+  "opening": "A real confirmation with the wrong saved phone; connect the repair decision to exact-patch evidence",
+  "spec": {
+    "width": 1600,
+    "height": 900,
+    "fps": 30
+  },
+  "direction": "Preserve the warm paper, deep ink, cobalt, restrained red and green of v03; use readable real evidence and actual workbench captures",
+  "comparison": "Six paired variants, twelve isolated executions, equal correctness outcomes using identical checks. Approval and evidence integration is the demonstrated distinction.",
+  "new_model": "One guided new Nemotron 3 Super proposal for the declared seeded phone fault; verified in two execution replays, not two generations",
+  "original_model_evaluation": "The original 2/5 result on one guided upstream case remains separate and unchanged",
+  "sources": [
+    "web/comparison.json",
+    "web/phone-model-report.json",
+    "web/cases/customer-phone.json",
+    "media/raw/v04",
+    "media/raw/v02",
+    "evidence/extension-20261023-r2",
+    "evidence/phone-model-20261023"
+  ],
+  "audio": {
+    "engine": "Qwen3-TTS 0.6B CustomVoice",
+    "voice": "Aiden",
+    "local": true,
+    "music": false
+  },
+  "claim_boundary": "Two exposed development cases in one application, including one deliberately seeded fault. No autonomous diagnosis, held-out benchmark, measured time saving, superiority over conventional tests, or completed independent human review is claimed.",
+  "publication": "Local review cut. No new upload, merge or deployment is performed by this revision."
+}

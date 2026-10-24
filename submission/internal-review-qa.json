@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "kind": "internal_interface_qa",
+  "independent_human_sessions": 0,
+  "desktop": {
+    "heading_focused": true,
+    "height": 818,
+    "horizontal_overflow": false,
+    "language": "en",
+    "result_label": "RECORDED · VERIFIED FOR THIS RUN",
+    "width": 1454,
+    "x": 0,
+    "y": 358.4090881347656
+  },
+  "mobile": {
+    "arabic_visible": false,
+    "booking_date": "2026-11-02",
+    "heading_focused": true,
+    "height": 844,
+    "horizontal_overflow": false,
+    "language": "en",
+    "local_controls_hidden": true,
+    "model_form_hidden": true,
+    "result_label": "RECORDED · VERIFIED FOR THIS RUN",
+    "result_top": 48.73934555053711,
+    "width": 390
+  },
+  "review_form": {
+    "feedback_export_hidden": true,
+    "filled_textareas": 0,
+    "height": 844,
+    "horizontal_overflow": false,
+    "independent_checked": false,
+    "language": "en",
+    "participant": "",
+    "timer_status": "Started at 18:56:27. Open the workbench, try the tasks, then return here.",
+    "width": 390,
+    "scope": "Internal interface QA only; no participant session or result collected"
+  }
+}
