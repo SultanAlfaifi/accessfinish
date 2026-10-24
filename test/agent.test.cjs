@@ -1,6 +1,6 @@
 'use strict';
 const test = require('node:test'), assert = require('node:assert/strict'), fs = require('node:fs'), os = require('node:os'), path = require('node:path');
-const {runAgent, explain} = require('../lib/agent.cjs');
+const {runAgent, explain, nemotron} = require('../lib/agent.cjs');
 const featured = require('../web/featured-case.json').proposal;
 
 const scenario = {date: '2026-11-02', customer: {first_name: 'Synthetic', last_name: 'Agent', email: 'agent@example.invalid', phone_number: '0000000042'}};
@@ -85,4 +85,15 @@ test('rejection feedback remembers the attempt that got furthest', async () => {
   assert.equal(feedback[0].best_attempt_so_far, 'this one');
   assert.equal(feedback[1].best_attempt_so_far.attempt, 1);
   assert.equal(feedback[1].best_attempt_so_far.got_as_far_as, 'outcome');
+});
+
+test('temporary provider errors are retried, other errors are not', async () => {
+  let calls = 0;
+  const reply = {choices: [{message: {tool_calls: [{id: 'c', function: {name: 'propose_repair', arguments: JSON.stringify({diagnosis: 'd', edits: []})}}]}}], usage: {prompt_tokens: 1, completion_tokens: 1}};
+  const flaky = async () => ++calls < 3 ? {ok: false, status: 503, text: async () => 'busy'} : {ok: true, status: 200, text: async () => JSON.stringify(reply)};
+  const answer = await nemotron([], {key: 'k', fetchImpl: flaky, retryDelay: 1});
+  assert.equal(calls, 3); assert.equal(answer.proposal.diagnosis, 'd');
+  calls = 0;
+  await assert.rejects(nemotron([], {key: 'k', retryDelay: 1, fetchImpl: async () => { calls++; return {ok: false, status: 401, text: async () => 'no'}; }}), /HTTP 401/);
+  assert.equal(calls, 1);
 });
