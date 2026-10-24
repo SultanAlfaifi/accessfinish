@@ -105,7 +105,11 @@
         if (!a && !b) continue; const row = el('tr', a === b ? '' : 'mismatch'); row.append(el('th', '', label), el('td', '', a || '—'), el('td', '', b || '—')); table.append(row);
       }
       wrap.append(el('p', '', 'The confirmation page appeared. Reading the database tells a different story:'), table);
-      if (evidence.date_field_history?.length) {
+      if (evidence.timeline_after_typing_date?.length) {
+        const list = el('ol', 'history');
+        for (const item of evidence.timeline_after_typing_date) { const row = el('li'); row.append(el('code', '', item.t), el('span', '', item.event)); list.append(row); }
+        wrap.append(el('p', '', 'What happened after the date was typed:'), list);
+      } else if (evidence.date_field_history?.length) {
         const list = el('ol', 'history');
         for (const item of evidence.date_field_history) { const row = el('li'); row.append(el('span', '', item.action), el('code', '', item.date_field_value || '(empty)')); list.append(row); }
         wrap.append(el('p', '', 'The date field, each time its value changed:'), list);
