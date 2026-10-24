@@ -1,13 +1,13 @@
 'use strict';
 const fs = require('node:fs'), path = require('node:path'), assert = require('node:assert/strict');
-const {runConventional} = require('./conventional-tests.cjs');
+const {runCase} = require('./run-case.cjs');
 const {caseDefinition} = require('../lib/cases.cjs');
 const {createRunStore, runtimeRoot} = require('../lib/runs.cjs');
 const fixture = require('../lib/fixture.cjs');
 async function main() {
   const out = path.join(__dirname, '../artifacts/extension-ci'); fs.mkdirSync(out, {recursive: true});
   for (const variant of ['repaired', 'hardcoded']) {
-    const run = await runConventional({case_id: 'customer-phone', variant});
+    const run = await runCase({case_id: 'customer-phone', variant});
     fs.writeFileSync(path.join(out, variant + '.json'), JSON.stringify(run, null, 2) + '\n');
     if (variant === 'repaired') assert.equal(run.state, 'verified');
     else {

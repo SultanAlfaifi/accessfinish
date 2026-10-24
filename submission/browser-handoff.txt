@@ -3,14 +3,12 @@ Checkpoint: October 23, 2026
 
 CURRENT TWO-CASE REVISION
 The local workbench now includes the original date case and a deliberately seeded saved-phone fault.
-Six paired variants / twelve isolated executions: conventional tests and AccessFinish produced identical correctness outcomes.
 One separately approved new Nemotron phone proposal passed both execution workflows; estimated $0.0041457 before tax, no retry.
-The demonstrated distinction is integrated exact-patch approval and attached source/proposal/run evidence. Conventional CI can add this too.
 Original frozen result remains 2/5 on one guided date case; no pooled success rate.
 New film: media/v04/accessfinish-demo-v04.mp4, 109.5 seconds, English local Aiden narration.
 New preparation: artifacts/release-v0.2.0-v04-preparation/. Its functional archive is built from the recorded committed two-case source, not the older v03 ZIP.
 Full decode, exact frame count, loudness and sampled encoded frames checked. Continuous playback and full entrant watch/listen remain pending.
-Current comparison method: docs/two-case-comparison.md. Judge path: submission/judge-guide.md.
+Judge path: submission/judge-guide.md.
 The public URL and existing PRIVATE v03 upload below are older revisions. No new deployment, release, YouTube upload or Devpost submission is implied.
 Two independent browser reviews remain 0/2.
 

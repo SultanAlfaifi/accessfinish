@@ -168,7 +168,7 @@ function caseCopy() {
   $('#case-visible-symptom').textContent = phone ? 'Entered: 0000000042 · fault writes: 0000000000' : 'Tab focus moves past the date control';
   $('#case-check-title').textContent = phone ? 'The saved phone must match the entered phone.' : 'The date must survive the whole task.';
   $('#case-check-detail').textContent = phone ? 'A second booking uses a different phone, so hardcoding the first example must fail. The independent reader and fresh browser check the result.' : 'Clearing the input must be safe. Reopening the saved appointment must retain its date.';
-  $('#scope-note').textContent = phone ? 'A deliberately seeded, exposed development fault on the recorded working date repair. Reference controls are operator-authored unless explicitly marked as new model proposals.' : 'One guided, exposed upstream case. The diagnosis and repair direction were supplied. The original five-trial evaluation remains separate from the two-case workflow comparison.';
+  $('#scope-note').textContent = phone ? 'A deliberately seeded, exposed development fault on the recorded working date repair. Reference controls are operator-authored unless explicitly marked as new model proposals.' : 'One guided, exposed upstream case. The diagnosis and repair direction were supplied. The original five-trial evaluation is shown below.';
 }
 async function selectCase(id) {
   const bundle = id === 'keyboard-date' ? baseCase : await api('cases/customer-phone.json');
@@ -185,34 +185,6 @@ $('#repair-case').addEventListener('change', async () => {
   catch (error) { $('#repair-case').value = selectedCaseId; $('#environment-note').textContent = error.message; }
   finally { analysisBusy = false; controls(); }
 });
-async function comparison() {
-  try {
-    const report = await api('comparison.json');
-    if (report.state !== 'completed' || !report.all_expected_outcomes_observed) return;
-    $('#comparison-rows').replaceChildren();
-    for (const pair of report.pairs) {
-      const tr = document.createElement('tr');
-      const outcomes = ['conventional', 'accessfinish'].map(workflow => report.records.find(r => r.case_id === pair.case_id && r.variant === pair.variant && r.workflow === workflow));
-      const label = (pair.case_id === 'customer-phone' ? 'Saved phone' : 'Keyboard date') + ' / ' + pair.variant;
-      for (const [index, text] of [label, ...outcomes.map(row => row.actual_verified ? 'Passed' : row.classification.replaceAll('_', ' '))].entries()) {
-        const td = document.createElement('td');
-        if (index > 0) { const link = document.createElement('a'); link.href = outcomes[index - 1].evidence; link.textContent = text; link.setAttribute('aria-label', label + ' / ' + outcomes[index - 1].workflow + ': ' + text + '. Inspect evidence.'); td.append(link); }
-        else td.textContent = text;
-        tr.append(td);
-      }
-      $('#comparison-rows').append(tr);
-    }
-    $('#comparison-results').hidden = false; $('#comparison-download').hidden = false;
-    $('#comparison-status').textContent = report.pairs.length + ' paired variants completed. Both workflows produced the same correctness outcomes. AccessFinish additionally rejected missing and stale approvals before execution.';
-    try {
-      const model = await api('phone-model-report.json');
-      if (model.state === 'verified_in_both_workflows') {
-        $('#phone-model-status').hidden = false; $('#phone-model-download').hidden = false;
-        $('#phone-model-status').textContent = 'Separately, ' + model.generations + ' new guided Nemotron proposal for the seeded phone case passed both workflows. These are ' + model.execution_replays + ' execution replays of that proposal, not additional model generations.';
-      }
-    } catch {}
-  } catch { /* A pending experiment never renders completed results. */ }
-}
 async function init() {
   try { [evidence, context] = await Promise.all([api('evidence.json'), api('source-context.json')]); }
   catch { $('#environment-note').textContent = 'The case data could not be loaded. Refresh the page or check the local files.'; controls(); return; }
@@ -221,7 +193,7 @@ async function init() {
     await AccessFinishRecording.validate({featured, files: context, run: recordedRun});
   } catch { featured = null; recordedRun = null; }
   baseCase = {case_id: 'keyboard-date', files: context, featured, run: recordedRun};
-  caseCopy(); comparison();
+  caseCopy();
   try {
     const report = await api('trial-report.json');
     $('#protocol-summary').textContent = report.evaluation_passed + ' of ' + report.evaluation_requests + ' attempts passed the full frozen procedure. Every failure is retained. Additional model cost: $' + Number(report.estimated_additional_model_cost_usd_excluding_tax).toFixed(6) + ' estimated before tax, across all eight approved requests.';

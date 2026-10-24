@@ -6,9 +6,8 @@ A booking can be confirmed while the wrong phone is saved. AccessFinish connects
 
 This 110-second English demo shows a deliberately seeded phone fault in Easy!Appointments, a new guided NVIDIA Nemotron 3 Super repair through Nebius Token Factory, and a hardcoded negative control that fails a different-phone check.
 
-Six paired variants used the same isolated build, browser task, read-only database reader, fresh reopen and regression checks in twelve executions. Conventional tests and AccessFinish agreed on every correctness outcome. The difference is the integrated approval and evidence workflow; conventional CI can add this integration too. No accuracy advantage or measured time saving is claimed.
 
-The new phone proposal is one guided generation replayed twice. The original date-case model evaluation remains separately 2/5 full passes. Two exposed cases in one app, including one seeded fault, do not establish autonomous diagnosis or general repair accuracy. Independent browser reviews remain pending.
+The new phone proposal is one guided generation. The original date-case model evaluation remains separately 2/5 full passes. Two exposed cases in one app, including one seeded fault, do not establish autonomous diagnosis or general repair accuracy. Independent browser reviews remain pending.
 
 Source and evidence: https://github.com/SultanAlfaifi/accessfinish
 Earlier published date-case review: https://sultalfaifi.com/accessfinish/

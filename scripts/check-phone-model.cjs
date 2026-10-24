@@ -9,7 +9,7 @@ function check() {
   assert.ok(ledger.attempts.length > 0 && ledger.attempts.length <= 2); assert.ok(ledger.reserved_usd <= .5);
   assert.equal(protocol.automatic_retries, false); assert.equal(protocol.max_new_requests, 2);
   for (const [file, expected] of Object.entries(protocol.procedure_sha256)) assert.equal(sha(fs.readFileSync(path.join(root, file))), expected, 'Model procedure changed: ' + file);
-  const managed = read('execution-accessfinish.json'), conventional = read('execution-conventional.json');
+  const managed = read('execution-accessfinish.json');
   const attempt = read('attempt-' + managed.model_attempt_id + '.json'), raw = read('raw-' + managed.model_attempt_id + '.json');
   assert.equal(raw.request.model, protocol.model); assert.equal(raw.response.model, protocol.model);
   assert.equal(raw.request.messages[0].content, protocol.system);
@@ -21,7 +21,7 @@ function check() {
   const spend = ledger.attempts.find(row => row.id === attempt.attempt_id);
   assert.equal(spend.request_sha256, digest(raw.request)); assert.deepEqual(spend.usage, raw.response.usage);
   assert.equal(spend.status, 'proposal_validated');
-  for (const record of [managed, conventional]) {
+  for (const record of [managed]) {
     assert.equal(record.state, 'verified'); assert.equal(record.case_id, 'customer-phone');
     assert.equal(record.model_attempt_id, attempt.attempt_id); assert.equal(record.source_sha256, protocol.source_sha256);
     assert.equal(record.proposal_sha256, digest(attempt.proposal)); assert.equal(record.result.proposal_sha256, record.proposal_sha256);
@@ -35,11 +35,11 @@ function check() {
     assert.equal(record.new_model_calls_during_execution, 0);
   }
   assert.equal(managed.approval.proposal_sha256, managed.proposal_sha256); assert.equal(managed.approval.reviewed, true);
-  return {protocol, ledger, attempt, managed, conventional};
+  return {protocol, ledger, attempt, managed};
 }
 if (require.main === module) {
-  try { const result = check(); console.log(JSON.stringify({state: 'NEW_PHONE_MODEL_PAIR_PASS', generations: result.ledger.attempts.length,
-    verified_execution_replays: 2, estimated_cost_usd_excluding_tax: result.attempt.estimated_cost_usd_excluding_tax, distinct_exposed_cases: 1})); }
+  try { const result = check(); console.log(JSON.stringify({state: 'NEW_PHONE_MODEL_PASS', generations: result.ledger.attempts.length,
+    verified_execution_replays: 1, estimated_cost_usd_excluding_tax: result.attempt.estimated_cost_usd_excluding_tax, distinct_exposed_cases: 1})); }
   catch (error) { console.error(error.message); process.exitCode = 1; }
 }
 module.exports = {check};

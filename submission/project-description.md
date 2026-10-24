@@ -14,12 +14,6 @@ AccessFinish is a repair-review workbench with two exposed development cases in 
 
 The published date-case browser experience reviews recorded executions. The new two-case workbench and v04 film are prepared for review on the current development branch; publication is pending. Inspection of past evidence is explicitly distinguished from new inference or execution. The local build performs new execution without a model key; new source generation additionally needs the operator's Nebius configuration and budget.
 
-## Comparison with conventional tests
-
-We ran six paired variants in twelve fresh isolated executions. A conventional test-only CLI and AccessFinish used the identical compiler, keyboard task, database reader, fresh reopen and regression checks. **Both workflows produced the same correctness outcomes.** Both caught the phone fault despite a confirmation screen, and both rejected a hardcoded repair that passed the first example but saved the wrong value for a different phone.
-
-The demonstrated distinction is the integrated acceptance workflow: review the model's actual change, approve that exact patch, and retain the result with the source, proposal and run identities. Missing and stale approvals were rejected before execution. Conventional CI can implement these integrations too. We do not claim more accurate tests or measured time savings.
-
 ## How we built it
 
 NVIDIA Nemotron 3 Super (`nvidia/nemotron-3-super-120b-a12b`) is served through Nebius Token Factory. The operator supplies the diagnosis and repair direction; Nemotron returns structured literal source edits to two allowed paths. Anchors must match exactly once. Line endings are normalized for application, with no operator changes to the model's semantic edits.
@@ -34,7 +28,7 @@ The featured successful proposal contains five model-authored edits. It built 83
 
 Estimated additional model cost across all eight requests was $0.0394581 before tax, with no unknown-usage responses. This is repeated guided generation on one case, not a hidden-case benchmark or a general accuracy claim.
 
-On October 23, a separately approved new Nemotron request repaired the deliberately seeded phone fault. The diagnosis and repair direction were supplied. The exact returned edit passed fresh AccessFinish and conventional executions, preserving the entered `0000000042`, reopening it correctly, and passing the different-phone `0000000073` control. This is **one model generation and two execution replays**, with an estimated generation cost of **$0.0041457 before tax**. It is separate from both the operator reference comparison and the original five-trial evaluation; the counts are not pooled. Full raw requests, protocols and result records are retained.
+On October 23, a separately approved new Nemotron request repaired the deliberately seeded phone fault. The diagnosis and repair direction were supplied. The exact returned edit passed a fresh isolated execution, preserving the entered `0000000042`, reopening it correctly, and passing the different-phone `0000000073` control. This is **one model generation**, with an estimated generation cost of **$0.0041457 before tax**. It is separate from the operator reference controls and the original five-trial evaluation; the counts are not pooled. Full raw requests, protocols and result records are retained.
 
 ## Challenges
 
@@ -48,4 +42,4 @@ Two independent browser-only developer reviews are planned to assess comprehensi
 
 ## Track and new work
 
-Coding and Agentic Engineering. The work adds a public clean-start fixture, proposal-bound execution, explicit recorded review, frozen repeated trials with retained failures, a fair conventional-test comparison, a second phone-data case and browser-only feedback collection. Easy!Appointments is separately attributed upstream GPL-3.0 software. AccessFinish's original workbench and orchestration are MIT licensed.
+Coding and Agentic Engineering. The work adds a public clean-start fixture, proposal-bound execution, explicit recorded review, frozen repeated trials with retained failures, a second phone-data case and browser-only feedback collection. Easy!Appointments is separately attributed upstream GPL-3.0 software. AccessFinish's original workbench and orchestration are MIT licensed.

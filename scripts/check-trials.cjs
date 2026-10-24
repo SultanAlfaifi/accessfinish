@@ -3,7 +3,7 @@ const fs = require('node:fs'), path = require('node:path'), assert = require('no
 const {digest} = require('../lib/runs.cjs'), {sha} = require('../lib/repair.cjs');
 const {fixtureFingerprint} = require('../lib/fixture.cjs'), {contextForCase} = require('../lib/case-source.cjs');
 const project = path.resolve(__dirname, '..'), read = relative => JSON.parse(fs.readFileSync(path.join(project, relative), 'utf8'));
-const transitionFile = 'evidence/extension-20261023-r2/code-transition.json';
+const transitionFile = 'evidence/code-transition-20261023.json';
 const transition = fs.existsSync(path.join(project, transitionFile)) ? read(transitionFile) : null;
 const report = read('web/trial-report.json'), protocol = read('evidence/competition-20261021/frozen-protocol.json');
 assert.equal(report.evaluation_requests, 5); assert.equal(report.development_requests, 3); assert.equal(report.trials.length, 8);
