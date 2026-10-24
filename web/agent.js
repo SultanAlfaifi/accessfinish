@@ -9,7 +9,7 @@
   const CHECKS = ['Trusted build in an offline sandbox', 'Booking completed with the keyboard only', 'Saved row read back with a read-only database account',
     'Booking reopened in a fresh browser', 'Mouse booking with different data, using month navigation', 'Clearing the date causes no error',
     'Reserved slot is not offered', 'Existing records unchanged', 'Sandbox isolation inspected'];
-  let caseId = 'keyboard-date', trace = null, selected = -1, timer = null, live = null, status = null;
+  let caseId = 'customer-phone', trace = null, selected = -1, timer = null, live = null, status = null;
 
   async function json(url, options) {
     const response = await fetch(url, options); const value = await response.json().catch(() => ({}));
@@ -55,7 +55,8 @@
       const item = el('li', 'step outcome ' + (verified ? 'pass' : 'fail'));
       item.append(el('span', 'icon', verified ? '✓' : '!'), el('span', 'text', verified
         ? 'Verified on attempt ' + trace.accepted.attempt + ' · ' + seconds(trace.duration_ms) + ' · ' + money(trace.estimated_cost_usd)
-        : trace.state === 'error' ? 'Stopped: ' + trace.error : 'Not verified after ' + trace.steps.filter(step => step.kind === 'verify').length + ' attempts — nothing was accepted'));
+        : trace.state === 'error' ? 'Stopped: ' + trace.error : 'Not verified after ' + trace.steps.filter(step => step.kind === 'verify').length + ' attempts — no patch accepted, '
+          + trace.steps.filter(step => step.kind === 'verify' && step.stage === 'outcome').length + ' false "booked" pages caught'));
       list.append(item);
     }
   }
@@ -110,7 +111,7 @@
       wrap.append(el('p', '', 'The confirmation page appeared. Reading the database tells a different story:'), table);
       if (evidence.timeline_after_typing_date?.length) {
         const list = el('ol', 'history');
-        for (const item of evidence.timeline_after_typing_date) { const row = el('li'); row.append(el('code', '', item.t), el('span', '', item.event)); list.append(row); }
+        for (const item of evidence.timeline_after_typing_date) { const row = el('li', /no key pressed/.test(item.event) ? 'jump' : ''); row.append(el('code', '', item.t), el('span', '', item.event)); list.append(row); }
         wrap.append(el('p', '', 'What happened after the date was typed:'), list);
       } else if (evidence.date_field_history?.length) {
         const list = el('ol', 'history');
@@ -163,10 +164,19 @@
   }
 
   function renderFacts() {
-    const done = trace && trace.state === 'verified';
-    $('#fact-attempts').textContent = done ? String(trace.accepted.attempt) : '—';
-    $('#fact-time').textContent = trace && trace.duration_ms ? seconds(trace.duration_ms) : '—';
-    $('#fact-cost').textContent = trace && trace.state !== 'running' ? money(trace.estimated_cost_usd) : '—';
+    $('#finding').hidden = !(trace && caseId === 'keyboard-date' && trace.state !== 'verified' && trace.state !== 'running');
+  }
+  // Totals across every recorded live run (web/agent-runs/summary.json).
+  async function renderSummary() {
+    try {
+      const summary = await json('agent-runs/summary.json'), phone = summary.cases['customer-phone'], keyboard = summary.cases['keyboard-date'];
+      if (phone) { $('#fact-phone').textContent = phone.first_attempt + ' / ' + phone.runs; $('#verdict-customer-phone').textContent = 'Fixed on the first attempt in ' + phone.first_attempt + ' of ' + phone.runs + ' runs'; }
+      if (keyboard) {
+        $('#fact-caught').textContent = String(keyboard.wrong_saves_caught); $('#why-caught').textContent = String(keyboard.wrong_saves_caught);
+        $('#verdict-keyboard-date').textContent = 'Not fixed yet · ' + keyboard.wrong_saves_caught + ' false "booked" pages caught';
+      }
+      $('#fact-cost').textContent = money(summary.cost_usd); $('#fact-runs').textContent = String(summary.runs);
+    } catch {}
     $('#fact-checks').textContent = String(CHECKS.length);
   }
 
@@ -216,6 +226,6 @@
   $('#run-live').addEventListener('click', runLive);
   (async () => {
     try { status = await json('/api/status'); $('#run-live').hidden = !status.agent_ready; } catch { status = null; }
-    load(caseId);
+    load(caseId); renderSummary();
   })();
 })();

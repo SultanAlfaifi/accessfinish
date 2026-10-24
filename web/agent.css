@@ -70,7 +70,7 @@ code,kbd,pre{font-family:var(--mono)}
 .chip.stuck{background:var(--red-bg);border-color:#fbc8a8;color:var(--red);font-weight:700}
 .facts-list{display:grid;gap:8px;margin:12px 0}.facts-list div{display:grid;grid-template-columns:minmax(120px,40%) 1fr;gap:12px;font-size:14px}
 .facts-list dt{color:var(--muted)}.facts-list dd{margin:0;font-weight:600;overflow-wrap:anywhere}
-.compare{width:100%;border-collapse:collapse;font-size:14px;margin:8px 0}
+.compare{width:100%;border-collapse:collapse;font-size:14px;margin:8px 0;table-layout:fixed}.compare th:first-child{width:28%}.compare td{overflow-wrap:anywhere}
 .compare th,.compare td{border-bottom:1px solid var(--line);padding:8px;text-align:left}.compare td{font-family:var(--mono)}
 .compare tr.mismatch td:last-child{color:var(--red);font-weight:700;background:var(--red-bg)}
 .log{background:#0f172a;color:#fecaca;padding:12px;border-radius:8px;font-size:12px;white-space:pre-wrap;overflow-wrap:anywhere;max-height:260px;overflow:auto}
@@ -107,4 +107,8 @@ footer{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;paddin
   .facts-list div{grid-template-columns:1fr;gap:0}
 }
 @media (prefers-reduced-motion:reduce){*{animation:none!important}}
-.history{margin:6px 0 12px;padding-left:22px;font-size:13px}.history li{display:flex;gap:10px;justify-content:space-between;border-bottom:1px dashed var(--line);padding:3px 0}.history code{font-weight:700}
+.history{margin:6px 0 12px;padding:0;list-style:none;font-size:13px}.history li{display:grid;grid-template-columns:52px 1fr;gap:10px;border-bottom:1px dashed var(--line);padding:4px 6px;overflow-wrap:anywhere}.history code{font-weight:700;color:var(--muted)}.history li.jump{background:var(--red-bg);color:var(--red);font-weight:700;border-radius:6px}
+.verdict{font-size:12px;font-weight:700;margin-top:4px}.verdict:empty{display:none}.verdict.good{color:var(--green)}.verdict.caught{color:var(--red)}
+.finding{grid-column:1/-1;background:#fff;border:1px solid #f3c6a8;border-left:4px solid var(--red);border-radius:12px;padding:16px 20px}
+.finding h3{margin:0 0 6px;font-size:18px}.finding p{margin:6px 0;color:var(--muted);max-width:90ch}.finding code{background:#f6efe9;padding:1px 5px;border-radius:4px;color:var(--ink)}
+@media (min-width:901px){.detail{position:sticky;top:16px;align-self:start;max-height:calc(100vh - 32px);overflow:auto}}

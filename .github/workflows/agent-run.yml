@@ -40,6 +40,7 @@ jobs:
         run: |
           git config user.name "accessfinish-agent"
           git config user.email "accessfinish-agent@users.noreply.github.com"
+          node scripts/agent-summary.cjs > /dev/null
           git add web/agent-runs evidence/agent-runs
           git diff --cached --quiet && { echo "No traces produced."; exit 1; }
           git commit -m "Record live agent runs from ${GITHUB_SHA::7}"
