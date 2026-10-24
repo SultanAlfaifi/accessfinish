@@ -109,6 +109,6 @@ footer{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;paddin
 @media (prefers-reduced-motion:reduce){*{animation:none!important}}
 .history{margin:6px 0 12px;padding:0;list-style:none;font-size:13px}.history li{display:grid;grid-template-columns:52px 1fr;gap:10px;border-bottom:1px dashed var(--line);padding:4px 6px;overflow-wrap:anywhere}.history code{font-weight:700;color:var(--muted)}.history li.jump{background:var(--red-bg);color:var(--red);font-weight:700;border-radius:6px}
 .verdict{font-size:12px;font-weight:700;margin-top:4px}.verdict:empty{display:none}.verdict.good{color:var(--green)}.verdict.caught{color:var(--red)}
-.finding{grid-column:1/-1;background:#fff;border:1px solid #f3c6a8;border-left:4px solid var(--red);border-radius:12px;padding:16px 20px}
+.finding{margin:-36px 0 48px;background:#fff;border:1px solid #f3c6a8;border-left:4px solid var(--red);border-radius:12px;padding:16px 20px}
 .finding h3{margin:0 0 6px;font-size:18px}.finding p{margin:6px 0;color:var(--muted);max-width:90ch}.finding code{background:#f6efe9;padding:1px 5px;border-radius:4px;color:var(--ink)}
 @media (min-width:901px){.detail{position:sticky;top:16px;align-self:start;max-height:calc(100vh - 32px);overflow:auto}}

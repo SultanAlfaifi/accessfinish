@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="description" content="An agent on NVIDIA Nemotron that keeps repairing a broken user journey until the saved result is verified, not just the confirmation page.">
-  <title>AccessFinish</title><link rel="stylesheet" href="agent.css?v=c1f75b0ffd1d383e">
+  <title>AccessFinish</title><link rel="stylesheet" href="agent.css?v=93560dcac4281b3d">
 </head>
 <body>
 <a class="skip" href="#agent">Skip to the agent</a>
@@ -37,12 +37,12 @@
     </div>
 
     <div class="detail" id="detail" aria-live="polite"></div>
-    <aside class="finding" id="finding" hidden>
-      <h3>Not fixed yet — and nothing false got through.</h3>
-      <p>In every run, Nemotron made the date reachable with the keyboard, but some attempts saved the wrong day while the page said <em>booked</em>. The verifier rejected every one of them.</p>
-      <p>The recorded timeline shows why: right after the date is typed, the page requests <code>get_unavailable_dates</code> and, with no key pressed, the field jumps from <code>02/11</code> to <code>01/11</code>. That reset lives in <code>booking_http_client.js</code>, which selects the first available day of the month. In the last run Nemotron opened that file, but still proposed time-zone and input-format changes. The evidence is precise enough for a developer to fix it directly.</p>
-    </aside>
   </section>
+  <aside class="finding" id="finding" hidden>
+    <h3>Not fixed yet — and nothing false got through.</h3>
+    <p>In every run, Nemotron made the date reachable with the keyboard, but some attempts saved the wrong day while the page said <em>booked</em>. The verifier rejected every one of them.</p>
+    <p>The recorded timeline shows why: right after the date is typed, the page requests <code>get_unavailable_dates</code> and, with no key pressed, the field jumps from <code>02/11</code> to <code>01/11</code>. That reset lives in <code>booking_http_client.js</code>, which selects the first available day of the month. In the last run Nemotron opened that file, but still proposed time-zone and input-format changes. The evidence is precise enough for a developer to fix it directly.</p>
+  </aside>
 
   <section class="how" id="how" aria-labelledby="how-heading">
     <h2 id="how-heading">A loop that ends at the saved outcome, not the success page.</h2>

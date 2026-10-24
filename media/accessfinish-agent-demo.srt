@@ -1,0 +1,55 @@
+1
+0:00:00,000 --> 0:00:05,000
+Ask an AI to fix a form and it says "fixed". The page loads, a confirmation appears.
+
+2
+0:00:05,010 --> 0:00:10,010
+But was the user's booking actually saved — correctly? AccessFinish checks.
+
+3
+0:00:11,200 --> 0:00:17,200
+Here the booking page says success, but the database stored the wrong phone number.
+
+4
+0:00:17,200 --> 0:00:23,200
+AccessFinish runs the journey in a real browser and hands the evidence to NVIDIA Nemotron on Nebius Token Factory. No hints.
+
+5
+0:00:23,560 --> 0:00:29,560
+Nemotron finds the hardcoded value and proposes a one-line fix.
+
+6
+0:00:29,910 --> 0:00:37,910
+Each fix is built in a fresh offline sandbox: the database row, a fresh browser, and a second customer with a different number.
+
+7
+0:00:37,910 --> 0:00:43,910
+7 of 7 live runs fixed and verified on the first attempt — about half a cent each.
+
+8
+0:00:44,800 --> 0:00:50,800
+The harder case: a keyboard user cannot reach the date picker at all.
+
+9
+0:00:51,280 --> 0:00:57,280
+Nemotron opens source files, proposes fixes, and every attempt is built and tested for real.
+
+10
+0:00:57,330 --> 0:01:04,330
+Nemotron makes the date reachable and the page says "booked". But the database holds the wrong day. Rejected.
+
+11
+0:01:04,330 --> 0:01:11,330
+The timeline shows why: 0.7 seconds after a page request, with no key pressed, the date resets itself.
+
+12
+0:01:11,940 --> 0:01:18,940
+15 fake "booked" confirmations across 7 runs. None got through.
+
+13
+0:01:19,540 --> 0:01:25,540
+14 live runs, $0.41 of Nemotron. Fixes that are proven, not promised.
+
+14
+0:01:26,140 --> 0:01:30,140
+AccessFinish — finish the task, verify the result.
