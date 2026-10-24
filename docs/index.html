@@ -1,86 +1,73 @@
 <!doctype html>
-<html lang="en" data-mode="recorded-review">
+<html lang="en">
 <head>
   <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="description" content="Review a Nemotron source repair, run a keyboard booking in isolation, and verify its stored outcome.">
-  <title>AccessFinish — finish the task</title><link rel="stylesheet" href="style.css?v=c7587e819116ed8f">
+  <meta name="description" content="An agent on NVIDIA Nemotron that keeps repairing a broken user journey until the saved result is verified, not just the confirmation page.">
+  <title>AccessFinish</title><link rel="stylesheet" href="agent.css?v=c1f75b0ffd1d383e">
 </head>
 <body>
-<a class="skip" href="#main">Skip to workbench</a>
-<header>
-  <a class="brand" href="./" aria-label="AccessFinish home"><span class="mark" aria-hidden="true">a<span>f</span></span>AccessFinish<span class="edition">REPAIR WORKBENCH</span></a>
-  <nav aria-label="Main"><a href="#recorded-evidence">Recorded evidence</a><a href="#model">Nemotron</a><a href="https://github.com/SultanAlfaifi/accessfinish">Source</a></nav>
+<a class="skip" href="#agent">Skip to the agent</a>
+<header class="top">
+  <a class="brand" href="./"><span class="mark" aria-hidden="true">af</span>AccessFinish</a>
+  <nav aria-label="Main"><a href="#how">How it works</a><a href="workbench.html">Evidence</a><a href="https://github.com/SultanAlfaifi/accessfinish">GitHub</a></nav>
 </header>
-<main id="main">
-  <section class="intro">
-    <div><h1>A source repair.<br>A booking you can prove.</h1><p class="deck">Review the change. Run the keyboard task. Check the saved appointment in storage and a fresh browser.</p><p class="environment-note" id="environment-note" role="status">Loading the workbench…</p></div>
-    <div class="key-art" aria-hidden="true"><span class="key-label">FOLLOW THE TASK TO ITS OUTCOME</span><kbd>tab<span>⇥</span></kbd><div class="key-path"><i></i><i></i><i></i><b>saved</b></div></div>
+<main>
+  <section class="hero">
+    <p class="eyebrow">NVIDIA Nemotron · Nebius Token Factory</p>
+    <h1>The AI says <q>fixed</q>.<br><span>We check the user can finish.</span></h1>
+    <p class="lede">AccessFinish is a repair agent that doesn't trust a green page. It drives the real journey with a keyboard, reads what was actually saved, reopens it in a fresh browser, and keeps fixing until the outcome is right.</p>
+    <a class="cta" href="#agent">Watch the agent work</a>
   </section>
-  <section class="workbench" aria-labelledby="task-heading">
-    <aside class="task-panel">
-      <h2 id="task-heading">Book an appointment</h2><p>Easy!Appointments · guided development case</p>
-      <dl class="task-details"><div><dt>Date</dt><dd id="task-date">Future date, chosen at execution</dd></div><div><dt>Time</dt><dd>09:00–09:30 <small>Riyadh</small></dd></div><div><dt>Interaction</dt><dd>Keyboard only</dd></div></dl>
-      <div class="stages" aria-label="Review stages">
-        <button class="stage active" data-tab="blockage" aria-pressed="true"><span>1</span><div><strong>Inspect the blockage</strong><small>Understand the task</small></div></button>
-        <button class="stage" data-tab="repair" aria-pressed="false"><span>2</span><div><strong>Review and run</strong><small>Approve exact changes</small></div></button>
-        <button class="stage" data-tab="outcome" aria-pressed="false"><span>3</span><div><strong>Check the outcome</strong><small>Evidence for this run</small></div></button>
-      </div>
-      <div class="provenance"><span class="mini-dot"></span><span id="recording-label">No execution selected</span></div>
-    </aside>
-    <div class="inspection">
-      <div class="inspection-head"><span id="panel-label">1 / OBSERVED BLOCKAGE</span><span class="case-id">AF · BOOKING</span></div>
-      <section id="blockage" class="tab-panel">
-        <div class="issue-flag">KEYBOARD BLOCKED</div><h2>The calendar looks ready.<br>The keyboard has nowhere to go.</h2>
-        <p>The date selector is mounted on a non-focusable element. Loading the page does not prove a keyboard user can choose a future date and finish booking.</p>
-        <div class="code-frame"><div class="code-caption"><span>booking_time_step.php</span><b>original source</b></div><pre><code>&lt;div id="select-date" class="mx-auto my-4"&gt;&lt;/div&gt;</code></pre><div class="focus-caption"><kbd>tab</kbd><span>Focus moves past the date control</span></div></div>
-        <div class="note"><strong>The date must survive the whole task.</strong><p>Clearing the input must be safe. Reopening the saved appointment must retain its date.</p></div>
-        <button class="primary next-step" data-target="repair">Review the source repair</button>
-      </section>
-      <section id="repair" class="tab-panel" hidden>
-        <div class="issue-flag blue">SOURCE PROPOSAL</div><h2>Review the change.<br>Then put it to the test.</h2>
-        <p id="repair-attribution">Loading the recorded Nemotron proposal…</p>
-        <details id="model-request-record" hidden><summary>Inspect the Nemotron request record</summary><p class="micro" id="model-request-evidence"></p></details>
-        <button class="secondary" id="load-recorded">Use recorded Nemotron proposal</button>
-        <div class="file-switch" id="file-switch" aria-label="Proposed source edits"></div>
-        <div class="diff"><div class="diff-label">REMOVED</div><pre id="old-code"></pre><div class="diff-label added-label">ADDED</div><pre id="new-code"></pre></div>
-        <p class="micro" id="proposal-identity"></p>
-        <button id="inspect-recorded-run" class="secondary" hidden>Inspect this proposal's recorded execution</button>
-        <div id="local-execution-controls"><label class="approval"><input type="checkbox" id="approve"><span>I reviewed these exact changes and approve testing them in the isolated synthetic fixture.</span></label>
-        <div class="repair-actions"><button id="run-repair" class="primary" disabled>Run approved repair</button><button id="export-patch" class="secondary" disabled>Export reviewed patch</button></div></div>
-        <p class="micro" id="execution-message" role="status">The source proposal has not been executed. Recorded results appear separately below.</p>
-      </section>
-      <section id="outcome" class="tab-panel" hidden>
-        <div class="issue-flag blue" id="result-flag" role="status">NOT EXECUTED</div><h2>Evidence belongs<br>to one exact repair.</h2>
-        <p id="verify-message" role="status">Approve and run a proposal to obtain new execution evidence. The October 18 receipt does not verify your selected proposal.</p>
-        <ol class="execution-stages" id="execution-stages" aria-label="Execution progress"></ol>
-        <div id="outcome-detail" hidden>
-          <div class="receipt"><div><span>THIS RUN'S APPOINTMENT</span><strong id="booking-id"></strong></div><h3 id="booking-date"></h3><p id="booking-time"></p><dl><div><dt>Customer</dt><dd id="booking-customer"></dd></div><div><dt>Service / Provider</dt><dd id="booking-service"></dd></div></dl><div class="receipt-end" id="receipt-result"></div></div>
-          <ul class="checks" id="outcome-checks"></ul>
-        </div>
-        <p class="micro" id="run-identity"></p><button id="refresh-run" class="secondary" hidden>Refresh current run</button>
-        <button id="download-run" class="secondary" disabled>Download this run's evidence</button>
-      </section>
+
+  <section class="agent" id="agent" aria-labelledby="agent-heading">
+    <h2 id="agent-heading" class="sr-only">Agent run</h2>
+    <div class="cases" role="tablist" aria-label="Broken journey">
+      <button role="tab" class="case" data-case="customer-phone" aria-selected="true"><span class="tag lie">Wrong data saved</span><strong>Save the phone the customer typed</strong><small>The confirmation page says success. The database disagrees.</small><span class="verdict good" id="verdict-customer-phone"></span></button>
+      <button role="tab" class="case" data-case="keyboard-date" aria-selected="false"><span class="tag stuck">Keyboard blocked</span><strong>Book an appointment without a mouse</strong><small>The calendar looks fine. Tab can't reach it.</small><span class="verdict caught" id="verdict-keyboard-date"></span></button>
     </div>
-    <aside class="evidence-panel" id="evidence">
-      <h3 id="proof-heading">What this run proves</h3><div class="evidence-score"><span>saved</span><strong>≠</strong><span>assumed</span></div>
-      <ul class="evidence-facts"><li><span>Proposal</span><strong id="source-author">Loading…</strong></li><li><span>Build</span><strong id="build-state">Not executed</strong></li><li><span>Interaction</span><strong id="interaction-state">Not executed</strong></li><li><span>Verifier</span><strong id="verifier-state">Not executed</strong></li></ul>
-      <div class="limits"><h3>Keep the claim precise.</h3><p id="scope-note">One guided, exposed development case. The diagnosis was supplied to the model. No general autonomous repair or screen-reader study is claimed.</p></div>
-      <div class="run-cost"><span>NEW MODEL USAGE</span><strong id="cost">$0</strong><small id="cost-note">Recorded proposal · no new inference</small></div>
+
+    <div class="console">
+      <div class="console-head">
+        <div><span class="dot"></span><span id="run-label">Recorded run</span></div>
+        <div class="console-actions"><button id="replay" class="ghost">Replay</button><button id="run-live" class="solid" hidden>Run live</button></div>
+      </div>
+      <p class="goal"><b>Goal</b> <span id="goal"></span></p>
+      <ol class="timeline" id="timeline" aria-live="polite"></ol>
+      <p class="empty" id="empty" hidden></p>
+    </div>
+
+    <div class="detail" id="detail" aria-live="polite"></div>
+    <aside class="finding" id="finding" hidden>
+      <h3>Not fixed yet — and nothing false got through.</h3>
+      <p>In every run, Nemotron made the date reachable with the keyboard, but some attempts saved the wrong day while the page said <em>booked</em>. The verifier rejected every one of them.</p>
+      <p>The recorded timeline shows why: right after the date is typed, the page requests <code>get_unavailable_dates</code> and, with no key pressed, the field jumps from <code>02/11</code> to <code>01/11</code>. That reset lives in <code>booking_http_client.js</code>, which selects the first available day of the month. In the last run Nemotron opened that file, but still proposed time-zone and input-format changes. The evidence is precise enough for a developer to fix it directly.</p>
     </aside>
   </section>
-  <section class="protocol-results" aria-labelledby="protocol-heading">
-    <h2 id="protocol-heading">Models propose. Outcomes decide.</h2>
-    <p id="protocol-summary">The frozen evaluation report will be included with the evaluated build.</p>
-    <div class="results-table" hidden id="protocol-table-wrap"><table><caption>Five repeated model requests on one exposed, guided case</caption><thead><tr><th>Trial</th><th>Build</th><th>Keyboard + reopen</th><th>Full procedure</th><th>Record</th></tr></thead><tbody id="protocol-rows"></tbody></table></div>
-    <p class="micro" id="protocol-limit">The diagnosis and repair direction were supplied. These are repeated attempts on one case, not a general repair benchmark.</p>
-    <a href="trial-report.json?v=bcc5a3f252e21a89" download id="download-trial-report" hidden>Download all development and evaluation outcomes</a>
+
+  <section class="how" id="how" aria-labelledby="how-heading">
+    <h2 id="how-heading">A loop that ends at the saved outcome, not the success page.</h2>
+    <ol class="loop">
+      <li><b>Observe</b><span>A real browser drives the journey with the keyboard only and records where focus goes and where it gets stuck.</span></li>
+      <li><b>Diagnose &amp; repair</b><span>Nemotron 3 Super reads the evidence and the source, finds the cause and writes exact code edits. No hints.</span></li>
+      <li><b>Verify for real</b><span>Each patch is built in a fresh, offline sandbox. The booking is made, read back from the database with a read-only account, and reopened in a fresh browser.</span></li>
+      <li><b>Feed back</b><span>If anything is off — a build error, a stuck key, a wrong saved value, a broken mouse path — the evidence goes back to Nemotron and it tries again.</span></li>
+    </ol>
+    <div class="why">
+      <div><h3>Why not just check the confirmation page?</h3><p>Because it lies. In our runs, <strong id="why-caught">15</strong> AI fixes reached a <em>booked</em> confirmation while the database held the wrong date. In the phone case the page says <em>booked</em> while the database holds <code>0000000000</code>, and a patch that hardcodes the test number would fail when a second customer types <code>0000000073</code>. AccessFinish checks all of it.</p></div>
+      <div><h3>Why keyboard journeys?</h3><p>Millions of people navigate with a keyboard or assistive technology. A form that "loads" but can't be completed locks them out, and accessibility law in the EU and US now expects it to work.</p></div>
+    </div>
   </section>
-  <section class="model-panel" id="model">
-    <div><h2 id="model-heading">Ask Nemotron for a new proposal.</h2><p>Uses NVIDIA Nemotron 3 Super through Nebius Token Factory. The diagnosis is supplied; the model proposes the source edits. Review is required before isolated execution.</p><p id="source-sharing-explanation">Keep the included case context or choose your own JSON for the two supported booking files. A request sends this source to Nebius and may incur a charge.</p></div>
-    <div id="replay-local-guide" hidden><h3>From review to a new execution</h3><p>The local build uses Node.js 22+ and a local Docker Linux engine. It prepares a fresh synthetic fixture and asks for approval of the exact patch before execution.</p><p>A new Nemotron proposal also needs server-side Nebius configuration, verified current pricing, and a request budget.</p><a href="https://github.com/SultanAlfaifi/accessfinish#run-a-new-execution">Read the local setup instructions</a></div>
-    <form id="analyze-form"><label for="source-files">Source context JSON (included case by default)</label><input type="file" id="source-files" accept="application/json,.json"><p class="micro"><a href="source-context.json?v=98ad60a8ed77437f" download>Download the included source context</a>.</p><label class="approval"><input type="checkbox" id="model-consent" required><span>Send this source to Nebius for one paid analysis. No automatic retry.</span></label><button class="secondary" id="analyze-button" type="submit" disabled>Analyze with Nemotron</button><p class="micro" id="model-message" role="status">Requires the local server, a server-side key, and verified current pricing.</p></form>
+
+  <section class="facts" aria-label="Run totals">
+    <div><strong id="fact-phone">—</strong><span>phone runs fixed and verified on the first attempt</span></div>
+    <div><strong id="fact-caught">—</strong><span>false "booked" confirmations caught in the keyboard case</span></div>
+    <div><strong id="fact-cost">—</strong><span>Nemotron cost for all <span id="fact-runs">—</span> live runs</span></div>
+    <div><strong id="fact-checks">9</strong><span>independent checks per attempt</span></div>
   </section>
-  <details id="recorded-evidence" class="recorded-evidence"><summary>Inspect the separate October 18 recorded example</summary><p>This historical result belongs to its original run: appointment #902, October 19, 2026, 09:00–09:30 Asia/Riyadh. It was checked in storage and reopened in a fresh browser. Nemotron authored three edits after an operator supplied the diagnosis; only line endings were normalized by the controller.</p><p>This is recorded evidence, not a new model request or verification of your currently selected proposal.</p><a href="evidence.json?v=ed9cc93646edcc55" download>Download the historical evidence summary</a></details>
-  <footer><span>AccessFinish · finish the task, verify the result.</span><span>Development prototype · synthetic customer data</span></footer>
-</main><script src="recording.js?v=21a2155a631ec9d4"></script><script src="app.js?v=8d829be71c32447d"></script>
-</body></html>
+
+  <p class="limits">Synthetic data in a pinned copy of the open-source Easy!Appointments app. Two journeys today; the phone fault was seeded on purpose. All runs were made live on GitHub Actions with Nemotron 3 Super on Nebius Token Factory, and every one, including failures, is saved with its raw evidence — see <a href="workbench.html">Evidence</a>.</p>
+</main>
+<footer><span>AccessFinish — finish the task, verify the result.</span><a href="https://github.com/SultanAlfaifi/accessfinish">MIT · source on GitHub</a></footer>
+<script src="agent.js?v=c4b833a20871bb9f"></script>
+</body>
+</html>

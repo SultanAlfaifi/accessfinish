@@ -17,9 +17,9 @@ Observe ──► Diagnose & repair ──► Verify for real ──► verified
 ```
 
 1. **Observe.** A headless browser books an appointment with the keyboard only, recording where focus goes and where it gets stuck.
-2. **Diagnose & repair.** Nemotron receives the user goal, the verifier's evidence and the complete source files — no diagnosis, no hints — and returns exact code edits.
+2. **Diagnose & repair.** Nemotron receives the user goal, the verifier's evidence and the complete source files — no diagnosis, no hints — can open any other source file with a read-only `read_file` tool, and returns exact code edits.
 3. **Verify for real.** Every proposal is built and run in a fresh, offline Docker sandbox. The verifier books with the keyboard, reads the saved row through a read-only database account, reopens the booking in a new browser, then runs regression checks (a mouse booking with different data through month navigation, clearing the date, a reserved slot, unchanged existing records, sandbox isolation).
-4. **Feed back.** A build error, a stuck key, a wrong saved value or a broken mouse path goes back to Nemotron as evidence, and it tries again (up to four attempts). Nothing is accepted unless every check passes.
+4. **Feed back.** A build error, a stuck key, a wrong saved value or a broken mouse path goes back to Nemotron as evidence, and it tries again (up to eight attempts). Nothing is accepted unless every check passes.
 
 ## Two broken journeys
 
@@ -29,6 +29,20 @@ Observe ──► Diagnose & repair ──► Verify for real ──► verified
 | **Saved phone** (seeded fault) | "Booking confirmed" | The database stored `0000000000`, not the phone they typed |
 
 The phone case shows why outcome checks matter: a patch that hardcodes the sample number passes once, then fails when a second customer types `0000000073`.
+
+## Results (live, 24 October 2026)
+
+Every run below was made live on a fresh GitHub Actions runner with Nemotron 3 Super on Nebius Token Factory. Traces, patches and raw evidence for all of them are in [`evidence/agent-runs/`](evidence/agent-runs/); totals are in [`web/agent-runs/summary.json`](web/agent-runs/summary.json).
+
+| Journey | Runs | Verified | Attempts | Typical time | Nemotron cost |
+| --- | --- | --- | --- | --- | --- |
+| **Saved phone** | 7 | **7 / 7, all on the first attempt** | 7 | ~100 s | $0.0313 total |
+| **Keyboard date** | 7 | 0 / 7 | 43 | 3–12 min | $0.3773 total |
+
+- **Phone:** in every run Nemotron traced the wrong saved value to the hardcoded `phone_number` in the booking payload, and the fix passed all nine checks, including a second customer with a different number.
+- **Keyboard date:** Nemotron reliably made the date reachable with Tab, but **15 attempts reached a "booked" confirmation while the database held the wrong day** (1 Nov instead of 2 Nov). The verifier rejected every one; no patch was accepted. The recorded timeline shows the cause: right after the date is typed the page requests `get_unavailable_dates`, and with no key pressed the field jumps from `02/11` to `01/11` — `booking_http_client.js` selects the first available day of the month. Nemotron could open that file with `read_file` but kept proposing time-zone and format changes.
+
+That second result is the point of AccessFinish: a model, a confirmation page and a green build all said "done", and the saved outcome said otherwise.
 
 ## Run it
 
@@ -47,7 +61,7 @@ Or start the page with `npm start`, open http://127.0.0.1:4177 and press **Run l
 
 ## Under the hood
 
-- **Model:** `nvidia/nemotron-3-super-120b-a12b` via `https://api.tokenfactory.nebius.com/v1/chat/completions`, with a forced `propose_repair` tool call. Edits must match the original source exactly once, or they are rejected before anything runs. Each request's tokens and cost are recorded.
+- **Model:** `nvidia/nemotron-3-super-120b-a12b` via `https://api.tokenfactory.nebius.com/v1/chat/completions`, with two tools: `read_file` (read-only, any app source file) and `propose_repair`. Edits must match the original source exactly once, or they are rejected before anything runs. Each request's tokens and cost are recorded.
 - **Sandbox:** separate containers for the app, database, compiler, browser and verifier; no network, no model key, read-only roots, all capabilities dropped, CPU/memory/PID limits. Model output never becomes a shell command.
 - **App:** a pinned copy of the open-source [Easy!Appointments](https://github.com/alextselegidis/easyappointments) (GPL-3.0) with synthetic data.
 - **Code:** `lib/agent.cjs` (the loop), `lib/fixture.cjs` (sandbox and verifier), `integration/portable/` (browser workers and outcome evaluator), `web/` (the page).

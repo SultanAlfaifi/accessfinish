@@ -1,17 +1,14 @@
 # AccessFinish demo video — script (≈2:30)
 
-Record the live page (`npm start`, then **Run live**, or the replay at `npm run replay`) at 1600×900. Voice-over in a calm, direct tone. On-screen text in **bold**.
+Film the replay page (`npm run replay` → http://127.0.0.1:4178) at 1600×900. Calm, direct voice-over. On-screen text in **bold**. Every number below comes from `web/agent-runs/summary.json`.
 
 | Time | Picture | Voice-over |
 | --- | --- | --- |
-| 0:00–0:15 | A booking page. A keyboard focus ring jumps from field to field, then lands on nothing; the calendar sits there, unreachable. **"Tab… and nowhere to go."** | "This is a real open-source booking app. If you use a keyboard instead of a mouse, you can't pick a date. You simply can't book." |
-| 0:15–0:30 | An AI chat says "Fixed! ✅". Then a confirmation page — and a database row showing `0000000000`. **"The page says booked. The database disagrees."** | "Ask an AI to fix it and it will say it's fixed. Sometimes the page even shows success while the wrong data is saved. Nobody checks the outcome." |
-| 0:30–0:40 | AccessFinish hero: **"The AI says 'fixed'. We check the user can finish."** | "AccessFinish is a repair agent that only stops when the user's task actually works." |
-| 0:40–1:00 | Keyboard case. Timeline step 1 turns red. Detail shows the Tab trail ending in **stuck**. | "First it runs the journey with a keyboard in a real browser — and sees exactly where focus gets stuck." |
-| 1:00–1:20 | Attempt 1: Nemotron's diagnosis and the diff. | "NVIDIA Nemotron, on Nebius Token Factory, reads that evidence and the source code. No hints. It finds the cause and writes a fix." |
-| 1:20–1:45 | The verify steps: each failure headline (build error / broken mouse path / wrong saved value — whatever the recorded run shows), then the next attempt. | "Every fix is built in a fresh, offline sandbox and tested for real. When it fails, the evidence goes straight back to Nemotron, and it tries again." |
-| 1:45–2:05 | Final step turns green. Proof card: saved appointment, typed vs saved, reopened in a fresh browser, nine checks ticked. | "Verified: the booking is in the database with the right date, it survives a fresh browser, and mouse users aren't broken." |
-| 2:05–2:20 | Phone case, quick: confirmation shown but phone saved wrong → fixed → second customer with a different phone passes. | "Same loop when the confirmation lies about the data — and a second customer catches any fix that just hardcodes the test." |
-| 2:20–2:30 | Facts row (attempts, time, cost), then the logo. **"AccessFinish — finish the task, verify the result."** | "A few cents and a few minutes, and the fix is proven, not promised. AccessFinish." |
-
-Use only numbers shown by the recorded run you film.
+| 0:00–0:15 | Hero: **"The AI says 'fixed'. We check the user can finish."** | "Ask an AI to fix a form and it will tell you it's fixed. The page loads. A confirmation appears. But did the user's booking actually get saved — correctly?" |
+| 0:15–0:30 | Phone case selected. Step 1 in red: **"Confirmation shown, but phone saved as 0000000000 instead of 0000000042."** | "Here the booking page says success, but the database stored the wrong phone number. Nobody would notice — unless you check what was saved." |
+| 0:30–0:55 | Nemotron step: diagnosis and the one-line diff. | "AccessFinish runs the journey in a real browser, then hands the evidence and the source to NVIDIA Nemotron on Nebius Token Factory. No hints. Nemotron finds the hardcoded value and proposes a fix." |
+| 0:55–1:15 | Green proof card: saved row, typed vs saved, fresh-browser reopen, nine checks. Card label **"Fixed on the first attempt in 7 of 7 runs"**. | "Every fix is built in a fresh, offline sandbox and checked for real: the database row, a fresh browser, and a second customer with a different number. Seven runs, seven verified fixes, about half a cent each." |
+| 1:15–1:30 | Switch to the keyboard case. Step 1: **"Keyboard user got stuck at the date step."** | "The harder case: a keyboard user can't reach the date picker at all." |
+| 1:30–1:55 | Scroll through attempts: reads `booking_http_client.js`, proposes, red **"Confirmation shown, but saved for 2026-11-01 instead of 2026-11-02."** | "Nemotron makes the date reachable — and the page says booked. But AccessFinish reads the database: the booking was saved for the wrong day. Rejected. Again and again." |
+| 1:55–2:15 | Detail panel timeline, highlighted row: **"+0.7s no key pressed → date field shows 01/11/2026"**, then the orange finding box. | "And it shows exactly why: right after the date is typed, the page fires a request and quietly resets the date to the first of the month. Fifteen fake 'booked' confirmations — none got through." |
+| 2:15–2:30 | Facts row (7/7, 15, $0.41, 9 checks), logo. **"AccessFinish — finish the task, verify the result."** | "Fixes that are proven, not promised. And when a fix isn't right, nothing ships. AccessFinish." |
