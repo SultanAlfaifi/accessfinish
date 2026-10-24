@@ -1,49 +1,9 @@
-# Review AccessFinish
+# Review AccessFinish in three minutes
 
-For developers and accessibility QA engineers evaluating an AI-generated UI patch, AccessFinish follows the intended keyboard booking into storage and a fresh browser session.
+1. **Open the page** (https://sultalfaifi.com/accessfinish/, or `npm run replay` → http://127.0.0.1:4178). The recorded agent run replays automatically.
+2. **Keyboard case.** Click the first red step to see where keyboard focus got stuck. Click each Nemotron step to read its diagnosis and diff, and each verify step to see why the verifier rejected or accepted it. The green proof card shows the saved row, the fresh-browser reopen and the regression checks; download the verified patch.
+3. **Phone case.** Switch tabs: the confirmation page appeared but the database held the wrong phone. Watch the agent fix it and pass a second customer with a different number.
+4. **Run it yourself** (Node 22+, Docker): `npm run demo:setup`, set `NEBIUS_API_KEY`, then `node scripts/agent.cjs --case keyboard-date`.
+5. **Evidence.** Every trace is in `evidence/agent-runs/`; older single-shot trials (2/5 passes) are on the [evidence page](../web/workbench.html).
 
-**Current revision:** the two-case workbench and English v04 film add a phone-data failure. These changes are prepared on the review branch; the published URL below is the earlier date-case build until separately approved deployment. Start the current revision with `npm run replay` and open `http://127.0.0.1:4178`.
-
-## Review the new distinction first
-
-1. Read the opening: **Know which AI fix you can accept.** AccessFinish links a proposed change, exact-patch approval and execution evidence.
-2. Select **Saved customer phone**. The fault is deliberately seeded: a confirmation can appear while `0000000000` is saved instead of the entered `0000000042`.
-3. Review the one-edit Nemotron repair and inspect its matching recorded execution. Stored and reopened phone values match; a second phone, `0000000073`, passes the regression control. This is one guided generation, not autonomous discovery.
-4. Inspect the separate **Original date-case model evaluation**: two full passes from five guided attempts. The original counts remain unchanged.
-
-Raw request, response and execution records: [phone-model-20261023](../evidence/phone-model-20261023/). The v04 film lasts 109.5 seconds with local English Aiden narration; entrant full watch/listen remains pending.
-
-## A three-minute review
-
-1. Open the [browser workbench](https://sultalfaifi.com/accessfinish/). It needs no account or installation and explicitly reviews recorded evidence.
-2. Choose **Review the source repair**. Inspect the five model-authored edits and the recorded Token Factory request. The operator supplied the diagnosis and repair direction.
-3. Choose **Inspect this proposal's recorded execution**. The receipt shows November 2, 2026, 09:00–09:30 Asia/Riyadh, independent storage and fresh-reopen checks, and fixed regression controls. Opening it performs no new verification.
-4. Read all five evaluation rows: two complete passes, two compilation failures, and one calendar-navigation failure. All failed artifacts remain available.
-
-The featured proposal is `8e7b485a36a94e2ac5ea3d6e7f43d5a8c180748e233349494d8515e5f563aca5`; its recorded run is `run-049e3e26b5b6444794d6a04b04f089b3`. [Independent execution of the published source](https://github.com/SultanAlfaifi/accessfinish/actions/runs/39637182406) reproduced all five expected outcomes and the original negative control without calling a model.
-
-## Execute it yourself
-
-Use Node.js 22+ and a local Docker Linux engine. From the repository or v0.2 test build:
-
-```sh
-npm test
-npm run check:records
-npm run demo:setup
-npm run demo:check
-node scripts/demo-check.cjs --original
-```
-
-The two demo-check commands explicitly approve their fixed packaged proposals. The original control must remain blocked; that command succeeds only when the expected failure is observed. Stop the UI server before using the CLI against the same runtime. See [testing instructions](testing-instructions.md) for interactive approval, runtime locations and new inference using your own server-side configuration.
-
-## Assess the evidence precisely
-
-| Question | Evidence and limit |
-| --- | --- |
-| Where is NVIDIA used? | Nemotron 3 Super generates structured source edits through Token Factory. Raw requests, responses, token usage and proposals are retained. |
-| What earns verified status? | Exact proposal/source/run binding, approval, trusted build, native keyboard task, SELECT-only read, fresh reopen, preservation and fixed regression controls. |
-| What does 2/5 mean? | Five repeated requests on one exposed, guided case; no general accuracy or five distinct task families is claimed. |
-| What is the impact evidence? | A specific blocked task and preserved expected business outcome. Browser usefulness reviews remain pending. |
-| What was created here? | The workbench, proposal-bound orchestration, isolated fixture, independent verification and evidence pipeline. Easy!Appointments remains separately attributed upstream software. |
-
-New generation makes a runtime Token Factory call when configured. Public inspection and replaying a packaged proposal make no new model request. AI Cloud deployment and Tavily integration are not claimed.
+Where NVIDIA is used: every diagnosis and code edit comes from `nvidia/nemotron-3-super-120b-a12b` on Nebius Token Factory (`lib/agent.cjs`). The verifier is deterministic and never calls a model.
