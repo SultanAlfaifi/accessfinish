@@ -22,3 +22,4 @@
 /web/comparison.json -text
 /web/phone-model-report.json -text
 /evidence/extension-ci-20261023/** -text
+/evidence/reproduction-variation-20261024/** -text

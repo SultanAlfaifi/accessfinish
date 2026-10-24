@@ -8,3 +8,5 @@ node_modules/
 media/raw/
 media/review/
 artifacts/
+__pycache__/
+*.pyc

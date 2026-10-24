@@ -21,7 +21,7 @@
   },
   "milestones": {
     "portable_fixture": "fresh_model_execution_and_original_negative_control_verified_2026-10-21",
-    "proposal_bound_execution": "20_unit_checks_passed_including_cross_case_approval_and_public_evidence_identity",
+    "proposal_bound_execution": "23_checks_passed_including_cross_case_approval_public_evidence_identity_and_bounded_replay_reporting",
     "frozen_evaluation": "complete_2_of_5_passed_on_one_guided_exposed_case",
     "clean_environment_execution": "verified_fresh_linux_runner_reproduced_all_5_recorded_outcomes_and_original_negative_control_no_model_calls",
     "two_independent_tester_sessions": "browser_only_form_prepared_requires_two_real_independent_developers",
@@ -65,5 +65,6 @@
     "seeded_phone_fault": true,
     "pooled_with_original_evaluation": false,
     "public_demo_updated": false
-  }
+  },
+  "replay_reporting": "Acceptance decisions and exact recorded stages reported separately; known-bad evaluation-1 earlier rejection retained; executor acceptance unchanged"
 }
