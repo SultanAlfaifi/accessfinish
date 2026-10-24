@@ -107,3 +107,4 @@ footer{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;paddin
   .facts-list div{grid-template-columns:1fr;gap:0}
 }
 @media (prefers-reduced-motion:reduce){*{animation:none!important}}
+.history{margin:6px 0 12px;padding-left:22px;font-size:13px}.history li{display:flex;gap:10px;justify-content:space-between;border-bottom:1px dashed var(--line);padding:3px 0}.history code{font-weight:700}
