@@ -1,0 +1,32 @@
+name: Narration check
+# Transcribes the generated narration with Whisper so the spoken words can be
+# compared with the script. Triggered manually or by a push containing [transcribe].
+on:
+  workflow_dispatch:
+  push:
+    branches: ['claude/**', 'codex/**']
+permissions:
+  contents: write
+jobs:
+  transcribe:
+    if: github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[transcribe]')
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Install Whisper (CPU)
+        run: |
+          sudo apt-get update && sudo apt-get install -y --no-install-recommends ffmpeg
+          python3 -m venv .venv
+          .venv/bin/pip install --index-url https://download.pytorch.org/whl/cpu torch==2.8.0
+          .venv/bin/pip install openai-whisper==20250625
+      - name: Transcribe
+        run: .venv/bin/python scripts/transcribe-narration.py
+      - name: Commit the transcript
+        run: |
+          git config user.name "accessfinish-agent"
+          git config user.email "accessfinish-agent@users.noreply.github.com"
+          git add media/agent-demo/transcript.json
+          git commit -m "Transcribe demo narration from ${GITHUB_SHA::7}"
+          git pull --rebase origin "$GITHUB_REF_NAME"
+          git push origin "HEAD:$GITHUB_REF_NAME"
