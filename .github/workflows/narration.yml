@@ -1,0 +1,32 @@
+name: Demo narration
+# Generates the demo voice-over with Qwen3-TTS (speaker Aiden) on a CPU runner
+# and commits the audio back. Triggered manually or by a push containing [narrate].
+on:
+  workflow_dispatch:
+  push:
+    branches: ['claude/**', 'codex/**']
+permissions:
+  contents: write
+jobs:
+  narrate:
+    if: github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[narrate]')
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Install Qwen3-TTS (CPU)
+        run: |
+          sudo apt-get update && sudo apt-get install -y --no-install-recommends sox ffmpeg
+          python3 -m venv .venv
+          .venv/bin/pip install --index-url https://download.pytorch.org/whl/cpu torch==2.8.0 torchaudio==2.8.0
+          .venv/bin/pip install qwen-tts==0.1.1
+      - name: Generate narration
+        run: .venv/bin/python scripts/narrate.py
+      - name: Commit the audio
+        run: |
+          git config user.name "accessfinish-agent"
+          git config user.email "accessfinish-agent@users.noreply.github.com"
+          git add media/agent-demo
+          git commit -m "Generate demo narration (Qwen3-TTS, Aiden) from ${GITHUB_SHA::7}"
+          git pull --rebase origin "$GITHUB_REF_NAME"
+          git push origin "HEAD:$GITHUB_REF_NAME"
