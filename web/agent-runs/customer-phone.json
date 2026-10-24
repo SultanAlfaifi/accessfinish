@@ -1,19 +1,19 @@
 {
   "schema_version": 1,
-  "id": "agent-3752164f1abf5b26bc7734d1",
+  "id": "agent-fe3bd734048683c46a3ebb34",
   "case_id": "customer-phone",
   "title": "Save the phone the customer entered",
   "goal": "A customer books the 09:00 slot, and the contact details they typed, including the phone number with its leading zeroes, are saved exactly and shown again when the booking is reopened.",
   "model": "nvidia/nemotron-3-super-120b-a12b",
   "provider": "Nebius Token Factory",
-  "started_at_utc": "2026-10-24T12:33:13.844Z",
+  "started_at_utc": "2026-10-24T12:48:33.217Z",
   "state": "verified",
   "steps": [
     {
-      "at_utc": "2026-10-24T12:33:51.886Z",
+      "at_utc": "2026-10-24T12:49:11.159Z",
       "kind": "observe",
-      "run_id": "run-75b296cd374769420afad958fd2e9f2e",
-      "duration_ms": 38040,
+      "run_id": "run-88f4ef650888e2aecf3c721f5b92c0b0",
+      "duration_ms": 37940,
       "headline": "Confirmation shown, but phone saved as 0000000000 instead of 0000000042",
       "verified": false,
       "evidence": {
@@ -66,6 +66,20 @@
             "date_field_value": "02/11/2026"
           }
         ],
+        "timeline_after_typing_date": [
+          {
+            "t": "+0.0s",
+            "event": "type \"02/11/2026\" → date field shows \"02/11/2026\""
+          },
+          {
+            "t": "+0.0s",
+            "event": "page request POST /index.php/booking/get_available_hours"
+          },
+          {
+            "t": "+9.1s",
+            "event": "page request POST /index.php/booking/register"
+          }
+        ],
         "keyboard_actions_total": 148,
         "reopened": {
           "selected_date_iso": "2026-11-02",
@@ -75,27 +89,27 @@
       }
     },
     {
-      "at_utc": "2026-10-24T12:33:55.278Z",
+      "at_utc": "2026-10-24T12:49:14.629Z",
       "kind": "propose",
       "attempt": 1,
-      "duration_ms": 3391,
-      "diagnosis": "The phone number is hardcoded to '0000000000' in the data sent to the server, causing the saved phone to lose the user's input.",
+      "duration_ms": 3469,
+      "diagnosis": "The phone number is hardcoded to '0000000000' in the data.customer object when building the appointment payload, causing the submitted phone to lose the user's input.",
       "edits": [
         {
           "path": "assets/js/pages/booking.js",
-          "old": "            phone_number: '0000000000',",
-          "new": "            phone_number: $phoneNumber.val(),"
+          "old": "data.customer = {\r\n            last_name: $lastName.val(),\r\n            first_name: $firstName.val(),\r\n            email: $email.val(),\r\n            phone_number: '0000000000',\r\n            address: $address.val(),\r\n            city: $city.val(),\r\n            zip_code: $zipCode.val(),\r\n            timezone: $selectTimezone.val(),\r\n            custom_field_1: $customField1.val(),\r\n            custom_field_2: $customField2.val(),\r\n            custom_field_3: $customField3.val(),\r\n            custom_field_4: $customField4.val(),\r\n            custom_field_5: $customField5.val(),\r\n        };",
+          "new": "data.customer = {\r\n            last_name: $lastName.val(),\r\n            first_name: $firstName.val(),\r\n            email: $email.val(),\r\n            phone_number: $phoneNumber.val(),\r\n            address: $address.val(),\r\n            city: $city.val(),\r\n            zip_code: $zipCode.val(),\r\n            timezone: $selectTimezone.val(),\r\n            custom_field_1: $customField1.val(),\r\n            custom_field_2: $customField2.val(),\r\n            custom_field_3: $customField3.val(),\r\n            custom_field_4: $customField4.val(),\r\n            custom_field_5: $customField5.val(),\r\n        };"
         }
       ],
-      "proposal_sha256": "747bca4bc19ec3c45d4144939f7083536bef7baf468703d7374e45753b46e776",
+      "proposal_sha256": "a77835212a62805516ccad3585d526120073e6a1091f64e6f405a9bf1bc43680",
       "usage": {
-        "completion_tokens": 241,
-        "prompt_tokens": 13426,
-        "total_tokens": 13667,
+        "completion_tokens": 710,
+        "prompt_tokens": 13523,
+        "total_tokens": 14233,
         "completion_tokens_details": {
           "accepted_prediction_tokens": null,
           "audio_tokens": null,
-          "reasoning_tokens": 120,
+          "reasoning_tokens": 258,
           "rejected_prediction_tokens": null
         },
         "prompt_tokens_details": {
@@ -105,15 +119,15 @@
           "multimodal_tokens": null
         },
         "prompt_cache_hit_tokens": 0,
-        "prompt_cache_miss_tokens": 13426
+        "prompt_cache_miss_tokens": 13523
       }
     },
     {
-      "at_utc": "2026-10-24T12:34:53.633Z",
+      "at_utc": "2026-10-24T12:50:13.804Z",
       "kind": "verify",
       "attempt": 1,
-      "run_id": "run-d117b679327dd62d2cc0a7f9deae7926",
-      "duration_ms": 58353,
+      "run_id": "run-a2b6d3d8354068923e6e31998eaeb1eb",
+      "duration_ms": 59171,
       "verified": true,
       "stage": "passed",
       "headline": "Saved correctly, reopened in a fresh browser, regression checks passed",
@@ -124,31 +138,31 @@
     }
   ],
   "usage": {
-    "prompt_tokens": 13426,
-    "completion_tokens": 241
+    "prompt_tokens": 13523,
+    "completion_tokens": 710
   },
-  "estimated_cost_usd": 0.0042447,
+  "estimated_cost_usd": 0.004695899999999999,
   "source_sha256": "260110fce5c5d1fab3193c12224d98ed08192b04afe1f7c0c8d37dd6afaea658",
   "accepted": {
     "attempt": 1,
     "proposal": {
-      "reason": "The phone number is hardcoded to '0000000000' in the data sent to the server, causing the saved phone to lose the user's input.",
+      "reason": "The phone number is hardcoded to '0000000000' in the data.customer object when building the appointment payload, causing the submitted phone to lose the user's input.",
       "edits": [
         {
           "path": "assets/js/pages/booking.js",
-          "old": "            phone_number: '0000000000',",
-          "new": "            phone_number: $phoneNumber.val(),"
+          "old": "data.customer = {\r\n            last_name: $lastName.val(),\r\n            first_name: $firstName.val(),\r\n            email: $email.val(),\r\n            phone_number: '0000000000',\r\n            address: $address.val(),\r\n            city: $city.val(),\r\n            zip_code: $zipCode.val(),\r\n            timezone: $selectTimezone.val(),\r\n            custom_field_1: $customField1.val(),\r\n            custom_field_2: $customField2.val(),\r\n            custom_field_3: $customField3.val(),\r\n            custom_field_4: $customField4.val(),\r\n            custom_field_5: $customField5.val(),\r\n        };",
+          "new": "data.customer = {\r\n            last_name: $lastName.val(),\r\n            first_name: $firstName.val(),\r\n            email: $email.val(),\r\n            phone_number: $phoneNumber.val(),\r\n            address: $address.val(),\r\n            city: $city.val(),\r\n            zip_code: $zipCode.val(),\r\n            timezone: $selectTimezone.val(),\r\n            custom_field_1: $customField1.val(),\r\n            custom_field_2: $customField2.val(),\r\n            custom_field_3: $customField3.val(),\r\n            custom_field_4: $customField4.val(),\r\n            custom_field_5: $customField5.val(),\r\n        };"
         }
       ]
     },
-    "proposal_sha256": "747bca4bc19ec3c45d4144939f7083536bef7baf468703d7374e45753b46e776",
-    "run_id": "run-d117b679327dd62d2cc0a7f9deae7926",
-    "diagnosis": "The phone number is hardcoded to '0000000000' in the data sent to the server, causing the saved phone to lose the user's input.",
+    "proposal_sha256": "a77835212a62805516ccad3585d526120073e6a1091f64e6f405a9bf1bc43680",
+    "run_id": "run-a2b6d3d8354068923e6e31998eaeb1eb",
+    "diagnosis": "The phone number is hardcoded to '0000000000' in the data.customer object when building the appointment payload, causing the submitted phone to lose the user's input.",
     "proof": {
       "booking": {
         "start": "2026-11-02 09:00:00",
         "end": "2026-11-02 09:30:00",
-        "hash": "hBE0mz4gAd1j"
+        "hash": "RZM81ELmYG5h"
       },
       "customer": {
         "name": "Synthetic PhonePersistence",
@@ -163,7 +177,7 @@
       },
       "reopened_date": "2026-11-02",
       "database_unchanged_by_reopen": true,
-      "keyboard_actions": 148,
+      "keyboard_actions": 147,
       "build_files": null,
       "regression": {
         "pass": true,
@@ -178,6 +192,6 @@
     },
     "patch": "diff --git a/assets/js/pages/booking.js b/assets/js/pages/booking.js\nindex 44e7cf0..c14dec1 100644\n--- a/assets/js/pages/booking.js\n+++ b/assets/js/pages/booking.js\n@@ -820,7 +820,7 @@ App.Pages.Booking = (function () {\n             last_name: $lastName.val(),\r\n             first_name: $firstName.val(),\r\n             email: $email.val(),\r\n-            phone_number: '0000000000',\r\n+            phone_number: $phoneNumber.val(),\r\n             address: $address.val(),\r\n             city: $city.val(),\r\n             zip_code: $zipCode.val(),\r\n"
   },
-  "finished_at_utc": "2026-10-24T12:34:53.634Z",
-  "duration_ms": 99790
+  "finished_at_utc": "2026-10-24T12:50:13.805Z",
+  "duration_ms": 100588
 }
