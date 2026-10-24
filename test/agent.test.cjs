@@ -110,3 +110,11 @@ test('outcome evidence interleaves date changes with page requests, and anchors 
   const trace = await runAgent({execute: async ({run}) => ({...stuck, run_id: run.id}), model, root, maxAttempts: 1});
   assert.equal(trace.steps.at(-1).evidence.anchors[0].occurrences_in_original, 0);
 });
+
+test('a near-miss anchor reports the first line that differs from the original', () => {
+  const {anchorReport} = require('../lib/agent.cjs');
+  const files = [{path: 'assets/js/pages/booking.js', content: 'one\ntwo\nthree\n'}];
+  const [report] = anchorReport(files, [{path: 'assets/js/pages/booking.js', old: 'one\ntwo\nTHREE', new: 'x'}]);
+  assert.equal(report.occurrences_in_original, 0);
+  assert.deepEqual(report.first_mismatch, {old_line_number: 3, your_line: 'THREE', original_line: 'three'});
+});
