@@ -42,7 +42,7 @@ code,kbd,pre{font-family:var(--mono)}
 .step>button,.step.running,.step.outcome{width:100%;display:grid;grid-template-columns:28px 1fr auto;gap:12px;align-items:start;text-align:left;padding:11px 12px;border-radius:10px;border:1px solid #1e293b;background:#111c33;color:inherit}
 .step>button:hover{border-color:#334155}.step.selected>button{border-color:#60a5fa;background:#13223f}
 .icon{display:grid;place-items:center;width:26px;height:26px;border-radius:50%;font-size:13px;font-weight:700}
-.step.fail .icon{background:#431407;color:#fdba74}.step.pass .icon{background:#052e16;color:#86efac}.step.think .icon{background:#2e1065;color:#c4b5fd}
+.step.fail .icon{background:#431407;color:#fdba74}.step.pass .icon{background:#052e16;color:#86efac}.step.think .icon{background:#2e1065;color:#c4b5fd}.step.read .icon{background:#0c2a4a;color:#7dd3fc}.step.read .line{font-family:var(--mono);font-size:13px;color:#bae6fd}
 .text{display:grid;gap:2px;min-width:0}.text b{font-size:12px;color:#94a3b8;font-weight:600;letter-spacing:.02em}
 .line{font-size:14px;color:#f1f5f9;overflow-wrap:anywhere}
 .step.think .line{color:#ddd6fe}

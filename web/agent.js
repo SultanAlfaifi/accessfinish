@@ -19,14 +19,17 @@
   function stepTitle(step) {
     if (step.kind === 'observe') return 'Run the journey on the original code';
     if (step.kind === 'propose') return 'Attempt ' + step.attempt + ' · Nemotron proposes a fix';
+    if (step.kind === 'read') return 'Attempt ' + step.attempt + ' · Nemotron opens a source file';
     return 'Attempt ' + step.attempt + ' · Verify in a fresh sandbox';
   }
   function stepLine(step) {
     if (step.kind === 'propose') return step.diagnosis;
+    if (step.kind === 'read') return step.path + (step.found ? '' : ' (not available)');
     return step.headline;
   }
   function stepState(step) {
     if (step.kind === 'propose') return 'think';
+    if (step.kind === 'read') return 'read';
     return step.verified ? 'pass' : 'fail';
   }
 
@@ -36,7 +39,7 @@
     trace.steps.slice(0, count).forEach((step, index) => {
       const item = el('li', 'step ' + stepState(step) + (index === selected ? ' selected' : ''));
       const button = el('button'); button.type = 'button'; button.setAttribute('aria-pressed', String(index === selected));
-      button.append(el('span', 'icon', step.kind === 'propose' ? '◆' : step.verified ? '✓' : '✗'));
+      button.append(el('span', 'icon', step.kind === 'propose' ? '◆' : step.kind === 'read' ? '↗' : step.verified ? '✓' : '✗'));
       const text = el('span', 'text'); text.append(el('b', '', stepTitle(step)), el('span', 'line', stepLine(step)));
       const meta = el('span', 'meta', step.duration_ms ? seconds(step.duration_ms) : '');
       button.append(text, meta); button.addEventListener('click', () => { selected = index; renderTimeline(count, pending); renderDetail(); });
@@ -142,6 +145,10 @@
     if (!trace || selected < 0) return;
     const step = trace.steps[selected]; if (!step) return;
     detail.append(el('p', 'kicker', stepTitle(step)));
+    if (step.kind === 'read') {
+      detail.append(el('h3', '', step.path), el('p', '', 'Nemotron chose to open this file to follow the code before deciding on a fix. Read-only: edits stay limited to the two booking files.'));
+      return;
+    }
     if (step.kind === 'propose') {
       detail.append(el('h3', '', 'Diagnosis'), el('blockquote', '', step.diagnosis));
       detail.append(el('h3', '', step.edits.length + (step.edits.length === 1 ? ' edit' : ' edits')));

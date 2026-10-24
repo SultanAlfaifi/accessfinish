@@ -118,3 +118,22 @@ test('a near-miss anchor reports the first line that differs from the original',
   assert.equal(report.occurrences_in_original, 0);
   assert.deepEqual(report.first_mismatch, {old_line_number: 3, your_line: 'THREE', original_line: 'three'});
 });
+
+test('the agent can read other source files before proposing', async () => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'af-agent-'));
+  const outcomes = [stuck, verified], seen = [];
+  const execute = async ({run}) => ({...outcomes.shift(), run_id: run.id});
+  let call = 0;
+  const model = async messages => {
+    seen.push(messages.at(-1));
+    if (++call === 1) {
+      assert.ok(JSON.parse(messages[1].content).other_source_files.includes('assets/js/http/booking_http_client.js'));
+      return {message: {content: null}, call: {id: 'r1', function: {name: 'read_file', arguments: '{}'}}, read: 'assets/js/http/booking_http_client.js', usage: {}, cost: 0};
+    }
+    return {message: {content: null}, call: {id: 'p', function: {name: 'propose_repair', arguments: '{}'}}, proposal: {diagnosis: 'd', edits: featured.edits}, usage: {}, cost: 0};
+  };
+  const trace = await runAgent({execute, model, root});
+  assert.equal(trace.state, 'verified');
+  assert.deepEqual(trace.steps.map(step => step.kind), ['observe', 'read', 'propose', 'verify']);
+  assert.match(seen[1].content, /getUnavailableDates/);
+});

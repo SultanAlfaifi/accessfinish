@@ -46,6 +46,7 @@ async function main() {
   const trace = await runAgent({case_id: caseId, execute: fixture.execute, ...(model ? {model, maxAttempts: 1} : {}), onUpdate: current => {
     for (const step of current.steps.slice(shown)) {
       if (step.kind === 'observe') print('Observe   ' + (step.verified ? '✓ ' : '✗ ') + step.headline);
+      if (step.kind === 'read') print('Attempt ' + step.attempt + ' reads ' + step.path);
       if (step.kind === 'propose') print('Attempt ' + step.attempt + ' Nemotron: ' + step.diagnosis + ' (' + step.edits.length + ' edits)');
       if (step.kind === 'verify') print('          ' + (step.verified ? '✓ ' : '✗ ') + step.headline);
     }
