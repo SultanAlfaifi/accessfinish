@@ -1,0 +1,529 @@
+{
+  "schema_version": 1,
+  "id": "agent-a5e5f947f8d4d5012e178b4e",
+  "case_id": "keyboard-date",
+  "title": "Reach the date with a keyboard",
+  "goal": "A customer who uses only the keyboard books the 09:00 slot on a chosen date, and the booking is saved and reopens with that exact date.",
+  "model": "nvidia/nemotron-3-super-120b-a12b",
+  "provider": "Nebius Token Factory",
+  "started_at_utc": "2026-10-24T12:28:14.737Z",
+  "state": "not_verified",
+  "steps": [
+    {
+      "at_utc": "2026-10-24T12:28:39.700Z",
+      "kind": "observe",
+      "run_id": "run-461a3956415cd8d396bef3cac8bea0b8",
+      "duration_ms": 24961,
+      "headline": "Keyboard user got stuck at the date step: there is no date field to Tab to",
+      "verified": false,
+      "evidence": {
+        "stage": "keyboard",
+        "reason": "booking_expected_ui_not_observed",
+        "focus_trail": [
+          "Tab → SELECT #select-service \"Please Select                        \n  \"",
+          "Home → SELECT #select-service \"Please Select                        \n  \"",
+          "ArrowDown → SELECT #select-service \"Please Select                        \n  \"",
+          "ArrowDown → SELECT #select-service \"Please Select                        \n  \"",
+          "Tab → SELECT #select-provider \"Jane Doe\"",
+          "Tab → BUTTON #button-next-1 \"Next\"",
+          "Enter → BUTTON #button-next-1 \"Next\""
+        ],
+        "page": {
+          "focus": {
+            "tag": "BODY",
+            "id": "",
+            "role": null
+          },
+          "inputs": [
+            "select-timezone:select-one"
+          ],
+          "visible_text": "AccessFinish Synthetic Booking\nService │ Jane Doe\n1\n2\n3\n4\nAppointment Date & Time\nOctober\nNovember\nDecember\nSun\nMon\nTue\nWed\nThu\nFri\nSat\n1\n2\n3\n4\n5\n6\n7\n8\n9\n10\n11\n12\n13\n14\n15\n16\n17\n18\n19\n20\n21\n22\n23\n24\n25\n26\n27\n28\n29\n30\n31\nTimezone\nUTC\nAdak (-10:00)\nAtka (-10:00)\nAnchorage (-9:00)\nJuneau (-9:00)\nNome (-9:00)\nYakutat (-9:00)\nDawson (-8:00)\nEnsenada (-8:00)\nLos_Angeles (-8:00)\nTijuana (-8:00)\nVancouver (-8:00)\nWhitehorse (-8:00)\nBoise (-7:00)\nCambridge_Bay (-7:00)\nChihuahua (-7:00)\nDawson_Creek (-7:00)\nDenver (-7:00)\nEdmonton (-7:00)\nHermosillo (-7:00)\nInuvik (-7:00)\nMazatlan (-7:00)\nPhoenix (-7:00…"
+        }
+      }
+    },
+    {
+      "at_utc": "2026-10-24T12:28:44.522Z",
+      "kind": "propose",
+      "attempt": 1,
+      "duration_ms": 4822,
+      "diagnosis": "The date container is a div, which is not focusable via keyboard; the verifier expects an input element to type a date. Changing it to a text input makes it reachable and usable with keyboard navigation.",
+      "edits": [
+        {
+          "path": "application/views/components/booking_time_step.php",
+          "old": "<div id=\"select-date\" class=\"mx-auto my-4\"></div>",
+          "new": "<input type=\"text\" id=\"select-date\" class=\"form-control mx-auto my-4\" readonly>"
+        }
+      ],
+      "proposal_sha256": "a79179cb46b0c6f48d927b83b9105386cbedb1b9a2cd061aca09ca1d8b919f79",
+      "usage": {
+        "completion_tokens": 690,
+        "prompt_tokens": 13432,
+        "total_tokens": 14122,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": null,
+          "audio_tokens": null,
+          "reasoning_tokens": 551,
+          "rejected_prediction_tokens": null
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": null,
+          "cached_tokens": 0,
+          "created_cache_tokens": 0,
+          "multimodal_tokens": null
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 13432
+      }
+    },
+    {
+      "at_utc": "2026-10-24T12:29:10.859Z",
+      "kind": "verify",
+      "attempt": 1,
+      "run_id": "run-590d26d0258bc7522a957f79e822210d",
+      "duration_ms": 26335,
+      "verified": false,
+      "stage": "keyboard",
+      "headline": "Keyboard user got stuck: the expected control never appeared",
+      "evidence": {
+        "stage": "keyboard",
+        "reason": "booking_expected_ui_not_observed",
+        "focus_trail": [
+          "Tab → SELECT #select-service \"Please Select                        \n  \"",
+          "Home → SELECT #select-service \"Please Select                        \n  \"",
+          "ArrowDown → SELECT #select-service \"Please Select                        \n  \"",
+          "ArrowDown → SELECT #select-service \"Please Select                        \n  \"",
+          "Tab → SELECT #select-provider \"Jane Doe\"",
+          "Tab → BUTTON #button-next-1 \"Next\"",
+          "Enter → BUTTON #button-next-1 \"Next\"",
+          "Tab → INPUT #select-date",
+          "Control+A → INPUT #select-date",
+          "Enter → BODY \"AccessFinish Synthetic Booking        \n\n\"",
+          "Tab → SELECT #select-timezone \"UTC\n                    \n            \n  \""
+        ],
+        "page": {
+          "focus": {
+            "tag": "SELECT",
+            "id": "select-timezone",
+            "role": null
+          },
+          "inputs": [
+            "select-date:text",
+            "select-timezone:select-one"
+          ],
+          "visible_text": "AccessFinish Synthetic Booking\nService │ Jane Doe\n1\n2\n3\n4\nAppointment Date & Time\nOctober\nNovember\nDecember\nSun\nMon\nTue\nWed\nThu\nFri\nSat\n1\n2\n3\n4\n5\n6\n7\n8\n9\n10\n11\n12\n13\n14\n15\n16\n17\n18\n19\n20\n21\n22\n23\n24\n25\n26\n27\n28\n29\n30\n31\nTimezone\nUTC\nAdak (-10:00)\nAtka (-10:00)\nAnchorage (-9:00)\nJuneau (-9:00)\nNome (-9:00)\nYakutat (-9:00)\nDawson (-8:00)\nEnsenada (-8:00)\nLos_Angeles (-8:00)\nTijuana (-8:00)\nVancouver (-8:00)\nWhitehorse (-8:00)\nBoise (-7:00)\nCambridge_Bay (-7:00)\nChihuahua (-7:00)\nDawson_Creek (-7:00)\nDenver (-7:00)\nEdmonton (-7:00)\nHermosillo (-7:00)\nInuvik (-7:00)\nMazatlan (-7:00)\nPhoenix (-7:00…"
+        }
+      }
+    },
+    {
+      "at_utc": "2026-10-24T12:29:21.257Z",
+      "kind": "propose",
+      "attempt": 2,
+      "duration_ms": 10397,
+      "diagnosis": "The date input is readonly and lacks an Enter‑key handler, so pressing Enter does not trigger the date change event; the time slots are never loaded and focus jumps to the timezone selector. Making the input editable and adding a keydown listener for Enter ensures the date change fires and the time step becomes reachable.",
+      "edits": [
+        {
+          "path": "application/views/components/booking_time_step.php",
+          "old": "<input type=\"text\" id=\"select-date\" class=\"form-control mx-auto my-4\" readonly>",
+          "new": "<input type=\"text\" id=\"select-date\" class=\"form-control mx-auto my-4\">"
+        },
+        {
+          "path": "assets/js/pages/booking.js",
+          "old": "App.Utils.UI.setDateTimePickerValue($selectDate, new Date());\r\n\r\n        const browserTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;",
+          "new": "App.Utils.UI.setDateTimePickerValue($selectDate, new Date());\r\n\r\n        $selectDate.on('keydown', function(e) { if (e.key === 'Enter') { $(this).trigger('change'); } });\r\n\r\n        const browserTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;"
+        }
+      ],
+      "proposal_sha256": "5c90296c3d0b21a64aea940da0fdce8c70ac51a940b3c25a9505a948451c6f04",
+      "usage": {
+        "completion_tokens": 1293,
+        "prompt_tokens": 14227,
+        "total_tokens": 15520,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": null,
+          "audio_tokens": null,
+          "reasoning_tokens": 997,
+          "rejected_prediction_tokens": null
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": null,
+          "cached_tokens": 13408,
+          "created_cache_tokens": 0,
+          "multimodal_tokens": null
+        },
+        "prompt_cache_hit_tokens": 13408,
+        "prompt_cache_miss_tokens": 819
+      }
+    },
+    {
+      "at_utc": "2026-10-24T12:29:21.258Z",
+      "kind": "verify",
+      "attempt": 2,
+      "run_id": null,
+      "duration_ms": 0,
+      "verified": false,
+      "stage": "apply",
+      "headline": "Rejected before execution: The replacement anchor must match exactly once.",
+      "evidence": {
+        "stage": "apply",
+        "error": "The replacement anchor must match exactly once."
+      }
+    },
+    {
+      "at_utc": "2026-10-24T12:29:28.302Z",
+      "kind": "propose",
+      "attempt": 3,
+      "duration_ms": 7044,
+      "diagnosis": "The date input is present but pressing Enter does not trigger its change event, so the time slots are not loaded and focus skips to the timezone selector. Making the input editable and adding an Enter‑key handler that triggers the change event ensures the date selection works for keyboard users.",
+      "edits": [
+        {
+          "path": "application/views/components/booking_time_step.php",
+          "old": "<div id=\"select-date\" class=\"mx-auto my-4\"></div>",
+          "new": "<input type=\"text\" id=\"select-date\" class=\"form-control mx-auto my-4\">"
+        },
+        {
+          "path": "assets/js/pages/booking.js",
+          "old": "App.Utils.UI.setDateTimePickerValue($selectDate, new Date());\n\n        const browserTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;\n\n        $selectTimezone.val(isTimezoneSupported ? browserTimezone : 'UTC');",
+          "new": "App.Utils.UI.setDateTimePickerValue($selectDate, new Date());\n\n        $selectDate.on('keydown', function(e) { if (e.key === 'Enter') { $(this).trigger('change'); } });\n\n        const browserTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;\n\n        $selectTimezone.val(isTimezoneSupported ? browserTimezone : 'UTC');"
+        }
+      ],
+      "proposal_sha256": "e333e712b19bc3c4018147e8dc7bbdb70baa80fb5c4a50a3c8f7e4caa7114d31",
+      "usage": {
+        "completion_tokens": 867,
+        "prompt_tokens": 14725,
+        "total_tokens": 15592,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": null,
+          "audio_tokens": null,
+          "reasoning_tokens": 548,
+          "rejected_prediction_tokens": null
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": null,
+          "cached_tokens": 0,
+          "created_cache_tokens": 0,
+          "multimodal_tokens": null
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 14725
+      }
+    },
+    {
+      "at_utc": "2026-10-24T12:29:28.302Z",
+      "kind": "verify",
+      "attempt": 3,
+      "run_id": null,
+      "duration_ms": 0,
+      "verified": false,
+      "stage": "apply",
+      "headline": "Rejected before execution: The replacement anchor must match exactly once.",
+      "evidence": {
+        "stage": "apply",
+        "error": "The replacement anchor must match exactly once."
+      }
+    },
+    {
+      "at_utc": "2026-10-24T12:30:52.964Z",
+      "kind": "propose",
+      "attempt": 4,
+      "duration_ms": 84661,
+      "diagnosis": "The date container is a non-focusable div, and even after changing to an input, pressing Enter does not trigger its change event, so time slots never load and keyboard focus skips to the timezone selector. Making the date field a regular input and adding an Enter‑key handler that triggers the change event allows keyboard users to select a date and proceed.",
+      "edits": [
+        {
+          "path": "application/views/components/booking_time_step.php",
+          "old": "<div id=\"select-date\" class=\"mx-auto my-4\"></div>",
+          "new": "<input type=\"text\" id=\"select-date\" class=\"form-control mx-auto my-4\">"
+        },
+        {
+          "path": "assets/js/pages/booking.js",
+          "old": "App.Utils.UI.setDateTimePickerValue($selectDate, new Date());\n\n        const browserTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;",
+          "new": "App.Utils.UI.setDateTimePickerValue($selectDate, new Date());\n\n        $selectDate.on('keydown', function(e) { if (e.key === 'Enter') { $(this).trigger('change'); } });\n\n        const browserTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;"
+        }
+      ],
+      "proposal_sha256": "c53d13881450d7d1b36d880e942379c3cf2176e217163009b30c899dcbb08408",
+      "usage": {
+        "completion_tokens": 1463,
+        "prompt_tokens": 15246,
+        "total_tokens": 16709,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": null,
+          "audio_tokens": null,
+          "reasoning_tokens": 1170,
+          "rejected_prediction_tokens": null
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": null,
+          "cached_tokens": 14704,
+          "created_cache_tokens": 0,
+          "multimodal_tokens": null
+        },
+        "prompt_cache_hit_tokens": 14704,
+        "prompt_cache_miss_tokens": 542
+      }
+    },
+    {
+      "at_utc": "2026-10-24T12:31:32.074Z",
+      "kind": "verify",
+      "attempt": 4,
+      "run_id": "run-2cf391df3d724712f9efed36f99aaeef",
+      "duration_ms": 39108,
+      "verified": false,
+      "stage": "outcome",
+      "headline": "Confirmation shown, but saved for 2026-11-01 09:00 instead of 2026-11-02 09:00",
+      "evidence": {
+        "stage": "outcome",
+        "error": "Outcome verification failed: wrong_start_datetime, wrong_end_datetime_or_duration, reopen_date_mismatch",
+        "reasons": [
+          "wrong_start_datetime",
+          "wrong_end_datetime_or_duration",
+          "reopen_date_mismatch"
+        ],
+        "saved": {
+          "appointments": [
+            {
+              "start": "2026-11-01 09:00:00",
+              "end": "2026-11-01 09:30:00"
+            }
+          ],
+          "customers": [
+            {
+              "first_name": "Synthetic",
+              "last_name": "ExploratoryBooking",
+              "email": "exploratory-booking@example.invalid",
+              "phone_number": "0000000000"
+            }
+          ]
+        },
+        "expected": {
+          "start": "2026-11-02 09:00:00",
+          "customer": {
+            "first_name": "Synthetic",
+            "last_name": "ExploratoryBooking",
+            "email": "exploratory-booking@example.invalid",
+            "phone_number": "0000000000"
+          }
+        },
+        "text_typed_by_verifier": {
+          "first_name": "Synthetic",
+          "last_name": "ExploratoryBooking",
+          "email": "exploratory-booking@example.invalid",
+          "phone_number": "0000000000"
+        },
+        "date_field_history": [
+          {
+            "after_action": 22,
+            "action": "no key pressed (page changed it)",
+            "date_field_value": "24/10/2026"
+          },
+          {
+            "after_action": 28,
+            "action": "type \"02/11/2026\"",
+            "date_field_value": "02/11/2026"
+          },
+          {
+            "after_action": 37,
+            "action": "no key pressed (page changed it)",
+            "date_field_value": "01/11/2026"
+          }
+        ],
+        "keyboard_actions_total": 156,
+        "reopened": {
+          "selected_date_iso": "2026-10-24",
+          "evidence_kind": "date_input+flatpickr_selected_day",
+          "ambiguous": false
+        }
+      }
+    },
+    {
+      "at_utc": "2026-10-24T12:31:50.377Z",
+      "kind": "propose",
+      "attempt": 5,
+      "duration_ms": 18302,
+      "diagnosis": "The date field was a non-focusable div, and even after becoming an input, flatpickr parsed the entered DD/MM/YYYY date incorrectly (default YYYY-MM-DD format) and the Enter key did not trigger its change event, causing the wrong date to be stored and the time step to be skipped. Making the field a regular input, configuring flatpickr with DD/MM/YYYY format, and adding an Enter‑key handler that triggers the change event fixes keyboard date selection.",
+      "edits": [
+        {
+          "path": "application/views/components/booking_time_step.php",
+          "old": "<div id=\"select-date\" class=\"mx-auto my-4\"></div>",
+          "new": "<input type=\"text\" id=\"select-date\" class=\"form-control mx-auto my-4\">"
+        },
+        {
+          "path": "assets/js/pages/booking.js",
+          "old": "App.Utils.UI.initializeDatePicker($selectDate, {\r\n            inline: true,\r\n            minDate: moment().subtract(1, 'day').set({hours: 23, minutes: 59, seconds: 59}).toDate(),\r\n            maxDate: moment().add(vars('future_booking_limit'), 'days').toDate(),",
+          "new": "App.Utils.UI.initializeDatePicker($selectDate, {\r\n            inline: true,\r\n            dateFormat: 'd/m/Y',\r\n            minDate: moment().subtract(1, 'day').set({hours: 23, minutes: 59, seconds: 59}).toDate(),\r\n            maxDate: moment().add(vars('future_booking_limit'), 'days').toDate(),"
+        },
+        {
+          "path": "assets/js/pages/booking.js",
+          "old": "App.Utils.UI.setDateTimePickerValue($selectDate, new Date());\r\n\r\n        const browserTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;",
+          "new": "App.Utils.UI.setDateTimePickerValue($selectDate, new Date());\r\n\r\n        $selectDate.on('keydown', function(e) { if (e.key === 'Enter') { $(this).trigger('change'); } });\r\n\r\n        const browserTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;"
+        }
+      ],
+      "proposal_sha256": "14eaffbbc7e0319a689ca328eb7754c364bc0cf5a0105bcc6a92dbf29a51db2b",
+      "usage": {
+        "completion_tokens": 2319,
+        "prompt_tokens": 16052,
+        "total_tokens": 18371,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": null,
+          "audio_tokens": null,
+          "reasoning_tokens": 1797,
+          "rejected_prediction_tokens": null
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": null,
+          "cached_tokens": 14208,
+          "created_cache_tokens": 0,
+          "multimodal_tokens": null
+        },
+        "prompt_cache_hit_tokens": 14208,
+        "prompt_cache_miss_tokens": 1844
+      }
+    },
+    {
+      "at_utc": "2026-10-24T12:32:29.007Z",
+      "kind": "verify",
+      "attempt": 5,
+      "run_id": "run-dc43f508222905b0118872fc07818b8d",
+      "duration_ms": 38629,
+      "verified": false,
+      "stage": "outcome",
+      "headline": "Confirmation shown, but saved for 2026-11-01 09:00 instead of 2026-11-02 09:00",
+      "evidence": {
+        "stage": "outcome",
+        "error": "Outcome verification failed: wrong_start_datetime, wrong_end_datetime_or_duration, reopen_date_mismatch",
+        "reasons": [
+          "wrong_start_datetime",
+          "wrong_end_datetime_or_duration",
+          "reopen_date_mismatch"
+        ],
+        "saved": {
+          "appointments": [
+            {
+              "start": "2026-11-01 09:00:00",
+              "end": "2026-11-01 09:30:00"
+            }
+          ],
+          "customers": [
+            {
+              "first_name": "Synthetic",
+              "last_name": "ExploratoryBooking",
+              "email": "exploratory-booking@example.invalid",
+              "phone_number": "0000000000"
+            }
+          ]
+        },
+        "expected": {
+          "start": "2026-11-02 09:00:00",
+          "customer": {
+            "first_name": "Synthetic",
+            "last_name": "ExploratoryBooking",
+            "email": "exploratory-booking@example.invalid",
+            "phone_number": "0000000000"
+          }
+        },
+        "text_typed_by_verifier": {
+          "first_name": "Synthetic",
+          "last_name": "ExploratoryBooking",
+          "email": "exploratory-booking@example.invalid",
+          "phone_number": "0000000000"
+        },
+        "date_field_history": [
+          {
+            "after_action": 23,
+            "action": "no key pressed (page changed it)",
+            "date_field_value": "24/10/2026"
+          },
+          {
+            "after_action": 29,
+            "action": "type \"02/11/2026\"",
+            "date_field_value": "02/11/2026"
+          },
+          {
+            "after_action": 38,
+            "action": "no key pressed (page changed it)",
+            "date_field_value": "01/11/2026"
+          }
+        ],
+        "keyboard_actions_total": 157,
+        "reopened": {
+          "selected_date_iso": "2026-10-24",
+          "evidence_kind": "date_input+flatpickr_selected_day",
+          "ambiguous": false
+        }
+      }
+    },
+    {
+      "at_utc": "2026-10-24T12:32:48.793Z",
+      "kind": "propose",
+      "attempt": 6,
+      "duration_ms": 19784,
+      "diagnosis": "The date entered by the keyboard user is interpreted in the browser's UTC timezone, but the system treats it as if it were in the business timezone (Asia/Riyadh, UTC+3), causing the stored date to be one day earlier. Configuring flatpickr to use UTC mode aligns the date interpretation with the browser's timezone, fixing the offset.",
+      "edits": [
+        {
+          "path": "assets/js/pages/booking.js",
+          "old": "App.Utils.UI.initializeDatePicker($selectDate, {\r\n            inline: true,\r\n            minDate: moment().subtract(1, 'day').set({hours: 23, minutes: 59, seconds: 59}).toDate(),\r\n            maxDate: moment().add(vars('future_booking_limit'), 'days').toDate(),",
+          "new": "App.Utils.UI.initializeDatePicker($selectDate, {\r\n            inline: true,\r\n            utc: true,\r\n            minDate: moment().subtract(1, 'day').set({hours: 23, minutes: 59, seconds: 59}).toDate(),\r\n            maxDate: moment().add(vars('future_booking_limit'), 'days').toDate(),"
+        }
+      ],
+      "proposal_sha256": "83d600cc50d98c8ecf5e515621b494c0a27e79310030bdf797f1263c3422abf9",
+      "usage": {
+        "completion_tokens": 2472,
+        "prompt_tokens": 17087,
+        "total_tokens": 19559,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": null,
+          "audio_tokens": null,
+          "reasoning_tokens": 2173,
+          "rejected_prediction_tokens": null
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": null,
+          "cached_tokens": 15216,
+          "created_cache_tokens": 0,
+          "multimodal_tokens": null
+        },
+        "prompt_cache_hit_tokens": 15216,
+        "prompt_cache_miss_tokens": 1871
+      }
+    },
+    {
+      "at_utc": "2026-10-24T12:33:13.720Z",
+      "kind": "verify",
+      "attempt": 6,
+      "run_id": "run-fc7412b7a7a0dc8a8d334b3e3505882a",
+      "duration_ms": 24924,
+      "verified": false,
+      "stage": "keyboard",
+      "headline": "Keyboard user got stuck at the date step: there is no date field to Tab to",
+      "evidence": {
+        "stage": "keyboard",
+        "reason": "booking_expected_ui_not_observed",
+        "focus_trail": [
+          "Tab → SELECT #select-service \"Please Select                        \n  \"",
+          "Home → SELECT #select-service \"Please Select                        \n  \"",
+          "ArrowDown → SELECT #select-service \"Please Select                        \n  \"",
+          "ArrowDown → SELECT #select-service \"Please Select                        \n  \"",
+          "Tab → SELECT #select-provider \"Jane Doe\"",
+          "Tab → BUTTON #button-next-1 \"Next\"",
+          "Enter → BUTTON #button-next-1 \"Next\""
+        ],
+        "page": {
+          "focus": {
+            "tag": "BODY",
+            "id": "",
+            "role": null
+          },
+          "inputs": [
+            "select-timezone:select-one"
+          ],
+          "visible_text": "AccessFinish Synthetic Booking\nService │ Jane Doe\n1\n2\n3\n4\nAppointment Date & Time\nOctober\nNovember\nDecember\nSun\nMon\nTue\nWed\nThu\nFri\nSat\n1\n2\n3\n4\n5\n6\n7\n8\n9\n10\n11\n12\n13\n14\n15\n16\n17\n18\n19\n20\n21\n22\n23\n24\n25\n26\n27\n28\n29\n30\n31\nTimezone\nUTC\nAdak (-10:00)\nAtka (-10:00)\nAnchorage (-9:00)\nJuneau (-9:00)\nNome (-9:00)\nYakutat (-9:00)\nDawson (-8:00)\nEnsenada (-8:00)\nLos_Angeles (-8:00)\nTijuana (-8:00)\nVancouver (-8:00)\nWhitehorse (-8:00)\nBoise (-7:00)\nCambridge_Bay (-7:00)\nChihuahua (-7:00)\nDawson_Creek (-7:00)\nDenver (-7:00)\nEdmonton (-7:00)\nHermosillo (-7:00)\nInuvik (-7:00)\nMazatlan (-7:00)\nPhoenix (-7:00…"
+        }
+      }
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 90769,
+    "completion_tokens": 9104
+  },
+  "estimated_cost_usd": 0.0354243,
+  "source_sha256": "398c85542878892ac7e555de74559964759e385bf8d0c181515d9126f13bef5c",
+  "finished_at_utc": "2026-10-24T12:33:13.720Z",
+  "duration_ms": 298983
+}
