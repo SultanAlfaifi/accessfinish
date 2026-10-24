@@ -53,6 +53,10 @@ The user approved at most two new requests with a combined $0.50 reservation cei
 
 The original October 21 evaluation remains **2/5 full passes on one guided upstream case**. These counts are not pooled. Two execution replays of the phone proposal do not constitute two model generations.
 
+## Independent automated reproduction
+
+[GitHub CI at source commit 4df4923](https://github.com/SultanAlfaifi/accessfinish/actions/runs/40004155891) passed Node 22/24 checks on Windows/Linux. A fresh Linux runner rebuilt the pinned fixture, reproduced all five original expected outcomes and the original negative control, then verified the phone reference and retained new Nemotron repair while rejecting the hardcoded-phone control. [Sanitized records, hashes and a summary](../evidence/extension-ci-20261023/summary.json) are retained. This makes no new model requests and is separate from the twelve-run paired comparison; it does not count as a human review.
+
 ## Reproduce without new model usage
 
 Use Node.js 22+ and a local Docker Linux engine. Run `npm run demo:setup` first. Use separate runtime directories for a running UI and CLI experiments.
