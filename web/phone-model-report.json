@@ -1,5 +1,5 @@
 {
-  "state": "verified_in_both_workflows",
+  "state": "verified",
   "generations": 1,
   "model": "nvidia/nemotron-3-super-120b-a12b",
   "provider": "Nebius Token Factory",
@@ -9,10 +9,9 @@
   "proposal_sha256": "ff7d50fb0d3d5d07edd4e06d08c0fcc5eaba6a2d6ceee596be243415711a0f9c",
   "source_sha256": "260110fce5c5d1fab3193c12224d98ed08192b04afe1f7c0c8d37dd6afaea658",
   "model_generation_cost_usd_excluding_tax": 0.0041456999999999996,
-  "execution_replays": 2,
+  "execution_replays": 1,
   "records": {
-    "accessfinish": "records/phone-model-accessfinish.json",
-    "conventional": "records/phone-model-conventional.json"
+    "accessfinish": "records/phone-model-accessfinish.json"
   },
-  "limits": "One guided generation on a deliberately seeded exposed fault; two execution replays are not two model generations. Separate from operator controls and the original five-trial evaluation."
+  "limits": "One guided generation on a deliberately seeded exposed fault. Separate from operator controls and the original five-trial evaluation."
 }

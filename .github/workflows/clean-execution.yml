@@ -28,7 +28,6 @@ jobs:
       - run: npm test
       - run: node scripts/check-evidence.cjs
       - run: node scripts/check-trials.cjs
-      - run: npm run check:comparison
       - run: npm run check:phone-model
       - run: npm run check:submission
   isolated-booking:
@@ -46,7 +45,7 @@ jobs:
           node-version: 22
       - name: Build isolated fixture from public pinned inputs
         run: npm run demo:setup
-      - name: Replay five retained decisions and report exact-stage comparison
+      - name: Replay five retained decisions and report exact stages
         run: node scripts/ci-replay-evaluation.cjs
       - name: Verify the original source remains a negative control
         run: node scripts/demo-check.cjs --original

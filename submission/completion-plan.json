@@ -100,8 +100,7 @@
   "hold_until_browser_reviews": true,
   "current_strengthening_revision": {
     "case": "customer-phone deliberately seeded fault",
-    "comparison": "6 paired variants / 12 executions / equal correctness outcomes",
-    "new_model": "1 guided generation / 2 verified execution replays / $0.0041457 estimated before tax",
+    "new_model": "1 guided generation / 1 verified execution / $0.0041457 estimated before tax",
     "presentation": "English Aiden v04 / 109.5 seconds / full entrant playback pending",
     "publication": "Current two-case source and media prepared locally; no updated public demo or video yet"
   }

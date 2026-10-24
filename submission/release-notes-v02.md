@@ -1,6 +1,6 @@
 # Two-case strengthening revision / v04 presentation
 
-Prepared for review, with publication pending. Adds a declared seeded phone-data fault, a second model repair, and six paired variants using identical conventional/AccessFinish correctness checks. All twelve comparison executions matched expected outcomes; a separately generated Nemotron phone proposal passed both workflows in two more execution replays. Original 2/5 frozen date-case results remain separate.
+Prepared for review, with publication pending. Adds a declared seeded phone-data fault and a second model repair. A separately generated Nemotron phone proposal passed a fresh isolated execution. Original 2/5 frozen date-case results remain separate.
 
 The opening now explains the integrated proposal, exact approval and evidence workflow. English local Aiden narration accompanies the 109.5-second v04 film. Complete decode, frame count, loudness and encoded scene samples were checked; full entrant playback and two independent browser reviews remain pending.
 

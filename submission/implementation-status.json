@@ -56,11 +56,8 @@
   },
   "two_case_extension": {
     "state": "local_review_revision",
-    "comparison_pairs": 6,
-    "comparison_executions": 12,
-    "equal_correctness_outcomes": true,
     "new_phone_model_generations": 1,
-    "new_phone_model_execution_replays": 2,
+    "new_phone_model_execution_replays": 1,
     "new_phone_model_cost_usd_excluding_tax": 0.0041457,
     "seeded_phone_fault": true,
     "pooled_with_original_evaluation": false,

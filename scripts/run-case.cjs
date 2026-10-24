@@ -1,6 +1,6 @@
 'use strict';
-// Test-only baseline. The exact same isolated fixture, browser drivers, storage
-// reader and regression evaluator are used by both comparison workflows.
+// Runs one case variant (original, repaired or a negative control) in a fresh
+// isolated fixture and prints the outcome. Used by CI.
 const fs = require('node:fs'), path = require('node:path'), crypto = require('node:crypto');
 const fixture = require('../lib/fixture.cjs');
 const {caseDefinition, phoneReference} = require('../lib/cases.cjs');
@@ -20,23 +20,22 @@ function candidate(case_id, variant) {
   }
   return {files: selected.files, proposal, origin, original, case_id};
 }
-async function runConventional({case_id, variant, root = runtimeRoot(), progress = console.log}) {
+async function runCase({case_id, variant, root = runtimeRoot(), progress = console.log}) {
   const item = candidate(case_id, variant), id = 'run-' + crypto.randomBytes(16).toString('hex');
   const run = {id, case_id, source_sha256: digest(item.files), proposal_sha256: digest(item.proposal)};
   const result = await fixture.execute({run, proposal: item, original: item.original, root,
-    update: state => progress(JSON.stringify({mode: 'conventional', case_id, variant, state}))});
-  const record = {workflow: 'conventional', case_id, variant, id, source_sha256: run.source_sha256,
-    proposal_sha256: run.proposal_sha256, state: result.booking_verified ? 'verified' : 'failed', result,
-    approval_gate: false, note: 'A deliberately explicit test-only CLI; conventional CI can implement approval and artifact binding with additional integration.'};
-  const dir = path.join(root, 'conventional'); fs.mkdirSync(dir, {recursive: true});
+    update: state => progress(JSON.stringify({case_id, variant, state}))});
+  const record = {case_id, variant, id, source_sha256: run.source_sha256,
+    proposal_sha256: run.proposal_sha256, state: result.booking_verified ? 'verified' : 'failed', result};
+  const dir = path.join(root, 'case-runs'); fs.mkdirSync(dir, {recursive: true});
   fs.writeFileSync(path.join(dir, id + '.json'), JSON.stringify(record, null, 2) + '\n');
   return record;
 }
 if (require.main === module) {
   const value = flag => process.argv[process.argv.indexOf(flag) + 1];
-  runConventional({case_id: value('--case'), variant: value('--variant')}).then(record => {
+  runCase({case_id: value('--case'), variant: value('--variant')}).then(record => {
     console.log(JSON.stringify({state: record.state, run_id: record.id}));
     if (record.state !== 'verified') process.exitCode = 1;
   }).catch(error => { console.error(error.message); process.exitCode = 1; });
 }
-module.exports = {candidate, runConventional};
+module.exports = {candidate, runCase};

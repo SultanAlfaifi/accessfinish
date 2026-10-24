@@ -9,11 +9,11 @@
 <a class="skip" href="#main">Skip to workbench</a>
 <header>
   <a class="brand" href="./" aria-label="AccessFinish home"><span class="mark" aria-hidden="true">a<span>f</span></span>AccessFinish<span class="edition">REPAIR WORKBENCH</span></a>
-  <nav aria-label="Main"><a href="#workflow-comparison">Compare with tests</a><a href="#recorded-evidence">Evidence</a><a href="https://github.com/SultanAlfaifi/accessfinish">Source</a></nav>
+  <nav aria-label="Main"><a href="#recorded-evidence">Evidence</a><a href="https://github.com/SultanAlfaifi/accessfinish">Source</a></nav>
 </header>
 <main id="main">
   <section class="intro">
-    <div><h1>Know which AI fix<br>you can accept.</h1><p class="deck">Review an AI code change. Approve its exact version. Inspect independent test evidence for that repair.</p><p class="intro-difference">Conventional tests check behavior. AccessFinish connects the proposal, your approval, and the result.</p><div class="intro-actions"><a class="primary" href="#repair-workbench">Review a repair</a><a class="secondary" href="#workflow-comparison">See the comparison</a></div><p class="environment-note" id="environment-note" role="status">Loading the workbench…</p></div>
+    <div><h1>Know which AI fix<br>you can accept.</h1><p class="deck">Review an AI code change. Approve its exact version. Inspect independent test evidence for that repair.</p><div class="intro-actions"><a class="primary" href="#repair-workbench">Review a repair</a></div><p class="environment-note" id="environment-note" role="status">Loading the workbench…</p></div>
     <ol class="repair-path" aria-label="The repair decision"><li><strong>AI proposes</strong><span>A code change you can inspect</span></li><li><strong>You approve</strong><span>One exact version of the patch</span></li><li><strong>Tests decide</strong><span>Stored data, reopen, and regressions</span></li><li><strong>Evidence stays attached</strong><span>Including rejected repairs</span></li></ol>
   </section>
   <section class="workbench" id="repair-workbench" aria-labelledby="task-heading">
@@ -68,15 +68,6 @@
       <div class="limits"><h3>Keep the claim precise.</h3><p id="scope-note">One guided, exposed development case. The diagnosis was supplied to the model. No general autonomous repair or screen-reader study is claimed.</p></div>
       <div class="run-cost"><span>NEW MODEL USAGE</span><strong id="cost">$0</strong><small id="cost-note">Recorded proposal · no new inference</small></div>
     </aside>
-  </section>
-  <section class="workflow-comparison" id="workflow-comparison" aria-labelledby="comparison-heading">
-    <h2 id="comparison-heading">Same tests. A different repair workflow.</h2>
-    <p>Both workflows use the same isolated build, keyboard task, independent database reader, fresh-browser reopen, and regression checks. Good conventional tests can detect these failures too.</p>
-    <div class="results-table"><table><caption>What this comparison measures</caption><thead><tr><th scope="col">Capability</th><th scope="col">Conventional test-only CLI</th><th scope="col">AccessFinish workbench</th></tr></thead><tbody><tr><th scope="row">Detect a broken booking or wrong phone</th><td>Same checks</td><td>Same checks</td></tr><tr><th scope="row">Review the AI's proposed code change</th><td>Outside the test runner</td><td>Built into the repair flow</td></tr><tr><th scope="row">Require approval of the exact patch</th><td>Additional workflow integration</td><td>Required before execution</td></tr><tr><th scope="row">Attach the decision to proposal and run</th><td>Source and patch hashes in CLI output</td><td>Approval, source, patch, and run bound together</td></tr></tbody></table></div>
-    <p id="comparison-status" role="status">The two-case comparison is being executed. No comparative outcome is claimed yet.</p>
-    <div class="results-table" id="comparison-results" hidden><table><caption>Measured outcomes on two exposed development cases</caption><thead><tr><th scope="col">Case / variant</th><th scope="col">Conventional tests</th><th scope="col">AccessFinish</th></tr></thead><tbody id="comparison-rows"></tbody></table></div>
-    <p class="micro">This compares a test-only CLI with the integrated workbench. Conventional CI can add approval and evidence links too. No measured time saving, accuracy advantage, or general repair success rate is claimed.</p><a href="comparison.json" id="comparison-download" hidden>Download the comparison evidence</a>
-    <p id="phone-model-status" hidden></p><a href="phone-model-report.json" id="phone-model-download" hidden>Inspect the separate new Nemotron result</a>
   </section>
   <section class="protocol-results" aria-labelledby="protocol-heading">
     <h2 id="protocol-heading">Original date-case model evaluation</h2>
