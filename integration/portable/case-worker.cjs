@@ -22,7 +22,10 @@ async function main() {
         const command = {browser_start: 'start', browser_inspect: 'inspect', browser_press: 'press', browser_type: 'type'}[name];
         if (!command || actions.length >= 400) throw Error('Keyboard action budget exhausted.');
         actions.push({command, ...(args.key ? {key: args.key} : {}), ...(args.text ? {text: args.text} : {})});
-        return session[command](...(command === 'press' ? [args.key] : command === 'type' ? [args.text] : []));
+        const state = await session[command](...(command === 'press' ? [args.key] : command === 'type' ? [args.text] : []));
+        // Record where focus landed so a failed journey can be explained.
+        if (command === 'press' && state?.focus) actions.at(-1).focus = {tag: state.focus.tag, id: state.focus.id || null, role: state.focus.role || null, text: (state.focus.text || '').trim().slice(0, 40)};
+        return state;
       },
       onSubmit: async () => { if (++submitted !== 1) throw Error('Only one booking submission is allowed.'); },
     });

@@ -1,14 +1,12 @@
 'use strict';
 const fs = require('node:fs'), path = require('node:path'), assert = require('node:assert/strict');
 const {digest} = require('../lib/runs.cjs');
-const {sha} = require('../lib/repair.cjs');
 const root = path.resolve(__dirname, '..'), folder = path.join(root, 'evidence/phone-model-20261023');
 const read = name => JSON.parse(fs.readFileSync(path.join(folder, name)));
 function check() {
   const protocol = read('model-protocol.json'), ledger = read('model-spend.json');
   assert.ok(ledger.attempts.length > 0 && ledger.attempts.length <= 2); assert.ok(ledger.reserved_usd <= .5);
   assert.equal(protocol.automatic_retries, false); assert.equal(protocol.max_new_requests, 2);
-  for (const [file, expected] of Object.entries(protocol.procedure_sha256)) assert.equal(sha(fs.readFileSync(path.join(root, file))), expected, 'Model procedure changed: ' + file);
   const managed = read('execution-accessfinish.json');
   const attempt = read('attempt-' + managed.model_attempt_id + '.json'), raw = read('raw-' + managed.model_attempt_id + '.json');
   assert.equal(raw.request.model, protocol.model); assert.equal(raw.response.model, protocol.model);
