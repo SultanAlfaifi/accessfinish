@@ -1,55 +1,43 @@
 1
-0:00:00,000 --> 0:00:05,000
-Ask an AI to fix a form and it says "fixed". The page loads, a confirmation appears.
+00:00:00,000 --> 00:00:11,763
+Ask an AI to fix a broken form, and it will tell you it's fixed. The page loads. A confirmation appears. But did the user's booking actually get saved, correctly?
 
 2
-0:00:05,010 --> 0:00:10,010
-But was the user's booking actually saved — correctly? AccessFinish checks.
+00:00:11,988 --> 00:00:20,675
+Here, the booking page says success. But the database stored the wrong phone number. Nobody notices, unless you check what was saved.
 
 3
-0:00:11,200 --> 0:00:17,200
-Here the booking page says success, but the database stored the wrong phone number.
+00:00:20,900 --> 00:00:34,202
+AccessFinish drives the journey in a real browser, then hands the evidence and the source code to NVIDIA Nemotron, on Nebius Token Factory. No hints. Nemotron finds the hard-coded value, and writes the fix.
 
 4
-0:00:17,200 --> 0:00:23,200
-AccessFinish runs the journey in a real browser and hands the evidence to NVIDIA Nemotron on Nebius Token Factory. No hints.
+00:00:34,427 --> 00:00:51,575
+Every fix is built in a fresh, offline sandbox, and checked for real: the saved database row, a fresh browser, and a second customer with a different number. Seven live runs. Seven verified fixes, on the first attempt, for about half a cent each.
 
 5
-0:00:23,560 --> 0:00:29,560
-Nemotron finds the hardcoded value and proposes a one-line fix.
+00:00:51,800 --> 00:00:57,410
+Now the harder case. A keyboard user can't reach the date picker at all.
 
 6
-0:00:29,910 --> 0:00:37,910
-Each fix is built in a fresh offline sandbox: the database row, a fresh browser, and a second customer with a different number.
+00:00:57,635 --> 00:01:06,706
+Nemotron opens source files, proposes fixes, and every attempt is built and tested. It makes the date reachable, and the page says: booked.
 
 7
-0:00:37,910 --> 0:00:43,910
-7 of 7 live runs fixed and verified on the first attempt — about half a cent each.
+00:01:06,931 --> 00:01:12,540
+But AccessFinish reads the database. The booking was saved for the wrong day. Rejected.
 
 8
-0:00:44,800 --> 0:00:50,800
-The harder case: a keyboard user cannot reach the date picker at all.
+00:01:12,765 --> 00:01:23,760
+And it shows exactly why. Seven tenths of a second after a background request, with no key pressed, the date resets itself to the first of the month.
 
 9
-0:00:51,280 --> 0:00:57,280
-Nemotron opens source files, proposes fixes, and every attempt is built and tested for real.
+00:01:23,985 --> 00:01:28,440
+Fifteen fake booked confirmations, across seven runs. Not one got through.
 
 10
-0:00:57,330 --> 0:01:04,330
-Nemotron makes the date reachable and the page says "booked". But the database holds the wrong day. Rejected.
+00:01:28,665 --> 00:01:34,275
+Fourteen live runs, and forty-one cents of Nemotron. Fixes that are proven, not promised.
 
 11
-0:01:04,330 --> 0:01:11,330
-The timeline shows why: 0.7 seconds after a page request, with no key pressed, the date resets itself.
-
-12
-0:01:11,940 --> 0:01:18,940
-15 fake "booked" confirmations across 7 runs. None got through.
-
-13
-0:01:19,540 --> 0:01:25,540
-14 live runs, $0.41 of Nemotron. Fixes that are proven, not promised.
-
-14
-0:01:26,140 --> 0:01:30,140
-AccessFinish — finish the task, verify the result.
+00:01:34,500 --> 00:01:37,417
+AccessFinish. Finish the task. Verify the result.
