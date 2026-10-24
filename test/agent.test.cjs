@@ -58,3 +58,16 @@ test('an edit whose anchor is missing is rejected before execution', async () =>
   const trace = await runAgent({execute, model, root, maxAttempts: 1});
   assert.equal(executions, 1); assert.equal(trace.steps.at(-1).stage, 'apply');
 });
+
+test('a malformed model answer becomes a failed attempt with feedback', async () => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'af-agent-'));
+  const execute = async ({run, original}) => ({...(original ? stuck : verified), run_id: run.id});
+  let calls = 0;
+  const model = async messages => {
+    if (++calls === 1) throw Object.assign(Error('Nemotron returned arguments that are not valid JSON.'), {malformed: true, usage: {prompt_tokens: 10}, cost: 0.001});
+    assert.match(messages.at(-1).content, /rejected/);
+    return {message: {content: null}, call: {id: 'c', function: {name: 'propose_repair', arguments: '{}'}}, proposal: {diagnosis: 'd', edits: featured.edits}, usage: {}, cost: 0};
+  };
+  const trace = await runAgent({execute, model, root});
+  assert.equal(trace.state, 'verified'); assert.equal(trace.accepted.attempt, 2); assert.equal(trace.steps[1].stage, 'format');
+});
