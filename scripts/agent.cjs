@@ -34,7 +34,16 @@ async function main() {
   const print = text => process.stdout.write(text + '\n');
   print('AccessFinish agent · ' + selected.title + '\nGoal: ' + selected.goal + '\n');
   let shown = 0;
-  const trace = await runAgent({case_id: caseId, execute: fixture.execute, onUpdate: current => {
+  // --recorded-model checks the pipeline without a key: the "model" answers with the
+  // case's recorded Nemotron proposal. Such traces are never published.
+  const recorded = process.argv.includes('--recorded-model');
+  if (recorded && process.argv.includes('--publish')) throw Error('--recorded-model runs are pipeline checks and cannot be published.');
+  const model = recorded ? async () => {
+    const featured = caseId === 'customer-phone' ? require('../web/cases/customer-phone.json').featured : require('../web/featured-case.json');
+    return {message: {content: null}, call: {id: 'recorded', function: {name: 'propose_repair', arguments: '{}'}},
+      proposal: {diagnosis: 'Recorded proposal (pipeline check, no model call)', edits: featured.proposal.edits}, usage: {}, cost: 0};
+  } : undefined;
+  const trace = await runAgent({case_id: caseId, execute: fixture.execute, ...(model ? {model, maxAttempts: 1} : {}), onUpdate: current => {
     for (const step of current.steps.slice(shown)) {
       if (step.kind === 'observe') print('Observe   ' + (step.verified ? '✓ ' : '✗ ') + step.headline);
       if (step.kind === 'propose') print('Attempt ' + step.attempt + ' Nemotron: ' + step.diagnosis + ' (' + step.edits.length + ' edits)');
