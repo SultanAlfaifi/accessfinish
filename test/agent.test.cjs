@@ -71,3 +71,18 @@ test('a malformed model answer becomes a failed attempt with feedback', async ()
   const trace = await runAgent({execute, model, root});
   assert.equal(trace.state, 'verified'); assert.equal(trace.accepted.attempt, 2); assert.equal(trace.steps[1].stage, 'format');
 });
+
+test('rejection feedback remembers the attempt that got furthest', async () => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'af-agent-'));
+  const outcomes = [stuck, wrongPhone, buildFailure, verified], feedback = [];
+  const execute = async ({run}) => ({...outcomes.shift(), run_id: run.id});
+  const model = async messages => {
+    if (messages.at(-1).role === 'tool') feedback.push(JSON.parse(messages.at(-1).content));
+    return {message: {content: null}, call: {id: 'c' + feedback.length, function: {name: 'propose_repair', arguments: '{}'}}, proposal: {diagnosis: 'd', edits: featured.edits}, usage: {}, cost: 0};
+  };
+  const trace = await runAgent({execute, model, root});
+  assert.equal(trace.state, 'verified');
+  assert.equal(feedback[0].best_attempt_so_far, 'this one');
+  assert.equal(feedback[1].best_attempt_so_far.attempt, 1);
+  assert.equal(feedback[1].best_attempt_so_far.got_as_far_as, 'outcome');
+});
