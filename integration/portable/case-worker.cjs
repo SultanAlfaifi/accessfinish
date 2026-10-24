@@ -21,7 +21,7 @@ async function main() {
       invoke: async (name, args = {}) => {
         const command = {browser_start: 'start', browser_inspect: 'inspect', browser_press: 'press', browser_type: 'type'}[name];
         if (!command || actions.length >= 400) throw Error('Keyboard action budget exhausted.');
-        actions.push({command, ...(args.key ? {key: args.key} : {}), ...(args.text ? {text: args.text} : {})});
+        actions.push({command, at: Date.now(), ...(args.key ? {key: args.key} : {}), ...(args.text ? {text: args.text} : {})});
         const state = await session[command](...(command === 'press' ? [args.key] : command === 'type' ? [args.text] : []));
         // Record where focus landed, and the date field's value whenever it changes,
         // so a failed journey can be explained.
@@ -32,7 +32,7 @@ async function main() {
       },
       onSubmit: async () => { if (++submitted !== 1) throw Error('Only one booking submission is allowed.'); },
     });
-    return {workflow: result.workflow, last_observation: result, keyboard_actions: actions, native_keyboard_only: true, submissions: submitted};
+    return {workflow: result.workflow, last_observation: result, keyboard_actions: actions, page_requests: session.requests(), native_keyboard_only: true, submissions: submitted};
   } finally { await session.close(); }
 }
 main().then(result => console.log(JSON.stringify(result))).catch(error => {

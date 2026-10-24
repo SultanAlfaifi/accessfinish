@@ -97,3 +97,16 @@ test('temporary provider errors are retried, other errors are not', async () => 
   await assert.rejects(nemotron([], {key: 'k', retryDelay: 1, fetchImpl: async () => { calls++; return {ok: false, status: 401, text: async () => 'no'}; }}), /HTTP 401/);
   assert.equal(calls, 1);
 });
+
+test('outcome evidence interleaves date changes with page requests, and anchors are explained', async () => {
+  const keyboard = {workflow: {status: 'confirmation_observed'}, page_requests: [{at: 1500, method: 'POST', path: '/booking/get_unavailable_dates'}],
+    keyboard_actions: [{command: 'type', text: '02/11/2026', at: 1000, date_value: '02/11/2026'}, {command: 'inspect', at: 2000, date_value: '01/11/2026'}]};
+  const evidence = explain({...wrongPhone, keyboard}).evidence;
+  assert.deepEqual(evidence.timeline_after_typing_date.map(item => item.t), ['+0.0s', '+0.5s', '+1.0s']);
+  assert.match(evidence.timeline_after_typing_date[2].event, /no key pressed .* "01\/11\/2026"/);
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'af-agent-'));
+  const model = async () => ({message: {content: null}, call: {id: 'c', function: {name: 'propose_repair', arguments: '{}'}},
+    proposal: {diagnosis: 'd', edits: [{path: 'assets/js/pages/booking.js', old: 'zz-no-such-anchor-zz', new: 'x'}]}, usage: {}, cost: 0});
+  const trace = await runAgent({execute: async ({run}) => ({...stuck, run_id: run.id}), model, root, maxAttempts: 1});
+  assert.equal(trace.steps.at(-1).evidence.anchors[0].occurrences_in_original, 0);
+});
