@@ -1,23 +1,19 @@
 Title
-AccessFinish | Know which AI fix you can accept | Nebius x NVIDIA
+AccessFinish — The AI says "fixed". We check the user can finish. | NVIDIA Nemotron
 
 Description
-A booking can be confirmed while the wrong phone is saved. AccessFinish connects an AI source proposal, approval of its exact version, and independent execution evidence.
+Ask an AI to fix a broken form and it will say it's fixed. AccessFinish doesn't trust the confirmation page: it drives the real journey in a browser, reads what was actually saved in the database, reopens it in a fresh browser, and feeds the evidence back to NVIDIA Nemotron 3 Super (Nebius Token Factory) until the saved outcome is right.
 
-This 110-second English demo shows a deliberately seeded phone fault in Easy!Appointments, a new guided NVIDIA Nemotron 3 Super repair through Nebius Token Factory, and a hardcoded negative control that fails a different-phone check.
+Live results (14 runs on GitHub Actions, $0.41 of Nemotron in total):
+- Saved phone: fixed and verified on the first attempt in 7 of 7 runs.
+- Keyboard date: not fixed yet. 15 attempts showed a "booked" confirmation while the wrong day was saved; AccessFinish rejected every one and recorded why.
 
-
-The new phone proposal is one guided generation. The original date-case model evaluation remains separately 2/5 full passes. Two exposed cases in one app, including one seeded fault, do not establish autonomous diagnosis or general repair accuracy. Independent browser reviews remain pending.
-
-Source and evidence: https://github.com/SultanAlfaifi/accessfinish
-Earlier published date-case review: https://sultalfaifi.com/accessfinish/
-The two-case revision is prepared locally; the public demo has not been updated yet.
+Source, evidence and every run: https://github.com/SultanAlfaifi/accessfinish
+Live page: https://sultalfaifi.com/accessfinish/
 Track: Coding and Agentic Engineering.
-Original workbench/orchestration: MIT. Easy!Appointments: separately attributed GPL-3.0.
-English synthetic narration: Qwen3-TTS 0.6B CustomVoice / Aiden, generated locally. No music.
+Synthetic data in a pinned copy of open-source Easy!Appointments (GPL-3.0). AccessFinish is MIT licensed.
+Narration: Qwen3-TTS 0.6B CustomVoice, voice Aiden. No music.
 
-Current state
-v04 file: media/v04/accessfinish-demo-v04.mp4, 109.5 seconds.
-This metadata is prepared for review. No v04 upload or publication has occurred.
-Existing PRIVATE v03 upload: https://youtu.be/Ma9cEARXV2g (older 117.8-second revision).
-Full entrant watch/listen, two independent reviews, final public-video approval and final submission remain pending.
+Upload
+File: media/accessfinish-agent-demo.mp4 (111-second film, 1920x1080, narrated, captions burned in)
+Visibility: Public. Not made for kids. Category: Science & Technology.

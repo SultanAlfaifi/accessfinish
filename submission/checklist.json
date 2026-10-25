@@ -12,7 +12,7 @@
   "test_build_clean_archive_checks": "Prepared v0.2 archive: 14 tests and both evidence validators passed outside checkout; public v0.2 release pending",
   "video_local": "media/v04/accessfinish-demo-v04.mp4",
   "video_download": null,
-  "video_duration_seconds": 109.5,
+  "video_duration_seconds": 110.8,
   "video_review": "Complete decode, exact 3285 frames, loudness and encoded scene samples checked; continuous playback and entrant watch/listen pending",
   "public_youtube_url": null,
   "description": "project-description.md",
@@ -25,7 +25,7 @@
   "human_or_screen_reader_study": "not performed",
   "autonomous_defect_discovery": "not demonstrated",
   "prepared_video_local": "media/v04/accessfinish-demo-v04.mp4",
-  "prepared_video_duration_seconds": 109.5,
+  "prepared_video_duration_seconds": 110.8,
   "prepared_video_review": "Complete decode, exact 3285 frames, loudness and encoded scene samples checked; continuous playback and entrant watch/listen pending",
   "independent_clean_run": "https://github.com/SultanAlfaifi/accessfinish/actions/runs/39637182406",
   "independent_clean_result": {
