@@ -28,13 +28,15 @@
     if (step.kind === 'observe') return 'Run the journey on the original code';
     if (step.kind === 'propose') return 'Attempt ' + step.attempt + ' · Nemotron proposes a fix';
     if (step.kind === 'read') return 'Attempt ' + step.attempt + ' · Nemotron opens a source file';
+    if (step.kind === 'search') return 'Attempt ' + step.attempt + ' · Nemotron searches the code';
     if (step.kind === 'verify') return 'Attempt ' + step.attempt + ' · Verify in a fresh sandbox';
     return 'Attempt ' + step.attempt + ' · ' + step.kind;
   }
   function stepLine(step) {
     if (step.kind === 'propose') return step.diagnosis;
-    if (step.kind === 'read') return step.path + (step.found ? '' : ' (not available)');
-    return step.headline ?? step.query ?? step.path ?? '';
+    if (step.kind === 'read') return step.path + (step.limited ? ' (read limit reached)' : step.already_provided ? ' (already provided)' : step.found ? '' : ' (not available)');
+    if (step.kind === 'search') return '/' + step.query + '/' + (step.path ? ' in ' + step.path : '') + (step.limited ? ' (limit reached)' : ' · ' + step.matches + (step.matches === 1 ? ' match' : ' matches'));
+    return step.headline ?? step.path ?? '';
   }
   function stepState(step) {
     if (step.kind === 'observe' || step.kind === 'verify') return step.verified ? 'pass' : 'fail';
@@ -69,7 +71,7 @@
   function stepItem(step, index) {
     const item = el('li', 'step ' + stepState(step)); item.dataset.index = index;
     const button = el('button'); button.type = 'button'; button.setAttribute('aria-controls', 'detail');
-    const glyph = step.kind === 'propose' ? '◆' : step.kind === 'read' ? '↗' : stepState(step) === 'pass' ? '✓' : step.kind === 'verify' || step.kind === 'observe' ? '✗' : '•';
+    const glyph = step.kind === 'propose' ? '◆' : step.kind === 'read' ? '↗' : step.kind === 'search' ? '⌕' : stepState(step) === 'pass' ? '✓' : step.kind === 'verify' || step.kind === 'observe' ? '✗' : '•';
     const text = el('span', 'text'); text.append(el('b', '', stepTitle(step)));
     if (stepStatus(step)) text.append(el('span', 'sr-only', stepStatus(step) + ':'));
     text.append(el('span', 'line', stepLine(step)));
@@ -208,12 +210,23 @@
     if (!step) return detail.append(el('p', 'placeholder', trace ? 'Choose a step in the timeline to see the evidence behind it.' : ''));
     detail.append(el('p', 'kicker', stepTitle(step)));
     if (step.kind === 'read') {
-      detail.append(el('h3', '', step.path), el('p', '', 'Nemotron chose to open this file to follow the code before deciding on a fix. Read-only: edits stay limited to the two booking files.'));
+      detail.append(el('h3', '', step.path), el('p', '', step.limited ? 'The read limit for this attempt was reached, so the file was not sent.'
+        : step.already_provided ? 'Nemotron asked for this file again. It was already in the conversation, so it was not sent twice.'
+        : !step.found ? 'There is no such file in the app source.' : 'Nemotron chose to open this file to follow the code before deciding on a fix. Read-only: edits stay limited to the two booking files.'));
+      return;
+    }
+    if (step.kind === 'search') {
+      const pattern = el('h3'); pattern.append(el('code', '', '/' + step.query + '/'));
+      detail.append(pattern, el('p', '', step.limited ? 'The lookup limit for this attempt was reached, so the search did not run.'
+        : plural(step.matches, 'matching line') + (step.path ? ' in files whose path contains ' + step.path : ' across the app source') + '. Read-only: a regular expression over the code, to follow a value or an event before deciding on a fix.'));
       return;
     }
     if (step.kind === 'propose') {
       const edits = step.edits || [];
-      detail.append(el('h3', '', 'Diagnosis'), el('blockquote', '', step.diagnosis), el('h3', '', plural(edits.length, 'edit')));
+      detail.append(el('h3', '', 'Diagnosis'), el('blockquote', '', step.diagnosis));
+      if (step.evidence_explained) detail.append(el('h3', '', 'Evidence it accounts for'), el('blockquote', '', step.evidence_explained));
+      if (step.build_on_attempt) detail.append(el('p', '', 'Builds on attempt ' + step.build_on_attempt + (step.kept_edits ? ': keeps its ' + plural(step.kept_edits, 'edit') + ', then adds ' + (edits.length - step.kept_edits) + '.' : '.')));
+      detail.append(el('h3', '', plural(edits.length, 'edit')));
       for (const edit of edits) detail.append(codeBlock(edit));
       if (step.usage) detail.append(el('p', 'micro', (step.usage.prompt_tokens || 0).toLocaleString() + ' input + ' + (step.usage.completion_tokens || 0).toLocaleString() + ' output tokens · ' + seconds(step.duration_ms)));
       return;
@@ -329,6 +342,7 @@
   });
   $('#pause').addEventListener('click', () => { if ($('#pause').getAttribute('aria-disabled') === 'true') return; if (playing) pause(false); else play(); });
   $('#show-all').addEventListener('click', () => { if ($('#show-all').getAttribute('aria-disabled') !== 'true') showAll(true); });
+  $('#detail').addEventListener('focusin', () => pause(true)); // never swap the evidence out from under a reader
   $('#replay').addEventListener('click', replay);
   $('#run-live').addEventListener('click', runLive);
   (async () => {

@@ -16,9 +16,9 @@
     name.scope = 'row'; name.id = id;
     name.append(el('span', '', CASES[run.case_id] || run.title || run.case_id), el('span', 'id', run.id.slice(6, 14)));
     if (run.featured) name.append(el('span', 'tag feature', 'On the home page'));
-    const agent = el('td', 'nowrap');
-    const version = [run.agent_version != null && 'v' + String(run.agent_version).replace(/^v/, ''), run.agent_commit].filter(Boolean).join(' · ');
-    if (run.agent_url) { const code = el('code'); code.append(link(run.agent_url, version)); agent.append(code); } else agent.textContent = version || '—';
+    const agent = el('td', 'nowrap', run.agent_version ? 'v' + run.agent_version + (run.agent_commit ? ' · ' : '') : '');
+    if (run.agent_commit) { const code = el('code'); code.append(run.agent_url ? link(run.agent_url, run.agent_commit) : run.agent_commit); agent.append(code); }
+    if (!agent.textContent) agent.textContent = '—';
     const started = el('td', 'nowrap'), time = el('time', '', run.started_at_utc.slice(0, 16).replace('T', ' ')); time.dateTime = run.started_at_utc; started.append(time);
     const attempts = el('td'), pips = el('span', 'pips');
     pips.setAttribute('aria-hidden', 'true');

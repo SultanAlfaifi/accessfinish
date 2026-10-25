@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="description" content="Every live AccessFinish agent run with Nemotron, including the failures: attempts, verdicts, false confirmations caught, cost and the raw trace of each.">
-  <title>Evidence · AccessFinish</title><link rel="stylesheet" href="agent.css">
+  <title>Evidence · AccessFinish</title><link rel="stylesheet" href="agent.css?v=3dc8a3f94e7456ac">
 </head>
 <body>
 <a class="skip" href="#runs-heading">Skip to the runs</a>
@@ -28,9 +28,9 @@
   <section class="runs-section" aria-labelledby="runs-heading">
     <h2 id="runs-heading" tabindex="-1">Live agent runs</h2>
     <p><b>Replay</b> opens the run in the timeline on the home page. <b>Trace</b> is the copy the page replays. <b>Raw</b> is the complete trace with all of its evidence, pinned to the commit that recorded it; the agent column links to the code the agent ran.</p>
-    <div class="table-scroll" role="region" aria-labelledby="runs-heading" tabindex="0">
+    <div class="table-scroll" role="region" aria-labelledby="runs-caption" tabindex="0">
       <table class="runs">
-        <caption class="sr-only">Live agent runs, newest first</caption>
+        <caption class="sr-only" id="runs-caption">Table of live agent runs, newest first</caption>
         <thead><tr>
           <th scope="col">Case</th><th scope="col">Agent</th><th scope="col">Started (UTC)</th><th scope="col">Attempts</th><th scope="col">Verdict</th>
           <th scope="col" class="num">False "booked" caught</th><th scope="col" class="num">Duration</th><th scope="col" class="num">Cost</th><th scope="col">Trace</th>
@@ -47,6 +47,6 @@
   </section>
 </main>
 <footer><span>AccessFinish — finish the task, verify the result.</span><a href="https://github.com/SultanAlfaifi/accessfinish">MIT · source on GitHub</a></footer>
-<script src="evidence.js"></script>
+<script src="evidence.js?v=992daf364df7a77d"></script>
 </body>
 </html>
