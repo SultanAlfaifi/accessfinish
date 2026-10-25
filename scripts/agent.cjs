@@ -4,7 +4,7 @@
 // --publish copies the finished trace (and its patch) into web/agent-runs/ so
 // the browser replay shows it, and keeps a copy under evidence/agent-runs/.
 const fs = require('node:fs'), path = require('node:path'), os = require('node:os'), cp = require('node:child_process');
-const {runAgent} = require('../lib/agent.cjs');
+const {runAgent, AGENT_VERSION} = require('../lib/agent.cjs');
 const {caseDefinition} = require('../lib/cases.cjs');
 const {preview} = require('../lib/repair.cjs');
 const fixture = require('../lib/fixture.cjs');
@@ -32,7 +32,7 @@ function unifiedPatch(files, proposal) {
 async function main() {
   const caseId = argument('--case') || 'keyboard-date', selected = caseDefinition(caseId);
   const print = text => process.stdout.write(text + '\n');
-  print('AccessFinish agent · ' + selected.title + '\nGoal: ' + selected.goal + '\n');
+  print('AccessFinish agent v' + AGENT_VERSION + ' · ' + selected.title + '\nGoal: ' + selected.goal + '\n');
   let shown = 0;
   // --recorded-model checks the pipeline without a key: the "model" answers with the
   // case's recorded Nemotron proposal. Such traces are never published.
@@ -46,14 +46,18 @@ async function main() {
   const trace = await runAgent({case_id: caseId, execute: fixture.execute, ...(model ? {model, maxAttempts: 1} : {}), onUpdate: current => {
     for (const step of current.steps.slice(shown)) {
       if (step.kind === 'observe') print('Observe   ' + (step.verified ? '✓ ' : '✗ ') + step.headline);
-      if (step.kind === 'read') print('Attempt ' + step.attempt + ' reads ' + step.path);
-      if (step.kind === 'propose') print('Attempt ' + step.attempt + ' Nemotron: ' + step.diagnosis + ' (' + step.edits.length + ' edits)');
+      if (step.kind === 'read') print('Attempt ' + step.attempt + ' reads ' + step.path + (step.already_provided ? ' (already provided)' : step.found ? '' : ' (not available)'));
+      if (step.kind === 'search') print('Attempt ' + step.attempt + ' searches /' + step.query + '/' + (step.path ? ' in ' + step.path : '') + ' → ' + step.matches + ' matches');
+      if (step.kind === 'propose') print('Attempt ' + step.attempt + ' Nemotron: ' + step.diagnosis + ' (' + step.edits.length + ' edits'
+        + (step.build_on_attempt ? ', ' + (step.kept_edits ?? 0) + ' kept from attempt ' + step.build_on_attempt : '') + ')');
       if (step.kind === 'verify') print('          ' + (step.verified ? '✓ ' : '✗ ') + step.headline);
     }
     shown = current.steps.length;
   }});
   print('\nResult: ' + trace.state + ' · ' + (trace.duration_ms / 1000).toFixed(0) + ' s · ' + trace.usage.prompt_tokens + ' input + ' +
-    trace.usage.completion_tokens + ' output tokens · $' + trace.estimated_cost_usd.toFixed(4) + (trace.error ? '\nError: ' + trace.error : ''));
+    trace.usage.completion_tokens + ' output tokens · $' + trace.estimated_cost_usd.toFixed(4) + (trace.error ? '\nError: ' + trace.error : '')
+    + '\nConditions: commit ' + (trace.git_commit || 'unknown').slice(0, 12) + ' · fixture ' + (trace.fixture_fingerprint || 'unknown').slice(0, 12)
+    + ' · scenario date ' + (trace.scenario_date || 'unknown') + ' · temperature ' + trace.temperature + ' · up to ' + trace.max_attempts + ' attempts');
   if (trace.accepted) trace.accepted.patch = unifiedPatch(selected.files, trace.accepted.proposal);
   if (process.argv.includes('--publish')) {
     for (const dir of ['web/agent-runs', 'evidence/agent-runs']) fs.mkdirSync(path.join(project, dir), {recursive: true});

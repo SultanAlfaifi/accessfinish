@@ -4,7 +4,7 @@
 // evidence/agent-runs/; each row links to its raw file pinned to the commit that recorded it.
 const fs = require('node:fs'), path = require('node:path'), cp = require('node:child_process'), crypto = require('node:crypto');
 const root = path.resolve(__dirname, '..'), source = path.join(root, 'evidence/agent-runs'), out = path.join(root, 'web/agent-runs/runs');
-const REPO = 'https://github.com/SultanAlfaifi/accessfinish', CONTEXT = 2;
+const REPO = 'https://github.com/SultanAlfaifi/accessfinish', CONTEXT = 3; // one more than the page shows, so it still marks the hidden lines
 const read = file => JSON.parse(fs.readFileSync(file, 'utf8'));
 const git = args => { try { return cp.execFileSync('git', args, {cwd: root, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore']}); } catch { return ''; } };
 
@@ -41,22 +41,20 @@ function slimStep(step) {
 const previous = new Map((() => { try { return read(path.join(out, 'index.json')).runs; } catch { return []; } })().map(run => [run.id, run]));
 const featured = new Set(fs.readdirSync(path.join(root, 'web/agent-runs')).filter(name => /^[a-z-]+\.json$/.test(name) && name !== 'summary.json')
   .map(name => { try { return read(path.join(root, 'web/agent-runs', name)).id; } catch { return null; } }));
-const tracked = new Set(git(['ls-files', 'evidence/agent-runs']).split('\n').filter(Boolean).map(file => path.basename(file, '.json')));
 const known = provenance(), runs = [];
 fs.mkdirSync(out, {recursive: true});
 for (const name of fs.readdirSync(source).filter(name => /^agent-[a-f0-9]{24}\.json$/.test(name)).sort()) {
   const bytes = fs.readFileSync(path.join(source, name)), run = JSON.parse(bytes), id = path.basename(name, '.json');
   if (run.id !== id) throw Error(name + ' holds trace ' + run.id);
   const verifies = run.steps.filter(step => step.kind === 'verify');
-  // Untracked traces were just produced by this checkout's agent (the CI run that is about to commit them).
-  const origin = known.get(id) || previous.get(id)?.agent_commit && {recorded_in: previous.get(id).recorded_in, agent_commit: previous.get(id).agent_commit}
-    || (!tracked.has(id) && process.env.GITHUB_SHA ? {recorded_in: null, agent_commit: process.env.GITHUB_SHA.slice(0, 7)} : {});
+  // Version 2 traces name their own commit; earlier ones are known by the workflow commit that recorded them.
+  const before = previous.get(id) || {}, origin = known.get(id) || {recorded_in: before.recorded_in || null, agent_commit: before.agent_commit || null};
+  const commit = run.git_commit || origin.agent_commit, ref = origin.recorded_in || process.env.GITHUB_REF_NAME || 'HEAD';
   const raw = 'evidence/agent-runs/' + name, sha256 = crypto.createHash('sha256').update(bytes).digest('hex');
-  const ref = origin.recorded_in || process.env.GITHUB_REF_NAME || 'HEAD';
   runs.push({id, case_id: run.case_id, title: run.title, started_at_utc: run.started_at_utc, finished_at_utc: run.finished_at_utc || null,
     state: run.state, error: run.error || undefined, featured: featured.has(id) || undefined,
-    agent_version: run.agent_version ?? null, agent_commit: origin.agent_commit || null, recorded_in: origin.recorded_in || null,
-    agent_url: origin.agent_commit ? REPO + '/tree/' + origin.agent_commit : null,
+    agent_version: String(run.agent_version ?? 1), agent_commit: commit ? commit.slice(0, 7) : null, recorded_in: origin.recorded_in,
+    agent_url: commit ? REPO + '/tree/' + commit : null,
     attempts: verifies.length, results: verifies.map(step => step.verified ? 'verified' : step.stage || 'rejected'),
     verified_attempt: run.accepted?.attempt ?? null, false_booked_caught: verifies.filter(step => step.stage === 'outcome').length,
     duration_ms: run.duration_ms ?? null, cost_usd: Number((run.estimated_cost_usd || 0).toFixed(6)), usage: tokens(run.usage || {}),

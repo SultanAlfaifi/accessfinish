@@ -89,7 +89,7 @@ test('rejection feedback remembers the attempt that got furthest', async () => {
 
 test('temporary provider errors are retried, other errors are not', async () => {
   let calls = 0;
-  const reply = {choices: [{message: {tool_calls: [{id: 'c', function: {name: 'propose_repair', arguments: JSON.stringify({diagnosis: 'd', edits: []})}}]}}], usage: {prompt_tokens: 1, completion_tokens: 1}};
+  const reply = {choices: [{message: {tool_calls: [{id: 'c', function: {name: 'propose_repair', arguments: JSON.stringify({diagnosis: 'd', evidence_explained: 'e', edits: []})}}]}}], usage: {prompt_tokens: 1, completion_tokens: 1}};
   const flaky = async () => ++calls < 3 ? {ok: false, status: 503, text: async () => 'busy'} : {ok: true, status: 200, text: async () => JSON.stringify(reply)};
   const answer = await nemotron([], {key: 'k', fetchImpl: flaky, retryDelay: 1});
   assert.equal(calls, 3); assert.equal(answer.proposal.diagnosis, 'd');
@@ -136,4 +136,183 @@ test('the agent can read other source files before proposing', async () => {
   assert.equal(trace.state, 'verified');
   assert.deepEqual(trace.steps.map(step => step.kind), ['observe', 'read', 'propose', 'verify']);
   assert.match(seen[1].content, /getUnavailableDates/);
+});
+
+// Edits with anchors that occur exactly once in the original booking.js, for merge tests.
+const {caseDefinition} = require('../lib/cases.cjs');
+const bookingJs = caseDefinition('keyboard-date').files[0].content;
+const anchors = [...new Set(bookingJs.split('\n').map(line => line.trim()))].filter(line => line.length > 30 && bookingJs.split(line).length === 2);
+const edit = n => ({path: 'assets/js/pages/booking.js', old: anchors[n], new: anchors[n] + ' // ' + n});
+const wrongDate = {...wrongPhone, after: {appointments: [{id: '1', start_datetime: '2026-11-01 09:00:00'}], customers: [{id: '1', phone_number: '0000000042'}]},
+  evaluation: {pass: false, reasons: ['wrong_start_datetime']}};
+const answer = (id, proposal) => ({message: {content: null}, call: {id, function: {name: 'propose_repair', arguments: '{}'}}, proposal: {evidence_explained: 'e', ...proposal}, usage: {}, cost: 0});
+const lastFeedback = messages => messages.at(-1).role === 'tool' ? JSON.parse(messages.at(-1).content) : null;
+
+test('search_code returns path:line hits across the app, bounded and time-limited', () => {
+  const {searchCode} = require('../lib/agent.cjs'), files = caseDefinition('keyboard-date').files;
+  const hit = searchCode({pattern: 'function getUnavailableDates\\('}, files);
+  assert.equal(hit.matches, 1);
+  assert.match(hit.text, /^assets\/js\/http\/booking_http_client\.js:\d+: function getUnavailableDates\(/);
+  assert.match(searchCode({pattern: 'SELECT-DATE', ignore_case: true, path: 'pages/booking.js'}, files).text, /^assets\/js\/pages\/booking\.js:\d+: /);
+  const many = searchCode({pattern: '\\.'}, files);
+  assert.equal(many.text.split('\n').length, 31); assert.match(many.text.split('\n').at(-1), /more matching lines/);
+  assert.match(searchCode({pattern: '('}, files).text, /Invalid regular expression/);
+  assert.equal(searchCode({pattern: 'zz-no-such-text-zz'}, files).text, 'No matches.');
+  const started = Date.now();
+  assert.match(searchCode({pattern: '^(a+)+$'}, [{path: 'x.js', content: 'a'.repeat(34) + 'b'}], {timeout: 200}).text, /took too long/);
+  assert.ok(Date.now() - started < 5000);
+});
+
+test('lookups: search_code and read_file are answered, editable files and re-reads get a short note', async () => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'af-agent-')), outcomes = [stuck, verified], replies = [];
+  const lookups = [{search: {pattern: 'function getUnavailableDates'}}, {read: 'assets/js/pages/booking.js'}, {read: 'assets/js/utils/ui.js'}, {read: 'assets/js/utils/ui.js'}];
+  const model = async messages => {
+    if (messages.at(-1).role === 'tool') replies.push(messages.at(-1).content);
+    const next = lookups.shift();
+    return next ? {message: {content: null}, call: {id: 'l' + lookups.length, function: {name: next.search ? 'search_code' : 'read_file', arguments: '{}'}}, ...next, usage: {}, cost: 0}
+      : answer('p', {diagnosis: 'd', edits: featured.edits});
+  };
+  const trace = await runAgent({execute: async ({run}) => ({...outcomes.shift(), run_id: run.id}), model, root});
+  assert.equal(trace.state, 'verified');
+  assert.deepEqual(trace.steps.map(step => step.kind), ['observe', 'search', 'read', 'read', 'read', 'propose', 'verify']);
+  assert.equal(trace.steps[1].query, 'function getUnavailableDates'); assert.equal(trace.steps[1].matches, 1);
+  assert.match(replies[0], /booking_http_client\.js:\d+: function getUnavailableDates/);
+  assert.match(replies[1], /already have the complete original/); assert.equal(trace.steps[2].already_provided, true);
+  assert.match(replies[2], /window\.App\.Utils\.UI/);
+  assert.match(replies[3], /Already returned in attempt 1/); assert.equal(trace.steps[4].already_provided, true);
+});
+
+test('build_on_attempt keeps an earlier attempt\'s edits, drops duplicates, and is recorded', async () => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'af-agent-')), outcomes = [stuck, wrongDate, verified], executed = [];
+  const execute = async ({run, proposal, original}) => { if (!original) executed.push(proposal.proposal.edits); return {...outcomes.shift(), run_id: run.id}; };
+  const proposals = [{diagnosis: 'first', edits: [edit(0), edit(1)]}, {diagnosis: 'second', evidence_explained: 'the saved start', build_on_attempt: 1, edits: [edit(1), edit(2)]}];
+  const trace = await runAgent({execute, model: async () => answer('c', proposals.shift()), root});
+  assert.equal(trace.state, 'verified');
+  assert.deepEqual(executed[1], [edit(0), edit(1), edit(2)]);
+  const propose = trace.steps.filter(step => step.kind === 'propose')[1];
+  assert.equal(propose.build_on_attempt, 1); assert.equal(propose.kept_edits, 2); assert.equal(propose.evidence_explained, 'the saved start');
+  assert.equal(trace.accepted.build_on_attempt, 1); assert.deepEqual(trace.accepted.proposal.edits, executed[1]);
+});
+
+test('build_on_attempt is rejected before execution when it exceeds the edit cap or names no usable attempt', async () => {
+  const {MAX_EDITS} = require('../lib/agent.cjs');
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'af-agent-')), feedback = [];
+  let executions = 0;
+  const execute = async ({run, original}) => { executions++; return {...(original ? stuck : wrongDate), run_id: run.id}; };
+  const proposals = [{diagnosis: 'five', edits: [0, 1, 2, 3, 4].map(edit)}, {diagnosis: 'too many', build_on_attempt: 1, edits: [edit(5), edit(6)]},
+    {diagnosis: 'unknown base', build_on_attempt: 7, edits: [edit(5)]}];
+  const model = async messages => { feedback.push(lastFeedback(messages)); return answer('c' + feedback.length, proposals.shift()); };
+  const trace = await runAgent({execute, model, root, maxAttempts: 3});
+  assert.equal(executions, 2, 'only the original and attempt 1 ran in the fixture');
+  const verifies = trace.steps.filter(step => step.kind === 'verify');
+  assert.deepEqual(verifies.map(step => step.stage), ['outcome', 'format', 'format']);
+  assert.match(verifies[1].headline, new RegExp('5 edits and yours bring the proposal to 7, but the verifier accepts at most ' + MAX_EDITS));
+  assert.match(verifies[2].headline, /build_on_attempt 7 is not an earlier attempt .*those are: 1/);
+  assert.equal(feedback[2].verifier_evidence.stage, 'format');
+  assert.equal(feedback[2].best_attempt_so_far.attempt, 1, 'a rejected merge never becomes the best attempt');
+});
+
+test('rejection feedback carries a hypothesis ledger that flags explanations that changed nothing', async () => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'af-agent-')), outcomes = [stuck, wrongDate, wrongDate, stuck], feedback = [];
+  const execute = async ({run}) => ({...outcomes.shift(), run_id: run.id});
+  const model = async messages => { feedback.push(lastFeedback(messages)); return answer('c' + feedback.length, {diagnosis: 'Hypothesis ' + feedback.length, edits: featured.edits}); };
+  await runAgent({execute, model, root, maxAttempts: 3});
+  assert.equal(feedback[1].attempts_so_far.length, 1); assert.equal(feedback[1].unchanged_results, undefined);
+  const ledger = feedback.at(-1);
+  assert.deepEqual(ledger.attempts_so_far.map(item => [item.attempt, item.diagnosis, item.got_as_far_as]), [[1, 'Hypothesis 1', 'outcome'], [2, 'Hypothesis 2', 'outcome']]);
+  assert.match(ledger.attempts_so_far[1].verifier_said, /saved for 2026-11-01 09:00/);
+  assert.match(ledger.unchanged_results[0], /^Attempts 1, 2 ended with the identical verifier result: .*did not change the outcome/);
+  const {hypothesisLedger} = require('../lib/agent.cjs');
+  const notes = hypothesisLedger([{attempt: 1, diagnosis: 'd', stage: 'keyboard', headline: 'same as before'}, {attempt: 2, diagnosis: null, stage: 'format', headline: 'Rejected: x'}],
+    {headline: 'same as before'});
+  assert.match(notes.unchanged_results[0], /^Attempt 1 left the original failure unchanged/); assert.equal(notes.unchanged_results.length, 1);
+});
+
+test('explain names the code that silently changed the typed date', () => {
+  const initiator = ['send (jquery.min.js)', 'ajax (jquery.min.js)', 'getUnavailableDates (booking_http_client.min.js)', '(anonymous) (booking.min.js)', 'async setTimeout', 'onMonthChange (booking.min.js)', 'Ye (flatpickr.min.js)'];
+  const keyboard = {workflow: {status: 'confirmation_observed'},
+    keyboard_actions: [{command: 'type', text: '02/11/2026', at: 1000, date_value: '02/11/2026'}, {command: 'inspect', at: 2000, date_value: '01/11/2026'}],
+    page_requests: [{at: 1500, method: 'GET', path: '/index.php/booking/get_unavailable_dates', initiator}],
+    date_writes: [{at: 200, value: '25/10/2026', via: 'value', event: null, request: null, stack: ['Object.setDateTimePickerValue (ui.min.js)', 'Object.initialize (booking.min.js)']},
+      {at: 1700, value: '01/11/2026', via: 'value', event: 'load', request: 'GET /index.php/booking/get_unavailable_dates', stack: ['Object.Ye [as setDate] (flatpickr.min.js)',
+        'Object.setDateTimePickerValue (ui.min.js)', 'applyUnavailableDates (booking_http_client.min.js)', 'Object.<anonymous> (booking_http_client.min.js)', 'c (jquery.min.js)',
+        'Object.fireWith [as resolveWith] (jquery.min.js)', 'XMLHttpRequest.<anonymous> (jquery.min.js)']}]};
+  const {headline, evidence} = explain({...wrongDate, keyboard});
+  assert.equal(headline, 'Confirmation shown, but saved for 2026-11-01 09:00 instead of 2026-11-02 09:00; page code changed the typed date to 01/11/2026 0.7 s after typing');
+  assert.deepEqual(evidence.date_field_writes, [{t: '-0.8s', value: '25/10/2026', by: 'setDateTimePickerValue ← initialize'},
+    {t: '+0.7s', value: '01/11/2026', by: 'setDate ← setDateTimePickerValue ← applyUnavailableDates ← resolveWith ← (response to GET /index.php/booking/get_unavailable_dates) ← send ← ajax ← getUnavailableDates ← (setTimeout) ← onMonthChange'}]);
+  assert.deepEqual(evidence.timeline_after_typing_date.map(item => item.t), ['+0.0s', '+0.5s', '+0.7s', '+1.0s']);
+  assert.match(evidence.timeline_after_typing_date[1].event, /^page request GET \/index\.php\/booking\/get_unavailable_dates from send ← ajax ← getUnavailableDates ← \(setTimeout\) ← onMonthChange$/);
+  assert.match(evidence.timeline_after_typing_date[2].event, /^page code set the date field to "01\/11\/2026" via setDate ← /);
+  // With DevTools async stacks the write carries its own async chain and is not stitched to a request.
+  const asyncStack = ['setDateTimePickerValue (ui.min.js)', 'applyUnavailableDates (booking_http_client.min.js)', 'async XMLHttpRequest.send', 'getUnavailableDates (booking_http_client.min.js)', 'async setTimeout', 'onMonthChange (booking.min.js)'];
+  const traced = explain({...wrongDate, keyboard: {...keyboard, date_writes: [{...keyboard.date_writes[1], async_stack: asyncStack}]}}).evidence;
+  assert.equal(traced.date_field_writes[0].by, 'setDate ← setDateTimePickerValue ← applyUnavailableDates ← resolveWith ← (XMLHttpRequest.send) ← getUnavailableDates ← (setTimeout) ← onMonthChange');
+  const cdpOnly = explain({...wrongDate, keyboard: {...keyboard, date_writes: [{...keyboard.date_writes[1], stack: [], async_stack: asyncStack}]}}).evidence;
+  assert.equal(cdpOnly.date_field_writes[0].by, 'setDateTimePickerValue ← applyUnavailableDates ← (XMLHttpRequest.send) ← getUnavailableDates ← (setTimeout) ← onMonthChange');
+  // Stuck waiting for the slot because the date moved: the keyboard evidence carries the same provenance.
+  const stuckAfterTyping = explain({...stuck, keyboard: {...keyboard, workflow: {status: 'unresolved', reason: 'booking_expected_ui_not_observed'},
+    last_observation: {inputs: [{id: 'select-date', type: 'text'}]}}});
+  assert.match(stuckAfterTyping.headline, /^Keyboard user got stuck: the expected control never appeared; page code changed the typed date to 01\/11\/2026/);
+  assert.equal(stuckAfterTyping.evidence.date_field_writes.length, 2);
+});
+
+test('the page hook reports date writes made by page code, not by keystrokes, with stack and request', () => {
+  const vm = require('node:vm');
+  const {recordDateWrites, DATE_WRITE, inspectorFrames} = require('../integration/portable/container-keyboard-booking-worker.cjs');
+  const reports = []; let poll;
+  const context = vm.createContext({URL, console: {trace: (...args) => reports.push(args)}, location: {href: 'http://127.0.0.1:8080/booking'}, setInterval: fn => { poll = fn; }, addEventListener: () => {}});
+  vm.runInContext(`globalThis.window = globalThis;
+    class HTMLInputElement { constructor(id) { this.id = id; this.stored = ''; } get value() { return this.stored; } set value(v) { this.stored = String(v); } }
+    class XMLHttpRequest { open() { return 'opened'; } }
+    Object.assign(globalThis, {HTMLInputElement, XMLHttpRequest, date: new HTMLInputElement('select-date'), email: new HTMLInputElement('email')});
+    globalThis.document = {getElementById: id => id === 'select-date' ? date : null};`, context);
+  vm.runInContext('(' + recordDateWrites + ')(' + JSON.stringify(DATE_WRITE) + ')', context);
+  vm.runInContext(`const xhr = new XMLHttpRequest(); globalThis.opened = xhr.open('GET', '/index.php/booking/get_unavailable_dates?selected_date=x');
+    function setDateTimePickerValue(value) { date.value = value; }
+    function applyUnavailableDates() { setDateTimePickerValue('01/11/2026'); }
+    window.event = {type: 'keydown', isTrusted: true}; date.value = '02/11/2026';
+    window.event = {type: 'load', isTrusted: true, target: xhr}; applyUnavailableDates();
+    window.event = undefined; date.value = '01/11/2026'; email.value = 'a@example.invalid';
+    date.stored = '05/11/2026';`, context);
+  poll();
+  assert.equal(context.opened, 'opened', 'the wrapped open still calls the original');
+  assert.equal(context.date.value, '05/11/2026');
+  assert.ok(reports.every(args => args[0] === DATE_WRITE));
+  const writes = reports.map(args => JSON.parse(args[1]));
+  assert.deepEqual(writes.map(write => [write.from, write.value, write.via]), [['02/11/2026', '01/11/2026', 'value'], ['01/11/2026', '05/11/2026', 'unseen']]);
+  assert.equal(writes[0].request, 'GET /index.php/booking/get_unavailable_dates'); assert.equal(writes[0].event, 'load');
+  assert.deepEqual(writes[0].stack.slice(0, 2), ['setDateTimePickerValue (evalmachine.<anonymous>)', 'applyUnavailableDates (evalmachine.<anonymous>)']);
+  assert.deepEqual(inspectorFrames({callFrames: [{functionName: '__afNote', url: ''}, {functionName: 'applyUnavailableDates', url: 'http://127.0.0.1:8080/assets/js/http/booking_http_client.min.js?1'}],
+    parent: {description: 'setTimeout', callFrames: [{functionName: '', url: 'http://127.0.0.1:8080/assets/js/pages/booking.min.js'}]}}),
+  ['applyUnavailableDates (booking_http_client.min.js)', 'async setTimeout', '(anonymous) (booking.min.js)']);
+});
+
+test('traces are stamped with the agent version and run conditions', async () => {
+  const {AGENT_VERSION} = require('../lib/agent.cjs');
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'af-agent-'));
+  const trace = await runAgent({execute: async ({run, original}) => ({...(original ? {...stuck, fixture_fingerprint: 'f'.repeat(64)} : verified), run_id: run.id}),
+    model: async () => answer('c', {diagnosis: 'd', edits: featured.edits}), root, maxAttempts: 3});
+  assert.equal(trace.agent_version, AGENT_VERSION); assert.equal(trace.max_attempts, 3); assert.equal(trace.temperature, 0);
+  assert.equal(trace.scenario_date, '2026-11-02'); assert.equal(trace.fixture_fingerprint, 'f'.repeat(64));
+  assert.ok(trace.git_commit === null || /^[a-f0-9]{40}$/.test(trace.git_commit));
+});
+
+test('nemotron requires evidence_explained and parses search_code calls', async () => {
+  const reply = (name, args) => async () => ({ok: true, status: 200, text: async () => JSON.stringify({choices: [{message: {tool_calls: [{id: 'c', function: {name, arguments: JSON.stringify(args)}}]}}], usage: {}})});
+  await assert.rejects(nemotron([], {key: 'k', fetchImpl: reply('propose_repair', {diagnosis: 'd', edits: []})}), error => error.malformed && /evidence_explained/.test(error.message));
+  const search = await nemotron([], {key: 'k', fetchImpl: reply('search_code', {pattern: 'setDate', path: 'utils'})});
+  assert.deepEqual(search.search, {pattern: 'setDate', path: 'utils', ignore_case: false});
+});
+
+test('the run summary groups totals per agent version', () => {
+  const {summarize} = require('../scripts/agent-summary.cjs');
+  const run = (agent_version, state) => ({case_id: 'keyboard-date', ...(agent_version ? {agent_version} : {}), state, estimated_cost_usd: 0.01, duration_ms: 1000,
+    steps: [{kind: 'verify', stage: 'outcome'}, {kind: 'verify', stage: state === 'verified' ? 'passed' : 'outcome'}], ...(state === 'verified' ? {accepted: {attempt: 2}} : {})});
+  const summary = summarize([run(undefined, 'not_verified'), run('2', 'verified'), run('2', 'not_verified')]);
+  assert.equal(summary.cases['keyboard-date'].runs, 3);
+  assert.deepEqual(Object.keys(summary.agent_versions), ['1', '2']);
+  assert.equal(summary.agent_versions['1'].cases['keyboard-date'].verified, 0);
+  assert.equal(summary.agent_versions['2'].runs, 2); assert.equal(summary.agent_versions['2'].cases['keyboard-date'].verified, 1);
+  assert.equal(summary.agent_versions['2'].cases['keyboard-date'].wrong_saves_caught, 3);
 });
