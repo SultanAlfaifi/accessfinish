@@ -188,9 +188,13 @@ function createSession({chromium, provenance = false}) {
       try { if (['XHR', 'Fetch'].includes(event.type) && initiators.length < 300)
         initiators.push({key: event.request.method + ' ' + new URL(event.request.url).pathname.slice(0, 120), stack: inspectorFrames(event.initiator?.stack, 16)}); } catch {}
     });
+    // Never pause the page, for example on a `debugger` statement in a candidate edit; only track
+    // async stacks. Inactive breakpoints survive navigation (skipping pauses does not), and any
+    // pause that still happens is resumed at once.
+    cdp.on('Debugger.paused', () => { cdp.send('Debugger.resume').catch(() => {}); });
     await cdp.send('Debugger.enable');
-    // Never pause the page (for example on a `debugger` statement); only track async stacks.
-    try { await cdp.send('Debugger.setSkipAllPauses', {skip: true}); } catch (error) { await cdp.send('Debugger.disable').catch(() => {}); throw error; }
+    try { await cdp.send('Debugger.setBreakpointsActive', {active: false}); await cdp.send('Debugger.setSkipAllPauses', {skip: true}); }
+    catch (error) { await cdp.send('Debugger.disable').catch(() => {}); throw error; }
     await cdp.send('Debugger.setAsyncCallStackDepth', {maxDepth: 16});
     await cdp.send('Runtime.enable'); await cdp.send('Network.enable');
   }
