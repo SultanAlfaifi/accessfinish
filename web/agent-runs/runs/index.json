@@ -6,6 +6,7 @@
     "runs": 14,
     "verified_runs": 7,
     "attempts": 50,
+    "executed": 43,
     "false_booked_caught": 15,
     "duration_ms": 2941073,
     "cost_usd": 0.4086
@@ -24,6 +25,7 @@
       "recorded_in": "9ac1c3f",
       "agent_url": "https://github.com/SultanAlfaifi/accessfinish/tree/57b8a9f",
       "attempts": 1,
+      "executed": 1,
       "results": [
         "verified"
       ],
@@ -53,6 +55,7 @@
       "recorded_in": "9ac1c3f",
       "agent_url": "https://github.com/SultanAlfaifi/accessfinish/tree/57b8a9f",
       "attempts": 8,
+      "executed": 8,
       "results": [
         "keyboard",
         "outcome",
@@ -88,6 +91,7 @@
       "recorded_in": "75ae48b",
       "agent_url": "https://github.com/SultanAlfaifi/accessfinish/tree/29c4c44",
       "attempts": 1,
+      "executed": 1,
       "results": [
         "verified"
       ],
@@ -116,6 +120,7 @@
       "recorded_in": "75ae48b",
       "agent_url": "https://github.com/SultanAlfaifi/accessfinish/tree/29c4c44",
       "attempts": 8,
+      "executed": 7,
       "results": [
         "keyboard",
         "keyboard",
@@ -151,6 +156,7 @@
       "recorded_in": "707f87c",
       "agent_url": "https://github.com/SultanAlfaifi/accessfinish/tree/5b0f46e",
       "attempts": 1,
+      "executed": 1,
       "results": [
         "verified"
       ],
@@ -179,6 +185,7 @@
       "recorded_in": "707f87c",
       "agent_url": "https://github.com/SultanAlfaifi/accessfinish/tree/5b0f46e",
       "attempts": 8,
+      "executed": 4,
       "results": [
         "keyboard",
         "keyboard",
@@ -214,6 +221,7 @@
       "recorded_in": "531ed0a",
       "agent_url": "https://github.com/SultanAlfaifi/accessfinish/tree/a501f53",
       "attempts": 1,
+      "executed": 1,
       "results": [
         "verified"
       ],
@@ -242,6 +250,7 @@
       "recorded_in": "531ed0a",
       "agent_url": "https://github.com/SultanAlfaifi/accessfinish/tree/a501f53",
       "attempts": 6,
+      "executed": 4,
       "results": [
         "keyboard",
         "apply",
@@ -275,6 +284,7 @@
       "recorded_in": "2134242",
       "agent_url": "https://github.com/SultanAlfaifi/accessfinish/tree/ed50490",
       "attempts": 1,
+      "executed": 1,
       "results": [
         "verified"
       ],
@@ -304,6 +314,7 @@
       "recorded_in": "2134242",
       "agent_url": "https://github.com/SultanAlfaifi/accessfinish/tree/ed50490",
       "attempts": 3,
+      "executed": 3,
       "results": [
         "keyboard",
         "keyboard",
@@ -334,6 +345,7 @@
       "recorded_in": "03269ca",
       "agent_url": "https://github.com/SultanAlfaifi/accessfinish/tree/c9e9610",
       "attempts": 1,
+      "executed": 1,
       "results": [
         "verified"
       ],
@@ -362,6 +374,7 @@
       "recorded_in": "03269ca",
       "agent_url": "https://github.com/SultanAlfaifi/accessfinish/tree/c9e9610",
       "attempts": 6,
+      "executed": 6,
       "results": [
         "keyboard",
         "keyboard",
@@ -395,6 +408,7 @@
       "recorded_in": "8b785bd",
       "agent_url": "https://github.com/SultanAlfaifi/accessfinish/tree/729fafd",
       "attempts": 1,
+      "executed": 1,
       "results": [
         "verified"
       ],
@@ -423,6 +437,7 @@
       "recorded_in": "8b785bd",
       "agent_url": "https://github.com/SultanAlfaifi/accessfinish/tree/729fafd",
       "attempts": 4,
+      "executed": 4,
       "results": [
         "keyboard",
         "keyboard",

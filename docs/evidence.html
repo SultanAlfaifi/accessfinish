@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Every live AccessFinish agent run with Nemotron, including the failures: attempts, verdicts, false confirmations caught, cost and the raw trace of each.">
+  <title>Evidence · AccessFinish</title><link rel="stylesheet" href="agent.css?v=31d8b8c975ce277c">
+</head>
+<body>
+<a class="skip" href="#runs-heading">Skip to the runs</a>
+<header class="top">
+  <a class="brand" href="./"><span class="mark" aria-hidden="true">af</span>AccessFinish</a>
+  <nav aria-label="Main"><a href="./#how">How it works</a><a href="evidence.html" aria-current="page">Evidence</a><a href="https://github.com/SultanAlfaifi/accessfinish">GitHub</a></nav>
+</header>
+<main>
+  <section class="hero compact">
+    <p class="eyebrow">Evidence</p>
+    <h1>Every live run, including the failures.</h1>
+    <p class="lede">Each row is one run of the agent, made live on GitHub Actions with Nemotron 3 Super on Nebius Token Factory. Nothing is filtered out: runs that never reached a verified fix are listed with the same detail as the ones that did.</p>
+  </section>
+
+  <section class="facts" aria-label="Totals across all runs">
+    <div><strong id="total-runs">—</strong><span>live agent runs</span></div>
+    <div><strong id="total-executed">—</strong><span>patches built and checked in a fresh sandbox</span><span class="aside" id="total-unexecuted-note" hidden><span id="total-unexecuted"></span> more rejected before execution: the edit could not be applied</span></div>
+    <div><strong id="total-caught">—</strong><span>false "booked" confirmations caught</span></div>
+    <div><strong id="total-cost">—</strong><span>Nemotron cost for all of them</span></div>
+  </section>
+
+  <section class="runs-section" aria-labelledby="runs-heading">
+    <h2 id="runs-heading" tabindex="-1">Live agent runs</h2>
+    <p><b>Replay</b> opens the run in the timeline on the home page. <b>Trace</b> is the copy the page replays. <b>Raw</b> is the complete trace with all of its evidence, pinned to the commit that recorded it; the agent column links to the code the agent ran.</p>
+    <div class="table-scroll" role="region" aria-labelledby="runs-caption" tabindex="0">
+      <table class="runs">
+        <caption class="sr-only" id="runs-caption">Table of live agent runs, newest first</caption>
+        <thead><tr>
+          <th scope="col">Case</th><th scope="col">Verdict</th><th scope="col">Open</th><th scope="col">Attempts</th>
+          <th scope="col" class="num">False "booked" caught</th><th scope="col" class="num">Duration</th><th scope="col" class="num">Cost</th><th scope="col">Agent</th><th scope="col">Started (UTC)</th>
+        </tr></thead>
+        <tbody id="runs"></tbody>
+      </table>
+    </div>
+    <p class="status-line" id="runs-status" role="status"></p>
+  </section>
+
+  <section class="earlier" aria-labelledby="earlier-heading">
+    <h2 id="earlier-heading">Earlier single-shot trials</h2>
+    <p>Before the agent, we measured single-shot, operator-guided repairs: five frozen Nemotron requests on the keyboard case gave 2 of 5 full passes. There the operator supplied the diagnosis and each proposal got one try, with no feedback. Every request, response and execution is kept: <a href="workbench.html">Earlier single-shot trials</a>.</p>
+  </section>
+</main>
+<footer><span>AccessFinish — finish the task, verify the result.</span><a href="https://github.com/SultanAlfaifi/accessfinish">MIT · source on GitHub</a></footer>
+<script src="evidence.js?v=b3219b0722447fe9"></script>
+</body>
+</html>

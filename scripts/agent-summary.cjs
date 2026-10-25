@@ -3,6 +3,7 @@
 // and per agent version so a changed loop is never mixed into an earlier version's results.
 // Traces recorded before versioning count as version 1.
 const fs = require('node:fs'), path = require('node:path');
+const {scenario} = require('../lib/fixture.cjs');
 const totals = () => ({runs: 0, verified: 0, first_attempt: 0, attempts: 0, wrong_saves_caught: 0, cost_usd: 0, seconds: 0});
 function count(item, run) {
   const verifies = run.steps.filter(step => step.kind === 'verify');
@@ -10,15 +11,26 @@ function count(item, run) {
   item.wrong_saves_caught += verifies.filter(step => step.stage === 'outcome').length;
   if (run.state === 'verified') { item.verified++; if (run.accepted.attempt === 1) item.first_attempt++; }
 }
+// The keyboard-date reset only happens when the booked date is in a later month than the day of the run
+// (the date picker must change month), as in every version 1 run. Within a version, runs whose date was
+// in the same month are counted apart. Older traces used the date the fixture derived from the clock.
+function crossesMonth(run) {
+  if (typeof run.scenario_crosses_month === 'boolean') return run.scenario_crosses_month;
+  if (!run.started_at_utc) return null;
+  return (run.scenario_date || scenario(new Date(run.started_at_utc)).date).slice(0, 7) !== run.started_at_utc.slice(0, 7);
+}
 const rounded = cases => { for (const item of Object.values(cases)) { item.cost_usd = Number(item.cost_usd.toFixed(4)); item.seconds = Math.round(item.seconds); } return cases; };
 function summarize(runs) {
   const cases = {}, versions = {};
   for (const run of runs) {
     count(cases[run.case_id] ||= totals(), run);
     const version = versions[String(run.agent_version || '1')] ||= {runs: 0, cost_usd: 0, cases: {}};
-    version.runs++; version.cost_usd += run.estimated_cost_usd; count(version.cases[run.case_id] ||= totals(), run);
+    const bucket = crossesMonth(run) === false ? version.same_month_date_cases ||= {} : version.cases;
+    version.runs++; version.cost_usd += run.estimated_cost_usd; count(bucket[run.case_id] ||= totals(), run);
   }
-  for (const version of Object.values(versions)) { version.cost_usd = Number(version.cost_usd.toFixed(4)); rounded(version.cases); }
+  for (const version of Object.values(versions)) {
+    version.cost_usd = Number(version.cost_usd.toFixed(4)); rounded(version.cases); if (version.same_month_date_cases) rounded(version.same_month_date_cases);
+  }
   return {generated_from: 'evidence/agent-runs', model: 'nvidia/nemotron-3-super-120b-a12b', runs: runs.length,
     cost_usd: Number(runs.reduce((sum, run) => sum + run.estimated_cost_usd, 0).toFixed(4)), cases: rounded(cases), agent_versions: versions};
 }
@@ -28,4 +40,4 @@ if (require.main === module) {
   fs.writeFileSync(path.join(__dirname, '../web/agent-runs/summary.json'), JSON.stringify(summary, null, 2) + '\n');
   console.log(JSON.stringify(summary, null, 2));
 }
-module.exports = {summarize};
+module.exports = {summarize, crossesMonth};

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="description" content="Every live AccessFinish agent run with Nemotron, including the failures: attempts, verdicts, false confirmations caught, cost and the raw trace of each.">
-  <title>Evidence · AccessFinish</title><link rel="stylesheet" href="agent.css?v=3dc8a3f94e7456ac">
+  <title>Evidence · AccessFinish</title><link rel="stylesheet" href="agent.css?v=31d8b8c975ce277c">
 </head>
 <body>
 <a class="skip" href="#runs-heading">Skip to the runs</a>
@@ -20,7 +20,7 @@
 
   <section class="facts" aria-label="Totals across all runs">
     <div><strong id="total-runs">—</strong><span>live agent runs</span></div>
-    <div><strong id="total-attempts">—</strong><span>patches built and checked in a fresh sandbox</span></div>
+    <div><strong id="total-executed">—</strong><span>patches built and checked in a fresh sandbox</span><span class="aside" id="total-unexecuted-note" hidden><span id="total-unexecuted"></span> more rejected before execution: the edit could not be applied</span></div>
     <div><strong id="total-caught">—</strong><span>false "booked" confirmations caught</span></div>
     <div><strong id="total-cost">—</strong><span>Nemotron cost for all of them</span></div>
   </section>
@@ -32,8 +32,8 @@
       <table class="runs">
         <caption class="sr-only" id="runs-caption">Table of live agent runs, newest first</caption>
         <thead><tr>
-          <th scope="col">Case</th><th scope="col">Agent</th><th scope="col">Started (UTC)</th><th scope="col">Attempts</th><th scope="col">Verdict</th>
-          <th scope="col" class="num">False "booked" caught</th><th scope="col" class="num">Duration</th><th scope="col" class="num">Cost</th><th scope="col">Trace</th>
+          <th scope="col">Case</th><th scope="col">Verdict</th><th scope="col">Open</th><th scope="col">Attempts</th>
+          <th scope="col" class="num">False "booked" caught</th><th scope="col" class="num">Duration</th><th scope="col" class="num">Cost</th><th scope="col">Agent</th><th scope="col">Started (UTC)</th>
         </tr></thead>
         <tbody id="runs"></tbody>
       </table>
@@ -47,6 +47,6 @@
   </section>
 </main>
 <footer><span>AccessFinish — finish the task, verify the result.</span><a href="https://github.com/SultanAlfaifi/accessfinish">MIT · source on GitHub</a></footer>
-<script src="evidence.js?v=992daf364df7a77d"></script>
+<script src="evidence.js?v=b3219b0722447fe9"></script>
 </body>
 </html>

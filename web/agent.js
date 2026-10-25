@@ -1,7 +1,7 @@
 'use strict';
 // Renders an AccessFinish agent trace as a timeline, replayed from a recorded
 // run (?case=…&run=<id> picks any run in agent-runs/runs/) or followed live when
-// the local server has a Nemotron key.
+// the local server has a Nemotron key. A live run stays bound to its own case.
 (() => {
   const $ = selector => document.querySelector(selector);
   const el = (tag, className, text) => { const node = document.createElement(tag); if (className) node.className = className; if (text !== undefined) node.textContent = text; return node; };
@@ -14,10 +14,12 @@
     'Reserved slot is not offered', 'Existing records unchanged', 'Sandbox isolation inspected'];
   const tabs = [...document.querySelectorAll('[role=tab][data-case]')], CASES = tabs.map(tab => tab.dataset.case);
   const params = new URLSearchParams(location.search), wantedRun = /^agent-[a-f0-9]{24}$/.test(params.get('run') || '') ? params.get('run') : null;
-  const reduced = matchMedia('(prefers-reduced-motion: reduce)');
-  const traces = new Map();
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)'), narrow = matchMedia('(max-width: 900px)');
+  const traces = new Map(), ranHere = new WeakSet(); // recorded runs per case; live runs once they have finished
   let caseId = CASES.includes(params.get('case')) ? params.get('case') : CASES[0];
-  let trace = null, selected = -1, shown = 0, playing = false, timer = null, live = null, follow = true, status = null, patchUrl = null;
+  let trace = null, selected = -1, shown = 0, playing = false, timer = null, follow = true, status = null, patchUrl = null;
+  let live = null, liveTimer = null, engaged = false, noticeCase = null; // live: {id, caseId, trace} while a run is in progress
+  const following = () => !!live && live.caseId === caseId;
 
   async function json(url, options) {
     const response = await fetch(url, options); const value = await response.json().catch(() => ({}));
@@ -35,7 +37,7 @@
   function stepLine(step) {
     if (step.kind === 'propose') return step.diagnosis;
     if (step.kind === 'read') return step.path + (step.limited ? ' (read limit reached)' : step.already_provided ? ' (already provided)' : step.found ? '' : ' (not available)');
-    if (step.kind === 'search') return '/' + step.query + '/' + (step.path ? ' in ' + step.path : '') + (step.limited ? ' (limit reached)' : ' · ' + step.matches + (step.matches === 1 ? ' match' : ' matches'));
+    if (step.kind === 'search') return '/' + step.query + '/' + (step.path ? ' in ' + step.path : '') + (step.limited ? ' (limit reached)' : step.error ? ' (did not run)' : ' · ' + step.matches + (step.matches === 1 ? ' match' : ' matches'));
     return step.headline ?? step.path ?? '';
   }
   function stepState(step) {
@@ -53,14 +55,15 @@
     const state = stepStatus(step);
     return stepTitle(step) + (state ? ', ' + state : '') + ': ' + stepLine(step);
   }
-  function outcomeText() {
-    if (trace.state === 'verified') return 'Verified on attempt ' + trace.accepted.attempt + ' · ' + seconds(trace.duration_ms) + ' · ' + money(trace.estimated_cost_usd);
-    if (trace.state === 'error') return 'Stopped: ' + trace.error;
-    const verifies = trace.steps.filter(step => step.kind === 'verify');
+  function outcomeText(run = trace) {
+    if (run.state === 'verified') return 'Verified on attempt ' + run.accepted.attempt + ' · ' + seconds(run.duration_ms) + ' · ' + money(run.estimated_cost_usd);
+    if (run.state === 'error') return 'Stopped: ' + run.error;
+    const verifies = run.steps.filter(step => step.kind === 'verify');
     return 'Not verified after ' + plural(verifies.length, 'attempt') + ' — no patch accepted, ' + verifies.filter(step => step.stage === 'outcome').length + ' false "booked" pages caught';
   }
 
-  // One live region, polite and throttled: only the newest headline is spoken.
+  // One live region, polite and throttled: only the newest headline is spoken. The replay that starts on
+  // its own stays silent; step headlines are spoken once the reader has used the tabs, controls or steps.
   let spoken = 0, speakTimer = null;
   function announce(text, now = false) {
     clearTimeout(speakTimer);
@@ -76,7 +79,7 @@
     if (stepStatus(step)) text.append(el('span', 'sr-only', stepStatus(step) + ':'));
     text.append(el('span', 'line', stepLine(step)));
     button.append(hidden('span', 'icon', glyph), text, el('span', 'meta', step.duration_ms ? seconds(step.duration_ms) : ''));
-    button.addEventListener('click', () => choose(index));
+    button.addEventListener('click', event => choose(index, event.detail > 0));
     item.append(button); return item;
   }
   // Grows and trims the list in place, so a focused step keeps focus while the replay moves on.
@@ -89,7 +92,7 @@
     markSelected();
     if (pending) {
       const item = el('li', 'step running'), next = trace.steps[count];
-      const label = next ? stepTitle(next) : live ? (trace.steps.length && trace.steps.at(-1).kind === 'propose' ? 'Building, booking and checking the database…' : 'Nemotron is reading the evidence…') : 'Working…';
+      const label = next ? stepTitle(next) : following() ? (trace.steps.length && trace.steps.at(-1).kind === 'propose' ? 'Building, booking and checking the database…' : 'Nemotron is reading the evidence…') : 'Working…';
       item.append(hidden('span', 'icon spinner', ''), el('span', 'text', label)); list.append(item);
     } else if (count === trace.steps.length && trace.state !== 'running') {
       const verified = trace.state === 'verified', item = el('li', 'step outcome ' + (verified ? 'pass' : 'fail'));
@@ -104,7 +107,7 @@
   }
   // One dot per attempt of the shown run; attempts the replay has not reached yet stay hollow.
   function renderStrip(id) {
-    const run = traces.get(id), strip = $('#strip-' + id); if (!strip) return;
+    const run = live?.caseId === id ? live.trace : traces.get(id), strip = $('#strip-' + id); if (!strip) return;
     if (!run) return strip.replaceChildren();
     const verifies = run.steps.map((step, index) => [step, index]).filter(([step]) => step.kind === 'verify');
     const current = id === caseId && trace === run, attempt = current && selected >= 0 ? trace.steps[selected].attempt : null;
@@ -129,7 +132,12 @@
     return out;
   }
   function codeBlock(edit) {
-    const box = el('div', 'edit'); box.append(el('div', 'file', edit.path));
+    const box = el('div', 'edit'); box.append(el('div', 'file', typeof edit?.path === 'string' ? edit.path : '(no path)'));
+    // Model edits are recorded before they are validated; a malformed one is shown as it came.
+    if (typeof edit?.old !== 'string' || typeof edit.new !== 'string') {
+      box.append(el('p', 'malformed', 'Malformed edit: it needs text for both "old" and "new". Shown as recorded:'), el('pre', '', String(JSON.stringify(edit, null, 2))));
+      return box;
+    }
     const pre = el('pre', 'lines');
     for (const [mark, text] of diffLines(edit.old, edit.new)) {
       if (mark !== '…') { pre.append(el('span', mark === '+' ? 'add' : mark === '-' ? 'del' : 'ctx', mark + ' ' + text)); continue; }
@@ -218,11 +226,12 @@
     if (step.kind === 'search') {
       const pattern = el('h3'); pattern.append(el('code', '', '/' + step.query + '/'));
       detail.append(pattern, el('p', '', step.limited ? 'The lookup limit for this attempt was reached, so the search did not run.'
+        : step.error ? 'The search did not run: ' + (step.error === 'timeout' ? 'the pattern took too long to match.' : 'the pattern is not a valid regular expression.') + ' Nemotron was told so.'
         : plural(step.matches, 'matching line') + (step.path ? ' in files whose path contains ' + step.path : ' across the app source') + '. Read-only: a regular expression over the code, to follow a value or an event before deciding on a fix.'));
       return;
     }
     if (step.kind === 'propose') {
-      const edits = step.edits || [];
+      const edits = Array.isArray(step.edits) ? step.edits : [];
       detail.append(el('h3', '', 'Diagnosis'), el('blockquote', '', step.diagnosis));
       if (step.evidence_explained) detail.append(el('h3', '', 'Evidence it accounts for'), el('blockquote', '', step.evidence_explained));
       if (step.build_on_attempt) detail.append(el('p', '', 'Builds on attempt ' + step.build_on_attempt + (step.kept_edits ? ': keeps its ' + plural(step.kept_edits, 'edit') + ', then adds ' + (edits.length - step.kept_edits) + '.' : '.')));
@@ -256,10 +265,11 @@
 
   // Replay: Pause/Play, Show all and a click on any step all take over from the timer.
   function setControls() {
-    const recorded = !!trace && !live, done = !trace || shown >= trace.steps.length;
+    const here = following(), recorded = !!trace && !here, done = !trace || shown >= trace.steps.length;
     for (const id of ['#pause', '#show-all']) { $(id).hidden = !recorded; $(id).setAttribute('aria-disabled', String(done)); }
     $('#pause').textContent = playing ? 'Pause' : 'Play';
-    $('#replay').hidden = !trace || !!live;
+    $('#replay').hidden = !trace || here;
+    $('#follow').hidden = !here; $('#follow').setAttribute('aria-pressed', String(follow));
   }
   function refresh(pending) { renderTimeline(shown, pending); renderDetail(); renderStrip(caseId); renderFacts(); setControls(); }
   function pause(message) {
@@ -267,90 +277,114 @@
     if (message) announce('Replay paused at step ' + shown + ' of ' + trace.steps.length + '.', true);
   }
   function play() {
-    if (!trace || live || shown >= trace.steps.length) return;
+    if (!trace || following() || shown >= trace.steps.length) return;
     const pace = step => step.kind === 'propose' ? 1300 : 1700;
     const advance = () => {
       shown++; selected = shown - 1; const done = shown >= trace.steps.length; if (done) playing = false;
-      refresh(!done); announce(stepHeadline(trace.steps[selected]) + (done ? ' ' + outcomeText() + '.' : ''));
+      refresh(!done); if (engaged) announce(stepHeadline(trace.steps[selected]) + (done ? ' ' + outcomeText() + '.' : ''));
       if (!done) timer = setTimeout(advance, 1100 + pace(trace.steps[shown]));
     };
     playing = true; clearTimeout(timer); renderTimeline(shown, true); setControls();
     timer = setTimeout(advance, pace(trace.steps[shown]));
   }
   function showAll(spoken) {
-    if (!trace || live) return;
+    if (!trace || following()) return;
     clearTimeout(timer); playing = false; shown = trace.steps.length; selected = shown - 1; refresh(false);
     if (spoken) announce('Showing all ' + shown + ' steps. ' + outcomeText() + '.', true);
   }
   function replay() {
-    clearTimeout(timer); if (!trace) return;
-    live = null; playing = false; shown = 0; selected = -1; renderTimeline(0); renderDetail(); renderStrip(caseId);
+    clearTimeout(timer); if (!trace || following()) return;
+    playing = false; shown = 0; selected = -1; renderTimeline(0); renderDetail(); renderStrip(caseId);
     const started = new Date(trace.started_at_utc);
-    $('#run-label').textContent = 'Recorded run · ' + started.toUTCString().slice(5, 16) + ', ' + started.toISOString().slice(11, 16) + ' UTC';
+    $('#run-label').textContent = (ranHere.has(trace) ? 'Live run from this visit · ' : 'Recorded run · ') + started.toUTCString().slice(5, 16) + ', ' + started.toISOString().slice(11, 16) + ' UTC';
     if (reduced.matches) showAll(false); else play();
   }
-  function choose(index) {
-    pause(true); if (live) follow = false;
-    selected = index; markSelected(); renderDetail(); renderStrip(caseId);
+  function choose(index, pointer) {
+    engaged = true; pause(true); if (following()) follow = false;
+    selected = index; markSelected(); renderDetail(); renderStrip(caseId); setControls();
+    // In one column the evidence sits below the whole timeline: bring it into view after a tap, leaving focus on the step.
+    const top = $('#detail').getBoundingClientRect().top;
+    if (pointer && narrow.matches && (top < 0 || top > innerHeight * 0.75)) $('#detail').scrollIntoView({block: 'start', behavior: reduced.matches ? 'auto' : 'smooth'});
   }
+  function notify(text, id) { noticeCase = id; $('#notice').textContent = text; $('#notice').hidden = id !== caseId; }
 
   // Tabs: roving tabindex, arrows/Home/End move and select, one panel shows the selected case.
   function select(id) {
     for (const tab of tabs) { const on = tab.dataset.case === id; tab.setAttribute('aria-selected', String(on)); tab.tabIndex = on ? 0 : -1; }
-    $('#case-panel').setAttribute('aria-labelledby', 'tab-' + id);
+    $('#case-panel').setAttribute('aria-labelledby', 'name-' + id);
     load(id);
   }
   function load(id) {
-    caseId = id; clearTimeout(timer); hush(); live = null; playing = false; follow = true; selected = -1; shown = 0; trace = traces.get(id) || null;
+    caseId = id; clearTimeout(timer); hush(); playing = false; follow = true; selected = -1; shown = 0; trace = following() ? live.trace : traces.get(id) || null;
+    $('#notice').hidden = id !== noticeCase;
     $('#timeline').replaceChildren(); renderDetail(); renderFacts(); for (const other of CASES) renderStrip(other);
+    if (following()) { $('#goal').textContent = trace.goal; $('#empty').hidden = true; $('#run-label').textContent = LIVE; return showLive(); }
     if (trace) { $('#goal').textContent = trace.goal; $('#empty').hidden = true; replay(); return setControls(); }
     $('#goal').textContent = id === 'keyboard-date' ? 'A keyboard-only customer books a 09:00 slot and it is saved for the right date.' : 'The phone number the customer typed is saved exactly.';
     $('#empty').hidden = false; $('#run-label').textContent = 'No recorded run'; setControls();
     $('#empty').textContent = status?.agent_ready ? 'No recorded run for this journey yet. Press Run live to start the agent.' : 'No recorded run for this journey yet. Run it locally with: node scripts/agent.cjs --case ' + id + ' --publish';
   }
 
+  // Live: the run belongs to the case it was started on. Other tabs keep their recorded runs while it goes on,
+  // and coming back to its tab resumes following it.
+  const LIVE = 'Live run · Nemotron on Nebius Token Factory';
+  function showLive() {
+    const run = live.trace, fresh = run.steps.length > shown; trace = run; shown = run.steps.length;
+    if (fresh && follow) selected = shown - 1;
+    renderTimeline(shown, run.state === 'running'); if (fresh && follow) renderDetail(); renderStrip(caseId); renderFacts(); setControls();
+    return fresh;
+  }
   async function runLive() {
-    const button = $('#run-live'); if (button.getAttribute('aria-disabled') === 'true') return;
-    button.setAttribute('aria-disabled', 'true'); clearTimeout(timer); playing = false;
-    const fail = error => { $('#empty').hidden = false; $('#empty').textContent = error.message; button.setAttribute('aria-disabled', 'false'); live = null; setControls(); };
+    const button = $('#run-live'), runCase = caseId; if (button.getAttribute('aria-disabled') === 'true') return;
+    engaged = true; button.setAttribute('aria-disabled', 'true'); pause(false);
+    const fail = error => {
+      const started = !!live; clearTimeout(liveTimer); live = null; button.setAttribute('aria-disabled', 'false');
+      notify((started ? 'The live run could not be followed: ' : 'The live run did not start: ') + error.message, runCase);
+      if (caseId === runCase) { if (started) load(runCase); else setControls(); }
+      announce($('#notice').textContent, true); // after load(), which hushes the announcer
+    };
     const poll = async () => {
-      if (live !== trace.id) return;
-      trace = await json('/api/agent/' + trace.id); traces.set(caseId, trace);
-      const fresh = trace.steps.length > shown, running = trace.state === 'running'; shown = trace.steps.length;
-      if (fresh && follow) selected = shown - 1;
-      renderTimeline(shown, running); renderStrip(caseId); if (fresh && follow) renderDetail();
-      if (fresh) announce(stepHeadline(trace.steps.at(-1)));
-      if (running) { timer = setTimeout(() => poll().catch(fail), 2000); return; }
-      live = null; button.setAttribute('aria-disabled', 'false'); renderTimeline(shown); renderFacts(); setControls(); announce(outcomeText() + '.');
+      const run = await json('/api/agent/' + live.id); live.trace = run;
+      if (following()) { if (showLive()) announce(stepHeadline(run.steps.at(-1))); } else renderStrip(runCase);
+      if (run.state === 'running') { liveTimer = setTimeout(() => poll().catch(fail), 2000); return; }
+      live = null; ranHere.add(run); traces.set(runCase, run); button.setAttribute('aria-disabled', 'false');
+      if (caseId === runCase) { renderTimeline(shown); renderFacts(); setControls(); announce(outcomeText(run) + '.'); }
+      else { renderStrip(runCase); announce('The live run on "' + $('#name-' + runCase).textContent + '" finished. ' + outcomeText(run) + '.'); }
     };
     try {
-      trace = await json('/api/agent', {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({case_id: caseId})});
-      live = trace.id; follow = true; shown = 0; selected = -1; traces.set(caseId, trace); renderTimeline(0); renderDetail(); setControls();
-      $('#run-label').textContent = 'Live run · Nemotron on Nebius Token Factory'; $('#empty').hidden = true; announce('Live run started.', true);
+      const run = await json('/api/agent', {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({case_id: runCase})});
+      live = {id: run.id, caseId: runCase, trace: run};
+      if (caseId === runCase) { follow = true; shown = 0; selected = -1; $('#timeline').replaceChildren(); renderDetail(); showLive(); $('#run-label').textContent = LIVE; $('#empty').hidden = true; }
+      announce('Live run started.', true);
       await poll();
     } catch (error) { fail(error); }
   }
 
   tabs.forEach((tab, index) => {
-    tab.addEventListener('click', () => { if (tab.dataset.case !== caseId || !trace) select(tab.dataset.case); });
+    tab.addEventListener('click', () => { engaged = true; if (tab.dataset.case !== caseId || !trace) select(tab.dataset.case); });
     tab.addEventListener('keydown', event => {
       const next = {ArrowRight: index + 1, ArrowLeft: index - 1, Home: 0, End: tabs.length - 1}[event.key];
       if (next === undefined || event.altKey || event.ctrlKey || event.metaKey) return;
-      event.preventDefault(); const target = tabs[(next + tabs.length) % tabs.length]; target.focus();
+      event.preventDefault(); engaged = true; const target = tabs[(next + tabs.length) % tabs.length]; target.focus();
       if (target.dataset.case !== caseId) select(target.dataset.case);
     });
   });
-  $('#pause').addEventListener('click', () => { if ($('#pause').getAttribute('aria-disabled') === 'true') return; if (playing) pause(false); else play(); });
-  $('#show-all').addEventListener('click', () => { if ($('#show-all').getAttribute('aria-disabled') !== 'true') showAll(true); });
-  $('#detail').addEventListener('focusin', () => pause(true)); // never swap the evidence out from under a reader
-  $('#replay').addEventListener('click', replay);
+  $('#pause').addEventListener('click', () => { if ($('#pause').getAttribute('aria-disabled') === 'true') return; engaged = true; if (playing) pause(false); else play(); });
+  $('#show-all').addEventListener('click', () => { if ($('#show-all').getAttribute('aria-disabled') !== 'true') { engaged = true; showAll(true); } });
+  // Never swap the evidence out from under a reader: focus in it pauses the replay, or stops following a live run.
+  $('#detail').addEventListener('focusin', () => { if (!following()) return pause(true); follow = false; setControls(); });
+  $('#follow').addEventListener('click', () => {
+    follow = !follow; if (follow && shown) { selected = shown - 1; markSelected(); renderDetail(); renderStrip(caseId); }
+    setControls();
+  });
+  $('#replay').addEventListener('click', () => { engaged = true; replay(); });
   $('#run-live').addEventListener('click', runLive);
   (async () => {
     // Only the local server (loopback only) can run the agent; static hosts skip the probe.
     if (['127.0.0.1', 'localhost'].includes(location.hostname)) try { status = await json('/api/status'); $('#run-live').hidden = !status.agent_ready; } catch { status = null; }
     if (wantedRun) {
       try { const run = await json('agent-runs/runs/' + wantedRun + '.json'); if (CASES.includes(run.case_id)) { traces.set(run.case_id, run); caseId = run.case_id; } }
-      catch { $('#notice').hidden = false; $('#notice').textContent = 'Run ' + wantedRun + ' is not in the published index, so the latest run is shown instead.'; }
+      catch { notify('Run ' + wantedRun + ' is not in the published index, so the latest run is shown instead.', caseId); }
     }
     await Promise.all(CASES.filter(id => !traces.has(id)).map(id => json('agent-runs/' + id + '.json').then(run => traces.set(id, run), () => {})));
     select(caseId); renderSummary();
