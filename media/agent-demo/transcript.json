@@ -16,8 +16,8 @@
     {
       "id": "phone-propose",
       "script": "AccessFinish drives the journey in a real browser, then hands the evidence and the source code to NVIDIA Nemotron, on Nebius Token Factory. No hints. Nemotron finds the hard-coded value, and writes the fix.",
-      "heard": "Access Finish drives the journey in a real browser, then hands the evidence and the source code to NVIDIA Nemotron on Nebius Token Factory. No hints. Nemotron finds the hard-coded value and writes the fix.",
-      "word_match": 0.958
+      "heard": "Access Finish drives the journey in a real browser, then hands the evidence and the source code to NVIDIA Nemo-Tron on Nebius token factory. No hints. Nemo-Tron finds the hard-coded value and writes the fix.",
+      "word_match": 0.877
     },
     {
       "id": "phone-proof",
@@ -34,8 +34,8 @@
     {
       "id": "keyboard-attempts",
       "script": "Nemotron opens source files, proposes fixes, and every attempt is built and tested. It makes the date reachable, and the page says: booked.",
-      "heard": "Nimatron opens source files, proposes fixes, and every attempt is built and tested. It makes the date reachable and the page says, booked.",
-      "word_match": 0.957
+      "heard": "Neotron opens source files, proposes fixes, and every attempt is built and tested. It makes the date reachable, and the page says, book!",
+      "word_match": 0.913
     },
     {
       "id": "keyboard-wrong",
@@ -58,8 +58,8 @@
     {
       "id": "facts",
       "script": "Fourteen live runs, and forty-one cents of Nemotron. Fixes that are proven, not promised.",
-      "heard": "14 live runs and 41 cents of pneumotron. Fixes that are proven, not promised.",
-      "word_match": 0.759
+      "heard": "14 live runs and 41 cents of Nemotron. Fixes that are proven, not promised.",
+      "word_match": 0.828
     },
     {
       "id": "close",
