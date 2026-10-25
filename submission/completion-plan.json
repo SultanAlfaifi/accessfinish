@@ -1,5 +1,5 @@
 {
-  "as_of": "2026-10-21",
+  "as_of": "2026-10-23",
   "language": "English",
   "official_overview": "https://nebiusglobalaihackathon.devpost.com/",
   "official_rules": "https://nebiusglobalaihackathon.devpost.com/rules",
@@ -45,31 +45,37 @@
     {
       "id": 3,
       "work": "Review-build publication",
-      "state": "review_build_ready_awaits_final_publication_approval",
-      "acceptance": "Prepared review assets deployed at the exact public URL and checked anonymously on desktop/mobile"
+      "state": "complete",
+      "acceptance": "Prepared review assets deployed at the exact public URL and checked anonymously on desktop/mobile",
+      "evidence": {
+        "workbench": "https://sultalfaifi.com/accessfinish/",
+        "review_form": "https://sultalfaifi.com/accessfinish/review.html",
+        "receipt": "artifacts/publication-20261021/publication-receipt.json"
+      }
     },
     {
       "id": 4,
       "work": "Two independent browser-only developer reviews",
-      "state": "form_and_protocol_prepared",
-      "acceptance": "Two actual independent participants; bound run IDs; uncoached comprehension answers, blockers, assistance and usefulness; no installation/execution claim"
+      "state": "awaiting_two_agreed_developer_responses",
+      "acceptance": "Two actual independent participants; bound run IDs; uncoached comprehension answers, blockers, assistance and usefulness; no installation/execution claim",
+      "review_form_url": "https://sultalfaifi.com/accessfinish/review.html"
     },
     {
       "id": 5,
       "work": "Final English demo and test build",
-      "state": "140_second_video_technical_and_sampled_frame_checks_passed_test_build_packaging_in_progress",
-      "acceptance": "120-150 second captioned working walkthrough; actual measured evidence and limits; metadata/full decode/visual checks; clean archive opens and passes required checks"
+      "state": "117_8_second_narrated_v03_uploaded_private",
+      "acceptance": "Under-three-minute English narrated walkthrough; actual measurements and limits; full decode, audio and sampled-frame checks; entrant final watch/listen remains pending"
     },
     {
       "id": 6,
       "work": "Public judging assets",
-      "state": "pending_final_review",
+      "state": "hold_for_two_browser_reviews_then_final_publication_approval",
       "acceptance": "Reviewed repository/release and test build; public YouTube video under three minutes; exact links anonymously verified"
     },
     {
       "id": 7,
       "work": "Devpost submission",
-      "state": "not_submitted",
+      "state": "not_submitted_resolve_previously_registered_account_after_reviews",
       "acceptance": "Entrant reviews eligibility, ownership, team/city and declarations; final submission approval; submitted status and receipt or project URL verified"
     },
     {
@@ -88,5 +94,14 @@
     "requests_consumed": 8,
     "estimated_model_cost_usd_excluding_tax": 0.0394581,
     "automatic_retries": 0
+  },
+  "checkpoint_utc": "2026-10-23T17:28:34.499292+00:00",
+  "private_youtube_url": "https://youtu.be/Ma9cEARXV2g",
+  "hold_until_browser_reviews": true,
+  "current_strengthening_revision": {
+    "case": "customer-phone deliberately seeded fault",
+    "new_model": "1 guided generation / 1 verified execution / $0.0041457 estimated before tax",
+    "presentation": "English Aiden v04 / 109.5 seconds / full entrant playback pending",
+    "publication": "Current two-case source and media prepared locally; no updated public demo or video yet"
   }
 }

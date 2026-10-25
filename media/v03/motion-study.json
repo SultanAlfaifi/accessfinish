@@ -1,0 +1,12 @@
+{
+  "state": "visual_study_only",
+  "seconds": 8,
+  "fps": 30,
+  "width": 1600,
+  "height": 900,
+  "audio": false,
+  "final_video": false,
+  "source": "media/raw/v02/02-blockage.jpg",
+  "new_model_inference": false,
+  "claim": "Labelled task illustration followed by unchanged actual workbench crop."
+}

@@ -1,19 +1,56 @@
-AccessFinish submission handoff
+AccessFinish v0.2 judging handoff
+Checkpoint: October 23, 2026
 
-Prepared and public:
-Demo: https://sultalfaifi.com/accessfinish/
+CURRENT TWO-CASE REVISION
+The local workbench now includes the original date case and a deliberately seeded saved-phone fault.
+One separately approved new Nemotron phone proposal passed both execution workflows; estimated $0.0041457 before tax, no retry.
+Original frozen result remains 2/5 on one guided date case; no pooled success rate.
+New film: media/v04/accessfinish-demo-v04.mp4, 109.5 seconds, English local Aiden narration.
+New preparation: artifacts/release-v0.2.0-v04-preparation/. Its functional archive is built from the recorded committed two-case source, not the older v03 ZIP.
+Full decode, exact frame count, loudness and sampled encoded frames checked. Continuous playback and full entrant watch/listen remain pending.
+Judge path: submission/judge-guide.md.
+The public URL and existing PRIVATE v03 upload below are older revisions. No new deployment, release, YouTube upload or Devpost submission is implied.
+Two independent browser reviews remain 0/2.
+
+EARLIER PUBLICATION AND V03 PREPARATION (retained history)
+
+Verified public review
+Workbench: https://sultalfaifi.com/accessfinish/
+Independent browser review: https://sultalfaifi.com/accessfinish/review.html
 Repository: https://github.com/SultanAlfaifi/accessfinish
-Portable test build: https://github.com/SultanAlfaifi/accessfinish/releases/download/v0.1.0/accessfinish-test-build.zip
-Video file: https://github.com/SultanAlfaifi/accessfinish/releases/download/v0.1.0/accessfinish-demo.mp4
+Published-source CI: https://github.com/SultanAlfaifi/accessfinish/actions/runs/39637182406
 
-Remaining external steps:
-1. Review the 91.2-second English-captioned video and upload it publicly to YouTube. Suggested title: AccessFinish | Keyboard repair to verified booking | Nebius x NVIDIA Hackathon.
-2. Open https://nebiusglobalaihackathon.devpost.com/ in the entrant's existing Chrome session and create/edit the project submission.
-3. Use project-description.md for the description, technology-feedback.md for platform feedback, testing-instructions.md for access/setup, and the URLs above. Select Coding and Agentic Engineering.
-4. Add the public YouTube URL. Entrant must review eligibility, ownership and final declarations. No unverified claim about autonomous discovery or a user study should be added.
-5. Submit only after all fields and the final confirmation are reviewed. Verify the submitted state and retain the receipt/confirmation page.
+Prepared assets
+Video: media/v03/accessfinish-demo-v03.mp4; 117.8 seconds; English Aiden narration and timed captions.
+Private upload verified: https://youtu.be/Ma9cEARXV2g. Previous private cut retained.
+Build: artifacts/accessfinish-test-build-v0.2.0.zip; see artifacts/test-build-manifest.json.
+Editable media: artifacts/accessfinish-media-source-v0.2.0.zip.
+Existing GitHub draft release uses the earlier v02 presentation.
+Updated local preparation: artifacts/release-v0.2.0-v03-preparation-r2/.
+Its unchanged functional build remains bound to cc84ea1; presentation sources are a separate local snapshot. Rebuild the final source archive after reviewer fixes are committed.
+The downloadable v0.1.0 release is historical; use the verified v0.2 package.
 
-Deadline verified from the official rules on 18 October 2026: 30 October 2026, 20:00 Asia/Riyadh.
-Keep public judging materials accessible through the end of judging, 15 December 2026, 23:00 Asia/Riyadh.
+Submission copy
+Project description: submission/project-description.md.
+Field mapping: submission/devpost-fields.json.
+Platform feedback: submission/technology-feedback.md.
+Judge path: submission/judge-guide.md.
+Setup: submission/testing-instructions.md.
+Track: Coding and Agentic Engineering.
 
-Current state: no Devpost submission and no YouTube upload have been performed by the assistant. Windows browser automation stopped because it could not confidently identify Chrome's current URL. The assistant did not bypass that barrier or extract browser cookies.
+Remaining gates
+1. Obtain two genuine browser-only developer responses, P01 and P02. Keep raw responses private; report assistance and limits; quote only with consent.
+2. Review the full 1:58 narrated video. Resolve observed issues, then approve public publication; its private upload is already complete.
+3. Review and publish the v0.2 release; check its exact download URLs anonymously.
+4. Resolve the previously registered Devpost account before any duplicate registration. The signed-in @sultalfaifi account shows no hackathon registration. Then prepare the actual draft and add verified public video and release URLs.
+5. The entrant confirms eligibility, ownership, team representation, applicable city-event attendance and declarations.
+6. Obtain final submission confirmation. Verify submitted status and retain its receipt or final project URL.
+
+Internal target: October 28, 2026, 20:00 Asia/Riyadh.
+Official deadline: October 30, 2026, 20:00 Asia/Riyadh.
+Keep judging materials accessible through December 15, 2026, 23:00 Asia/Riyadh.
+Rules checked October 23: https://nebiusglobalaihackathon.devpost.com/rules
+
+The completed eight-request experiment must not make further model calls. Browser inspection, reproduction, a draft release, a private video and a Devpost draft are separate from publication or submission.
+
+User direction, October 23: wait for both agreed browser-only developer reviews before finalizing. Do not register a duplicate account. No entry has been submitted.

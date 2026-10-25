@@ -14,19 +14,25 @@ async function main() {
   }
   if (process.argv[2] !== 'keyboard') throw Error('Unsupported browser operation.');
   const session = keyboard.createSession({chromium}), actions = [];
-  let submitted = 0;
+  let submitted = 0, lastDate;
   try {
     const result = await macros.run('browser_complete_booking', {
       scenario: payload.scenario,
       invoke: async (name, args = {}) => {
         const command = {browser_start: 'start', browser_inspect: 'inspect', browser_press: 'press', browser_type: 'type'}[name];
         if (!command || actions.length >= 400) throw Error('Keyboard action budget exhausted.');
-        actions.push({command, ...(args.key ? {key: args.key} : {}), ...(args.text ? {text: args.text} : {})});
-        return session[command](...(command === 'press' ? [args.key] : command === 'type' ? [args.text] : []));
+        actions.push({command, at: Date.now(), ...(args.key ? {key: args.key} : {}), ...(args.text ? {text: args.text} : {})});
+        const state = await session[command](...(command === 'press' ? [args.key] : command === 'type' ? [args.text] : []));
+        // Record where focus landed, and the date field's value whenever it changes,
+        // so a failed journey can be explained.
+        if (command === 'press' && state?.focus) actions.at(-1).focus = {tag: state.focus.tag, id: state.focus.id || null, role: state.focus.role || null, text: (state.focus.text || '').trim().slice(0, 40)};
+        const date = state?.inputs?.find(input => ['select-date', 'native-date'].includes(input.id))?.value;
+        if (typeof date === 'string' && date !== lastDate) { actions.at(-1).date_value = date.slice(0, 40); lastDate = date; }
+        return state;
       },
       onSubmit: async () => { if (++submitted !== 1) throw Error('Only one booking submission is allowed.'); },
     });
-    return {workflow: result.workflow, last_observation: result, keyboard_actions: actions, native_keyboard_only: true, submissions: submitted};
+    return {workflow: result.workflow, last_observation: result, keyboard_actions: actions, page_requests: session.requests(), native_keyboard_only: true, submissions: submitted};
   } finally { await session.close(); }
 }
 main().then(result => console.log(JSON.stringify(result))).catch(error => {

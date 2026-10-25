@@ -1,0 +1,26 @@
+{
+  "generated_from": "evidence/agent-runs",
+  "model": "nvidia/nemotron-3-super-120b-a12b",
+  "runs": 14,
+  "cost_usd": 0.4086,
+  "cases": {
+    "keyboard-date": {
+      "runs": 7,
+      "verified": 0,
+      "first_attempt": 0,
+      "attempts": 43,
+      "wrong_saves_caught": 15,
+      "cost_usd": 0.3773,
+      "seconds": 2240
+    },
+    "customer-phone": {
+      "runs": 7,
+      "verified": 7,
+      "first_attempt": 7,
+      "attempts": 7,
+      "wrong_saves_caught": 0,
+      "cost_usd": 0.0313,
+      "seconds": 701
+    }
+  }
+}

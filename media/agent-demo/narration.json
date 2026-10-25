@@ -1,0 +1,58 @@
+{
+  "voice": "Aiden",
+  "model_id": "Qwen/Qwen3-TTS-12Hz-0.6B-CustomVoice",
+  "language": "English",
+  "gap_seconds": 0.45,
+  "beats": [
+    {
+      "id": "hero",
+      "text": "Ask an AI to fix a broken form, and it will tell you it's fixed. The page loads. A confirmation appears. But did the user's booking actually get saved, correctly?"
+    },
+    {
+      "id": "phone-observe",
+      "text": "Here, the booking page says success. But the database stored the wrong phone number. Nobody notices, unless you check what was saved."
+    },
+    {
+      "id": "phone-propose",
+      "text": "AccessFinish drives the journey in a real browser, then hands the evidence and the source code to NVIDIA Nemotron, on Nebius Token Factory. No hints. Nemotron finds the hard-coded value, and writes the fix.",
+      "say": "AccessFinish drives the journey in a real browser, then hands the evidence and the source code to NVIDIA Nemo-tron, on Nebius Token Factory. No hints. Nemo-tron finds the hard-coded value, and writes the fix."
+    },
+    {
+      "id": "phone-proof",
+      "text": "Every fix is built in a fresh, offline sandbox, and checked for real: the saved database row, a fresh browser, and a second customer with a different number. Seven live runs. Seven verified fixes, on the first attempt, for about half a cent each."
+    },
+    {
+      "id": "keyboard-intro",
+      "text": "Now the harder case. A keyboard user can't reach the date picker at all."
+    },
+    {
+      "id": "keyboard-attempts",
+      "text": "Nemotron reads the source files, proposes fixes, and every attempt is built and tested. It makes the date reachable, and the page says the booking is confirmed.",
+      "say": "Nemo-tron reads the source files, proposes fixes, and every attempt is built and tested. It makes the date reachable, and the page says the booking is confirmed."
+    },
+    {
+      "id": "keyboard-wrong",
+      "text": "But AccessFinish reads the database. The booking was saved for the wrong day. Rejected."
+    },
+    {
+      "id": "keyboard-timeline",
+      "text": "And it shows exactly why. Seven tenths of a second after a background request, with no key pressed, the date resets itself to the first of the month."
+    },
+    {
+      "id": "finding",
+      "text": "Fifteen fake booked confirmations, across seven runs. Not one got through."
+    },
+    {
+      "id": "facts",
+      "text": "Fourteen live runs, and forty-one cents of Nemotron. Fixes that are proven, not promised.",
+      "say": "Fourteen live runs, and forty-one cents of Nemo-tron. Fixes that are proven, not promised."
+    },
+    {
+      "id": "close",
+      "text": "AccessFinish. Finish the task. Verify the result."
+    }
+  ],
+  "pronunciation": {
+    "Nemotron": "Nemo-tron (NEE-mo-tron, as in NVIDIA NeMo)"
+  }
+}

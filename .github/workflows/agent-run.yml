@@ -1,0 +1,56 @@
+name: Live agent run
+# Runs the AccessFinish agent with Nemotron on a fresh runner and commits the
+# trace back. Triggered manually, or by a push whose message contains [run-agent].
+on:
+  workflow_dispatch:
+  push:
+    branches: ['claude/**', 'codex/**']
+permissions:
+  contents: write
+concurrency:
+  group: agent-run-${{ github.ref_name }}
+  cancel-in-progress: false
+jobs:
+  agent:
+    if: github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[run-agent]')
+    runs-on: ubuntu-latest
+    timeout-minutes: 75
+    env:
+      AF_RUNTIME_DIR: .runtime
+      NEBIUS_API_KEY: ${{ secrets.NEBIUS_API_KEY }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 22
+      - run: npm test
+      - name: Build the isolated sandbox
+        run: npm run demo:setup
+      - name: Pipeline check without a model (recorded proposals)
+        run: |
+          node scripts/agent.cjs --case keyboard-date --recorded-model
+          node scripts/agent.cjs --case customer-phone --recorded-model
+      - name: Check the model key is configured
+        run: test -n "$NEBIUS_API_KEY" || { echo "Add the NEBIUS_API_KEY repository secret to run Nemotron."; exit 1; }
+      - name: Agent · keyboard date
+        run: node scripts/agent.cjs --case keyboard-date --publish || true
+      - name: Agent · saved phone
+        run: node scripts/agent.cjs --case customer-phone --publish || true
+      - name: Commit the traces
+        run: |
+          git config user.name "accessfinish-agent"
+          git config user.email "accessfinish-agent@users.noreply.github.com"
+          node scripts/agent-summary.cjs > /dev/null
+          git add web/agent-runs evidence/agent-runs
+          git diff --cached --quiet && { echo "No traces produced."; exit 1; }
+          git commit -m "Record live agent runs from ${GITHUB_SHA::7}"
+          git pull --rebase origin "$GITHUB_REF_NAME"
+          git push origin "HEAD:$GITHUB_REF_NAME"
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        if: always()
+        with:
+          name: agent-runtime
+          path: |
+            .runtime/agent/*.json
+            .runtime/execution/*/evidence.json
+          retention-days: 30

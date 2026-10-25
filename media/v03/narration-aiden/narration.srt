@@ -1,0 +1,89 @@
+1
+00:00:00,000 --> 00:00:04,960
+One appointment. One date. Can you finish it using
+only a keyboard?
+
+2
+00:00:05,140 --> 00:00:12,500
+You press Tab. Focus skips the date control. The
+page loads, but the booking is still blocked.
+
+3
+00:00:12,680 --> 00:00:20,760
+This is AccessFinish. It helps developers review an
+AI source repair, then check whether the intended
+task actually succeeds.
+
+4
+00:00:20,940 --> 00:00:27,260
+For this guided Easy!Appointments case, we supplied
+the diagnosis and repair direction.
+
+5
+00:00:27,340 --> 00:00:36,300
+NVIDIA Nemotron 3 Super, running on Nebius Token
+Factory, proposed five source edits. The request and
+response are retained.
+
+6
+00:00:36,480 --> 00:00:44,960
+First, inspect the change. The date control becomes
+keyboard editable. Calendar refreshes must preserve
+the typed date.
+
+7
+00:00:45,040 --> 00:00:48,080
+Approval is bound to this exact patch hash.
+
+8
+00:00:48,260 --> 00:00:56,500
+Then execute the recorded proposal in a fresh,
+isolated fixture. Build the application. Complete
+the keyboard booking.
+
+9
+00:00:56,580 --> 00:01:03,060
+Check storage through a separate read-only database
+reader. Reopen the appointment in a fresh browser.
+
+10
+00:01:03,240 --> 00:01:14,360
+Here is the payoff. November 2, 2026. Nine to nine
+thirty, Riyadh time. The expected booking was saved
+and independently reopened.
+
+11
+00:01:14,440 --> 00:01:18,680
+Existing data and the regression controls also
+passed.
+
+12
+00:01:18,860 --> 00:01:26,780
+But a convincing patch is not enough. Another
+attempt completed the keyboard task, then failed the
+calendar control.
+
+13
+00:01:26,860 --> 00:01:28,780
+AccessFinish rejected it.
+
+14
+00:01:28,960 --> 00:01:38,160
+Across five frozen attempts on this one guided case,
+two passed completely. Two failed to build. One
+failed a regression check.
+
+15
+00:01:38,240 --> 00:01:44,880
+Every failure is retained. Broader repair accuracy
+and screen-reader validation remain open.
+
+16
+00:01:45,060 --> 00:01:52,420
+For developers and accessibility QA, the question is
+simple: did the user finish the task, with the right
+data?
+
+17
+00:01:52,600 --> 00:01:57,000
+AccessFinish. Review the repair. Verify the outcome.

@@ -95,6 +95,7 @@ function readBookingDiagnostic() {
     body: (document.body?.innerText || '').slice(0, 12000), inputs, links};
 }
 function createSession({chromium}) {
+  let requests = [];
   if (!chromium || typeof chromium.launch !== 'function') fail('browser_operation_failed');
   let browser = null, launchPromise = null, context = null, page = null, closed = false, closePromise = null, violated = false;
   async function stopContext() {
@@ -133,6 +134,10 @@ function createSession({chromium}) {
             violated = true; owned.close().catch(() => {});
           }
         });
+        // Requests the page itself makes (XHR/fetch), for explaining failed journeys.
+        requests = [];
+        page.on('request', request => { if (['xhr', 'fetch'].includes(request.resourceType()) && requests.length < 300)
+          requests.push({at: Date.now(), method: request.method(), path: new URL(request.url()).pathname.slice(0, 120)}); });
         await page.goto(url, {waitUntil: 'domcontentloaded', timeout: 10000});
         return await inspect();
       } catch (e) {
@@ -143,6 +148,7 @@ function createSession({chromium}) {
   }
   return {
     start: () => freshContext(TASK_URL),
+    requests: () => requests.slice(),
     // Operator-only. The model tool definitions must never expose this method.
     reopen: async hash => freshContext(ORIGIN + '/booking/reschedule/' + validateHash(hash)),
     inspect,

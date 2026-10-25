@@ -1,0 +1,99 @@
+{
+  "state": "text_prepared_no_audio_timestamps",
+  "language": "English",
+  "source_sha256": "05c0095097ba093d527de37cda90fbe0ac20ac827b4f7c78d138e92d22e08e1e",
+  "timing_rule": "Generate each beat as real audio; derive cue start/end from measured audio samples and explicit gaps.",
+  "removed_provider_directions": [
+    "curious",
+    "confident",
+    "warmly"
+  ],
+  "beat_count": 17,
+  "beats": [
+    {
+      "id": "beat-01",
+      "paragraph": 1,
+      "text": "One appointment. One date. Can you finish it using only a keyboard?"
+    },
+    {
+      "id": "beat-02",
+      "paragraph": 2,
+      "text": "You press Tab. Focus skips the date control. The page loads, but the booking is still blocked."
+    },
+    {
+      "id": "beat-03",
+      "paragraph": 3,
+      "text": "This is AccessFinish. It helps developers review an AI source repair, then check whether the intended task actually succeeds."
+    },
+    {
+      "id": "beat-04",
+      "paragraph": 4,
+      "text": "For this guided Easy!Appointments case, we supplied the diagnosis and repair direction."
+    },
+    {
+      "id": "beat-05",
+      "paragraph": 4,
+      "text": "NVIDIA Nemotron 3 Super, running on Nebius Token Factory, proposed five source edits. The request and response are retained."
+    },
+    {
+      "id": "beat-06",
+      "paragraph": 5,
+      "text": "First, inspect the change. The date control becomes keyboard editable. Calendar refreshes must preserve the typed date."
+    },
+    {
+      "id": "beat-07",
+      "paragraph": 5,
+      "text": "Approval is bound to this exact patch hash."
+    },
+    {
+      "id": "beat-08",
+      "paragraph": 6,
+      "text": "Then execute the recorded proposal in a fresh, isolated fixture. Build the application. Complete the keyboard booking."
+    },
+    {
+      "id": "beat-09",
+      "paragraph": 6,
+      "text": "Check storage through a separate read-only database reader. Reopen the appointment in a fresh browser."
+    },
+    {
+      "id": "beat-10",
+      "paragraph": 7,
+      "text": "Here is the payoff. November 2, 2026. Nine to nine thirty, Riyadh time. The expected booking was saved and independently reopened."
+    },
+    {
+      "id": "beat-11",
+      "paragraph": 7,
+      "text": "Existing data and the regression controls also passed."
+    },
+    {
+      "id": "beat-12",
+      "paragraph": 8,
+      "text": "But a convincing patch is not enough. Another attempt completed the keyboard task, then failed the calendar control."
+    },
+    {
+      "id": "beat-13",
+      "paragraph": 8,
+      "text": "AccessFinish rejected it."
+    },
+    {
+      "id": "beat-14",
+      "paragraph": 9,
+      "text": "Across five frozen attempts on this one guided case, two passed completely. Two failed to build. One failed a regression check."
+    },
+    {
+      "id": "beat-15",
+      "paragraph": 9,
+      "text": "Every failure is retained. Broader repair accuracy and screen-reader validation remain open."
+    },
+    {
+      "id": "beat-16",
+      "paragraph": 10,
+      "text": "For developers and accessibility QA, the question is simple: did the user finish the task, with the right data?"
+    },
+    {
+      "id": "beat-17",
+      "paragraph": 11,
+      "text": "AccessFinish. Review the repair. Verify the outcome."
+    }
+  ]
+}
