@@ -3,15 +3,16 @@
   "voice": "Aiden",
   "language": "English",
   "device": "cpu",
-  "model_load_seconds": 28.3,
+  "model_load_seconds": 23.9,
   "sample_rate": 24000,
   "gap_seconds": 0.45,
-  "duration_seconds": 108.87,
+  "duration_seconds": 109.75,
   "narration_file": "narration.wav",
   "beats": [
     {
       "id": "hero",
       "text": "Ask an AI to fix a broken form, and it will tell you it's fixed. The page loads. A confirmation appears. But did the user's booking actually get saved, correctly?",
+      "spoken": "Ask an AI to fix a broken form, and it will tell you it's fixed. The page loads. A confirmation appears. But did the user's booking actually get saved, correctly?",
       "file": "beats/hero.wav",
       "start_seconds": 0.0,
       "end_seconds": 11.84,
@@ -21,6 +22,7 @@
     {
       "id": "phone-observe",
       "text": "Here, the booking page says success. But the database stored the wrong phone number. Nobody notices, unless you check what was saved.",
+      "spoken": "Here, the booking page says success. But the database stored the wrong phone number. Nobody notices, unless you check what was saved.",
       "file": "beats/phone-observe.wav",
       "start_seconds": 12.29,
       "end_seconds": 21.41,
@@ -30,81 +32,90 @@
     {
       "id": "phone-propose",
       "text": "AccessFinish drives the journey in a real browser, then hands the evidence and the source code to NVIDIA Nemotron, on Nebius Token Factory. No hints. Nemotron finds the hard-coded value, and writes the fix.",
+      "spoken": "AccessFinish drives the journey in a real browser, then hands the evidence and the source code to NVIDIA Nemo-tron, on Nebius Token Factory. No hints. Nemo-tron finds the hard-coded value, and writes the fix.",
       "file": "beats/phone-propose.wav",
       "start_seconds": 21.86,
-      "end_seconds": 37.62,
-      "generation_seconds": 86.2,
-      "sha256": "fe7c89fc1a4068d71bfc8d3a1e67e5a9d727cfe297a4135b6fe4d044fbf2960a"
+      "end_seconds": 36.1,
+      "generation_seconds": 77.7,
+      "sha256": "d23af9a7f79a4001d8d8ae5e406fb04748ec87890a2c6f3b603c2b644e2e567b"
     },
     {
       "id": "phone-proof",
       "text": "Every fix is built in a fresh, offline sandbox, and checked for real: the saved database row, a fresh browser, and a second customer with a different number. Seven live runs. Seven verified fixes, on the first attempt, for about half a cent each.",
+      "spoken": "Every fix is built in a fresh, offline sandbox, and checked for real: the saved database row, a fresh browser, and a second customer with a different number. Seven live runs. Seven verified fixes, on the first attempt, for about half a cent each.",
       "file": "beats/phone-proof.wav",
-      "start_seconds": 38.07,
-      "end_seconds": 57.11,
+      "start_seconds": 36.55,
+      "end_seconds": 55.59,
       "generation_seconds": 106.8,
       "sha256": "151610ebb92933a3d6c403611fbc102315e8b881f681af94f686518db3ab6f9b"
     },
     {
       "id": "keyboard-intro",
       "text": "Now the harder case. A keyboard user can't reach the date picker at all.",
+      "spoken": "Now the harder case. A keyboard user can't reach the date picker at all.",
       "file": "beats/keyboard-intro.wav",
-      "start_seconds": 57.56,
-      "end_seconds": 62.76,
+      "start_seconds": 56.04,
+      "end_seconds": 61.24,
       "generation_seconds": 30.0,
       "sha256": "d8762237d4173c88cd595c31124ad04ef2bc209dc64c64ab426c699b50b731cb"
     },
     {
       "id": "keyboard-attempts",
       "text": "Nemotron opens source files, proposes fixes, and every attempt is built and tested. It makes the date reachable, and the page says: booked.",
+      "spoken": "Nemo-tron opens source files, proposes fixes, and every attempt is built and tested. It makes the date reachable, and the page says: booked.",
       "file": "beats/keyboard-attempts.wav",
-      "start_seconds": 63.21,
-      "end_seconds": 72.57,
-      "generation_seconds": 54.2,
-      "sha256": "b2de9b5b7821a3134e07a297620bd9279b6ddf3f079bf05800727cc9feac9e66"
+      "start_seconds": 61.69,
+      "end_seconds": 72.01,
+      "generation_seconds": 55.9,
+      "sha256": "729931191b213ccf29c880eac6981d5fe9984ee3b080297ac319c6244f9d9d62"
     },
     {
       "id": "keyboard-wrong",
       "text": "But AccessFinish reads the database. The booking was saved for the wrong day. Rejected.",
+      "spoken": "But AccessFinish reads the database. The booking was saved for the wrong day. Rejected.",
       "file": "beats/keyboard-wrong.wav",
-      "start_seconds": 73.02,
-      "end_seconds": 79.42,
+      "start_seconds": 72.46,
+      "end_seconds": 78.86,
       "generation_seconds": 36.3,
       "sha256": "d660b763f402c335aae1e7152fdae6bd37ec9a85f61263ad29a60bf7b8b42950"
     },
     {
       "id": "keyboard-timeline",
       "text": "And it shows exactly why. Seven tenths of a second after a background request, with no key pressed, the date resets itself to the first of the month.",
+      "spoken": "And it shows exactly why. Seven tenths of a second after a background request, with no key pressed, the date resets itself to the first of the month.",
       "file": "beats/keyboard-timeline.wav",
-      "start_seconds": 79.87,
-      "end_seconds": 89.95,
+      "start_seconds": 79.31,
+      "end_seconds": 89.39,
       "generation_seconds": 56.4,
       "sha256": "7ebf4114b263fd6ae488b0dc671e768145958d22e8c9d2524187c16a7fc5b1ce"
     },
     {
       "id": "finding",
       "text": "Fifteen fake booked confirmations, across seven runs. Not one got through.",
+      "spoken": "Fifteen fake booked confirmations, across seven runs. Not one got through.",
       "file": "beats/finding.wav",
-      "start_seconds": 90.4,
-      "end_seconds": 97.2,
+      "start_seconds": 89.84,
+      "end_seconds": 96.64,
       "generation_seconds": 38.8,
       "sha256": "9c9f2383735521054d32c91cbd15c980ee3ea12d4379ec8bc8dfb21b7bb188ea"
     },
     {
       "id": "facts",
       "text": "Fourteen live runs, and forty-one cents of Nemotron. Fixes that are proven, not promised.",
+      "spoken": "Fourteen live runs, and forty-one cents of Nemo-tron. Fixes that are proven, not promised.",
       "file": "beats/facts.wav",
-      "start_seconds": 97.65,
-      "end_seconds": 103.65,
-      "generation_seconds": 34.5,
-      "sha256": "82dafe184b82ea8eb2690c556181e19811384e023f70cd4cab54d689173573c9"
+      "start_seconds": 97.09,
+      "end_seconds": 104.53,
+      "generation_seconds": 39.8,
+      "sha256": "3787f3e055cd4813773b98ad2e9404cb36e1aba9a67d4f6ba7cdf0556e3f1cc5"
     },
     {
       "id": "close",
       "text": "AccessFinish. Finish the task. Verify the result.",
+      "spoken": "AccessFinish. Finish the task. Verify the result.",
       "file": "beats/close.wav",
-      "start_seconds": 104.1,
-      "end_seconds": 108.42,
+      "start_seconds": 104.98,
+      "end_seconds": 109.3,
       "generation_seconds": 23.4,
       "sha256": "3d1108de5a75986f53af55792cc6f3ac316cf43ec8e65ee087a257acc2df2927"
     }
