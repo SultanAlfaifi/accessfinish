@@ -13,7 +13,9 @@ async function main() {
       workerSha256: crypto.createHash('sha256').update(fs.readFileSync(require.resolve('./container-booking-pilot-observer.cjs'))).digest('hex')});
   }
   if (process.argv[2] !== 'keyboard') throw Error('Unsupported browser operation.');
-  const session = keyboard.createSession({chromium}), actions = [];
+  const session = keyboard.createSession({chromium, provenance: true}), actions = [], dateIds = ['select-date', 'native-date', 'af-keyboard-date', 'native_date'];
+  // Provenance only explains a journey; it must never change its result.
+  const safely = read => { try { return read(); } catch { return []; } };
   let submitted = 0, lastDate;
   try {
     const result = await macros.run('browser_complete_booking', {
@@ -26,13 +28,15 @@ async function main() {
         // Record where focus landed, and the date field's value whenever it changes,
         // so a failed journey can be explained.
         if (command === 'press' && state?.focus) actions.at(-1).focus = {tag: state.focus.tag, id: state.focus.id || null, role: state.focus.role || null, text: (state.focus.text || '').trim().slice(0, 40)};
-        const date = state?.inputs?.find(input => ['select-date', 'native-date'].includes(input.id))?.value;
+        const date = state?.inputs?.find(input => dateIds.includes(input.id))?.value;
         if (typeof date === 'string' && date !== lastDate) { actions.at(-1).date_value = date.slice(0, 40); lastDate = date; }
         return state;
       },
       onSubmit: async () => { if (++submitted !== 1) throw Error('Only one booking submission is allowed.'); },
     });
-    return {workflow: result.workflow, last_observation: result, keyboard_actions: actions, page_requests: session.requests(), native_keyboard_only: true, submissions: submitted};
+    // page_requests carry their initiator call chains; date_writes name the code that changed the date field.
+    return {workflow: result.workflow, last_observation: result, keyboard_actions: actions, page_requests: safely(session.requests), date_writes: safely(session.dateWrites),
+      native_keyboard_only: true, submissions: submitted};
   } finally { await session.close(); }
 }
 main().then(result => console.log(JSON.stringify(result))).catch(error => {
