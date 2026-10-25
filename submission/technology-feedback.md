@@ -1,13 +1,18 @@
-# Feedback from the measured AccessFinish experiment
+# Feedback on NVIDIA Nemotron 3 Super via Nebius Token Factory
 
-We used NVIDIA Nemotron 3 Super through Nebius Token Factory's chat-completions endpoint to propose literal source edits. The operator supplied the diagnosis and repair direction. Structured tool calls made it practical to constrain source paths, preview exact edits, bind approval to a proposal hash, and keep model output away from shell execution.
+We used `nvidia/nemotron-3-super-120b-a12b` through Token Factory's OpenAI-compatible chat-completions endpoint as the reasoning core of an agent loop: it receives verifier evidence and source code, can call a read-only `read_file` tool, and must answer with a `propose_repair` tool call containing literal source edits. No diagnosis is supplied.
 
-Across three development requests and five frozen requests on one exposed case, all eight responses reported usable token counts. Estimated additional cost at the account prices checked on October 21 was $0.0394581 before tax. We retained failed-request reservations and made no automatic retries. Reasoning tokens were included in reported completion usage; the cost estimate used the full reported completion count.
+**What worked well**
+- Tool calling was dependable: across 14 live agent runs (50 proposals) every response parsed as a valid tool call, which let us validate edits before anything ran and keep model output away from shell execution.
+- Cost and speed made an iterative loop practical: a full phone-case run used about 13,000 input and a few hundred output tokens (about half a cent); all 14 runs together cost about $0.41 at the public prices.
+- On a seeded data fault (a hard-coded value in the request payload) Nemotron found and fixed the cause on the first attempt in 7 of 7 runs.
 
-Two of five frozen proposals passed the full build, keyboard outcome, database, fresh-reopen, regression, and runtime checks. Two proposed JavaScript edits did not compile. One proposal passed the main keyboard task but failed calendar navigation. These are observations from one guided case, not a general comparison or model benchmark.
+**What was hard**
+- On a real upstream keyboard bug, the model kept returning to time-zone and date-format explanations even when the evidence showed the date changing by itself right after a background request. Better hypothesis revision across turns would help agentic debugging the most.
+- Long literal anchors were sometimes copied with small differences, so 7 of 43 keyboard proposals were rejected before execution. A native "apply a unified diff" tool format, or guidance on minimal anchors, would reduce this.
+- We saw one transient HTTP 503; requests now retry 429/5xx with backoff.
 
-On October 23, one separately approved request repaired a deliberately seeded phone-serialization fault with an operator-supplied diagnosis. Its literal edit passed a fresh isolated execution, including storage, fresh reopen and a different-phone regression. The provider reported 12,658 input and 387 completion tokens, for an estimated $0.0041457 before tax at the public prices checked that day. There were no retries. It is not pooled with the original five frozen trials.
+**Requests**
+Exportable per-request usage receipts, an explicit model revision identifier in responses, and a documented way to control or read the reasoning budget for tool calls.
 
-The most useful platform improvements for this workflow would be easily exportable per-request billing/usage receipts, an explicit model-revision identifier, and source-edit examples that preserve syntactic boundaries around callbacks. We would also value stronger structured-edit validation before execution. These are feature requests; we have not established whether equivalent facilities exist elsewhere in the platform.
-
-Token Factory supplied model inference. We did not deploy the workbench on Nebius AI Cloud or use Serverless Jobs/Endpoints, and we do not claim that those services accelerated the build. Local deterministic orchestration, Docker, Playwright, PHP, and MariaDB supplied execution and outcome verification.
+Token Factory supplied all model inference. We did not use Nebius AI Cloud compute or Serverless endpoints; execution and verification ran in Docker on GitHub Actions.
