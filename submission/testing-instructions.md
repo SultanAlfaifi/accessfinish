@@ -1,25 +1,24 @@
 # Test AccessFinish
 
-## Browser-only review
+## In a browser (no install)
 
-Open the published review URL supplied with the submission. Review the blockage and source edits, then choose **Inspect this proposal's recorded execution**. The recording label, proposal hash, booking receipt, and all five frozen outcomes are visible. This does not start inference, execution, or a fresh verification. The independent developer session page is `/review.html`; participant results are not yet collected.
+Open the published page (https://sultalfaifi.com/accessfinish/) or run `npm run replay` and open http://127.0.0.1:4178. The page replays the recorded live agent runs: click any step to see the verifier's evidence, Nemotron's diagnosis and diff, and the proof card. The **Evidence** page lists every live run with its raw trace.
 
-## Fresh local execution
+## Run the agent yourself
 
-1. Obtain the v0.2 repository or its reviewed test build.
-2. Install/use Node.js 22+ and a local Docker Linux engine. No Nebius key is needed for replaying the packaged proposal. Container images and locked dependencies require downloads during first setup.
-3. Run `npm run demo:setup`, then `npm start`.
-4. Open `http://127.0.0.1:4177`, review the patch and exact hash, check the approval box, and choose **Run approved repair**.
-5. Inspect the result belonging to that new run ID. It must include the expected stored booking, fresh reopen, preservation checks, pointer control, unavailable-slot check, and runtime boundaries before it is verified.
+Requires Node.js 22+ and Docker (Linux engine).
 
-The CLI equivalent is `npm run demo:check`; that explicit command approves the fixed packaged proposal. Run `node scripts/demo-check.cjs --original` for the original-source negative control: the task must remain blocked and booking verification must remain false.
+```sh
+npm run demo:setup                          # builds the pinned sandbox images once (several GB)
+export NEBIUS_API_KEY=...                   # Token Factory key
+node scripts/agent.cjs --case customer-phone
+node scripts/agent.cjs --case keyboard-date
+```
 
-For UI-only local review, use `npm run replay` and open `http://127.0.0.1:4178`. This needs Node.js but neither Docker nor a provider key.
+Without a key, `node scripts/agent.cjs --case keyboard-date --recorded-model` runs the whole loop with Nemotron's recorded 21 October proposal instead of a live model call, to check the sandbox and verifier.
 
-## New inference and checks
+The same runs execute on GitHub Actions in `.github/workflows/agent-run.yml` (it needs the `NEBIUS_API_KEY` repository secret), and `.github/workflows/clean-execution.yml` rebuilds the sandbox from scratch and replays every recorded proposal without a model.
 
-See README for the server-side key, current price verification, input/output prices, and local request budget. The included complete source files are sent to Nebius only after the source-sharing checkbox and a new analysis request. The eight-request competition experiment is already complete; it must not be retried under the same trial IDs.
+## Checks
 
-`npm test` checks approval binding, stale/mismatched evidence rejection, process ownership, exact source edits, server boundaries, and model-budget behavior with mocked requests. `npm run check:records` verifies the public frozen procedure, artifact hashes, counts, and selected recording without making a model call.
-
-The [independent GitHub Actions run](https://github.com/SultanAlfaifi/accessfinish/actions/runs/39623819548) passed clean setup and reproduced all five recorded outcomes: two verified repairs and three expected failures. The original-source negative control also passed its expected blocked/no-change checks. This automated reproduction made no model calls and is separate from browser-only human sessions. Candidate artifacts and private fixture credentials are kept in the local runtime; do not upload the private runtime folder.
+`npm test` covers the agent loop (with a fake model and executor), exact-edit validation, evidence binding and the server. `npm run check:records` verifies the archived 21 October single-shot trials and their hashes.
