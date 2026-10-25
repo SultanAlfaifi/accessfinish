@@ -4,7 +4,7 @@
 // --publish copies the finished trace (and its patch) into web/agent-runs/ so
 // the browser replay shows it, and keeps a copy under evidence/agent-runs/.
 const fs = require('node:fs'), path = require('node:path'), os = require('node:os'), cp = require('node:child_process');
-const {runAgent, AGENT_VERSION} = require('../lib/agent.cjs');
+const {runAgent, gitState, AGENT_VERSION} = require('../lib/agent.cjs');
 const {caseDefinition} = require('../lib/cases.cjs');
 const {preview} = require('../lib/repair.cjs');
 const fixture = require('../lib/fixture.cjs');
@@ -38,6 +38,11 @@ async function main() {
   // case's recorded Nemotron proposal. Such traces are never published.
   const recorded = process.argv.includes('--recorded-model');
   if (recorded && process.argv.includes('--publish')) throw Error('--recorded-model runs are pipeline checks and cannot be published.');
+  if (process.argv.includes('--publish') && gitState().git_dirty) throw Error('--publish needs committed code: lib/, integration/ or scripts/ has uncommitted changes, so the trace\'s commit would not hold the code that ran.');
+  // One booking date for every attempt of the run: by default the first Monday in a later month,
+  // so the date picker has to change month as it did in every version 1 run. AF_SCENARIO_DATE overrides it.
+  process.env.AF_SCENARIO_DATE ||= fixture.nextMonthScenarioDate();
+  fixture.scenario(new Date(), process.env.AF_SCENARIO_DATE); // A date the fixture would refuse stops the run before any model call.
   const model = recorded ? async () => {
     const featured = caseId === 'customer-phone' ? require('../web/cases/customer-phone.json').featured : require('../web/featured-case.json');
     return {message: {content: null}, call: {id: 'recorded', function: {name: 'propose_repair', arguments: '{}'}},
@@ -47,7 +52,8 @@ async function main() {
     for (const step of current.steps.slice(shown)) {
       if (step.kind === 'observe') print('Observe   ' + (step.verified ? '✓ ' : '✗ ') + step.headline);
       if (step.kind === 'read') print('Attempt ' + step.attempt + ' reads ' + step.path + (step.already_provided ? ' (already provided)' : step.found ? '' : ' (not available)'));
-      if (step.kind === 'search') print('Attempt ' + step.attempt + ' searches /' + step.query + '/' + (step.path ? ' in ' + step.path : '') + ' → ' + step.matches + ' matches');
+      if (step.kind === 'search') print('Attempt ' + step.attempt + ' searches /' + step.query + '/' + (step.path ? ' in ' + step.path : '')
+        + (step.limited ? ' (lookup limit reached, not run)' : step.error ? ' (not run: ' + step.error.replaceAll('_', ' ') + ')' : ' → ' + step.matches + ' matches'));
       if (step.kind === 'propose') print('Attempt ' + step.attempt + ' Nemotron: ' + step.diagnosis + ' (' + step.edits.length + ' edits'
         + (step.build_on_attempt ? ', ' + (step.kept_edits ?? 0) + ' kept from attempt ' + step.build_on_attempt : '') + ')');
       if (step.kind === 'verify') print('          ' + (step.verified ? '✓ ' : '✗ ') + step.headline);
@@ -56,14 +62,21 @@ async function main() {
   }});
   print('\nResult: ' + trace.state + ' · ' + (trace.duration_ms / 1000).toFixed(0) + ' s · ' + trace.usage.prompt_tokens + ' input + ' +
     trace.usage.completion_tokens + ' output tokens · $' + trace.estimated_cost_usd.toFixed(4) + (trace.error ? '\nError: ' + trace.error : '')
-    + '\nConditions: commit ' + (trace.git_commit || 'unknown').slice(0, 12) + ' · fixture ' + (trace.fixture_fingerprint || 'unknown').slice(0, 12)
-    + ' · scenario date ' + (trace.scenario_date || 'unknown') + ' · temperature ' + trace.temperature + ' · up to ' + trace.max_attempts + ' attempts');
+    + '\nConditions: commit ' + (trace.git_commit || 'unknown').slice(0, 12) + (trace.git_dirty ? ' with uncommitted changes' : '') + ' · fixture ' + (trace.fixture_fingerprint || 'unknown').slice(0, 12)
+    + ' · scenario date ' + (trace.scenario_date || 'unknown') + (trace.scenario_crosses_month === false ? ' (same month as the run)' : '')
+    + ' · temperature ' + trace.temperature + ' · up to ' + trace.max_attempts + ' attempts');
   if (trace.accepted) trace.accepted.patch = unifiedPatch(selected.files, trace.accepted.proposal);
   if (process.argv.includes('--publish')) {
     for (const dir of ['web/agent-runs', 'evidence/agent-runs']) fs.mkdirSync(path.join(project, dir), {recursive: true});
     fs.writeFileSync(path.join(project, 'evidence/agent-runs', trace.id + '.json'), JSON.stringify(trace, null, 2) + '\n');
-    fs.writeFileSync(path.join(project, 'web/agent-runs', caseId + '.json'), JSON.stringify(trace, null, 2) + '\n');
-    print('Published web/agent-runs/' + caseId + '.json');
+    // The page features the newest agent version's latest verified run, else its latest run; every run
+    // stays in evidence/agent-runs and in the totals.
+    const featured = path.join(project, 'web/agent-runs', caseId + '.json'), current = fs.existsSync(featured) ? JSON.parse(fs.readFileSync(featured, 'utf8')) : null;
+    const rank = item => [Number(item.agent_version || 1), item.state === 'verified' ? 1 : 0];
+    const [version, verified] = rank(trace), [shownVersion, shownVerified] = current ? rank(current) : [0, 0];
+    if (version > shownVersion || version === shownVersion && verified >= shownVerified) {
+      fs.writeFileSync(featured, JSON.stringify(trace, null, 2) + '\n'); print('Published web/agent-runs/' + caseId + '.json');
+    } else print('Recorded evidence/agent-runs/' + trace.id + '.json; the featured run stays the verified ' + current.id);
   }
   if (trace.state !== 'verified') process.exitCode = 1;
 }

@@ -24,13 +24,14 @@
     pips.setAttribute('aria-hidden', 'true');
     for (const result of run.results) pips.append(el('span', 'pip ' + (result === 'verified' ? 'ok' : 'bad')));
     const strip = el('span', 'strip'); strip.append(pips); attempts.append(el('span', '', String(run.attempts)), strip);
+    if (run.attempts > run.executed) attempts.append(el('span', 'note', (run.attempts - run.executed) + ' rejected before execution'));
     const status = el('td'); status.append(verdict(run));
     const links = el('td'), list = el('span', 'links');
     list.append(link('./?case=' + encodeURIComponent(run.case_id) + '&run=' + encodeURIComponent(run.id) + '#agent', 'Replay', id),
       link(run.trace, 'Trace', id), link(run.raw_url, 'Raw', id));
     links.append(list);
-    tr.append(name, agent, started, attempts, status, el('td', 'num', String(run.false_booked_caught)), el('td', 'num', run.duration_ms == null ? '—' : seconds(run.duration_ms)),
-      el('td', 'num', '$' + run.cost_usd.toFixed(4)), links);
+    tr.append(name, status, links, attempts, el('td', 'num', String(run.false_booked_caught)), el('td', 'num', run.duration_ms == null ? '—' : seconds(run.duration_ms)),
+      el('td', 'num', '$' + run.cost_usd.toFixed(4)), agent, started);
     return tr;
   }
 
@@ -38,7 +39,10 @@
     try {
       const response = await fetch('agent-runs/runs/index.json'); if (!response.ok) throw Error();
       const index = await response.json(), totals = index.totals;
-      $('#total-runs').textContent = String(totals.runs); $('#total-attempts').textContent = String(totals.attempts);
+      // Attempts rejected before execution (the edit did not apply) never reached a sandbox, so they are counted apart.
+      const unexecuted = totals.attempts - totals.executed;
+      $('#total-runs').textContent = String(totals.runs); $('#total-executed').textContent = String(totals.executed);
+      $('#total-unexecuted').textContent = String(unexecuted); $('#total-unexecuted-note').hidden = !unexecuted;
       $('#total-caught').textContent = String(totals.false_booked_caught); $('#total-cost').textContent = '$' + totals.cost_usd.toFixed(2);
       $('#runs').replaceChildren(...index.runs.map(row));
       $('#runs-status').textContent = totals.runs + ' runs, ' + totals.verified_runs + ' verified. Totals cover every run in evidence/agent-runs.';

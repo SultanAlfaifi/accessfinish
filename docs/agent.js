@@ -1,15 +1,25 @@
 'use strict';
 // Renders an AccessFinish agent trace as a timeline, replayed from a recorded
-// run or followed live when the local server has a Nemotron key.
+// run (?case=…&run=<id> picks any run in agent-runs/runs/) or followed live when
+// the local server has a Nemotron key. A live run stays bound to its own case.
 (() => {
   const $ = selector => document.querySelector(selector);
   const el = (tag, className, text) => { const node = document.createElement(tag); if (className) node.className = className; if (text !== undefined) node.textContent = text; return node; };
+  const hidden = (tag, className, text) => { const node = el(tag, className, text); node.setAttribute('aria-hidden', 'true'); return node; };
   const seconds = ms => ms >= 60000 ? Math.floor(ms / 60000) + ' min ' + Math.round(ms % 60000 / 1000) + ' s' : Math.round(ms / 1000) + ' s';
   const money = usd => usd < 0.01 ? '$' + usd.toFixed(4) : '$' + usd.toFixed(2);
+  const plural = (count, word) => count + ' ' + word + (count === 1 ? '' : 's');
   const CHECKS = ['Trusted build in an offline sandbox', 'Booking completed with the keyboard only', 'Saved row read back with a read-only database account',
     'Booking reopened in a fresh browser', 'Mouse booking with different data, using month navigation', 'Clearing the date causes no error',
     'Reserved slot is not offered', 'Existing records unchanged', 'Sandbox isolation inspected'];
-  let caseId = 'customer-phone', trace = null, selected = -1, timer = null, live = null, status = null;
+  const tabs = [...document.querySelectorAll('[role=tab][data-case]')], CASES = tabs.map(tab => tab.dataset.case);
+  const params = new URLSearchParams(location.search), wantedRun = /^agent-[a-f0-9]{24}$/.test(params.get('run') || '') ? params.get('run') : null;
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)'), narrow = matchMedia('(max-width: 900px)');
+  const traces = new Map(), ranHere = new WeakSet(); // recorded runs per case; live runs once they have finished
+  let caseId = CASES.includes(params.get('case')) ? params.get('case') : CASES[0];
+  let trace = null, selected = -1, shown = 0, playing = false, timer = null, follow = true, status = null, patchUrl = null;
+  let live = null, liveTimer = null, engaged = false, noticeCase = null; // live: {id, caseId, trace} while a run is in progress
+  const following = () => !!live && live.caseId === caseId;
 
   async function json(url, options) {
     const response = await fetch(url, options); const value = await response.json().catch(() => ({}));
@@ -20,45 +30,91 @@
     if (step.kind === 'observe') return 'Run the journey on the original code';
     if (step.kind === 'propose') return 'Attempt ' + step.attempt + ' · Nemotron proposes a fix';
     if (step.kind === 'read') return 'Attempt ' + step.attempt + ' · Nemotron opens a source file';
-    return 'Attempt ' + step.attempt + ' · Verify in a fresh sandbox';
+    if (step.kind === 'search') return 'Attempt ' + step.attempt + ' · Nemotron searches the code';
+    if (step.kind === 'verify') return 'Attempt ' + step.attempt + ' · Verify in a fresh sandbox';
+    return 'Attempt ' + step.attempt + ' · ' + step.kind;
   }
   function stepLine(step) {
     if (step.kind === 'propose') return step.diagnosis;
-    if (step.kind === 'read') return step.path + (step.found ? '' : ' (not available)');
-    return step.headline;
+    if (step.kind === 'read') return step.path + (step.limited ? ' (read limit reached)' : step.already_provided ? ' (already provided)' : step.found ? '' : ' (not available)');
+    if (step.kind === 'search') return '/' + step.query + '/' + (step.path ? ' in ' + step.path : '') + (step.limited ? ' (limit reached)' : step.error ? ' (did not run)' : ' · ' + step.matches + (step.matches === 1 ? ' match' : ' matches'));
+    return step.headline ?? step.path ?? '';
   }
   function stepState(step) {
-    if (step.kind === 'propose') return 'think';
-    if (step.kind === 'read') return 'read';
-    return step.verified ? 'pass' : 'fail';
+    if (step.kind === 'observe' || step.kind === 'verify') return step.verified ? 'pass' : 'fail';
+    return step.kind === 'propose' ? 'think' : 'read';
+  }
+  // Words for what the ✓ / ✗ icons show.
+  function stepStatus(step) {
+    if (step.kind === 'observe') return step.verified ? 'works' : 'fails';
+    if (step.kind === 'verify') return step.verified ? 'verified' : 'rejected';
+    return '';
+  }
+  function stepHeadline(step) {
+    if (step.kind === 'propose') return stepTitle(step) + ' with ' + plural(step.edits?.length || 0, 'edit') + '.';
+    const state = stepStatus(step);
+    return stepTitle(step) + (state ? ', ' + state : '') + ': ' + stepLine(step);
+  }
+  function outcomeText(run = trace) {
+    if (run.state === 'verified') return 'Verified on attempt ' + run.accepted.attempt + ' · ' + seconds(run.duration_ms) + ' · ' + money(run.estimated_cost_usd);
+    if (run.state === 'error') return 'Stopped: ' + run.error;
+    const verifies = run.steps.filter(step => step.kind === 'verify');
+    return 'Not verified after ' + plural(verifies.length, 'attempt') + ' — no patch accepted, ' + verifies.filter(step => step.stage === 'outcome').length + ' false "booked" pages caught';
   }
 
-  function renderTimeline(count = trace ? trace.steps.length : 0, pending = false) {
-    const list = $('#timeline'); list.replaceChildren();
-    if (!trace) return;
-    trace.steps.slice(0, count).forEach((step, index) => {
-      const item = el('li', 'step ' + stepState(step) + (index === selected ? ' selected' : ''));
-      const button = el('button'); button.type = 'button'; button.setAttribute('aria-pressed', String(index === selected));
-      button.append(el('span', 'icon', step.kind === 'propose' ? '◆' : step.kind === 'read' ? '↗' : step.verified ? '✓' : '✗'));
-      const text = el('span', 'text'); text.append(el('b', '', stepTitle(step)), el('span', 'line', stepLine(step)));
-      const meta = el('span', 'meta', step.duration_ms ? seconds(step.duration_ms) : '');
-      button.append(text, meta); button.addEventListener('click', () => { selected = index; renderTimeline(count, pending); renderDetail(); });
-      item.append(button); list.append(item);
-    });
+  // One live region, polite and throttled: only the newest headline is spoken. The replay that starts on
+  // its own stays silent; step headlines are spoken once the reader has used the tabs, controls or steps.
+  let spoken = 0, speakTimer = null;
+  function announce(text, now = false) {
+    clearTimeout(speakTimer);
+    speakTimer = setTimeout(() => { $('#announcer').textContent = text; spoken = Date.now(); }, now ? 0 : Math.max(0, spoken + 4000 - Date.now()));
+  }
+  function hush() { clearTimeout(speakTimer); $('#announcer').textContent = ''; }
+
+  function stepItem(step, index) {
+    const item = el('li', 'step ' + stepState(step)); item.dataset.index = index;
+    const button = el('button'); button.type = 'button'; button.setAttribute('aria-controls', 'detail');
+    const glyph = step.kind === 'propose' ? '◆' : step.kind === 'read' ? '↗' : step.kind === 'search' ? '⌕' : stepState(step) === 'pass' ? '✓' : step.kind === 'verify' || step.kind === 'observe' ? '✗' : '•';
+    const text = el('span', 'text'); text.append(el('b', '', stepTitle(step)));
+    if (stepStatus(step)) text.append(el('span', 'sr-only', stepStatus(step) + ':'));
+    text.append(el('span', 'line', stepLine(step)));
+    button.append(hidden('span', 'icon', glyph), text, el('span', 'meta', step.duration_ms ? seconds(step.duration_ms) : ''));
+    button.addEventListener('click', event => choose(index, event.detail > 0));
+    item.append(button); return item;
+  }
+  // Grows and trims the list in place, so a focused step keeps focus while the replay moves on.
+  function renderTimeline(count, pending = false) {
+    const list = $('#timeline');
+    for (const node of list.querySelectorAll('.running, .outcome')) node.remove();
+    if (!trace) return list.replaceChildren();
+    while (list.children.length > count) list.lastElementChild.remove();
+    for (let index = list.children.length; index < count; index++) list.append(stepItem(trace.steps[index], index));
+    markSelected();
     if (pending) {
-      const item = el('li', 'step running'); const next = trace.steps[count];
-      const label = next ? stepTitle(next) : live ? (trace.steps.length && trace.steps.at(-1).kind === 'propose' ? 'Building, booking and checking the database…' : 'Nemotron is reading the evidence…') : 'Working…';
-      item.append(el('span', 'icon spinner', ''), el('span', 'text', label)); list.append(item);
+      const item = el('li', 'step running'), next = trace.steps[count];
+      const label = next ? stepTitle(next) : following() ? (trace.steps.length && trace.steps.at(-1).kind === 'propose' ? 'Building, booking and checking the database…' : 'Nemotron is reading the evidence…') : 'Working…';
+      item.append(hidden('span', 'icon spinner', ''), el('span', 'text', label)); list.append(item);
+    } else if (count === trace.steps.length && trace.state !== 'running') {
+      const verified = trace.state === 'verified', item = el('li', 'step outcome ' + (verified ? 'pass' : 'fail'));
+      item.append(hidden('span', 'icon', verified ? '✓' : '!'), el('span', 'text', outcomeText())); list.append(item);
     }
-    if (!pending && count === trace.steps.length && trace.state !== 'running') {
-      const verified = trace.state === 'verified';
-      const item = el('li', 'step outcome ' + (verified ? 'pass' : 'fail'));
-      item.append(el('span', 'icon', verified ? '✓' : '!'), el('span', 'text', verified
-        ? 'Verified on attempt ' + trace.accepted.attempt + ' · ' + seconds(trace.duration_ms) + ' · ' + money(trace.estimated_cost_usd)
-        : trace.state === 'error' ? 'Stopped: ' + trace.error : 'Not verified after ' + trace.steps.filter(step => step.kind === 'verify').length + ' attempts — no patch accepted, '
-          + trace.steps.filter(step => step.kind === 'verify' && step.stage === 'outcome').length + ' false "booked" pages caught'));
-      list.append(item);
+  }
+  function markSelected() {
+    for (const item of $('#timeline').querySelectorAll('li[data-index]')) {
+      const on = Number(item.dataset.index) === selected, button = item.firstElementChild;
+      item.classList.toggle('selected', on); if (on) button.setAttribute('aria-current', 'true'); else button.removeAttribute('aria-current');
     }
+  }
+  // One dot per attempt of the shown run; attempts the replay has not reached yet stay hollow.
+  function renderStrip(id) {
+    const run = live?.caseId === id ? live.trace : traces.get(id), strip = $('#strip-' + id); if (!strip) return;
+    if (!run) return strip.replaceChildren();
+    const verifies = run.steps.map((step, index) => [step, index]).filter(([step]) => step.kind === 'verify');
+    const current = id === caseId && trace === run, attempt = current && selected >= 0 ? trace.steps[selected].attempt : null;
+    const dots = hidden('span', 'pips');
+    for (const [step, index] of verifies) dots.append(el('span', 'pip ' + (step.verified ? 'ok' : 'bad') + (current && index >= shown ? ' todo' : '') + (step.attempt === attempt ? ' now' : '')));
+    const result = run.state === 'verified' ? (verifies.length === 1 ? 'verified' : 'verified on attempt ' + run.accepted.attempt) : run.state === 'running' ? 'running' : run.state === 'error' ? 'stopped by an error' : 'none verified';
+    strip.replaceChildren(dots, el('span', 'strip-text', 'This run: ' + plural(verifies.length, 'attempt') + ', ' + result));
   }
 
   // Line diff of one literal edit, keeping two lines of context around changes.
@@ -76,9 +132,17 @@
     return out;
   }
   function codeBlock(edit) {
-    const box = el('div', 'edit'); box.append(el('div', 'file', edit.path));
+    const box = el('div', 'edit'); box.append(el('div', 'file', typeof edit?.path === 'string' ? edit.path : '(no path)'));
+    // Model edits are recorded before they are validated; a malformed one is shown as it came.
+    if (typeof edit?.old !== 'string' || typeof edit.new !== 'string') {
+      box.append(el('p', 'malformed', 'Malformed edit: it needs text for both "old" and "new". Shown as recorded:'), el('pre', '', String(JSON.stringify(edit, null, 2))));
+      return box;
+    }
     const pre = el('pre', 'lines');
-    for (const [mark, text] of diffLines(edit.old, edit.new)) pre.append(el('span', mark === '+' ? 'add' : mark === '-' ? 'del' : mark === '…' ? 'gap' : 'ctx', mark === '…' ? '⋯' : mark + ' ' + text));
+    for (const [mark, text] of diffLines(edit.old, edit.new)) {
+      if (mark !== '…') { pre.append(el('span', mark === '+' ? 'add' : mark === '-' ? 'del' : 'ctx', mark + ' ' + text)); continue; }
+      const gap = el('span', 'gap'); gap.append(hidden('span', '', '⋯'), el('span', 'sr-only', 'unchanged lines')); pre.append(gap);
+    }
     box.append(pre); return box;
   }
   function facts(rows) {
@@ -88,13 +152,13 @@
   }
   function trail(evidence) {
     const box = el('div', 'trail');
-    const steps = evidence.focus_trail || [];
-    for (const item of steps) {
+    for (const item of evidence.focus_trail || []) {
       const [key, target] = item.split(' → '); const chip = el('span', 'chip'); chip.append(el('kbd', '', key), el('span', '', target || '')); box.append(chip);
     }
     box.append(el('span', 'chip stuck', 'stuck'));
     return box;
   }
+  function header(text, scope) { const cell = el('th'); cell.scope = scope; cell.textContent = text; return cell; }
   function evidenceView(step) {
     const wrap = el('div'); const evidence = step.evidence || {};
     if (evidence.stage === 'keyboard') {
@@ -103,10 +167,15 @@
         ['Fields the keyboard could use', (evidence.page.inputs || []).join(', ') || 'none']]));
     } else if (evidence.stage === 'outcome') {
       const saved = evidence.saved || {}, expected = evidence.expected || {}, customer = saved.customers?.[0] || {}, typed = expected.customer || {};
-      const table = el('table', 'compare'); const head = el('tr'); head.append(el('th', '', ''), el('th', '', 'Typed by the user'), el('th', '', 'Saved in the database'));
-      table.append(head);
+      const table = el('table', 'compare'), head = el('tr'), body = el('tbody'), thead = el('thead'), field = header('', 'col');
+      field.append(el('span', 'sr-only', 'Field'));
+      head.append(field, header('Typed by the user', 'col'), header('Saved in the database', 'col')); thead.append(head);
+      table.append(el('caption', 'sr-only', 'What the user typed compared with what the database saved'), thead, body);
       for (const [label, a, b] of [['Appointment', expected.start, saved.appointments?.[0]?.start], ['Phone', typed.phone_number, customer.phone_number], ['Email', typed.email, customer.email]]) {
-        if (!a && !b) continue; const row = el('tr', a === b ? '' : 'mismatch'); row.append(el('th', '', label), el('td', '', a || '—'), el('td', '', b || '—')); table.append(row);
+        if (!a && !b) continue;
+        const row = el('tr', a === b ? '' : 'mismatch'), savedCell = el('td', '', b || '—');
+        if (a !== b) savedCell.append(el('span', 'sr-only', ' (does not match)'));
+        row.append(header(label, 'row'), el('td', '', a || '—'), savedCell); body.append(row);
       }
       wrap.append(el('p', '', 'The confirmation page appeared. Reading the database tells a different story:'), table);
       if (evidence.timeline_after_typing_date?.length) {
@@ -118,8 +187,9 @@
         for (const item of evidence.date_field_history) { const row = el('li'); row.append(el('span', '', item.action), el('code', '', item.date_field_value || '(empty)')); list.append(row); }
         wrap.append(el('p', '', 'The date field, each time its value changed:'), list);
       }
-    } else if (evidence.stage === 'build' || evidence.stage === 'apply') {
-      const pre = el('pre', 'log'); pre.textContent = evidence.error || ''; wrap.append(el('p', '', evidence.stage === 'build' ? 'The trusted compiler rejected the patched code:' : 'The edit did not match the source exactly:'), pre);
+    } else if (evidence.stage === 'build' || evidence.stage === 'apply' || evidence.stage === 'format') {
+      const pre = el('pre', 'log'); pre.textContent = evidence.error || '';
+      wrap.append(el('p', '', evidence.stage === 'build' ? 'The trusted compiler rejected the patched code:' : evidence.stage === 'apply' ? 'The edit did not match the source exactly:' : 'The answer could not be used as a patch:'), pre);
     } else if (evidence.stage === 'regression') {
       const flags = evidence.controls?.browser ? Object.entries(evidence.controls.browser).filter(([, value]) => typeof value === 'boolean') : [];
       const list = el('ul', 'checks'); for (const [key, value] of flags) list.append(el('li', value ? 'ok' : 'bad', key.replaceAll('_', ' ')));
@@ -136,35 +206,48 @@
       ['Reopened in a fresh browser', proof.reopened_date], ['Keyboard actions', proof.keyboard_actions]]));
     const list = el('ul', 'checks'); for (const check of CHECKS) list.append(el('li', 'ok', check)); box.append(list);
     if (trace.accepted.patch) {
-      const link = el('a', 'download', 'Download the verified patch'); link.href = URL.createObjectURL(new Blob([trace.accepted.patch], {type: 'text/x-diff'}));
-      link.download = 'accessfinish-' + trace.case_id + '.patch'; box.append(link);
+      if (patchUrl) URL.revokeObjectURL(patchUrl);
+      patchUrl = URL.createObjectURL(new Blob([trace.accepted.patch], {type: 'text/x-diff'}));
+      const link = el('a', 'download', 'Download the verified patch'); link.href = patchUrl; link.download = 'accessfinish-' + trace.case_id + '.patch'; box.append(link);
     }
     return box;
   }
   function renderDetail() {
     const detail = $('#detail'); detail.replaceChildren();
-    if (!trace || selected < 0) return;
-    const step = trace.steps[selected]; if (!step) return;
+    const step = trace && trace.steps[selected];
+    if (!step) return detail.append(el('p', 'placeholder', trace ? 'Choose a step in the timeline to see the evidence behind it.' : ''));
     detail.append(el('p', 'kicker', stepTitle(step)));
     if (step.kind === 'read') {
-      detail.append(el('h3', '', step.path), el('p', '', 'Nemotron chose to open this file to follow the code before deciding on a fix. Read-only: edits stay limited to the two booking files.'));
+      detail.append(el('h3', '', step.path), el('p', '', step.limited ? 'The read limit for this attempt was reached, so the file was not sent.'
+        : step.already_provided ? 'Nemotron asked for this file again. It was already in the conversation, so it was not sent twice.'
+        : !step.found ? 'There is no such file in the app source.' : 'Nemotron chose to open this file to follow the code before deciding on a fix. Read-only: edits stay limited to the two booking files.'));
+      return;
+    }
+    if (step.kind === 'search') {
+      const pattern = el('h3'); pattern.append(el('code', '', '/' + step.query + '/'));
+      detail.append(pattern, el('p', '', step.limited ? 'The lookup limit for this attempt was reached, so the search did not run.'
+        : step.error ? 'The search did not run: ' + (step.error === 'timeout' ? 'the pattern took too long to match.' : 'the pattern is not a valid regular expression.') + ' Nemotron was told so.'
+        : plural(step.matches, 'matching line') + (step.path ? ' in files whose path contains ' + step.path : ' across the app source') + '. Read-only: a regular expression over the code, to follow a value or an event before deciding on a fix.'));
       return;
     }
     if (step.kind === 'propose') {
+      const edits = Array.isArray(step.edits) ? step.edits : [];
       detail.append(el('h3', '', 'Diagnosis'), el('blockquote', '', step.diagnosis));
-      detail.append(el('h3', '', step.edits.length + (step.edits.length === 1 ? ' edit' : ' edits')));
-      for (const edit of step.edits) detail.append(codeBlock(edit));
+      if (step.evidence_explained) detail.append(el('h3', '', 'Evidence it accounts for'), el('blockquote', '', step.evidence_explained));
+      if (step.build_on_attempt) detail.append(el('p', '', 'Builds on attempt ' + step.build_on_attempt + (step.kept_edits ? ': keeps its ' + plural(step.kept_edits, 'edit') + ', then adds ' + (edits.length - step.kept_edits) + '.' : '.')));
+      detail.append(el('h3', '', plural(edits.length, 'edit')));
+      for (const edit of edits) detail.append(codeBlock(edit));
       if (step.usage) detail.append(el('p', 'micro', (step.usage.prompt_tokens || 0).toLocaleString() + ' input + ' + (step.usage.completion_tokens || 0).toLocaleString() + ' output tokens · ' + seconds(step.duration_ms)));
       return;
     }
-    detail.append(el('h3', step.verified ? 'good' : 'bad', step.headline));
+    detail.append(el('h3', step.verified ? 'good' : 'bad', stepLine(step)));
     if (step.verified && trace.accepted && trace.accepted.attempt === step.attempt) detail.append(proofView());
     else detail.append(evidenceView(step));
     if (step.run_id) detail.append(el('p', 'micro', 'Isolated run ' + step.run_id + ' · ' + seconds(step.duration_ms)));
   }
 
   function renderFacts() {
-    $('#finding').hidden = !(trace && caseId === 'keyboard-date' && trace.state !== 'verified' && trace.state !== 'running');
+    $('#finding').hidden = !(trace && caseId === 'keyboard-date' && trace.state !== 'verified' && trace.state !== 'running' && shown >= trace.steps.length);
   }
   // Totals across every recorded live run (web/agent-runs/summary.json).
   async function renderSummary() {
@@ -180,52 +263,130 @@
     $('#fact-checks').textContent = String(CHECKS.length);
   }
 
-  function replay() {
-    clearTimeout(timer); if (!trace) return;
-    let count = 0; selected = -1; $('#run-label').textContent = 'Replaying recorded run · ' + new Date(trace.started_at_utc).toUTCString().slice(5, 16);
-    const tick = () => {
-      if (count >= trace.steps.length) { selected = trace.steps.length - 1; renderTimeline(); renderDetail(); renderFacts(); return; }
-      const step = trace.steps[count]; renderTimeline(count, true);
-      timer = setTimeout(() => { count++; selected = count - 1; renderTimeline(count, count < trace.steps.length); renderDetail(); timer = setTimeout(tick, 1100); }, step.kind === 'propose' ? 1300 : 1700);
+  // Replay: Pause/Play, Show all and a click on any step all take over from the timer.
+  function setControls() {
+    const here = following(), recorded = !!trace && !here, done = !trace || shown >= trace.steps.length;
+    for (const id of ['#pause', '#show-all']) { $(id).hidden = !recorded; $(id).setAttribute('aria-disabled', String(done)); }
+    $('#pause').textContent = playing ? 'Pause' : 'Play';
+    $('#replay').hidden = !trace || here;
+    $('#follow').hidden = !here; $('#follow').setAttribute('aria-pressed', String(follow));
+  }
+  function refresh(pending) { renderTimeline(shown, pending); renderDetail(); renderStrip(caseId); renderFacts(); setControls(); }
+  function pause(message) {
+    if (!playing) return; playing = false; clearTimeout(timer); renderTimeline(shown, false); setControls();
+    if (message) announce('Replay paused at step ' + shown + ' of ' + trace.steps.length + '.', true);
+  }
+  function play() {
+    if (!trace || following() || shown >= trace.steps.length) return;
+    const pace = step => step.kind === 'propose' ? 1300 : 1700;
+    const advance = () => {
+      shown++; selected = shown - 1; const done = shown >= trace.steps.length; if (done) playing = false;
+      refresh(!done); if (engaged) announce(stepHeadline(trace.steps[selected]) + (done ? ' ' + outcomeText() + '.' : ''));
+      if (!done) timer = setTimeout(advance, 1100 + pace(trace.steps[shown]));
     };
-    if (matchMedia('(prefers-reduced-motion: reduce)').matches) { count = trace.steps.length; tick(); } else tick();
+    playing = true; clearTimeout(timer); renderTimeline(shown, true); setControls();
+    timer = setTimeout(advance, pace(trace.steps[shown]));
+  }
+  function showAll(spoken) {
+    if (!trace || following()) return;
+    clearTimeout(timer); playing = false; shown = trace.steps.length; selected = shown - 1; refresh(false);
+    if (spoken) announce('Showing all ' + shown + ' steps. ' + outcomeText() + '.', true);
+  }
+  function replay() {
+    clearTimeout(timer); if (!trace || following()) return;
+    playing = false; shown = 0; selected = -1; renderTimeline(0); renderDetail(); renderStrip(caseId);
+    const started = new Date(trace.started_at_utc);
+    $('#run-label').textContent = (ranHere.has(trace) ? 'Live run from this visit · ' : 'Recorded run · ') + started.toUTCString().slice(5, 16) + ', ' + started.toISOString().slice(11, 16) + ' UTC';
+    if (reduced.matches) showAll(false); else play();
+  }
+  function choose(index, pointer) {
+    engaged = true; pause(true); if (following()) follow = false;
+    selected = index; markSelected(); renderDetail(); renderStrip(caseId); setControls();
+    // In one column the evidence sits below the whole timeline: bring it into view after a tap, leaving focus on the step.
+    const top = $('#detail').getBoundingClientRect().top;
+    if (pointer && narrow.matches && (top < 0 || top > innerHeight * 0.75)) $('#detail').scrollIntoView({block: 'start', behavior: reduced.matches ? 'auto' : 'smooth'});
+  }
+  function notify(text, id) { noticeCase = id; $('#notice').textContent = text; $('#notice').hidden = id !== caseId; }
+
+  // Tabs: roving tabindex, arrows/Home/End move and select, one panel shows the selected case.
+  function select(id) {
+    for (const tab of tabs) { const on = tab.dataset.case === id; tab.setAttribute('aria-selected', String(on)); tab.tabIndex = on ? 0 : -1; }
+    $('#case-panel').setAttribute('aria-labelledby', 'name-' + id);
+    load(id);
+  }
+  function load(id) {
+    caseId = id; clearTimeout(timer); hush(); playing = false; follow = true; selected = -1; shown = 0; trace = following() ? live.trace : traces.get(id) || null;
+    $('#notice').hidden = id !== noticeCase;
+    $('#timeline').replaceChildren(); renderDetail(); renderFacts(); for (const other of CASES) renderStrip(other);
+    if (following()) { $('#goal').textContent = trace.goal; $('#empty').hidden = true; $('#run-label').textContent = LIVE; return showLive(); }
+    if (trace) { $('#goal').textContent = trace.goal; $('#empty').hidden = true; replay(); return setControls(); }
+    $('#goal').textContent = id === 'keyboard-date' ? 'A keyboard-only customer books a 09:00 slot and it is saved for the right date.' : 'The phone number the customer typed is saved exactly.';
+    $('#empty').hidden = false; $('#run-label').textContent = 'No recorded run'; setControls();
+    $('#empty').textContent = status?.agent_ready ? 'No recorded run for this journey yet. Press Run live to start the agent.' : 'No recorded run for this journey yet. Run it locally with: node scripts/agent.cjs --case ' + id + ' --publish';
   }
 
-  async function load(id) {
-    caseId = id; clearTimeout(timer); trace = null; selected = -1; live = null;
-    for (const tab of document.querySelectorAll('.case')) tab.setAttribute('aria-selected', String(tab.dataset.case === id));
-    $('#timeline').replaceChildren(); $('#detail').replaceChildren(); renderFacts();
-    try {
-      trace = await json('agent-runs/' + id + '.json');
-      $('#goal').textContent = trace.goal; $('#empty').hidden = true; $('#replay').hidden = false; replay();
-    } catch {
-      $('#goal').textContent = id === 'keyboard-date' ? 'A keyboard-only customer books a 09:00 slot and it is saved for the right date.' : 'The phone number the customer typed is saved exactly.';
-      $('#empty').hidden = false; $('#replay').hidden = true;
-      $('#empty').textContent = status?.agent_ready ? 'No recorded run for this journey yet. Press Run live to start the agent.' : 'No recorded run for this journey yet. Run it locally with: node scripts/agent.cjs --case ' + id + ' --publish';
-      $('#run-label').textContent = 'No recorded run';
-    }
+  // Live: the run belongs to the case it was started on. Other tabs keep their recorded runs while it goes on,
+  // and coming back to its tab resumes following it.
+  const LIVE = 'Live run · Nemotron on Nebius Token Factory';
+  function showLive() {
+    const run = live.trace, fresh = run.steps.length > shown; trace = run; shown = run.steps.length;
+    if (fresh && follow) selected = shown - 1;
+    renderTimeline(shown, run.state === 'running'); if (fresh && follow) renderDetail(); renderStrip(caseId); renderFacts(); setControls();
+    return fresh;
   }
-
   async function runLive() {
-    $('#run-live').disabled = true; $('#replay').hidden = true; clearTimeout(timer);
+    const button = $('#run-live'), runCase = caseId; if (button.getAttribute('aria-disabled') === 'true') return;
+    engaged = true; button.setAttribute('aria-disabled', 'true'); pause(false);
+    const fail = error => {
+      const started = !!live; clearTimeout(liveTimer); live = null; button.setAttribute('aria-disabled', 'false');
+      notify((started ? 'The live run could not be followed: ' : 'The live run did not start: ') + error.message, runCase);
+      if (caseId === runCase) { if (started) load(runCase); else setControls(); }
+      announce($('#notice').textContent, true); // after load(), which hushes the announcer
+    };
+    const poll = async () => {
+      const run = await json('/api/agent/' + live.id); live.trace = run;
+      if (following()) { if (showLive()) announce(stepHeadline(run.steps.at(-1))); } else renderStrip(runCase);
+      if (run.state === 'running') { liveTimer = setTimeout(() => poll().catch(fail), 2000); return; }
+      live = null; ranHere.add(run); traces.set(runCase, run); button.setAttribute('aria-disabled', 'false');
+      if (caseId === runCase) { renderTimeline(shown); renderFacts(); setControls(); announce(outcomeText(run) + '.'); }
+      else { renderStrip(runCase); announce('The live run on "' + $('#name-' + runCase).textContent + '" finished. ' + outcomeText(run) + '.'); }
+    };
     try {
-      trace = await json('/api/agent', {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({case_id: caseId})});
-      live = trace.id; $('#run-label').textContent = 'Live run · Nemotron on Nebius Token Factory'; $('#empty').hidden = true;
-      const poll = async () => {
-        if (live !== trace.id) return;
-        trace = await json('/api/agent/' + trace.id); selected = trace.steps.length - 1;
-        const running = trace.state === 'running'; renderTimeline(trace.steps.length, running); renderDetail(); renderFacts();
-        if (running) timer = setTimeout(poll, 2000); else { $('#run-live').disabled = false; $('#replay').hidden = false; }
-      };
-      poll();
-    } catch (error) { $('#empty').hidden = false; $('#empty').textContent = error.message; $('#run-live').disabled = false; }
+      const run = await json('/api/agent', {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({case_id: runCase})});
+      live = {id: run.id, caseId: runCase, trace: run};
+      if (caseId === runCase) { follow = true; shown = 0; selected = -1; $('#timeline').replaceChildren(); renderDetail(); showLive(); $('#run-label').textContent = LIVE; $('#empty').hidden = true; }
+      announce('Live run started.', true);
+      await poll();
+    } catch (error) { fail(error); }
   }
 
-  document.querySelectorAll('.case').forEach(tab => tab.addEventListener('click', () => load(tab.dataset.case)));
-  $('#replay').addEventListener('click', replay);
+  tabs.forEach((tab, index) => {
+    tab.addEventListener('click', () => { engaged = true; if (tab.dataset.case !== caseId || !trace) select(tab.dataset.case); });
+    tab.addEventListener('keydown', event => {
+      const next = {ArrowRight: index + 1, ArrowLeft: index - 1, Home: 0, End: tabs.length - 1}[event.key];
+      if (next === undefined || event.altKey || event.ctrlKey || event.metaKey) return;
+      event.preventDefault(); engaged = true; const target = tabs[(next + tabs.length) % tabs.length]; target.focus();
+      if (target.dataset.case !== caseId) select(target.dataset.case);
+    });
+  });
+  $('#pause').addEventListener('click', () => { if ($('#pause').getAttribute('aria-disabled') === 'true') return; engaged = true; if (playing) pause(false); else play(); });
+  $('#show-all').addEventListener('click', () => { if ($('#show-all').getAttribute('aria-disabled') !== 'true') { engaged = true; showAll(true); } });
+  // Never swap the evidence out from under a reader: focus in it pauses the replay, or stops following a live run.
+  $('#detail').addEventListener('focusin', () => { if (!following()) return pause(true); follow = false; setControls(); });
+  $('#follow').addEventListener('click', () => {
+    follow = !follow; if (follow && shown) { selected = shown - 1; markSelected(); renderDetail(); renderStrip(caseId); }
+    setControls();
+  });
+  $('#replay').addEventListener('click', () => { engaged = true; replay(); });
   $('#run-live').addEventListener('click', runLive);
   (async () => {
-    try { status = await json('/api/status'); $('#run-live').hidden = !status.agent_ready; } catch { status = null; }
-    load(caseId); renderSummary();
+    // Only the local server (loopback only) can run the agent; static hosts skip the probe.
+    if (['127.0.0.1', 'localhost'].includes(location.hostname)) try { status = await json('/api/status'); $('#run-live').hidden = !status.agent_ready; } catch { status = null; }
+    if (wantedRun) {
+      try { const run = await json('agent-runs/runs/' + wantedRun + '.json'); if (CASES.includes(run.case_id)) { traces.set(run.case_id, run); caseId = run.case_id; } }
+      catch { notify('Run ' + wantedRun + ' is not in the published index, so the latest run is shown instead.', caseId); }
+    }
+    await Promise.all(CASES.filter(id => !traces.has(id)).map(id => json('agent-runs/' + id + '.json').then(run => traces.set(id, run), () => {})));
+    select(caseId); renderSummary();
   })();
 })();

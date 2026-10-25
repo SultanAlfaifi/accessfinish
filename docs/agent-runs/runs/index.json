@@ -1,0 +1,461 @@
+{
+  "generated_from": "evidence/agent-runs",
+  "generator": "scripts/evidence-index.cjs",
+  "repository": "https://github.com/SultanAlfaifi/accessfinish",
+  "totals": {
+    "runs": 14,
+    "verified_runs": 7,
+    "attempts": 50,
+    "executed": 43,
+    "false_booked_caught": 15,
+    "duration_ms": 2941073,
+    "cost_usd": 0.4086
+  },
+  "runs": [
+    {
+      "id": "agent-c951537a80ad36dc728697c9",
+      "case_id": "customer-phone",
+      "title": "Save the phone the customer entered",
+      "started_at_utc": "2026-10-24T13:27:20.815Z",
+      "finished_at_utc": "2026-10-24T13:29:00.716Z",
+      "state": "verified",
+      "featured": true,
+      "agent_version": "1",
+      "agent_commit": "57b8a9f",
+      "recorded_in": "9ac1c3f",
+      "agent_url": "https://github.com/SultanAlfaifi/accessfinish/tree/57b8a9f",
+      "attempts": 1,
+      "executed": 1,
+      "results": [
+        "verified"
+      ],
+      "verified_attempt": 1,
+      "false_booked_caught": 0,
+      "duration_ms": 99901,
+      "cost_usd": 0.005005,
+      "usage": {
+        "prompt_tokens": 15779,
+        "completion_tokens": 301
+      },
+      "trace": "agent-runs/runs/agent-c951537a80ad36dc728697c9.json",
+      "raw": "evidence/agent-runs/agent-c951537a80ad36dc728697c9.json",
+      "raw_url": "https://github.com/SultanAlfaifi/accessfinish/blob/9ac1c3f/evidence/agent-runs/agent-c951537a80ad36dc728697c9.json",
+      "raw_sha256": "300b5af30c19d3b035b7d1a3ef013e84161d1223c86bb33119dc0806db975ed2"
+    },
+    {
+      "id": "agent-2b6abb4c3accac2db956e899",
+      "case_id": "keyboard-date",
+      "title": "Reach the date with a keyboard",
+      "started_at_utc": "2026-10-24T13:15:36.426Z",
+      "finished_at_utc": "2026-10-24T13:27:20.692Z",
+      "state": "not_verified",
+      "featured": true,
+      "agent_version": "1",
+      "agent_commit": "57b8a9f",
+      "recorded_in": "9ac1c3f",
+      "agent_url": "https://github.com/SultanAlfaifi/accessfinish/tree/57b8a9f",
+      "attempts": 8,
+      "executed": 8,
+      "results": [
+        "keyboard",
+        "outcome",
+        "outcome",
+        "keyboard",
+        "keyboard",
+        "outcome",
+        "outcome",
+        "outcome"
+      ],
+      "verified_attempt": null,
+      "false_booked_caught": 5,
+      "duration_ms": 704266,
+      "cost_usd": 0.137738,
+      "usage": {
+        "prompt_tokens": 311122,
+        "completion_tokens": 49335
+      },
+      "trace": "agent-runs/runs/agent-2b6abb4c3accac2db956e899.json",
+      "raw": "evidence/agent-runs/agent-2b6abb4c3accac2db956e899.json",
+      "raw_url": "https://github.com/SultanAlfaifi/accessfinish/blob/9ac1c3f/evidence/agent-runs/agent-2b6abb4c3accac2db956e899.json",
+      "raw_sha256": "b602fd7f04d3e0790aac78d8a20f5ee46ac953474bab5ec17737a05649416b18"
+    },
+    {
+      "id": "agent-8e4fa95abbf93c0323d8ad68",
+      "case_id": "customer-phone",
+      "title": "Save the phone the customer entered",
+      "started_at_utc": "2026-10-24T13:07:54.304Z",
+      "finished_at_utc": "2026-10-24T13:09:33.905Z",
+      "state": "verified",
+      "agent_version": "1",
+      "agent_commit": "29c4c44",
+      "recorded_in": "75ae48b",
+      "agent_url": "https://github.com/SultanAlfaifi/accessfinish/tree/29c4c44",
+      "attempts": 1,
+      "executed": 1,
+      "results": [
+        "verified"
+      ],
+      "verified_attempt": 1,
+      "false_booked_caught": 0,
+      "duration_ms": 99601,
+      "cost_usd": 0.004274,
+      "usage": {
+        "prompt_tokens": 13523,
+        "completion_tokens": 241
+      },
+      "trace": "agent-runs/runs/agent-8e4fa95abbf93c0323d8ad68.json",
+      "raw": "evidence/agent-runs/agent-8e4fa95abbf93c0323d8ad68.json",
+      "raw_url": "https://github.com/SultanAlfaifi/accessfinish/blob/75ae48b/evidence/agent-runs/agent-8e4fa95abbf93c0323d8ad68.json",
+      "raw_sha256": "401cf85894d709e8dafab5456bb5c74cdffedbf262e593a819e0237c0b4ed182"
+    },
+    {
+      "id": "agent-ed37f1458a8a57c34c72dfec",
+      "case_id": "keyboard-date",
+      "title": "Reach the date with a keyboard",
+      "started_at_utc": "2026-10-24T13:01:34.016Z",
+      "finished_at_utc": "2026-10-24T13:07:54.182Z",
+      "state": "not_verified",
+      "agent_version": "1",
+      "agent_commit": "29c4c44",
+      "recorded_in": "75ae48b",
+      "agent_url": "https://github.com/SultanAlfaifi/accessfinish/tree/29c4c44",
+      "attempts": 8,
+      "executed": 7,
+      "results": [
+        "keyboard",
+        "keyboard",
+        "keyboard",
+        "keyboard",
+        "keyboard",
+        "outcome",
+        "apply",
+        "outcome"
+      ],
+      "verified_attempt": null,
+      "false_booked_caught": 2,
+      "duration_ms": 380166,
+      "cost_usd": 0.054844,
+      "usage": {
+        "prompt_tokens": 131112,
+        "completion_tokens": 17234
+      },
+      "trace": "agent-runs/runs/agent-ed37f1458a8a57c34c72dfec.json",
+      "raw": "evidence/agent-runs/agent-ed37f1458a8a57c34c72dfec.json",
+      "raw_url": "https://github.com/SultanAlfaifi/accessfinish/blob/75ae48b/evidence/agent-runs/agent-ed37f1458a8a57c34c72dfec.json",
+      "raw_sha256": "3c3a74a0974cf01ef866ec4d492c94fb85efd295ed1bb1e71a28b52ac0845ee5"
+    },
+    {
+      "id": "agent-fe3bd734048683c46a3ebb34",
+      "case_id": "customer-phone",
+      "title": "Save the phone the customer entered",
+      "started_at_utc": "2026-10-24T12:48:33.217Z",
+      "finished_at_utc": "2026-10-24T12:50:13.805Z",
+      "state": "verified",
+      "agent_version": "1",
+      "agent_commit": "5b0f46e",
+      "recorded_in": "707f87c",
+      "agent_url": "https://github.com/SultanAlfaifi/accessfinish/tree/5b0f46e",
+      "attempts": 1,
+      "executed": 1,
+      "results": [
+        "verified"
+      ],
+      "verified_attempt": 1,
+      "false_booked_caught": 0,
+      "duration_ms": 100588,
+      "cost_usd": 0.004696,
+      "usage": {
+        "prompt_tokens": 13523,
+        "completion_tokens": 710
+      },
+      "trace": "agent-runs/runs/agent-fe3bd734048683c46a3ebb34.json",
+      "raw": "evidence/agent-runs/agent-fe3bd734048683c46a3ebb34.json",
+      "raw_url": "https://github.com/SultanAlfaifi/accessfinish/blob/707f87c/evidence/agent-runs/agent-fe3bd734048683c46a3ebb34.json",
+      "raw_sha256": "374970fa01a6f06b2242692a50feac782c0af68887733ac6bee23595f60f71a7"
+    },
+    {
+      "id": "agent-896b06fdf084d2b333f14923",
+      "case_id": "keyboard-date",
+      "title": "Reach the date with a keyboard",
+      "started_at_utc": "2026-10-24T12:44:01.672Z",
+      "finished_at_utc": "2026-10-24T12:48:33.093Z",
+      "state": "not_verified",
+      "agent_version": "1",
+      "agent_commit": "5b0f46e",
+      "recorded_in": "707f87c",
+      "agent_url": "https://github.com/SultanAlfaifi/accessfinish/tree/5b0f46e",
+      "attempts": 8,
+      "executed": 4,
+      "results": [
+        "keyboard",
+        "keyboard",
+        "outcome",
+        "keyboard",
+        "apply",
+        "apply",
+        "apply",
+        "apply"
+      ],
+      "verified_attempt": null,
+      "false_booked_caught": 1,
+      "duration_ms": 271421,
+      "cost_usd": 0.07191,
+      "usage": {
+        "prompt_tokens": 163808,
+        "completion_tokens": 25297
+      },
+      "trace": "agent-runs/runs/agent-896b06fdf084d2b333f14923.json",
+      "raw": "evidence/agent-runs/agent-896b06fdf084d2b333f14923.json",
+      "raw_url": "https://github.com/SultanAlfaifi/accessfinish/blob/707f87c/evidence/agent-runs/agent-896b06fdf084d2b333f14923.json",
+      "raw_sha256": "b851cdb41ab2c305c40acb5bd7e2a683bd883ba08dc51dd0e596d7350adf4b77"
+    },
+    {
+      "id": "agent-3752164f1abf5b26bc7734d1",
+      "case_id": "customer-phone",
+      "title": "Save the phone the customer entered",
+      "started_at_utc": "2026-10-24T12:33:13.844Z",
+      "finished_at_utc": "2026-10-24T12:34:53.634Z",
+      "state": "verified",
+      "agent_version": "1",
+      "agent_commit": "a501f53",
+      "recorded_in": "531ed0a",
+      "agent_url": "https://github.com/SultanAlfaifi/accessfinish/tree/a501f53",
+      "attempts": 1,
+      "executed": 1,
+      "results": [
+        "verified"
+      ],
+      "verified_attempt": 1,
+      "false_booked_caught": 0,
+      "duration_ms": 99790,
+      "cost_usd": 0.004245,
+      "usage": {
+        "prompt_tokens": 13426,
+        "completion_tokens": 241
+      },
+      "trace": "agent-runs/runs/agent-3752164f1abf5b26bc7734d1.json",
+      "raw": "evidence/agent-runs/agent-3752164f1abf5b26bc7734d1.json",
+      "raw_url": "https://github.com/SultanAlfaifi/accessfinish/blob/531ed0a/evidence/agent-runs/agent-3752164f1abf5b26bc7734d1.json",
+      "raw_sha256": "c0c9d4e44e1ae88b7372b11f0656839d1303957835a5fd48778bf6f9ead156f6"
+    },
+    {
+      "id": "agent-a5e5f947f8d4d5012e178b4e",
+      "case_id": "keyboard-date",
+      "title": "Reach the date with a keyboard",
+      "started_at_utc": "2026-10-24T12:28:14.737Z",
+      "finished_at_utc": "2026-10-24T12:33:13.720Z",
+      "state": "not_verified",
+      "agent_version": "1",
+      "agent_commit": "a501f53",
+      "recorded_in": "531ed0a",
+      "agent_url": "https://github.com/SultanAlfaifi/accessfinish/tree/a501f53",
+      "attempts": 6,
+      "executed": 4,
+      "results": [
+        "keyboard",
+        "apply",
+        "apply",
+        "outcome",
+        "outcome",
+        "keyboard"
+      ],
+      "verified_attempt": null,
+      "false_booked_caught": 2,
+      "duration_ms": 298983,
+      "cost_usd": 0.035424,
+      "usage": {
+        "prompt_tokens": 90769,
+        "completion_tokens": 9104
+      },
+      "trace": "agent-runs/runs/agent-a5e5f947f8d4d5012e178b4e.json",
+      "raw": "evidence/agent-runs/agent-a5e5f947f8d4d5012e178b4e.json",
+      "raw_url": "https://github.com/SultanAlfaifi/accessfinish/blob/531ed0a/evidence/agent-runs/agent-a5e5f947f8d4d5012e178b4e.json",
+      "raw_sha256": "6358ccbecc1d44a6bc2bc74b332f99c04c96d13c0d6eb28052c8edf5273c33d0"
+    },
+    {
+      "id": "agent-96b3d3fc38ddfae95603a2b3",
+      "case_id": "customer-phone",
+      "title": "Save the phone the customer entered",
+      "started_at_utc": "2026-10-24T12:15:19.486Z",
+      "finished_at_utc": "2026-10-24T12:17:13.089Z",
+      "state": "verified",
+      "agent_version": "1",
+      "agent_commit": "ed50490",
+      "recorded_in": "2134242",
+      "agent_url": "https://github.com/SultanAlfaifi/accessfinish/tree/ed50490",
+      "attempts": 1,
+      "executed": 1,
+      "results": [
+        "verified"
+      ],
+      "verified_attempt": 1,
+      "false_booked_caught": 0,
+      "duration_ms": 113603,
+      "cost_usd": 0.004459,
+      "usage": {
+        "prompt_tokens": 13420,
+        "completion_tokens": 481
+      },
+      "trace": "agent-runs/runs/agent-96b3d3fc38ddfae95603a2b3.json",
+      "raw": "evidence/agent-runs/agent-96b3d3fc38ddfae95603a2b3.json",
+      "raw_url": "https://github.com/SultanAlfaifi/accessfinish/blob/2134242/evidence/agent-runs/agent-96b3d3fc38ddfae95603a2b3.json",
+      "raw_sha256": "f9d78dd4d2143bc85d13b147941db69e798fae9b214641ac284bcb6eedcbfbdf"
+    },
+    {
+      "id": "agent-eeac8b76245337b7ce0b53a8",
+      "case_id": "keyboard-date",
+      "title": "Reach the date with a keyboard",
+      "started_at_utc": "2026-10-24T12:12:58.356Z",
+      "finished_at_utc": "2026-10-24T12:15:19.362Z",
+      "state": "error",
+      "error": "Token Factory returned HTTP 503: <html>\r\n<head><title>503 Service Temporarily Unavailable</title></head>\r\n<body>\r\n<center><h1>503 Service Temporarily Unavailable</h1></center>\r\n<hr><center>nginx</center>\r\n</body>\r\n</html>\r\n",
+      "agent_version": "1",
+      "agent_commit": "ed50490",
+      "recorded_in": "2134242",
+      "agent_url": "https://github.com/SultanAlfaifi/accessfinish/tree/ed50490",
+      "attempts": 3,
+      "executed": 3,
+      "results": [
+        "keyboard",
+        "keyboard",
+        "outcome"
+      ],
+      "verified_attempt": null,
+      "false_booked_caught": 1,
+      "duration_ms": 141006,
+      "cost_usd": 0.014767,
+      "usage": {
+        "prompt_tokens": 42488,
+        "completion_tokens": 2245
+      },
+      "trace": "agent-runs/runs/agent-eeac8b76245337b7ce0b53a8.json",
+      "raw": "evidence/agent-runs/agent-eeac8b76245337b7ce0b53a8.json",
+      "raw_url": "https://github.com/SultanAlfaifi/accessfinish/blob/2134242/evidence/agent-runs/agent-eeac8b76245337b7ce0b53a8.json",
+      "raw_sha256": "08d7a307c9159f464309019e8605c78f3ad5a187141b0f55f33a973b78d42ea1"
+    },
+    {
+      "id": "agent-88ae844c90114770bab97442",
+      "case_id": "customer-phone",
+      "title": "Save the phone the customer entered",
+      "started_at_utc": "2026-10-24T12:04:43.357Z",
+      "finished_at_utc": "2026-10-24T12:06:10.714Z",
+      "state": "verified",
+      "agent_version": "1",
+      "agent_commit": "c9e9610",
+      "recorded_in": "03269ca",
+      "agent_url": "https://github.com/SultanAlfaifi/accessfinish/tree/c9e9610",
+      "attempts": 1,
+      "executed": 1,
+      "results": [
+        "verified"
+      ],
+      "verified_attempt": 1,
+      "false_booked_caught": 0,
+      "duration_ms": 87357,
+      "cost_usd": 0.004413,
+      "usage": {
+        "prompt_tokens": 13340,
+        "completion_tokens": 457
+      },
+      "trace": "agent-runs/runs/agent-88ae844c90114770bab97442.json",
+      "raw": "evidence/agent-runs/agent-88ae844c90114770bab97442.json",
+      "raw_url": "https://github.com/SultanAlfaifi/accessfinish/blob/03269ca/evidence/agent-runs/agent-88ae844c90114770bab97442.json",
+      "raw_sha256": "5524fa44d9a3afb4d8180d24c3f07629c85b245e5b30191a0afc14f0ae4725f1"
+    },
+    {
+      "id": "agent-3d489e28d65e4fc8c21a61e1",
+      "case_id": "keyboard-date",
+      "title": "Reach the date with a keyboard",
+      "started_at_utc": "2026-10-24T12:00:11.207Z",
+      "finished_at_utc": "2026-10-24T12:04:43.265Z",
+      "state": "not_verified",
+      "agent_version": "1",
+      "agent_commit": "c9e9610",
+      "recorded_in": "03269ca",
+      "agent_url": "https://github.com/SultanAlfaifi/accessfinish/tree/c9e9610",
+      "attempts": 6,
+      "executed": 6,
+      "results": [
+        "keyboard",
+        "keyboard",
+        "outcome",
+        "outcome",
+        "keyboard",
+        "outcome"
+      ],
+      "verified_attempt": null,
+      "false_booked_caught": 3,
+      "duration_ms": 272058,
+      "cost_usd": 0.041163,
+      "usage": {
+        "prompt_tokens": 98108,
+        "completion_tokens": 13034
+      },
+      "trace": "agent-runs/runs/agent-3d489e28d65e4fc8c21a61e1.json",
+      "raw": "evidence/agent-runs/agent-3d489e28d65e4fc8c21a61e1.json",
+      "raw_url": "https://github.com/SultanAlfaifi/accessfinish/blob/03269ca/evidence/agent-runs/agent-3d489e28d65e4fc8c21a61e1.json",
+      "raw_sha256": "3d98d30de8bbbea14083e737b2f77066758b73617984b95c9a997da59679f492"
+    },
+    {
+      "id": "agent-8248208e71ce6bf6227d7fa0",
+      "case_id": "customer-phone",
+      "title": "Save the phone the customer entered",
+      "started_at_utc": "2026-10-24T11:47:24.792Z",
+      "finished_at_utc": "2026-10-24T11:49:04.703Z",
+      "state": "verified",
+      "agent_version": "1",
+      "agent_commit": "729fafd",
+      "recorded_in": "8b785bd",
+      "agent_url": "https://github.com/SultanAlfaifi/accessfinish/tree/729fafd",
+      "attempts": 1,
+      "executed": 1,
+      "results": [
+        "verified"
+      ],
+      "verified_attempt": 1,
+      "false_booked_caught": 0,
+      "duration_ms": 99911,
+      "cost_usd": 0.00424,
+      "usage": {
+        "prompt_tokens": 13297,
+        "completion_tokens": 279
+      },
+      "trace": "agent-runs/runs/agent-8248208e71ce6bf6227d7fa0.json",
+      "raw": "evidence/agent-runs/agent-8248208e71ce6bf6227d7fa0.json",
+      "raw_url": "https://github.com/SultanAlfaifi/accessfinish/blob/8b785bd/evidence/agent-runs/agent-8248208e71ce6bf6227d7fa0.json",
+      "raw_sha256": "782b94dac4f6c2002dce6f5ec32fadeb07953e44eac5e903c76d98cb8b890769"
+    },
+    {
+      "id": "agent-9f7e28f7f9538a3da425c6d5",
+      "case_id": "keyboard-date",
+      "title": "Reach the date with a keyboard",
+      "started_at_utc": "2026-10-24T11:44:32.247Z",
+      "finished_at_utc": "2026-10-24T11:47:24.669Z",
+      "state": "not_verified",
+      "agent_version": "1",
+      "agent_commit": "729fafd",
+      "recorded_in": "8b785bd",
+      "agent_url": "https://github.com/SultanAlfaifi/accessfinish/tree/729fafd",
+      "attempts": 4,
+      "executed": 4,
+      "results": [
+        "keyboard",
+        "keyboard",
+        "outcome",
+        "keyboard"
+      ],
+      "verified_attempt": null,
+      "false_booked_caught": 1,
+      "duration_ms": 172422,
+      "cost_usd": 0.021435,
+      "usage": {
+        "prompt_tokens": 57951,
+        "completion_tokens": 4500
+      },
+      "trace": "agent-runs/runs/agent-9f7e28f7f9538a3da425c6d5.json",
+      "raw": "evidence/agent-runs/agent-9f7e28f7f9538a3da425c6d5.json",
+      "raw_url": "https://github.com/SultanAlfaifi/accessfinish/blob/8b785bd/evidence/agent-runs/agent-9f7e28f7f9538a3da425c6d5.json",
+      "raw_sha256": "67c7309247e4b208df6b5c5893e8e351599e053e409a7d76bd8f05a56cef75da"
+    }
+  ]
+}

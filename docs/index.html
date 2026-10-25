@@ -3,13 +3,13 @@
 <head>
   <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="description" content="An agent on NVIDIA Nemotron that keeps repairing a broken user journey until the saved result is verified, not just the confirmation page.">
-  <title>AccessFinish</title><link rel="stylesheet" href="agent.css?v=93560dcac4281b3d">
+  <title>AccessFinish</title><link rel="stylesheet" href="agent.css?v=31d8b8c975ce277c">
 </head>
 <body>
 <a class="skip" href="#agent">Skip to the agent</a>
 <header class="top">
   <a class="brand" href="./"><span class="mark" aria-hidden="true">af</span>AccessFinish</a>
-  <nav aria-label="Main"><a href="#how">How it works</a><a href="workbench.html">Evidence</a><a href="https://github.com/SultanAlfaifi/accessfinish">GitHub</a></nav>
+  <nav aria-label="Main"><a href="#how">How it works</a><a href="evidence.html">Evidence</a><a href="https://github.com/SultanAlfaifi/accessfinish">GitHub</a></nav>
 </header>
 <main>
   <section class="hero">
@@ -22,21 +22,25 @@
   <section class="agent" id="agent" aria-labelledby="agent-heading">
     <h2 id="agent-heading" class="sr-only">Agent run</h2>
     <div class="cases" role="tablist" aria-label="Broken journey">
-      <button role="tab" class="case" data-case="customer-phone" aria-selected="true"><span class="tag lie">Wrong data saved</span><strong>Save the phone the customer typed</strong><small>The confirmation page says success. The database disagrees.</small><span class="verdict good" id="verdict-customer-phone"></span></button>
-      <button role="tab" class="case" data-case="keyboard-date" aria-selected="false"><span class="tag stuck">Keyboard blocked</span><strong>Book an appointment without a mouse</strong><small>The calendar looks fine. Tab can't reach it.</small><span class="verdict caught" id="verdict-keyboard-date"></span></button>
+      <button type="button" role="tab" class="case" id="tab-customer-phone" data-case="customer-phone" aria-selected="true" tabindex="0" aria-controls="case-panel" aria-labelledby="name-customer-phone" aria-describedby="tag-customer-phone note-customer-phone verdict-customer-phone strip-customer-phone"><span class="tag lie" id="tag-customer-phone">Wrong data saved</span><strong id="name-customer-phone">Save the phone the customer typed</strong><small id="note-customer-phone">The confirmation page says success. The database disagrees.</small><span class="verdict good" id="verdict-customer-phone"></span><span class="strip" id="strip-customer-phone"></span></button>
+      <button type="button" role="tab" class="case" id="tab-keyboard-date" data-case="keyboard-date" aria-selected="false" tabindex="-1" aria-controls="case-panel" aria-labelledby="name-keyboard-date" aria-describedby="tag-keyboard-date note-keyboard-date verdict-keyboard-date strip-keyboard-date"><span class="tag stuck" id="tag-keyboard-date">Keyboard blocked</span><strong id="name-keyboard-date">Book an appointment without a mouse</strong><small id="note-keyboard-date">The calendar looks fine. Tab can't reach it.</small><span class="verdict caught" id="verdict-keyboard-date"></span><span class="strip" id="strip-keyboard-date"></span></button>
     </div>
 
-    <div class="console">
-      <div class="console-head">
-        <div><span class="dot"></span><span id="run-label">Recorded run</span></div>
-        <div class="console-actions"><button id="replay" class="ghost">Replay</button><button id="run-live" class="solid" hidden>Run live</button></div>
+    <div class="panel" id="case-panel" role="tabpanel" aria-labelledby="name-customer-phone">
+      <div class="console">
+        <div class="console-head">
+          <p class="run"><span class="dot" aria-hidden="true"></span><span id="run-label">Recorded run</span> · <a href="evidence.html">All runs</a></p>
+          <div class="console-actions" role="group" aria-label="Replay controls"><button type="button" id="pause" class="ghost" hidden>Pause</button><button type="button" id="show-all" class="ghost" hidden>Show all</button><button type="button" id="replay" class="ghost">Replay</button><button type="button" id="follow" class="ghost" aria-pressed="true" hidden>Follow latest step</button><button type="button" id="run-live" class="solid" hidden>Run live</button></div>
+        </div>
+        <p class="goal"><b>Goal</b> <span id="goal"></span></p>
+        <p class="empty" id="notice" hidden></p>
+        <ol class="timeline" id="timeline" aria-label="Agent steps"></ol>
+        <p class="empty" id="empty" hidden></p>
       </div>
-      <p class="goal"><b>Goal</b> <span id="goal"></span></p>
-      <ol class="timeline" id="timeline" aria-live="polite"></ol>
-      <p class="empty" id="empty" hidden></p>
-    </div>
 
-    <div class="detail" id="detail" aria-live="polite"></div>
+      <div class="detail" id="detail" role="region" aria-label="Step evidence" tabindex="0"></div>
+    </div>
+    <p class="sr-only" id="announcer" role="status"></p>
   </section>
   <aside class="finding" id="finding" hidden>
     <h3>Not fixed yet — and nothing false got through.</h3>
@@ -65,9 +69,9 @@
     <div><strong id="fact-checks">9</strong><span>independent checks per attempt</span></div>
   </section>
 
-  <p class="limits">Synthetic data in a pinned copy of the open-source Easy!Appointments app. Two journeys today; the phone fault was seeded on purpose. All runs were made live on GitHub Actions with Nemotron 3 Super on Nebius Token Factory, and every one, including failures, is saved with its raw evidence — see <a href="workbench.html">Evidence</a>.</p>
+  <p class="limits">Synthetic data in a pinned copy of the open-source Easy!Appointments app. Two journeys today; the phone fault was seeded on purpose. All runs were made live on GitHub Actions with Nemotron 3 Super on Nebius Token Factory, and every one, including failures, is saved with its raw evidence — see <a href="evidence.html">Evidence</a>.</p>
 </main>
 <footer><span>AccessFinish — finish the task, verify the result.</span><a href="https://github.com/SultanAlfaifi/accessfinish">MIT · source on GitHub</a></footer>
-<script src="agent.js?v=c4b833a20871bb9f"></script>
+<script src="agent.js?v=8d8bd0c0e84bafc9"></script>
 </body>
 </html>
