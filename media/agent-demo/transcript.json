@@ -33,9 +33,9 @@
     },
     {
       "id": "keyboard-attempts",
-      "script": "Nemotron opens source files, proposes fixes, and every attempt is built and tested. It makes the date reachable, and the page says: booked.",
-      "heard": "Neotron opens source files, proposes fixes, and every attempt is built and tested. It makes the date reachable, and the page says, book!",
-      "word_match": 0.913
+      "script": "Nemotron reads the source files, proposes fixes, and every attempt is built and tested. It makes the date reachable, and the page says the booking is confirmed.",
+      "heard": "Nemotron reads the source files, proposes fixes, and every attempt is built and tested. It makes the date reachable, and the page says the booking is confirmed.",
+      "word_match": 1.0
     },
     {
       "id": "keyboard-wrong",
