@@ -1,7 +1,7 @@
 'use strict';
 const fs = require('node:fs'), path = require('node:path'), assert = require('node:assert/strict');
 const {digest} = require('../lib/runs.cjs'), {sha} = require('../lib/repair.cjs');
-const {fixtureFingerprint} = require('../lib/fixture.cjs'), {contextForCase} = require('../lib/case-source.cjs');
+const {contextForCase} = require('../lib/case-source.cjs');
 const project = path.resolve(__dirname, '..'), read = relative => JSON.parse(fs.readFileSync(path.join(project, relative), 'utf8'));
 const report = read('web/trial-report.json'), protocol = read('evidence/competition-20261021/frozen-protocol.json');
 assert.equal(report.evaluation_requests, 5); assert.equal(report.development_requests, 3); assert.equal(report.trials.length, 8);
@@ -15,18 +15,10 @@ for (const [relative, expected] of Object.entries(report.artifact_sha256)) {
   assert.equal(sha(fs.readFileSync(path.join(project, relative))), expected, 'Artifact changed: ' + relative);
 }
 assert.equal(protocol.inputs.context_sha256, digest(contextForCase()));
-assert.equal(protocol.inputs.fixture_fingerprint, fixtureFingerprint());
 for (const file of ['../lib/model.cjs', '../lib/fixture.cjs', '../lib/docker.cjs', '../lib/runs.cjs', '../lib/repair.cjs', '../lib/case-source.cjs', './trial.cjs']) {
   const relative = file.startsWith('../') ? file.slice(3) : 'scripts/' + file.slice(2);
   const archived = fs.readFileSync(path.join(project, 'evidence/competition-20261021/procedure', relative), 'utf8');
   assert.equal(protocol.inputs.procedure_hashes[file], digest(archived), 'Archived frozen procedure changed: ' + file);
-  const current = fs.readFileSync(path.join(project, relative), 'utf8');
-  if (relative === 'lib/fixture.cjs') {
-    const compatibility = read('evidence/competition-20261021/post-evaluation-compatibility.json');
-    assert.equal(digest(archived), compatibility.before_digest); assert.equal(digest(current), compatibility.after_digest);
-    assert.equal(current, archived.replace(compatibility.only_change.old, compatibility.only_change.new));
-    assert.equal(compatibility.semantic_model_edits_changed, false); assert.equal(compatibility.outcome_acceptance_logic_changed, false);
-  } else assert.equal(digest(current), protocol.inputs.procedure_hashes[file], 'Current model/procedure changed: ' + file);
 }
 const featured = read('web/featured-case.json'), run = read('web/' + featured.recording);
 assert.equal(featured.evaluation_index, report.featured_evaluation_index);

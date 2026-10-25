@@ -1,0 +1,79 @@
+1
+00:00:00,000 --> 00:00:08,000
+A source repair. A booking you can prove.
+For developers and accessibility QA reviewing AI-generated patches.
+
+2
+00:00:08,000 --> 00:00:20,000
+The original date control was a non-focusable div.
+Loading the page did not prove the keyboard booking could finish.
+
+3
+00:00:20,000 --> 00:00:32,000
+Nemotron 3 Super generated these source edits.
+The diagnosis and repair direction were supplied. This request is recorded.
+
+4
+00:00:32,000 --> 00:00:40,000
+Five proposed edits. The date control becomes keyboard-editable.
+Review the source before approving execution.
+
+5
+00:00:40,000 --> 00:00:46,000
+Deferred calendar refreshes can overwrite a typed date.
+The stored date must match the requested task.
+
+6
+00:00:46,000 --> 00:00:52,000
+Clearing the input must be safe.
+Reopening the appointment must retain its date and customer data.
+
+7
+00:00:52,000 --> 00:00:58,000
+Approval binds the displayed patch hash to this execution.
+The fixture is fresh, isolated, and synthetic.
+
+8
+00:00:58,000 --> 00:00:59,000
+The approved proposal enters a new isolated execution.
+No new model request is made during this capture.
+
+9
+00:00:59,000 --> 00:01:05,000
+Trusted setup prepares separate source, app, database, and reader roles.
+Candidate execution has no model key or external network.
+
+10
+00:01:05,000 --> 00:01:17,000
+The patched application is compiled before the keyboard task.
+A build pass alone cannot verify the saved outcome.
+
+11
+00:01:17,000 --> 00:01:18,000
+A fixed native keyboard procedure completes the booking.
+Confirmation remains subject to independent outcome checks.
+
+12
+00:01:18,000 --> 00:01:38,000
+A SELECT-only reader checks storage; a fresh browser reopens the booking.
+Pointer booking, unavailable-slot, and preservation checks also run.
+
+13
+00:01:38,000 --> 00:01:48,000
+The expected booking and regression checks passed for this exact run.
+The proposal hash remains attached to its evidence.
+
+14
+00:01:48,000 --> 00:02:02,000
+November 2, 2026 · 09:00–09:30 Asia/Riyadh.
+Storage, fresh reopen, preservation, and regression controls passed.
+
+15
+00:02:02,000 --> 00:02:12,000
+Two of five frozen attempts passed the full procedure.
+Two failed to compile; one failed a calendar control after keyboard success.
+
+16
+00:02:12,000 --> 00:02:20,000
+One exposed case, with guided source generation.
+Broader repair and screen-reader validation remain open.

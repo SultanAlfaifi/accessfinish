@@ -1,0 +1,412 @@
+{
+  "schema_version": 1,
+  "spec": {
+    "width": 1600,
+    "height": 900,
+    "fps": 30,
+    "frames": 4200,
+    "seconds": 140
+  },
+  "capture": "capture-v02.json",
+  "output": "accessfinish-demo-v02.mp4",
+  "captions": "accessfinish-demo-v02.srt",
+  "cues": [
+    {
+      "start": 0,
+      "end": 8,
+      "tag": "ACCESSFINISH / WORKING DEMONSTRATION",
+      "text": "A source repair. A booking you can prove.\nFor developers and accessibility QA reviewing AI-generated patches."
+    },
+    {
+      "start": 8,
+      "end": 20,
+      "tag": "1 / OBSERVE THE BLOCKED TASK",
+      "text": "The original date control was a non-focusable div.\nLoading the page did not prove the keyboard booking could finish."
+    },
+    {
+      "start": 20,
+      "end": 32,
+      "tag": "2 / NEMOTRON ON NEBIUS TOKEN FACTORY",
+      "text": "Nemotron 3 Super generated these source edits.\nThe diagnosis and repair direction were supplied. This request is recorded."
+    },
+    {
+      "start": 32,
+      "end": 40,
+      "tag": "3 / REVIEW THE EXACT PATCH",
+      "text": "Five proposed edits. The date control becomes keyboard-editable.\nReview the source before approving execution."
+    },
+    {
+      "start": 40,
+      "end": 46,
+      "tag": "PRESERVE THE REQUESTED DATE",
+      "text": "Deferred calendar refreshes can overwrite a typed date.\nThe stored date must match the requested task."
+    },
+    {
+      "start": 46,
+      "end": 52,
+      "tag": "CHECK THE WHOLE BOOKING PATH",
+      "text": "Clearing the input must be safe.\nReopening the appointment must retain its date and customer data."
+    },
+    {
+      "start": 52,
+      "end": 58,
+      "tag": "4 / APPROVE THIS EXACT PROPOSAL",
+      "text": "Approval binds the displayed patch hash to this execution.\nThe fixture is fresh, isolated, and synthetic."
+    },
+    {
+      "start": 58,
+      "end": 59,
+      "tag": "FRESH LOCAL EXECUTION / RECORDED MODEL PROPOSAL",
+      "text": "The approved proposal enters a new isolated execution.\nNo new model request is made during this capture."
+    },
+    {
+      "start": 59,
+      "end": 65,
+      "tag": "ISOLATED SYNTHETIC FIXTURE",
+      "text": "Trusted setup prepares separate source, app, database, and reader roles.\nCandidate execution has no model key or external network."
+    },
+    {
+      "start": 65,
+      "end": 77,
+      "tag": "TRUSTED BUILD",
+      "text": "The patched application is compiled before the keyboard task.\nA build pass alone cannot verify the saved outcome."
+    },
+    {
+      "start": 77,
+      "end": 78,
+      "tag": "NATIVE KEYBOARD TASK",
+      "text": "A fixed native keyboard procedure completes the booking.\nConfirmation remains subject to independent outcome checks."
+    },
+    {
+      "start": 78,
+      "end": 98,
+      "tag": "INDEPENDENT OUTCOME AND REGRESSION CHECKS",
+      "text": "A SELECT-only reader checks storage; a fresh browser reopens the booking.\nPointer booking, unavailable-slot, and preservation checks also run."
+    },
+    {
+      "start": 98,
+      "end": 108,
+      "tag": "ACTUAL EXECUTION / CHECKS PASSED",
+      "text": "The expected booking and regression checks passed for this exact run.\nThe proposal hash remains attached to its evidence."
+    },
+    {
+      "start": 108,
+      "end": 122,
+      "tag": "5 / VERIFIED OUTCOME FOR THIS RUN",
+      "text": "November 2, 2026 · 09:00–09:30 Asia/Riyadh.\nStorage, fresh reopen, preservation, and regression controls passed."
+    },
+    {
+      "start": 122,
+      "end": 132,
+      "tag": "RETAIN THE FAILURES",
+      "text": "Two of five frozen attempts passed the full procedure.\nTwo failed to compile; one failed a calendar control after keyboard success."
+    },
+    {
+      "start": 132,
+      "end": 140,
+      "tag": "SOURCE AND LOCAL BUILD / GITHUB.COM/SULTANALFAIFI/ACCESSFINISH",
+      "text": "One exposed case, with guided source generation.\nBroader repair and screen-reader validation remain open."
+    }
+  ],
+  "assets": [
+    {
+      "file": "raw/v02/01-opening.jpg",
+      "sha256": "74c6fbe40665ea332d8ab8a83b6899513f27116cedeaf8baa0d583008c5f851a",
+      "provenance": "Actual CUA capture of the project-owned local workbench; synthetic data"
+    },
+    {
+      "file": "raw/v02/02-blockage.jpg",
+      "sha256": "19a9241a9d95feb5347c87a1149acecd242cb862113a26ed2876755f6fe4ffb4",
+      "provenance": "Actual CUA capture of the project-owned local workbench; synthetic data"
+    },
+    {
+      "file": "raw/v02/03-model-record.jpg",
+      "sha256": "6a5017421daf036e8ad03de2c99bb08a27da01e99144acbee25ce05133928bb6",
+      "provenance": "Actual CUA capture of the project-owned local workbench; synthetic data"
+    },
+    {
+      "file": "raw/v02/04-date-input.jpg",
+      "sha256": "120d6696748cc395c53925bc979b113fff00bab208be5472e84038c6122604f2",
+      "provenance": "Actual CUA capture of the project-owned local workbench; synthetic data"
+    },
+    {
+      "file": "raw/v02/05-calendar-guard.jpg",
+      "sha256": "befde292a5567ca7c8a5e759e7eef51771e2d65230a1b438c77761a490c4ba0d",
+      "provenance": "Actual CUA capture of the project-owned local workbench; synthetic data"
+    },
+    {
+      "file": "raw/v02/06-preserve-date.jpg",
+      "sha256": "1dbfa6d6cb56edd61403fdeea77adc07ae67888e61e811cf294479fe6306dfdc",
+      "provenance": "Actual CUA capture of the project-owned local workbench; synthetic data"
+    },
+    {
+      "file": "raw/v02/07-approved-hash.jpg",
+      "sha256": "4da2d2f71a7abb9fb4c9c8156e344e237bae7f8746f739f9923ea29ae9e40630",
+      "provenance": "Actual CUA capture of the project-owned local workbench; synthetic data"
+    },
+    {
+      "file": "raw/v02/live-000.jpg",
+      "sha256": "48627311cd8a44912f86928baa3e3b1fe915d70b0a2cda16f0b1977c19244b70",
+      "provenance": "Actual CUA capture of the project-owned local workbench; synthetic data"
+    },
+    {
+      "file": "raw/v02/live-001.jpg",
+      "sha256": "a762c105626dcd0af34cf74f5d457991781b2cbb0853c7b290dc711204eb7525",
+      "provenance": "Actual CUA capture of the project-owned local workbench; synthetic data"
+    },
+    {
+      "file": "raw/v02/live-002.jpg",
+      "sha256": "a762c105626dcd0af34cf74f5d457991781b2cbb0853c7b290dc711204eb7525",
+      "provenance": "Actual CUA capture of the project-owned local workbench; synthetic data"
+    },
+    {
+      "file": "raw/v02/live-003.jpg",
+      "sha256": "a762c105626dcd0af34cf74f5d457991781b2cbb0853c7b290dc711204eb7525",
+      "provenance": "Actual CUA capture of the project-owned local workbench; synthetic data"
+    },
+    {
+      "file": "raw/v02/live-004.jpg",
+      "sha256": "a762c105626dcd0af34cf74f5d457991781b2cbb0853c7b290dc711204eb7525",
+      "provenance": "Actual CUA capture of the project-owned local workbench; synthetic data"
+    },
+    {
+      "file": "raw/v02/live-005.jpg",
+      "sha256": "a762c105626dcd0af34cf74f5d457991781b2cbb0853c7b290dc711204eb7525",
+      "provenance": "Actual CUA capture of the project-owned local workbench; synthetic data"
+    },
+    {
+      "file": "raw/v02/live-006.jpg",
+      "sha256": "a762c105626dcd0af34cf74f5d457991781b2cbb0853c7b290dc711204eb7525",
+      "provenance": "Actual CUA capture of the project-owned local workbench; synthetic data"
+    },
+    {
+      "file": "raw/v02/live-007.jpg",
+      "sha256": "e6997b953f5ce2e78513b471e6d68cd79a3a1f7e4585794f0e83b478a233ebc8",
+      "provenance": "Actual CUA capture of the project-owned local workbench; synthetic data"
+    },
+    {
+      "file": "raw/v02/live-008.jpg",
+      "sha256": "e6997b953f5ce2e78513b471e6d68cd79a3a1f7e4585794f0e83b478a233ebc8",
+      "provenance": "Actual CUA capture of the project-owned local workbench; synthetic data"
+    },
+    {
+      "file": "raw/v02/live-009.jpg",
+      "sha256": "e6997b953f5ce2e78513b471e6d68cd79a3a1f7e4585794f0e83b478a233ebc8",
+      "provenance": "Actual CUA capture of the project-owned local workbench; synthetic data"
+    },
+    {
+      "file": "raw/v02/live-010.jpg",
+      "sha256": "e6997b953f5ce2e78513b471e6d68cd79a3a1f7e4585794f0e83b478a233ebc8",
+      "provenance": "Actual CUA capture of the project-owned local workbench; synthetic data"
+    },
+    {
+      "file": "raw/v02/live-011.jpg",
+      "sha256": "e6997b953f5ce2e78513b471e6d68cd79a3a1f7e4585794f0e83b478a233ebc8",
+      "provenance": "Actual CUA capture of the project-owned local workbench; synthetic data"
+    },
+    {
+      "file": "raw/v02/live-012.jpg",
+      "sha256": "e6997b953f5ce2e78513b471e6d68cd79a3a1f7e4585794f0e83b478a233ebc8",
+      "provenance": "Actual CUA capture of the project-owned local workbench; synthetic data"
+    },
+    {
+      "file": "raw/v02/live-013.jpg",
+      "sha256": "e6997b953f5ce2e78513b471e6d68cd79a3a1f7e4585794f0e83b478a233ebc8",
+      "provenance": "Actual CUA capture of the project-owned local workbench; synthetic data"
+    },
+    {
+      "file": "raw/v02/live-014.jpg",
+      "sha256": "e6997b953f5ce2e78513b471e6d68cd79a3a1f7e4585794f0e83b478a233ebc8",
+      "provenance": "Actual CUA capture of the project-owned local workbench; synthetic data"
+    },
+    {
+      "file": "raw/v02/live-015.jpg",
+      "sha256": "e6997b953f5ce2e78513b471e6d68cd79a3a1f7e4585794f0e83b478a233ebc8",
+      "provenance": "Actual CUA capture of the project-owned local workbench; synthetic data"
+    },
+    {
+      "file": "raw/v02/live-016.jpg",
+      "sha256": "e6997b953f5ce2e78513b471e6d68cd79a3a1f7e4585794f0e83b478a233ebc8",
+      "provenance": "Actual CUA capture of the project-owned local workbench; synthetic data"
+    },
+    {
+      "file": "raw/v02/live-017.jpg",
+      "sha256": "e6997b953f5ce2e78513b471e6d68cd79a3a1f7e4585794f0e83b478a233ebc8",
+      "provenance": "Actual CUA capture of the project-owned local workbench; synthetic data"
+    },
+    {
+      "file": "raw/v02/live-018.jpg",
+      "sha256": "e6997b953f5ce2e78513b471e6d68cd79a3a1f7e4585794f0e83b478a233ebc8",
+      "provenance": "Actual CUA capture of the project-owned local workbench; synthetic data"
+    },
+    {
+      "file": "raw/v02/live-019.jpg",
+      "sha256": "a80cdd41e5018e3a30f4e11abfdd2649a37d1fb26f7bf83bb8505296a359b601",
+      "provenance": "Actual CUA capture of the project-owned local workbench; synthetic data"
+    },
+    {
+      "file": "raw/v02/live-020.jpg",
+      "sha256": "397089f683e23bc94bc7662554f6b1342ea7877fa6974562d9eecd4d2443118b",
+      "provenance": "Actual CUA capture of the project-owned local workbench; synthetic data"
+    },
+    {
+      "file": "raw/v02/live-021.jpg",
+      "sha256": "b88bca44bae4d217519067082f652fde39658dbba65ea20890db51a22296fa31",
+      "provenance": "Actual CUA capture of the project-owned local workbench; synthetic data"
+    },
+    {
+      "file": "raw/v02/live-022.jpg",
+      "sha256": "b88bca44bae4d217519067082f652fde39658dbba65ea20890db51a22296fa31",
+      "provenance": "Actual CUA capture of the project-owned local workbench; synthetic data"
+    },
+    {
+      "file": "raw/v02/live-023.jpg",
+      "sha256": "b88bca44bae4d217519067082f652fde39658dbba65ea20890db51a22296fa31",
+      "provenance": "Actual CUA capture of the project-owned local workbench; synthetic data"
+    },
+    {
+      "file": "raw/v02/live-024.jpg",
+      "sha256": "b88bca44bae4d217519067082f652fde39658dbba65ea20890db51a22296fa31",
+      "provenance": "Actual CUA capture of the project-owned local workbench; synthetic data"
+    },
+    {
+      "file": "raw/v02/live-025.jpg",
+      "sha256": "b88bca44bae4d217519067082f652fde39658dbba65ea20890db51a22296fa31",
+      "provenance": "Actual CUA capture of the project-owned local workbench; synthetic data"
+    },
+    {
+      "file": "raw/v02/live-026.jpg",
+      "sha256": "b88bca44bae4d217519067082f652fde39658dbba65ea20890db51a22296fa31",
+      "provenance": "Actual CUA capture of the project-owned local workbench; synthetic data"
+    },
+    {
+      "file": "raw/v02/live-027.jpg",
+      "sha256": "b88bca44bae4d217519067082f652fde39658dbba65ea20890db51a22296fa31",
+      "provenance": "Actual CUA capture of the project-owned local workbench; synthetic data"
+    },
+    {
+      "file": "raw/v02/live-028.jpg",
+      "sha256": "b88bca44bae4d217519067082f652fde39658dbba65ea20890db51a22296fa31",
+      "provenance": "Actual CUA capture of the project-owned local workbench; synthetic data"
+    },
+    {
+      "file": "raw/v02/live-029.jpg",
+      "sha256": "b88bca44bae4d217519067082f652fde39658dbba65ea20890db51a22296fa31",
+      "provenance": "Actual CUA capture of the project-owned local workbench; synthetic data"
+    },
+    {
+      "file": "raw/v02/live-030.jpg",
+      "sha256": "b88bca44bae4d217519067082f652fde39658dbba65ea20890db51a22296fa31",
+      "provenance": "Actual CUA capture of the project-owned local workbench; synthetic data"
+    },
+    {
+      "file": "raw/v02/live-031.jpg",
+      "sha256": "b88bca44bae4d217519067082f652fde39658dbba65ea20890db51a22296fa31",
+      "provenance": "Actual CUA capture of the project-owned local workbench; synthetic data"
+    },
+    {
+      "file": "raw/v02/live-032.jpg",
+      "sha256": "b88bca44bae4d217519067082f652fde39658dbba65ea20890db51a22296fa31",
+      "provenance": "Actual CUA capture of the project-owned local workbench; synthetic data"
+    },
+    {
+      "file": "raw/v02/live-033.jpg",
+      "sha256": "082ec29c92af845d2534f6bb39aa0fea5aee9f849b0110985b669b17a07239f8",
+      "provenance": "Actual CUA capture of the project-owned local workbench; synthetic data"
+    },
+    {
+      "file": "raw/v02/live-034.jpg",
+      "sha256": "b88bca44bae4d217519067082f652fde39658dbba65ea20890db51a22296fa31",
+      "provenance": "Actual CUA capture of the project-owned local workbench; synthetic data"
+    },
+    {
+      "file": "raw/v02/live-035.jpg",
+      "sha256": "b88bca44bae4d217519067082f652fde39658dbba65ea20890db51a22296fa31",
+      "provenance": "Actual CUA capture of the project-owned local workbench; synthetic data"
+    },
+    {
+      "file": "raw/v02/live-036.jpg",
+      "sha256": "b88bca44bae4d217519067082f652fde39658dbba65ea20890db51a22296fa31",
+      "provenance": "Actual CUA capture of the project-owned local workbench; synthetic data"
+    },
+    {
+      "file": "raw/v02/live-037.jpg",
+      "sha256": "b88bca44bae4d217519067082f652fde39658dbba65ea20890db51a22296fa31",
+      "provenance": "Actual CUA capture of the project-owned local workbench; synthetic data"
+    },
+    {
+      "file": "raw/v02/live-038.jpg",
+      "sha256": "b88bca44bae4d217519067082f652fde39658dbba65ea20890db51a22296fa31",
+      "provenance": "Actual CUA capture of the project-owned local workbench; synthetic data"
+    },
+    {
+      "file": "raw/v02/live-039.jpg",
+      "sha256": "b88bca44bae4d217519067082f652fde39658dbba65ea20890db51a22296fa31",
+      "provenance": "Actual CUA capture of the project-owned local workbench; synthetic data"
+    },
+    {
+      "file": "raw/v02/live-040.jpg",
+      "sha256": "b5670cf9f60e8f234944caf4fa0bbe5f183d3b46fbd04aab7e3bcad5cf91430b",
+      "provenance": "Actual CUA capture of the project-owned local workbench; synthetic data"
+    },
+    {
+      "file": "raw/v02/live-041.jpg",
+      "sha256": "b5670cf9f60e8f234944caf4fa0bbe5f183d3b46fbd04aab7e3bcad5cf91430b",
+      "provenance": "Actual CUA capture of the project-owned local workbench; synthetic data"
+    },
+    {
+      "file": "raw/v02/live-042.jpg",
+      "sha256": "b5670cf9f60e8f234944caf4fa0bbe5f183d3b46fbd04aab7e3bcad5cf91430b",
+      "provenance": "Actual CUA capture of the project-owned local workbench; synthetic data"
+    },
+    {
+      "file": "raw/v02/live-043.jpg",
+      "sha256": "b5670cf9f60e8f234944caf4fa0bbe5f183d3b46fbd04aab7e3bcad5cf91430b",
+      "provenance": "Actual CUA capture of the project-owned local workbench; synthetic data"
+    },
+    {
+      "file": "raw/v02/live-044.jpg",
+      "sha256": "b5670cf9f60e8f234944caf4fa0bbe5f183d3b46fbd04aab7e3bcad5cf91430b",
+      "provenance": "Actual CUA capture of the project-owned local workbench; synthetic data"
+    },
+    {
+      "file": "raw/v02/live-045.jpg",
+      "sha256": "b5670cf9f60e8f234944caf4fa0bbe5f183d3b46fbd04aab7e3bcad5cf91430b",
+      "provenance": "Actual CUA capture of the project-owned local workbench; synthetic data"
+    },
+    {
+      "file": "raw/v02/live-046.jpg",
+      "sha256": "b5670cf9f60e8f234944caf4fa0bbe5f183d3b46fbd04aab7e3bcad5cf91430b",
+      "provenance": "Actual CUA capture of the project-owned local workbench; synthetic data"
+    },
+    {
+      "file": "raw/v02/live-047.jpg",
+      "sha256": "b5670cf9f60e8f234944caf4fa0bbe5f183d3b46fbd04aab7e3bcad5cf91430b",
+      "provenance": "Actual CUA capture of the project-owned local workbench; synthetic data"
+    },
+    {
+      "file": "raw/v02/live-048.jpg",
+      "sha256": "b5670cf9f60e8f234944caf4fa0bbe5f183d3b46fbd04aab7e3bcad5cf91430b",
+      "provenance": "Actual CUA capture of the project-owned local workbench; synthetic data"
+    },
+    {
+      "file": "raw/v02/live-049.jpg",
+      "sha256": "b5670cf9f60e8f234944caf4fa0bbe5f183d3b46fbd04aab7e3bcad5cf91430b",
+      "provenance": "Actual CUA capture of the project-owned local workbench; synthetic data"
+    },
+    {
+      "file": "raw/v02/09-verified-outcome.jpg",
+      "sha256": "6f0417e20828af6cb109488ad463992d48a429f0cfca3075dda4c309b91649c8",
+      "provenance": "Actual CUA capture of the project-owned local workbench; synthetic data"
+    },
+    {
+      "file": "raw/v02/10-all-outcomes.jpg",
+      "sha256": "a47e059286d68fc5b96f3ca02d89094ab760e47d11516ecca0275c01ee666ec1",
+      "provenance": "Actual CUA capture of the project-owned local workbench; synthetic data"
+    }
+  ],
+  "music": false,
+  "audio_streams": 0,
+  "continuous_playback_review": "pending",
+  "reviewed": false
+}

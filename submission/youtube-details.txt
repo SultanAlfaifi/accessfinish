@@ -1,30 +1,19 @@
 Title
-AccessFinish | Keyboard repair to verified booking | Nebius x NVIDIA Hackathon
+AccessFinish — The AI says "fixed". We check the user can finish. | NVIDIA Nemotron
 
 Description
-AccessFinish connects a keyboard accessibility source repair to evidence that the user's task actually finished.
+Ask an AI to fix a broken form and it will say it's fixed. AccessFinish doesn't trust the confirmation page: it drives the real journey in a browser, reads what was actually saved in the database, reopens it in a fresh browser, and feeds the evidence back to NVIDIA Nemotron 3 Super (Nebius Token Factory) until the saved outcome is right.
 
-This 91-second demonstration shows the review workbench, a three-edit proposal authored by NVIDIA Nemotron 3 Super on Nebius Token Factory, and a new read-only verification of the saved booking in an isolated Easy!Appointments development fixture.
+Live results (14 runs on GitHub Actions, $0.41 of Nemotron in total):
+- Saved phone: fixed and verified on the first attempt in 7 of 7 runs.
+- Keyboard date: not fixed yet. 15 attempts showed a "booked" confirmation while the wrong day was saved; AccessFinish rejected every one and recorded why.
 
-The operator supplied the defect diagnosis. The controller normalized source line endings without changing the semantic edits, built 83 JavaScript files, completed the keyboard booking, and verified storage and a fresh-browser reopen. This is one guided, exposed development case, not a general autonomous repair benchmark or a screen-reader user study.
+Source, evidence and every run: https://github.com/SultanAlfaifi/accessfinish
+Live page: https://sultalfaifi.com/accessfinish/
+Track: Coding and Agentic Engineering.
+Synthetic data in a pinned copy of open-source Easy!Appointments (GPL-3.0). AccessFinish is MIT licensed.
+Narration: Qwen3-TTS 0.6B CustomVoice, voice Aiden. No music.
 
-Working evidence replay: https://sultalfaifi.com/accessfinish/
-Public code: https://github.com/SultanAlfaifi/accessfinish
-Portable test build: https://github.com/SultanAlfaifi/accessfinish/releases/tag/v0.1.0
-
-Track: Coding and Agentic Engineering
-Built with NVIDIA Nemotron, Nebius Token Factory, Node.js, Docker, Playwright, PHP, MariaDB, and FFmpeg.
-
-The video is silent with English captions. It shows synthetic customer data and includes no music. AccessFinish workbench code is MIT licensed; Easy!Appointments case excerpts and derivative source patches retain GPL-3.0 attribution.
-
-Audience
-Professional developer demonstration; not made for children.
-
-Intended visibility
-Public, after the entrant reviews the final title, description, channel, and video.
-
-Local video
-../media/accessfinish-demo.mp4
-
-Current status
-Prepared only. No YouTube upload or public publication has been confirmed.
+Upload
+File: media/accessfinish-agent-demo.mp4 (111-second film, 1920x1080, narrated, captions burned in)
+Visibility: Public. Not made for kids. Category: Science & Technology.

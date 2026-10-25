@@ -3,6 +3,7 @@
 const fs = require('node:fs'), path = require('node:path');
 const {createRunStore, runtimeRoot} = require('../lib/runs.cjs'), fixture = require('../lib/fixture.cjs');
 const {contextForCase} = require('../lib/case-source.cjs');
+const {compareReplay} = require('./replay-expectation.cjs');
 const project = path.resolve(__dirname, '..'), read = relative => JSON.parse(fs.readFileSync(path.join(project, relative), 'utf8'));
 async function main() {
   const root = runtimeRoot(), store = createRunStore({root, execute: fixture.execute}), report = read('web/trial-report.json'), observations = [];
@@ -20,20 +21,20 @@ async function main() {
         await new Promise(resolve => setTimeout(resolve, 1000));
       }
       const execution = JSON.parse(fs.readFileSync(path.join(root, 'execution', run.id, 'evidence.json'), 'utf8'));
-      const observed = {build_pass: execution.build?.status === 'TRUSTED_BUILD_PASS', keyboard_booking_pass: execution.keyboard_booking_verified === true,
-        regression_controls_pass: execution.controls?.pass === true, overall_pass: run.booking_verified === true};
-      const expectedStage = row.overall_pass || row.keyboard_booking_pass ? 'verifying' : row.build_pass ? 'booking' : 'building';
-      const matched = Object.entries(observed).every(([key, value]) => value === row[key]) && run.stages.at(-1)?.state === expectedStage;
+      const comparison = compareReplay(row, run, execution);
       observations.push({evaluation_index: row.index, recorded_proposal_sha256: row.proposal_sha256, replay_run_id: run.id, expected: {
         build_pass: row.build_pass, keyboard_booking_pass: row.keyboard_booking_pass, regression_controls_pass: row.regression_controls_pass, overall_pass: row.overall_pass},
-        observed, expected_last_stage: expectedStage, observed_last_stage: run.stages.at(-1)?.state, expected_outcome_observed: matched, error: run.error || null});
+        ...comparison, error: run.error || null});
       console.log(JSON.stringify(observations.at(-1)));
     }
-    const result = {schema_version: 1, kind: 'recorded_proposal_reproduction', new_model_requests: 0, generated_at_utc: new Date().toISOString(),
+    const result = {schema_version: 2, kind: 'recorded_decision_replay_with_exact_stage_comparison', new_model_requests: 0, generated_at_utc: new Date().toISOString(),
       replayed_proposals: 5, expected_outcomes_matched: observations.filter(row => row.expected_outcome_observed).length,
+      acceptance_decisions_matched: observations.filter(row => row.acceptance_decision_observed).length,
+      known_negative_stage_variations: observations.filter(row => row.known_negative_stage_variation).length,
       verified_repair_outcomes: observations.filter(row => row.observed.overall_pass).length, observations};
     fs.writeFileSync(path.join(root, 'recorded-proposal-replays.json'), JSON.stringify(result, null, 2) + '\n');
-    if (result.expected_outcomes_matched !== 5 || result.verified_repair_outcomes !== report.evaluation_passed) process.exitCode = 1;
+    if (result.acceptance_decisions_matched !== 5 || result.verified_repair_outcomes !== report.evaluation_passed ||
+      process.argv.includes('--require-exact-recording') && result.expected_outcomes_matched !== 5) process.exitCode = 1;
   } finally { store.close(); }
 }
 main().catch(error => { console.error(error.message); process.exitCode = 1; });

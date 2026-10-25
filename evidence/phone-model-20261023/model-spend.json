@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "reserved_usd": 0.047444400000000005,
+  "attempts": [
+    {
+      "id": "d6abe2f9-ac34-446c-ac18-e64f629a4fa0",
+      "at_utc": "2026-10-23T18:03:11.206Z",
+      "model": "nvidia/nemotron-3-super-120b-a12b",
+      "request_sha256": "d938e19bd4a105f505ca100a590d5235849797b0f409933617132600f6c542ea",
+      "reserved_usd": 0.047444400000000005,
+      "input_price_usd_per_million": 0.3,
+      "output_price_usd_per_million": 0.9,
+      "case_id": "customer-phone",
+      "phase": "interactive",
+      "status": "proposal_validated",
+      "http_status": 200,
+      "usage": {
+        "completion_tokens": 387,
+        "prompt_tokens": 12658,
+        "total_tokens": 13045,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": null,
+          "audio_tokens": null,
+          "reasoning_tokens": 282,
+          "rejected_prediction_tokens": null
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": null,
+          "cached_tokens": 0,
+          "created_cache_tokens": 0,
+          "multimodal_tokens": null
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 12658
+      },
+      "estimated_cost_usd_excluding_tax": 0.0041456999999999996,
+      "finished_at_utc": "2026-10-23T18:03:15.026Z"
+    }
+  ]
+}

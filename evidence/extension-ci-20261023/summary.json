@@ -1,0 +1,56 @@
+{
+  "state": "FRESH_LINUX_REPRODUCTION_PASSED",
+  "ci_url": "https://github.com/SultanAlfaifi/accessfinish/actions/runs/40004155891",
+  "source_commit": "4df492371c95e3ecffc3923d50c72407f05cfd2d",
+  "jobs": [
+    {
+      "name": "checks (ubuntu-latest, 22)",
+      "conclusion": "success"
+    },
+    {
+      "name": "checks (windows-latest, 22)",
+      "conclusion": "success"
+    },
+    {
+      "name": "checks (windows-latest, 24)",
+      "conclusion": "success"
+    },
+    {
+      "name": "checks (ubuntu-latest, 24)",
+      "conclusion": "success"
+    },
+    {
+      "name": "isolated-booking",
+      "conclusion": "success"
+    }
+  ],
+  "original_five": {
+    "expected_outcomes_matched": 5,
+    "verified_repairs": 2
+  },
+  "original_negative_control": "blocked",
+  "phone_reference": "verified",
+  "hardcoded_phone": "rejected_at_different_phone_regression",
+  "retained_nemotron_phone": "verified",
+  "new_model_requests": 0,
+  "procedure_sha256": {
+    "lib/cases.cjs": "c456386087d4c1685e98c7c5198106bcfbe994ad2b6621965bb7dc207315f972",
+    "lib/fixture.cjs": "691a61bcfd7d9c7233e80edbe1988e76cc336122293854da20096f1ff46f0020",
+    "lib/model.cjs": "85da5263d9530725e9c63a48902d187374979a04ddcafd2670d649cc4dc65169",
+    "lib/runs.cjs": "e1713b9d7762d00483a65d3833ed921204d54f39caa7bef7903c8a101de4984e",
+    "lib/repair.cjs": "35774ff192402280e1d5bc7e243e1b9b47970e7dd8e3e052ab2b56c10853da7f",
+    "scripts/ci-check-extension.cjs": "73e9564f9f873e23f00f42be289e8039ce9a2b10576c330c510a9f91254dc525",
+    "scripts/ci-replay-evaluation.cjs": "0ac3dd2af1f99abc48ec0abe74b544739337be0f65351c757733ee4dd61a481c",
+    "integration/portable/case-worker.cjs": "6911652f9ae639885c16328df90a44cf57825ab5b79c8c4e3993df05e057ab64",
+    "integration/portable/outcome-evaluator.cjs": "f7e7e7511fbdfe65a0f122d50479b873029718bdb2ce08ad88298510c6ea79a0",
+    "integration/portable/regression-controls.cjs": "0d71f5a7d762de686e3ed17b062f06fd4262675ebc7b0c1ebd3d0e694a42a154"
+  },
+  "artifact_sha256": {
+    "clean-run/recorded-proposal-replays.json": "06b04021d21d64c2ccb211a6f8eacf88afe61e92263be34bb1b1ca87bd9b51d9",
+    "extension-ci/repaired.json": "9be96cabd3b92378bad4c95a09af7094353c7ea097043b6c3084740019a0d3da",
+    "extension-ci/hardcoded.json": "e108c494f6a6fdca6a152ba1dc124d573cde34b91f1b6fe38249b0a3f9050b20",
+    "extension-ci/retained-nemotron-phone.json": "48cdb102e3d0f3314e1c2e1de10583f5badd47a4a666eb4966c05829d970c034",
+    "clean-run/execution-run-3ab5ddc32caf23d6ba06aefd5148228a.json": "a2c55aad4ec80cea5711eb736d6c65a7f00a1122c6ba34fe82ed9aec02ed64c2"
+  },
+  "limits": "Independent automated execution, not an independent human review. Replays are not additional model generations."
+}

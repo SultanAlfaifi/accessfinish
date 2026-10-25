@@ -1,0 +1,61 @@
+{
+  "language": "English",
+  "state": "text_prepared_no_audio_timestamps",
+  "beats": [
+    {
+      "id": "beat-01",
+      "paragraph": 1,
+      "text": "Booking confirmed. But the saved phone is wrong. An AI fix needs more than a convincing answer."
+    },
+    {
+      "id": "beat-02",
+      "paragraph": 2,
+      "text": "AccessFinish connects a proposed code change to your review, approval of that exact patch, and independent execution evidence."
+    },
+    {
+      "id": "beat-03",
+      "paragraph": 3,
+      "text": "For our second case, we deliberately seeded a phone serialization fault. One new NVIDIA Nemotron 3 Super proposal, through Nebius Token Factory, repaired it with an operator-supplied diagnosis."
+    },
+    {
+      "id": "beat-04",
+      "paragraph": 4,
+      "text": "The entered phone was saved exactly, including leading zeroes, and reopened in a fresh browser. A different phone also passed the regression control."
+    },
+    {
+      "id": "beat-05",
+      "paragraph": 5,
+      "text": "A hardcoded reference repair passed the first booking, then failed the different-phone check. Both failures and successes remain visible."
+    },
+    {
+      "id": "beat-06",
+      "paragraph": 6,
+      "text": "We compared AccessFinish with a conventional test-only workflow using the same build, browser, database reader, reopen, and regression checks."
+    },
+    {
+      "id": "beat-07",
+      "paragraph": 7,
+      "text": "Across six paired variants and twelve isolated executions, both workflows agreed on every correctness outcome. The new Nemotron proposal also passed both workflows in two additional replays."
+    },
+    {
+      "id": "beat-08",
+      "paragraph": 8,
+      "text": "The difference is the repair decision. AccessFinish rejected missing and stale approvals, then attached each accepted approval to its exact source, patch, and run."
+    },
+    {
+      "id": "beat-09",
+      "paragraph": 9,
+      "text": "The original keyboard date case remains separate: two complete passes from five guided model attempts."
+    },
+    {
+      "id": "beat-10",
+      "paragraph": 10,
+      "text": "These are two exposed cases in one application, including one deliberately seeded fault. They do not establish general repair accuracy or time savings."
+    },
+    {
+      "id": "beat-11",
+      "paragraph": 11,
+      "text": "AccessFinish. Review the change. Know which repair you can accept."
+    }
+  ]
+}

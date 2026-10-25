@@ -1,85 +1,84 @@
 # AccessFinish
 
-**AI repair, checked against the task that matters.**
+**The AI says "fixed". AccessFinish checks the user can finish.**
 
-AccessFinish connects a reviewable NVIDIA Nemotron source proposal to an isolated build, native keyboard booking, read-only database checks, and a fresh-browser reopen. A plausible patch or a confirmation page alone cannot produce a verified result.
+AccessFinish is a repair agent built on **NVIDIA Nemotron 3 Super** (served by **Nebius Token Factory**). It doesn't trust a green confirmation page. It drives the real user journey with a keyboard, reads what was actually saved in the database, reopens it in a fresh browser — and keeps repairing until that outcome is correct.
 
-**v0.2.0 review build:** [browser-only review](https://sultalfaifi.com/accessfinish/) · [merged source and evaluation evidence](https://github.com/SultanAlfaifi/accessfinish/pull/1). The downloadable v0.1.0 release remains a historical build; the final v0.2.0 judging release and public video are pending. Track: **Coding and Agentic Engineering**.
+▶ **Live page:** https://sultalfaifi.com/accessfinish/ · Track: **Coding and Agentic Engineering**
 
-## Review in a browser
+![AccessFinish agent timeline](media/workbench-preview.png)
 
-The published experience is a **recorded evidence review**. Inspect the blocked date control, review the exact patch, open its matching execution, and inspect all five evaluation outcomes. Opening a recording starts no model request, build, booking, or fresh verification.
+## The loop
 
-For a local preview without Docker or an API key:
-
-```sh
-npm run replay
+```
+Observe ──► Diagnose & repair ──► Verify for real ──► verified? ── yes ──► patch + proof
+   ▲              (Nemotron)        (fresh sandbox)        │
+   └──────────── verifier evidence fed back ◄──── no ──────┘
 ```
 
-Open **http://127.0.0.1:4178**. The optional browser-only developer review is at `/review.html`; it exports answers locally and does not upload them. Two independent participant sessions are planned, not yet completed. They will not count as independent installation or execution evidence.
+1. **Observe.** A headless browser books an appointment with the keyboard only, recording where focus goes and where it gets stuck.
+2. **Diagnose & repair.** Nemotron receives the user goal, the verifier's evidence and the complete source files — no diagnosis, no hints — can open any other source file with a read-only `read_file` tool, and returns exact code edits.
+3. **Verify for real.** Every proposal is built and run in a fresh, offline Docker sandbox. The verifier books with the keyboard, reads the saved row through a read-only database account, reopens the booking in a new browser, then runs regression checks (a mouse booking with different data through month navigation, clearing the date, a reserved slot, unchanged existing records, sandbox isolation).
+4. **Feed back.** A build error, a stuck key, a wrong saved value or a broken mouse path goes back to Nemotron as evidence, and it tries again (up to eight attempts). Nothing is accepted unless every check passes.
 
-## Run a new execution
+## Two broken journeys
 
-Requires **Node.js 22+** and a **local Docker Linux engine**. The app has no host npm dependencies. Setup downloads pinned official images and locked application dependencies; allow several GB of disk space. Linux amd64 execution has passed through Windows Docker Desktop and an independent fresh GitHub Linux runner.
+| Journey | What the user sees | What's really wrong |
+| --- | --- | --- |
+| **Keyboard date** (real upstream bug) | The calendar looks fine | Tab can't reach it, so a keyboard user can never book |
+| **Saved phone** (seeded fault) | "Booking confirmed" | The database stored `0000000000`, not the phone they typed |
 
-```sh
-npm run demo:setup
-npm start
-```
+The phone case shows why outcome checks matter: a patch that hardcodes the sample number passes once, then fails when a second customer types `0000000073`.
 
-Open **http://127.0.0.1:4177**. Review the packaged Nemotron proposal, approve its exact hash, and choose **Run approved repair**. Execution creates a fresh synthetic source/database fixture, applies the approved edits only inside it, builds the application, and runs the checks. It makes **no model call**. The CLI equivalent is `npm run demo:check`; issuing that command explicitly approves execution of the packaged recorded proposal.
+## Results (live, 24 October 2026)
 
-The original-source negative control is `node scripts/demo-check.cjs --original`. Its expected outcome is a blocked task and an unverified booking. The optional `--operator-reference` control combines three archived model edits with two operator-authored guards; it is never counted as fresh model-authored success.
+Every run below was made live on a fresh GitHub Actions runner with Nemotron 3 Super on Nebius Token Factory. Traces, patches and raw evidence for all of them are in [`evidence/agent-runs/`](evidence/agent-runs/); totals are in [`web/agent-runs/summary.json`](web/agent-runs/summary.json).
 
-Runs use persistent, separate IDs and source/proposal hashes. Changing the proposal clears the displayed result. Failed and interrupted runs remain failed; a second process cannot take over a live runtime. Runtime data defaults to `%LOCALAPPDATA%/AccessFinish/v0.2` on Windows or `$XDG_STATE_HOME/AccessFinish/v0.2` / `~/.local/state/AccessFinish/v0.2` on Linux. `AF_RUNTIME_DIR` selects another evidence directory. Owned Docker resources are stopped and retained for diagnosis; private fixture credentials stay outside the repository.
+| Journey | Runs | Verified | Attempts | Typical time | Nemotron cost |
+| --- | --- | --- | --- | --- | --- |
+| **Saved phone** | 7 | **7 / 7, all on the first attempt** | 7 | ~100 s | $0.0313 total |
+| **Keyboard date** | 7 | 0 / 7 | 43 | 3–12 min | $0.3773 total |
 
-## Request a new proposal
+- **Phone:** in every run Nemotron traced the wrong saved value to the hardcoded `phone_number` in the booking payload, and the fix passed all nine checks, including a second customer with a different number.
+- **Keyboard date:** Nemotron reliably made the date reachable with Tab, but **15 attempts reached a "booked" confirmation while the database held the wrong day** (1 Nov instead of 2 Nov). The verifier rejected every one; no patch was accepted. The recorded timeline shows the cause: right after the date is typed the page requests `get_unavailable_dates`, and with no key pressed the field jumps from `02/11` to `01/11` — `booking_http_client.js` selects the first available day of the month. Nemotron could open that file with `read_file` but kept proposing time-zone and format changes.
 
-The model is **`nvidia/nemotron-3-super-120b-a12b`**, served through **Nebius Token Factory** at `https://api.tokenfactory.nebius.com/v1/chat/completions`. The operator supplies the diagnosis and repair direction. Nemotron proposes literal edits to two supported Easy!Appointments files; exact-anchor validation rejects absent or ambiguous replacements.
+That second result is the point of AccessFinish: a model, a confirmation page and a green build all said "done", and the saved outcome said otherwise.
 
-Configure these variables in the server process environment, then restart it:
+## Run it
 
-| Variable | Purpose |
-| --- | --- |
-| `NEBIUS_API_KEY` | Server-side provider key; never place it in browser code or source control |
-| `NEBIUS_PRICE_VERIFIED_AT` | UTC timestamp after checking account pricing; expires after 24 hours |
-| `NEBIUS_INPUT_USD_PER_MILLION` | Verified current input price |
-| `NEBIUS_OUTPUT_USD_PER_MILLION` | Verified current output price |
-| `AF_MODEL_BUDGET_USD` | Total local reservation ceiling; default $0.25, maximum $5 |
-| `AF_MAX_MODEL_REQUESTS` | Request limit; default and maximum 8 |
-
-The source-sharing checkbox permits one request containing the supplied source. There are no automatic retries. Each request reserves a conservative input bound plus up to 8,192 output tokens, with a 100% buffer and a $0.25 per-request reservation limit. Failed or unknown-outcome reservations remain consumed. These are local accounting guards, not a provider billing limit. A model response is neither approval nor evidence that the task passed.
-
-## Measured evidence
-
-On **21 October 2026**, three development requests were followed by **five frozen evaluation requests on one exposed case**. The prompt, source context, fixture, model integration, executor, and evaluator procedure were bound by hashes before evaluation.
-
-The [exact frozen procedure](evidence/competition-20261021/procedure/) is archived. A subsequent [Linux compatibility fix](evidence/competition-20261021/post-evaluation-compatibility.json) changes only ownership of private fixture files during trusted import. It changes neither model edits nor outcome acceptance logic. Reproduction with the current executor is tracked separately from the five original model-generation trials.
-
-**2/5 passed the full procedure.** Two proposals failed to compile. One saved and reopened the keyboard booking correctly but failed calendar navigation in the regression check. All failures remain in the [trial report](web/trial-report.json) and [raw evidence](evidence/competition-20261021/). No model-authored semantic edits were changed by the operator.
-
-The featured passing example is evaluation **4**, with five Nemotron edits. It built 83 JavaScript files and verified **2 November 2026, 09:00–09:30 Asia/Riyadh**, then passed a separate pointer booking and reopen, reserved-slot exclusion, clear-date error check, preservation checks, and inspected container boundaries. Both application browsers were deliberately UTC, so the stored Riyadh time also had to match correctly.
-
-Additional estimated model cost across all eight requests was **$0.0394581 before tax**, with zero unknown-usage responses. Generation and execution durations are recorded separately; human review time is excluded. The earlier October 18 case and its approximately $0.111143 cumulative historical cost remain separate evidence.
-
-These measurements do not establish general autonomous repair, hidden-case performance, year-boundary behavior, superiority over another assistant, production readiness, screen-reader usability, or user time saved.
-
-## Checks and boundaries
+Requires **Node.js 22+** and **Docker** (Linux engine). No npm dependencies on the host.
 
 ```sh
-npm test
-node scripts/check-evidence.cjs
-npm run check:records
+npm run demo:setup                     # build the pinned sandbox images (several GB, once)
+export NEBIUS_API_KEY=...              # your Token Factory key
+node scripts/agent.cjs --case keyboard-date
+node scripts/agent.cjs --case customer-phone
 ```
 
-The [independent clean-environment run](https://github.com/SultanAlfaifi/accessfinish/actions/runs/39623819548) passed Node 22/24 checks on Windows/Linux, then built the public fixture and replayed all five retained proposals on a fresh Linux runner. All five expected outcomes matched: two verified repairs and three failures at their expected stages. The original-source control remained blocked and left the selected database snapshots unchanged. It made no model requests. [Sanitized records and checksums](evidence/clean-execution-20261021/summary.json) are retained separately from the original model-generation trials.
+Or start the page with `npm start`, open http://127.0.0.1:4177 and press **Run live**. Without a key, `npm run replay` serves the recorded runs at http://127.0.0.1:4178.
 
-Source/app/database/compiler/browser/evaluator roles are separated. Candidate execution has no external network, no model-key environment, read-only roots, dropped capabilities, and CPU/memory/PID limits. The application receives only its synthetic fixture account. The independent reader has SELECT-only fixture access and explicitly checks that writes and system-schema access are denied. The reader never mounts the candidate source. Trusted setup builds official images; candidate npm scripts, Composer hooks, and model-generated shell commands are not run.
+`--publish` saves a finished run (trace, verified patch and evidence) to `web/agent-runs/` and `evidence/agent-runs/`.
 
-Preservation checks cover only the appointment, customer, service, and provider columns selected by the reader's snapshots.
+## Under the hood
 
-## License and attribution
+- **Model:** `nvidia/nemotron-3-super-120b-a12b` via `https://api.tokenfactory.nebius.com/v1/chat/completions`, with two tools: `read_file` (read-only, any app source file) and `propose_repair`. Edits must match the original source exactly once, or they are rejected before anything runs. Each request's tokens and cost are recorded.
+- **Sandbox:** separate containers for the app, database, compiler, browser and verifier; no network, no model key, read-only roots, all capabilities dropped, CPU/memory/PID limits. Model output never becomes a shell command.
+- **App:** a pinned copy of the open-source [Easy!Appointments](https://github.com/alextselegidis/easyappointments) (GPL-3.0) with synthetic data.
+- **Code:** `lib/agent.cjs` (the loop), `lib/fixture.cjs` (sandbox and verifier), `integration/portable/` (browser workers and outcome evaluator), `web/` (the page).
 
-The workbench and original orchestration are MIT licensed. The bundled Easy!Appointments source archive and derivative patches remain **GPL-3.0**, with full source and license supplied. Upstream is pinned to `4bc7ecd51f3dade8e041558f2c23dda65bd6c43e`. See [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
+```sh
+npm test                      # unit tests, including the agent loop
+npm run check:records         # earlier recorded evaluation is intact
+```
 
-AccessFinish was developed during the submission period. Easy!Appointments is separately attributed upstream software. The [competition overview](https://nebiusglobalaihackathon.devpost.com/) identifies the infrastructure, public repository, test-build/demo, and public YouTube requirements; the entrant must review the [official rules](https://nebiusglobalaihackathon.devpost.com/rules) and confirm their declarations before submission.
+## Earlier evidence
+
+Before the agent, we measured single-shot, operator-guided repairs: on 21 October five frozen Nemotron requests on the keyboard case gave **2/5** full passes (two compile errors, one broken calendar navigation). Those failures are exactly what the agent's feedback loop now recovers from. All raw requests, responses and executions are kept in [`evidence/`](evidence/) and browsable on the [evidence page](web/workbench.html).
+
+## Limits
+
+Two journeys in one application; the phone fault was seeded on purpose. The data is synthetic. This is not a screen-reader user study.
+
+## License
+
+AccessFinish is MIT licensed. The bundled Easy!Appointments source and patches to it remain GPL-3.0 — see [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).

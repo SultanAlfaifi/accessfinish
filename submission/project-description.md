@@ -2,42 +2,52 @@
 
 ## Elevator pitch
 
-AI repair, checked against the task that matters.
+The AI says "fixed". AccessFinish checks the user can finish — and keeps repairing until they can.
 
 ## Inspiration
 
-A page can load and a model can say “fixed” while a keyboard user still cannot book an appointment. Even a confirmation page can hide a wrong saved date. We wanted a developer workflow that follows the intended task into storage and a fresh browser session.
+Ask an AI to fix a broken form and it will tell you it's fixed. The page loads, maybe a confirmation appears. But a keyboard user still can't reach the date picker, or the booking is saved with the wrong phone number. For people who rely on a keyboard or assistive technology, "it renders" is not the same as "I can finish". We wanted an agent that only stops when the real outcome is right.
 
 ## What it does
 
-AccessFinish is a review workbench for an Easy!Appointments keyboard booking case. A developer reviews the exact source edits, approves the proposal hash, and executes it in a fresh isolated fixture. The controller builds the application, performs a native keyboard booking, checks the stored appointment through a separate SELECT-only account, and reopens the same booking in a fresh browser. Existing business records must remain intact. Pointer booking, unavailable-slot, clear-date, and runtime-boundary checks provide additional regression controls.
+AccessFinish is a repair agent for broken user journeys. Given a goal like "a keyboard-only customer books the 09:00 slot and it's saved for that date", it:
 
-The published browser experience reviews recorded executions. It explicitly distinguishes inspection of past evidence from new inference or execution. The downloadable local build performs new execution without a model key; new source generation additionally needs the operator's Nebius configuration and budget.
+1. **Observes** the journey in a real browser using only the keyboard, recording where focus goes and where it gets stuck.
+2. **Diagnoses and repairs** with NVIDIA Nemotron 3 Super: the model gets the goal, the verifier's evidence and the source files — no hints — and proposes exact code edits.
+3. **Verifies for real** in a fresh offline sandbox: build, keyboard booking, database read-back through a read-only account, reopen in a fresh browser, plus regression checks (mouse booking with different data, clearing the date, reserved slots, untouched records, sandbox isolation).
+4. **Feeds the evidence back** when anything fails — a compile error, a stuck key, a wrong saved value, a page request that silently changed the date — and tries again, up to eight attempts. The agent can also open any other source file with a read-only `read_file` tool, like a developer following the code.
+
+The web page replays each run as a timeline: the stuck keyboard trail, Nemotron's diagnosis and diff, each verifier verdict, and the final proof with a downloadable patch.
 
 ## How we built it
 
-NVIDIA Nemotron 3 Super (`nvidia/nemotron-3-super-120b-a12b`) is served through Nebius Token Factory. The operator supplies the diagnosis and repair direction; Nemotron returns structured literal source edits to two allowed paths. Anchors must match exactly once. Line endings are normalized for application, with no operator changes to the model's semantic edits.
+- **Model:** `nvidia/nemotron-3-super-120b-a12b` on **Nebius Token Factory**, with two tools: `read_file` (read-only, any app source file) and `propose_repair`. Edits must match the original source exactly once or they are rejected before execution. Token usage and cost are recorded for every request.
+- **Verifier:** Node.js orchestration of Docker containers for the app (PHP), MariaDB, a trusted Babel compiler, Playwright browsers and a read-only SQL reader. Candidate code runs with no network, no model key, read-only roots, dropped capabilities and resource limits.
+- **Target app:** a pinned copy of open-source Easy!Appointments with synthetic data. Two journeys: a real upstream keyboard bug in the date picker, and a seeded fault where confirmation hides a wrong saved phone number.
+- **Page:** plain HTML, CSS and JavaScript, no dependencies.
 
-The Node.js workbench has no host npm dependencies. Docker separates source application, trusted compilation, database, browser, and independent reader roles. Candidate execution has no external network or model keys, read-only roots, dropped capabilities, and resource limits. No model response becomes a shell command. Browser review uses native HTML, CSS, and JavaScript; the synthetic application is PHP/MariaDB.
+## Results
 
-## What we measured
+All runs were made live on fresh GitHub Actions runners with Nemotron 3 Super on Nebius Token Factory, 14 runs for $0.41 in total:
 
-On October 21, three development requests were followed by five frozen requests on one exposed case. **Two of five passed the complete procedure.** Two failed to compile; another passed keyboard booking and fresh reopen but failed calendar navigation. Every failure and raw model response remains in the repository.
-
-The featured successful proposal contains five model-authored edits. It built 83 JavaScript files and verified a booking for November 2, 2026, 09:00–09:30 Asia/Riyadh in storage and after fresh reopen. A separate pointer booking, reserved-slot exclusion, safe clearing of the date, preservation checks, and inspected runtime boundaries also passed. The browsers were UTC, making timezone consistency part of the check.
-
-Estimated additional model cost across all eight requests was $0.0394581 before tax, with no unknown-usage responses. This is repeated guided generation on one case, not a hidden-case benchmark or a general accuracy claim.
+- **Saved phone:** fixed and verified on the first attempt in **7 of 7** runs, about 100 seconds and half a cent each.
+- **Keyboard date:** not fixed yet — 0 of 7. Nemotron made the date reachable with Tab, but **15 attempts showed a "booked" confirmation while the database held the wrong day**. AccessFinish rejected every one. Its recorded timeline pinpoints the cause: right after the date is typed, the page requests `get_unavailable_dates` and, with no key pressed, the field jumps from 02/11 to 01/11, because a helper selects the first available day of the month.
 
 ## Challenges
 
-The archived October 18 repair succeeded on its same-month example but saved the wrong date in a fresh cross-month fixture. Deferred calendar callbacks were overwriting typed input. Passing the keyboard path also did not guarantee that ordinary calendar navigation still worked. Independent outcome and regression checks exposed both problems instead of inheriting an older green result.
+Single-shot fixes weren't enough. In an earlier frozen test, five guided Nemotron attempts on the keyboard case gave 2/5 full passes: two didn't compile and one fixed the keyboard but broke the mouse calendar. One earlier repair even saved the *wrong date* while showing success. Those are exactly the failures a confirmation-page check misses — so we built the loop around the verifier's evidence instead of the model's confidence.
 
-## Audience and next steps
+## Accomplishments
 
-The initial audience is developers and accessibility QA engineers reviewing AI-generated UI patches. The demonstrated benefit is a traceable acceptance decision tied to the actual booking outcome. User time saved and adoption have not been measured.
+- A verifier that refused 15 AI fixes whose confirmation page said "booked" while the wrong date was saved.
+- Evidence a developer can act on: the keyboard focus trail, typed vs saved values, and a timeline of the page's own requests showing the moment the date changed by itself.
+- Proof that's hard to fake: the database row, the fresh-browser reopen, and a second customer that defeats hardcoded fixes.
+- Every run, including failures, is kept with its raw evidence.
 
-Two independent browser-only developer reviews are planned to assess comprehension, navigation, and usefulness. They are not independent setup tests or a screen-reader study. Broader task families, assistive-technology studies, stronger source-generation reliability, and year-boundary tests remain future work.
+## What's next
 
-## Track and new work
+More journey types (sign-up, checkout, settings), screen-reader-driven verification, and a GitHub app that opens a pull request with the verified patch and its proof attached.
 
-Coding and Agentic Engineering. The v0.2 work adds a public clean-start fixture, proposal-bound execution, explicit recorded review, frozen repeated trials with retained failures, and browser-only feedback collection. Easy!Appointments is separately attributed upstream GPL-3.0 software, not our original application. AccessFinish's original workbench and orchestration are MIT licensed.
+## Built with
+
+NVIDIA Nemotron 3 Super · Nebius Token Factory · Node.js · Docker · Playwright · PHP · MariaDB · Easy!Appointments (GPL-3.0)
