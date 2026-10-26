@@ -280,15 +280,16 @@
       const summary = await json('agent-runs/summary.json'), phone = summary.cases['customer-phone'], keyboard = summary.cases['keyboard-date'];
       if (phone) { $('#fact-phone').textContent = phone.first_attempt + ' / ' + phone.runs; $('#verdict-customer-phone').textContent = 'Fixed on the first attempt in ' + phone.first_attempt + ' of ' + phone.runs + ' runs'; }
       if (keyboard) {
-        // The newest agent version that verified the keyboard case, with its own runs (versions are never mixed).
+        // Keyboard results from the first agent version that verified the case onwards (earlier versions never did).
         const caught = keyboard.false_booked_caught ?? keyboard.wrong_saves_caught;
-        const best = Object.entries(summary.agent_versions || {}).map(([version, data]) => ({version, ...(data.cases['keyboard-date'] || {})}))
-          .filter(item => item.verified > 0).sort((a, b) => Number(b.version) - Number(a.version))[0];
+        const versions = Object.entries(summary.agent_versions || {}).map(([version, data]) => ({version: Number(version), ...(data.cases['keyboard-date'] || {})})).sort((a, b) => a.version - b.version);
+        const since = versions.filter(item => item.version >= (versions.find(item => item.verified > 0)?.version ?? Infinity));
+        const fixed = since.reduce((sum, item) => sum + (item.verified || 0), 0), tried = since.reduce((sum, item) => sum + (item.runs || 0), 0);
+        const span = since.length ? 'agent v' + since[0].version + (since.length > 1 ? '–v' + since.at(-1).version : '') : '';
         $('#fact-caught').textContent = String(caught); $('#why-caught').textContent = String(caught);
-        $('#verdict-keyboard-date').textContent = (best ? 'Fixed by Nemotron in ' + best.verified + ' of ' + best.runs + ' runs of agent v' + best.version : 'Not fixed yet')
-          + ' · ' + caught + ' false "booked" pages caught';
-        $('#fact-keyboard').textContent = best ? best.verified + ' / ' + best.runs : '0';
-        $('#fact-keyboard-label').textContent = best ? 'keyboard runs fixed by Nemotron with no hints (agent v' + best.version + ')' : 'keyboard runs fixed so far';
+        $('#verdict-keyboard-date').textContent = (fixed ? 'Fixed by Nemotron in ' + fixed + ' of ' + tried + ' runs (' + span + ')' : 'Not fixed yet') + ' · ' + caught + ' false "booked" pages caught';
+        $('#fact-keyboard').textContent = fixed ? fixed + ' / ' + tried : '0';
+        $('#fact-keyboard-label').textContent = fixed ? 'keyboard runs fixed by Nemotron with no hints (' + span + ')' : 'keyboard runs fixed so far';
       }
       $('#fact-cost').textContent = money(summary.cost_usd); $('#fact-runs').textContent = String(summary.runs);
     } catch {}
