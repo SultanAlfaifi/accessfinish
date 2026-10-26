@@ -14,38 +14,45 @@
     },
     {
       "id": "phone-propose",
-      "text": "AccessFinish drives the journey in a real browser, then hands the evidence and the source code to NVIDIA Nemotron, on Nebius Token Factory. No hints. Nemotron finds the hard-coded value, and writes the fix.",
-      "say": "AccessFinish drives the journey in a real browser, then hands the evidence and the source code to NVIDIA Nemo-tron, on Nebius Token Factory. No hints. Nemo-tron finds the hard-coded value, and writes the fix."
+      "text": "AccessFinish drives the journey in a real browser, then hands the evidence and the source code to NVIDIA Nemotron, on Nebius Token Factory. It is never told the cause. Nemotron finds the hard-coded value, and writes the fix.",
+      "say": "AccessFinish drives the journey in a real browser, then hands the evidence and the source code to NVIDIA Nemo-tron, on Nebius Token Factory. It is never told the cause. Nemo-tron finds the hard-coded value, and writes the fix."
     },
     {
       "id": "phone-proof",
-      "text": "Every fix is built in a fresh, offline sandbox, and checked for real: the saved database row, a fresh browser, and a second customer with a different number. Seven live runs. Seven verified fixes, on the first attempt, for about half a cent each."
+      "text": "Every fix is built in a fresh, offline sandbox, and checked for real: the saved database row, a fresh browser, and a second customer with a different number. Twenty-seven live runs. Twenty-seven verified fixes, for about a cent each."
     },
     {
       "id": "keyboard-intro",
-      "text": "Now the harder case. A keyboard user can't reach the date picker at all."
-    },
-    {
-      "id": "keyboard-attempts",
-      "text": "Nemotron reads the source files, proposes fixes, and every attempt is built and tested. It makes the date reachable, and the page says the booking is confirmed.",
-      "say": "Nemo-tron reads the source files, proposes fixes, and every attempt is built and tested. It makes the date reachable, and the page says the booking is confirmed."
+      "text": "Now a real bug from the open-source app. A keyboard user can't reach the date picker at all."
     },
     {
       "id": "keyboard-wrong",
-      "text": "But AccessFinish reads the database. The booking was saved for the wrong day. Rejected."
+      "text": "Nemotron makes the date reachable, and the page says the booking is confirmed. But AccessFinish reads the database. Saved for the wrong day. Rejected.",
+      "say": "Nemo-tron makes the date reachable, and the page says the booking is confirmed. But AccessFinish reads the database. Saved for the wrong day. Rejected."
     },
     {
-      "id": "keyboard-timeline",
-      "text": "And it shows exactly why. Seven tenths of a second after a background request, with no key pressed, the date resets itself to the first of the month."
+      "id": "keyboard-provenance",
+      "text": "And it shows which code did it. Half a second after the date is typed, the month-change handler fetches unavailable dates, and overwrites what the user typed."
+    },
+    {
+      "id": "keyboard-reopen",
+      "text": "With that evidence, Nemotron fixes the reset, and the right date is saved. But reopening the booking shows today's date. A second bug.",
+      "say": "With that evidence, Nemo-tron fixes the reset, and the right date is saved. But reopening the booking shows today's date. A second bug."
+    },
+    {
+      "id": "keyboard-verified",
+      "text": "Nemotron fixes that too, building on its best attempt. Verified: saved, reopened in a fresh browser, and the mouse path still works.",
+      "say": "Nemo-tron fixes that too, building on its best attempt. Verified: saved, reopened in a fresh browser, and the mouse path still works.",
+      "trim_start_seconds": 1.85
     },
     {
       "id": "finding",
-      "text": "Fifteen fake booked confirmations, across seven runs. Not one got through."
+      "text": "Across twenty-seven keyboard runs, seventy-seven false booked confirmations were caught. Not one got through."
     },
     {
       "id": "facts",
-      "text": "Fourteen live runs, and forty-one cents of Nemotron. Fixes that are proven, not promised.",
-      "say": "Fourteen live runs, and forty-one cents of Nemo-tron. Fixes that are proven, not promised."
+      "text": "Fifty-four live runs, for under seven dollars of Nemotron. Fixes that are proven, not promised.",
+      "say": "Fifty-four live runs, for under seven dollars of Nemo-tron. Fixes that are proven, not promised."
     },
     {
       "id": "close",

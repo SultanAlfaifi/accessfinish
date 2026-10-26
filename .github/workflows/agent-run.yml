@@ -3,6 +3,15 @@ name: Live agent run
 # trace back. Triggered manually, or by a push whose message contains [run-agent].
 on:
   workflow_dispatch:
+    inputs:
+      scenario_date:
+        description: 'Booking date, a Monday (YYYY-MM-DD). Empty: the first Monday in a later month, as in every version 1 run.'
+        required: false
+        default: ''
+      runs:
+        description: 'Runs per case (1 to 6), one after another on this runner.'
+        required: false
+        default: '1'
   push:
     branches: ['claude/**', 'codex/**']
 permissions:
@@ -14,7 +23,7 @@ jobs:
   agent:
     if: github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[run-agent]')
     runs-on: ubuntu-latest
-    timeout-minutes: 75
+    timeout-minutes: 240
     env:
       AF_RUNTIME_DIR: .runtime
       NEBIUS_API_KEY: ${{ secrets.NEBIUS_API_KEY }}
@@ -26,17 +35,51 @@ jobs:
       - run: npm test
       - name: Build the isolated sandbox
         run: npm run demo:setup
+      - name: Provenance never pauses the page (smoke test in the browser image)
+        run: |
+          image=$(node -p 'require("./.runtime/fixture/prepared.json").images.browser')
+          docker run --rm --init --shm-size 256m --user 1000:1000 --env HOME=/tmp --env PLAYWRIGHT_MODULE=/trusted/node_modules/playwright \
+            --mount "type=bind,src=$PWD,dst=/repo,readonly" "$image" node --test /repo/test/provenance-browser.test.cjs
+      - name: Pin one booking date for every run in this job
+        # The date-reset failure needs a date in a later month than today (the picker must change month).
+        env:
+          REQUESTED: ${{ inputs.scenario_date }}
+        run: |
+          booking=$(node -e 'const fixture = require("./lib/fixture.cjs"), date = process.env.REQUESTED || fixture.nextMonthScenarioDate(); fixture.scenario(new Date(), date); process.stdout.write(date)')
+          echo "AF_SCENARIO_DATE=$booking" >> "$GITHUB_ENV"; echo "Booking date: $booking"
       - name: Pipeline check without a model (recorded proposals)
         run: |
           node scripts/agent.cjs --case keyboard-date --recorded-model
           node scripts/agent.cjs --case customer-phone --recorded-model
+      - name: Smoke-test the provenance hooks in the pipeline check
+        # Shows that the hooks record date-field writes and request initiators in the real app. The recorded
+        # proposal prevents the date reset, so this cannot judge the reset's causal chain; the live runs'
+        # wrong-date attempts show that. Best effort by design: a missing record is a warning, never a verdict.
+        continue-on-error: true
+        run: |
+          node -e '
+            const fs = require("fs"), path = require("path"), dir = ".runtime/execution";
+            for (const id of fs.readdirSync(dir)) {
+              const manifest = JSON.parse(fs.readFileSync(path.join(dir, id, "evidence.json"), "utf8")), keyboard = manifest.keyboard;
+              if (!keyboard || manifest.original_source_control) continue;
+              const writes = (keyboard.date_writes || []).length, requests = keyboard.page_requests || [], traced = requests.filter(request => request.initiator).length;
+              console.log(manifest.case_id + " " + id + ": " + writes + " date-field writes by page code, " + traced + "/" + requests.length + " requests with initiator stacks");
+              if (manifest.case_id === "keyboard-date" && (!writes || !traced)) console.log("::warning::The provenance hooks recorded no date-field write or no request initiator for " + id);
+            }'
       - name: Check the model key is configured
         run: test -n "$NEBIUS_API_KEY" || { echo "Add the NEBIUS_API_KEY repository secret to run Nemotron."; exit 1; }
       - name: Agent · keyboard date
-        run: node scripts/agent.cjs --case keyboard-date --publish || true
+        env:
+          RUNS: ${{ inputs.runs || '1' }}
+        run: |
+          [[ "$RUNS" =~ ^[1-6]$ ]] || { echo "runs must be 1 to 6"; exit 1; }
+          for run in $(seq "$RUNS"); do node scripts/agent.cjs --case keyboard-date --publish || true; done
       - name: Agent · saved phone
-        run: node scripts/agent.cjs --case customer-phone --publish || true
+        env:
+          RUNS: ${{ inputs.runs || '1' }}
+        run: for run in $(seq "$RUNS"); do node scripts/agent.cjs --case customer-phone --publish || true; done
       - name: Commit the traces
+        # The evidence index is rebuilt after the rebase, so each new run's raw link pins the commit that recorded it.
         run: |
           git config user.name "accessfinish-agent"
           git config user.email "accessfinish-agent@users.noreply.github.com"
@@ -45,6 +88,9 @@ jobs:
           git diff --cached --quiet && { echo "No traces produced."; exit 1; }
           git commit -m "Record live agent runs from ${GITHUB_SHA::7}"
           git pull --rebase origin "$GITHUB_REF_NAME"
+          node scripts/evidence-index.cjs
+          git add web/agent-runs/runs
+          git diff --cached --quiet || git commit -m "Index the live agent runs recorded in $(git rev-parse --short HEAD)"
           git push origin "HEAD:$GITHUB_REF_NAME"
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         if: always()

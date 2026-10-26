@@ -23,6 +23,11 @@ WHITE, MUTED, BLUE, GREEN, ORANGE, RED = (241, 245, 249), (148, 163, 184), (110,
 timeline = json.loads((DEMO / 'timeline.json').read_text())
 summary = json.loads((ROOT / 'web/agent-runs/summary.json').read_text())
 phone, keyboard = summary['cases']['customer-phone'], summary['cases']['keyboard-date']
+# Keyboard results from the first agent version that verified the case onwards (earlier versions never did).
+_versions = sorted((int(v), d['cases'].get('keyboard-date', {})) for v, d in summary['agent_versions'].items())
+_since = [(v, k) for v, k in _versions if v >= min((v for v, k in _versions if k.get('verified')), default=10**9)]
+kb_fixed, kb_tried = sum(k.get('verified', 0) for v, k in _since), sum(k.get('runs', 0) for v, k in _since)
+kb_span = f"agent v{_since[0][0]}–v{_since[-1][0]}" if len(_since) > 1 else (f"agent v{_since[0][0]}" if _since else '')
 
 ease = lambda t: t * t * (3 - 2 * t)
 clamp = lambda t: max(0.0, min(1.0, t))
@@ -192,9 +197,9 @@ def fade_in(layer, start, xy=(0, 0)):
 
 
 def scene_big_number():
-    label = text_layer([((0, 0), 'fake “booked” confirmations caught', font('InterDisplay-Bold', 64), WHITE, None, 1),
-                        ((0, 90), f"across {keyboard['runs']} live runs — not one got through", font('Inter-Medium', 38), MUTED, None, 1)], (1700, 160))
-    target = keyboard['wrong_saves_caught']
+    label = text_layer([((0, 0), 'false “booked” confirmations caught', font('InterDisplay-Bold', 64), WHITE, None, 1),
+                        ((0, 90), f"across {keyboard['runs']} live keyboard runs — not one got through", font('Inter-Medium', 38), MUTED, None, 1)], (1700, 160))
+    target = keyboard['false_booked_caught']
     def draw(frame, t, d):
         k = ease(clamp(t * d / 1.4))
         n = text_layer([((0, 0), str(round(target * k)), font('InterDisplay-Black', 300), ORANGE, None, 1)], (700, 360))
@@ -204,10 +209,10 @@ def scene_big_number():
 
 
 def scene_facts():
-    tiles = [(f"{phone['first_attempt']}/{phone['runs']}", 'phone runs fixed and verified on the first attempt', GREEN),
-             (str(keyboard['wrong_saves_caught']), 'false “booked” confirmations caught', ORANGE),
-             (f"${summary['cost_usd']:.2f}", f"of Nemotron for all {summary['runs']} live runs", WHITE),
-             ('9', 'independent checks on every attempt', BLUE)]
+    tiles = [(f"{phone['verified']}/{phone['runs']}", f"phone runs verified, {phone['first_attempt']} on the first attempt", GREEN),
+             (f"{kb_fixed}/{kb_tried}", f"keyboard runs fixed, no diagnosis supplied ({kb_span})", BLUE),
+             (str(keyboard['false_booked_caught']), 'false “booked” confirmations caught', ORANGE),
+             (f"${summary['cost_usd']:.2f}", f"of Nemotron for all {summary['runs']} live runs", WHITE)]
     layers = []
     for value, label, colour in tiles:
         tile = Image.new('RGBA', (380, 400), (0, 0, 0, 0))
@@ -250,21 +255,24 @@ SCENES = {
     'hero': scene_hero(),
     'phone-observe': scene_card('CASE 1 · SAVED PHONE', 'The page said “booked”. The database saved 0000000000.',
                                 Card('phone-observe', RIGHT, 'fit', (1.0, 0.5, 0.3), (1.12, 0.5, 0.75))),
-    'phone-propose': scene_card('NVIDIA NEMOTRON · NO HINTS', 'Nemotron finds the hard-coded value and writes the fix.',
+    'phone-propose': scene_card('NVIDIA NEMOTRON · NO DIAGNOSIS SUPPLIED', 'Nemotron finds the hard-coded value and writes the fix.',
                                 Card('phone-propose', RIGHT, 'fit', (1.0, 0.5, 0.4), (1.1, 0.5, 0.6))),
     'phone-proof': scene_card('VERIFIED FOR REAL', 'Saved, reopened, and re-checked with a second customer.',
                               Card('phone-proof', RIGHT, 'pan', (1, 0.5, 0.0), (1, 0.5, 1.0)),
-                              combine(fade_in(counter(f"{phone['first_attempt']} / {phone['runs']}", 'live runs fixed and verified on the first attempt', GREEN, (120, 560), 130), 0.62),
+                              combine(fade_in(counter(f"{phone['verified']} / {phone['runs']}", f"live runs verified · {phone['first_attempt']} on the first attempt", GREEN, (120, 560), 130), 0.62),
                                       pop(STAMP_VERIFIED, (1640, 860), 0.35))),
-    'keyboard-intro': scene_card('CASE 2 · KEYBOARD ONLY', 'Tab can’t reach the date picker.',
+    'keyboard-intro': scene_card('CASE 2 · A REAL UPSTREAM BUG', 'Tab can’t reach the date picker.',
                                  Card('kb-observe', RIGHT, 'fit', (1.0, 0.5, 0.3), (1.1, 0.5, 0.5))),
-    'keyboard-attempts': scene_card('8 ATTEMPTS · EACH BUILT AND TESTED', 'Nemotron reads the code and tries again.',
-                                    Card('kb-console', RIGHT, 'pan', (1, 0.5, 0.0), (1, 0.5, 1.0))),
     'keyboard-wrong': scene_card('THE CONFIRMATION LIED', '“Booked.” Saved for the wrong day.',
                                  Card('kb-compare', (860, 250, 1820, 700), 'fit', (1.0, 0.5, 0.5), (1.04, 0.5, 0.5)),
                                  pop(STAMP_REJECTED, (1340, 820), 0.42)),
-    'keyboard-timeline': scene_card('WHAT THE VERIFIER RECORDED', '0.7 s after a background request, the date changed by itself.',
-                                    Card('kb-history', (860, 250, 1820, 650), 'fit', (1.0, 0.5, 0.5), (1.06, 0.2, 0.8))),
+    'keyboard-provenance': scene_card('WHICH CODE CHANGED IT', 'The month-change handler overwrote the date the user typed.',
+                                      Card('kb-history', (860, 150, 1820, 950), 'fit', (1.0, 0.0, 0.3), (1.1, 0.0, 0.7))),
+    'keyboard-reopen': scene_card('A SECOND BUG', 'Saved correctly — but reopening shows today’s date.',
+                                  Card('kb-reopen', RIGHT, 'fit', (1.25, 0.5, 0.35), (1.25, 0.5, 0.62))),
+    'keyboard-verified': scene_card('FIXED BY NEMOTRON · CAUSE NEVER GIVEN', 'Both bugs fixed. Saved, reopened, mouse path intact.',
+                                    Card('kb-proof', RIGHT, 'pan', (1, 0.5, 0.0), (1, 0.5, 1.0)),
+                                    pop(STAMP_VERIFIED, (1640, 860), 0.4)),
     'finding': scene_big_number(),
     'facts': scene_facts(),
     'close': scene_close(),

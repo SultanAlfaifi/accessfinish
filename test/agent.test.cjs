@@ -89,7 +89,7 @@ test('rejection feedback remembers the attempt that got furthest', async () => {
 
 test('temporary provider errors are retried, other errors are not', async () => {
   let calls = 0;
-  const reply = {choices: [{message: {tool_calls: [{id: 'c', function: {name: 'propose_repair', arguments: JSON.stringify({diagnosis: 'd', edits: []})}}]}}], usage: {prompt_tokens: 1, completion_tokens: 1}};
+  const reply = {choices: [{message: {tool_calls: [{id: 'c', function: {name: 'propose_repair', arguments: JSON.stringify({diagnosis: 'd', evidence_explained: 'e', edits: []})}}]}}], usage: {prompt_tokens: 1, completion_tokens: 1}};
   const flaky = async () => ++calls < 3 ? {ok: false, status: 503, text: async () => 'busy'} : {ok: true, status: 200, text: async () => JSON.stringify(reply)};
   const answer = await nemotron([], {key: 'k', fetchImpl: flaky, retryDelay: 1});
   assert.equal(calls, 3); assert.equal(answer.proposal.diagnosis, 'd');
@@ -119,6 +119,182 @@ test('a near-miss anchor reports the first line that differs from the original',
   assert.deepEqual(report.first_mismatch, {old_line_number: 3, your_line: 'THREE', original_line: 'three'});
 });
 
+test('the mismatch report compares whole lines, so "}" does not count as matching "},"', () => {
+  const {anchorReport} = require('../lib/agent.cjs');
+  const files = [{path: 'assets/js/pages/booking.js', content: 'a({\r\n  b: 1,\r\n},\r\nc);\r\n'}];
+  const [report] = anchorReport(files, [{path: 'assets/js/pages/booking.js', old: 'a({\n  b: 1,\n}\nc);', new: 'x'}]);
+  assert.deepEqual(report.first_mismatch, {old_line_number: 3, your_line: '}', original_line: '},'});
+});
+
+test('anchors that differ only in indentation or blank lines are pinned to the exact code; no-op edits are dropped', () => {
+  const {resolveAnchors} = require('../lib/agent.cjs'), {preview} = require('../lib/repair.cjs');
+  const js = 'function f() {\r\n        if (ready) {\r\n            const today = now();\r\n\r\n            set(today);\r\n        }\r\n}\r\n', php = '<div id="d"></div>\r\n';
+  const files = [{path: 'assets/js/pages/booking.js', content: js}, {path: 'application/views/components/booking_time_step.php', content: php}];
+  const loose = {path: 'assets/js/pages/booking.js', old: 'if (ready) {\n    const today = now();\n    set(today);\n}', new: 'if (ready) {\n    const today = now();\n    if (!value()) set(today);\n}'};
+  const noop = {path: 'application/views/components/booking_time_step.php', old: '<div id="d"></div>', new: '<div id="d"></div>'};
+  const {edits, adjustments} = resolveAnchors(files, [noop, loose]);
+  assert.equal(edits.length, 1);
+  assert.deepEqual(adjustments.map(item => Object.keys(item)[1]), ['dropped', 'anchored']);
+  assert.match(adjustments[1].anchored, /shifted by 8 spaces/);
+  const patched = preview(files, {reason: 'r', edits}).files.find(file => file.path.endsWith('.js')).content;
+  assert.equal(patched, 'function f() {\r\n        if (ready) {\r\n            const today = now();\r\n            if (!value()) set(today);\r\n        }\r\n}\r\n');
+  // An exact anchor is left alone, and a loose anchor that matches twice is not guessed.
+  const exact = {path: 'assets/js/pages/booking.js', old: 'set(today);', new: 'set(today, true);'};
+  assert.deepEqual(resolveAnchors(files, [exact]).edits, [exact]);
+  const twice = [{path: 'assets/js/pages/booking.js', content: 'a\n  b\na\n    b\n'}, files[1]];
+  assert.deepEqual(resolveAnchors(twice, [{path: 'assets/js/pages/booking.js', old: 'a\nb', new: 'c'}]).adjustments, []);
+});
+
+test('the resolver never guesses: ambiguous anchors, anchors an earlier edit changed, and exact anchors with a lone CR are left alone', () => {
+  const {resolveAnchors} = require('../lib/agent.cjs'), {preview} = require('../lib/repair.cjs');
+  const php = {path: 'application/views/components/booking_time_step.php', content: '<div id="d"></div>\r\n'}, js = path => ({path: 'assets/js/pages/booking.js', content: path});
+  // "$(event)" occurs three times exactly; only one occurrence is a line of its own.
+  const thrice = [js('a($(event));\r\nb($(event));\r\n    $(event)\r\n'), php];
+  assert.deepEqual(resolveAnchors(thrice, [{path: 'assets/js/pages/booking.js', old: '$(event)', new: '$(event.target)'}]).adjustments, []);
+  // Edit 2's anchor is unique in the original but edit 1 changed it: not re-anchored onto edit 1's new line.
+  const overlap = [js('function f() {\r\n    if (ready) set(today);\r\n    log();\r\n}\r\n'), php];
+  const edits = [{path: 'assets/js/pages/booking.js', old: '    log();', new: '    log();\n    set(today);'}, {path: 'assets/js/pages/booking.js', old: 'if (ready) set(today);', new: 'if (ready) set(today, true);'}];
+  assert.deepEqual(resolveAnchors(overlap, edits).adjustments, []);
+  // A lone CR that preview() matches exactly is not touched.
+  const line = "    const $selectDate = $('#select-date');", cr = [js(line + '\r\n'), php], edit = {path: 'assets/js/pages/booking.js', old: line + '\r', new: line.replace('Date =', 'DateX =') + '\r'};
+  assert.deepEqual(resolveAnchors(cr, [edit]).edits, [edit]);
+  assert.equal(preview(cr, {reason: 'r', edits: resolveAnchors(cr, [edit]).edits}).files[0].content, line.replace('Date =', 'DateX =') + '\r\n');
+  // Mixed indentation shifts use the shift most lines share; a negative shift keeps relative indentation.
+  const deep = [js('x();\r\n            a();\r\n                b();\r\n'), php];
+  const shifted = resolveAnchors(deep, [{path: 'assets/js/pages/booking.js', old: 'a();\n    b();', new: 'a();\n    b();\n    c();'}]);
+  assert.match(shifted.adjustments[0].anchored, /shifted by 12 spaces/);
+  assert.equal(preview(deep, {reason: 'r', edits: shifted.edits}).files[0].content, 'x();\r\n            a();\r\n                b();\r\n                c();\r\n');
+  const shallow = [js('a();\r\n  b();\r\n'), php];
+  const out = resolveAnchors(shallow, [{path: 'assets/js/pages/booking.js', old: '    a();\n      b();', new: '    a();\n      b();\n    c();'}]);
+  assert.equal(preview(shallow, {reason: 'r', edits: out.edits}).files[0].content, 'a();\r\n  b();\r\nc();\r\n');
+});
+
+test('an edit re-sent on top of build_on_attempt is recognised even after the harness re-anchored it', async () => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'af-agent-')), replies = [];
+  // A real recorded slip: the right lines with four spaces of indentation instead of eight.
+  const indented = {path: 'assets/js/pages/booking.js', old: '    App.Utils.UI.setDateTimePickerValue($selectDate, new Date());\n\n    const browserTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;',
+    new: '    App.Utils.UI.setDateTimePickerValue($selectDate, new Date());\n\n    const browserTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone; // checked'};
+  const proposals = [{diagnosis: 'a', edits: [indented]}, {diagnosis: 'b', build_on_attempt: 1, edits: [indented, featured.edits[0]]}];
+  const model = async messages => { replies.push(messages.at(-1)); return answer('c' + replies.length, proposals[replies.length - 1]); };
+  const trace = await runAgent({execute: async ({run}) => ({...stuck, run_id: run.id}), model, root, maxAttempts: 2});
+  const proposes = trace.steps.filter(item => item.kind === 'propose'), verifies = trace.steps.filter(item => item.kind === 'verify');
+  assert.equal(proposes[0].adjustments[0].your_edit, 1); assert.match(proposes[0].adjustments[0].anchored, /shifted by 4 spaces/);
+  assert.deepEqual(proposes[0].proposed_edits, [indented], 'the model\'s own text is kept');
+  assert.equal(verifies[0].stage, 'keyboard');
+  assert.equal(proposes[1].edits.length, 2, 'the re-sent edit is dropped as a duplicate of the kept one');
+  assert.equal(verifies[1].stage, 'keyboard');
+});
+
+test('repeats are dropped after anchoring, and a loose anchor is never pinned to code an earlier edit rewrote', async () => {
+  const {resolveAnchors} = require('../lib/agent.cjs'), {preview} = require('../lib/repair.cjs');
+  const js = {path: 'assets/js/pages/booking.js', content: 'go();\r\n        a();\r\n        b();\r\n'}, php = {path: 'application/views/components/booking_time_step.php', content: '<div></div>\r\n'}, files = [js, php];
+  const R = {path: js.path, old: 'a();\nb();', new: 'a();\nb();\nc();'}, R4 = {path: js.path, old: '    a();\n    b();', new: '    a();\n    b();\n    c();'};
+  const both = resolveAnchors(files, [R, R4]);
+  assert.equal(both.edits.length, 1); assert.equal(both.adjustments[1].dropped, 'once anchored, it repeats an earlier edit');
+  // Edit 1 re-indents the lines edit 2 names in the original: edit 2 is left for the verifier to reject.
+  const wrap = {path: js.path, old: '        a();\n        b();', new: '        if (x) {\n            a();\n            b();\n        }'};
+  assert.deepEqual(resolveAnchors(files, [wrap, R]).adjustments, []);
+  // Old and new differing only in blank lines become a no-op once aligned, and are dropped.
+  const spaced = [{...js, content: 'go();\r\n        a();\r\n\r\n        b();\r\n'}, php], blank = {path: js.path, old: 'a();\nb();', new: 'a();\n\nb();'};
+  assert.match(resolveAnchors(spaced, [blank]).adjustments[0].dropped, /changes nothing/);
+  assert.equal(preview(files, {reason: 'r', edits: resolveAnchors(files, [R]).edits}).files[0].content, 'go();\r\n        a();\r\n        b();\r\n        c();\r\n');
+  // Through a two-level build_on chain, re-sending the first attempt's slipped text is still a repeat.
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'af-agent-')), sent = [];
+  const indented = {path: 'assets/js/pages/booking.js', old: '    App.Utils.UI.setDateTimePickerValue($selectDate, new Date());\n\n    const browserTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;',
+    new: '    App.Utils.UI.setDateTimePickerValue($selectDate, new Date());\n\n    const browserTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;\n    const typedDate = null;'};
+  const proposals = [{diagnosis: 'a', edits: [indented]}, {diagnosis: 'b', build_on_attempt: 1, edits: [featured.edits[0]]}, {diagnosis: 'c', build_on_attempt: 2, edits: [indented]}];
+  const trace = await runAgent({execute: async ({run, proposal, original}) => { if (!original) sent.push(proposal.proposal.edits); return {...stuck, run_id: run.id}; },
+    model: async () => answer('c', proposals.shift()), root, maxAttempts: 3});
+  const third = trace.steps.filter(item => item.kind === 'propose')[2];
+  assert.equal(sent.length, 2, 'the third proposal only repeats kept edits, so it is not run again'); assert.equal(third.adjustments[0].duplicate_of, 'an edit kept from an earlier attempt');
+  assert.match(trace.steps.filter(item => item.kind === 'verify')[2].headline, /every edit repeats one kept from attempt 2/);
+  assert.ok(sent.every(edits => edits.filter(item => item.new.includes('typedDate')).length === 1));
+});
+
+test('an edit naming the wrong editable file is moved, an empty edit is dropped, and read-only code is named', () => {
+  const {resolveAnchors, anchorReport} = require('../lib/agent.cjs'), {caseDefinition} = require('../lib/cases.cjs'), files = caseDefinition('keyboard-date').files;
+  const div = {path: 'assets/js/pages/booking.js', old: '<div id="select-date" class="mx-auto my-4"></div>', new: '<input id="select-date">'};
+  const {edits, adjustments} = resolveAnchors(files, [div, {path: 'assets/js/pages/booking.js', old: '', new: ''}]);
+  assert.deepEqual(edits.map(edit => edit.path), ['application/views/components/booking_time_step.php']);
+  assert.match(adjustments[0].moved, /occurs nowhere in assets\/js\/pages\/booking\.js but once in application\/views\/components\/booking_time_step\.php/);
+  assert.match(adjustments[1].dropped, /old text is empty/);
+  const [report] = anchorReport(files, [{path: 'assets/js/pages/booking.js', old: "if (setDate && !vars('manage_mode')) {\n  x();", new: 'y'}]);
+  assert.match(report.found_in_read_only_file, /^assets\/js\/http\/booking_http_client\.js:\d+ \(only assets\/js\/pages\/booking\.js and application\/views\/components\/booking_time_step\.php can be edited\)$/);
+});
+
+test('an attempt that only fails the reopen check counts as further; the next attempt is told to build on it', async () => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'af-agent-')), replies = [];
+  const savedWrong = {...wrongPhone, after: {appointments: [{id: '1', start_datetime: '2026-11-01 09:00:00'}], customers: [{id: '1', ...scenario.customer}]}, evaluation: {pass: false, reasons: ['wrong_start_datetime']}};
+  const reopenWrong = {...wrongPhone, after: {appointments: [{id: '1', start_datetime: '2026-11-02 09:00:00'}], customers: [{id: '1', ...scenario.customer}]}, evaluation: {pass: false, reasons: ['reopen_date_mismatch']},
+    observer: {after_next1: {date_inputs: [], date: {selected_date_iso: '2026-10-26'}}}};
+  const outcomes = [savedWrong, reopenWrong, savedWrong];
+  const proposals = [{diagnosis: 'a', edits: [featured.edits[0]]}, {diagnosis: 'b', build_on_attempt: 1, edits: [featured.edits[1]]}, {diagnosis: 'c', build_on_attempt: 1, edits: [featured.edits[2] || featured.edits[1]]}, {diagnosis: 'd', edits: [featured.edits[0]]}];
+  const model = async messages => { replies.push(messages.at(-1)); return answer('c' + replies.length, proposals[replies.length - 1]); };
+  await runAgent({execute: async ({run, original}) => ({...(original ? stuck : outcomes.shift() || stuck), run_id: run.id}), model, root, maxAttempts: 4});
+  const after2 = JSON.parse(replies[2].content), after3 = JSON.parse(replies[3].content);
+  assert.match(after2.progress, /^This attempt got further than the original code and every earlier attempt \(to reopen \(the booking was saved correctly; only reopening it failed\)\)/);
+  assert.match(after2.progress, /build_on_attempt: 2/);
+  assert.match(after3.left_out, /edits of attempt 2, which got further \(to reopen/);
+  assert.equal(after3.best_attempt_so_far.attempt, 2, 'a later attempt that saved the wrong date again is not the best');
+});
+
+test('the harness only claims what its evidence shows: no progress for a broken build, no read-only claim for editable code, no move for an ambiguous anchor', async () => {
+  const {anchorReport, resolveAnchors} = require('../lib/agent.cjs'), {caseDefinition} = require('../lib/cases.cjs'), files = caseDefinition('keyboard-date').files;
+  // booking.js's own export block with one missing comma is a typo in editable code, not read-only code.
+  const typo = {path: 'assets/js/pages/booking.js', old: '    return {\n        manageMode,\n        updateConfirmFrame,\n        updateServiceDescription,\n        validateCustomerForm\n    };', new: 'x'};
+  const [report] = anchorReport(files, [typo]);
+  assert.equal(report.found_in_read_only_file, undefined); assert.equal(report.first_mismatch.your_line, '        validateCustomerForm');
+  // "select-timezone" occurs twice in the view and once in booking.js: an ambiguous anchor stays in its own file.
+  assert.deepEqual(resolveAnchors(files, [{path: 'application/views/components/booking_time_step.php', old: 'select-timezone', new: 'select-tz'}]).adjustments, []);
+  // A first attempt that breaks the build is never told it got further, and a crash never becomes the best attempt.
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'af-agent-')), replies = [], outcomes = [buildFailure, {}];
+  const model = async messages => { replies.push(messages.at(-1)); return answer('c' + replies.length, {diagnosis: 'd', edits: [featured.edits[replies.length - 1] || featured.edits[0]]}); };
+  await runAgent({execute: async ({run, original}) => ({...(original ? stuck : outcomes.shift() || stuck), run_id: run.id}), model, root, maxAttempts: 3});
+  const first = JSON.parse(replies[1].content), second = JSON.parse(replies[2].content);
+  assert.equal(first.progress, undefined); assert.equal(second.progress, undefined);
+  assert.equal(second.best_attempt_so_far.attempt, 1, 'the keyboard crash of attempt 2 is not the best attempt');
+});
+
+test('a failed anchor comes with the file\'s own lines to copy, and a compile error with a code frame of the patched file', () => {
+  const {anchorReport, codeFrame} = require('../lib/agent.cjs'), files = [{path: 'assets/js/pages/booking.js', content: 'a();\r\nconst x = {\r\n    b: 1,\r\n};\r\nc();\r\n'},
+    {path: 'application/views/components/booking_time_step.php', content: '<div></div>\r\n'}];
+  const [report] = anchorReport(files, [{path: 'assets/js/pages/booking.js', old: 'const x = {\n    b: 1\n};', new: 'z'}]);
+  assert.deepEqual(report.the_file_has, {from_line: 2, text: 'const x = {\n    b: 1,\n};\nc();\n'});
+  const [moved] = anchorReport(files, [{path: 'assets/js/pages/booking.js', old: '  // a comment\nc();', new: 'z'}]);
+  assert.equal(moved.the_file_has, undefined, 'no excerpt when the first line is nowhere in the file');
+  const frame = codeFrame(files, {reason: 'r', edits: [{path: 'assets/js/pages/booking.js', old: '    b: 1,', new: '    b: 1'}]},
+    'Docker operation failed: SyntaxError: /app/assets/js/pages/booking.js: Unexpected token (4:0)\n    at parse');
+  assert.equal(frame, '     1 | a();\n     2 | const x = {\n     3 |     b: 1\n>    4 | };\n     5 | c();\n     6 | \n         ^');
+  assert.equal(codeFrame(files, {reason: 'r', edits: []}, 'no location here'), null);
+});
+
+test('left_out advice only points at an attempt build_on_attempt accepts; an empty proposal is named as such', async () => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'af-agent-')), replies = [];
+  const bad = {path: 'assets/js/pages/booking.js', old: 'no such text anywhere', new: 'x'}, real = featured.edits[0];
+  const proposals = [{diagnosis: 'a', edits: [bad, real]}, {diagnosis: 'b', edits: []}, {diagnosis: 'c', edits: [real]}];
+  const model = async messages => { replies.push(messages.at(-1)); return answer('c' + replies.length, proposals[replies.length - 1]); };
+  const trace = await runAgent({execute: async ({run}) => ({...stuck, run_id: run.id}), model, root, maxAttempts: 3});
+  const verifies = trace.steps.filter(item => item.kind === 'verify');
+  assert.deepEqual(verifies.map(item => item.stage), ['apply', 'format', 'keyboard']);
+  assert.match(verifies[1].headline, /the proposal has no edits/);
+  assert.equal(JSON.parse(replies[2].content).left_out, undefined);
+});
+
+test('a proposal of only no-op edits is rejected, and leaving out the furthest attempt\'s edits is pointed out', async () => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'af-agent-')), replies = [];
+  const real = featured.edits, noop = [{...real[0], new: real[0].old}];
+  const proposals = [{diagnosis: 'a', edits: real}, {diagnosis: 'b', edits: noop}, {diagnosis: 'c', edits: [real[0]]}, {diagnosis: 'd', edits: [real[0]]}];
+  const model = async messages => { replies.push(messages.at(-1)); return answer('c' + replies.length, proposals[replies.length - 1]); };
+  const wrongDate = {...wrongPhone, after: {appointments: [{id: '1', start_datetime: '2026-11-01 09:00:00'}], customers: [{id: '1', ...scenario.customer}]}, evaluation: {pass: false, reasons: ['wrong_start_datetime']}};
+  const trace = await runAgent({execute: async ({run, original, proposal}) => ({...(original ? stuck : proposal.proposal.edits.length === real.length ? wrongDate : stuck), run_id: run.id}), model, root, maxAttempts: 4});
+  const verifies = trace.steps.filter(item => item.kind === 'verify');
+  assert.deepEqual(verifies.map(item => item.stage), ['outcome', 'format', 'keyboard', 'keyboard']);
+  assert.match(verifies[1].headline, /every edit was dropped: its new text is identical to its old text/);
+  assert.deepEqual(trace.steps.filter(item => item.kind === 'propose')[1].adjustments.map(item => item.your_edit), [1]);
+  const feedback = JSON.parse(replies[3].content);
+  assert.match(feedback.left_out, new RegExp('left out ' + (real.length - 1) + ' of the ' + real.length + ' edits of attempt 1, which got further \\(to outcome\\)\\. Keep them with build_on_attempt: 1'));
+});
+
 test('the agent can read other source files before proposing', async () => {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'af-agent-'));
   const outcomes = [stuck, verified], seen = [];
@@ -136,4 +312,261 @@ test('the agent can read other source files before proposing', async () => {
   assert.equal(trace.state, 'verified');
   assert.deepEqual(trace.steps.map(step => step.kind), ['observe', 'read', 'propose', 'verify']);
   assert.match(seen[1].content, /getUnavailableDates/);
+});
+
+// Edits with anchors that occur exactly once in the original booking.js, for merge tests.
+const {caseDefinition} = require('../lib/cases.cjs');
+const bookingJs = caseDefinition('keyboard-date').files[0].content;
+const anchors = [...new Set(bookingJs.split('\n').map(line => line.trim()))].filter(line => line.length > 30 && bookingJs.split(line).length === 2);
+const edit = n => ({path: 'assets/js/pages/booking.js', old: anchors[n], new: anchors[n] + ' // ' + n});
+const wrongDate = {...wrongPhone, after: {appointments: [{id: '1', start_datetime: '2026-11-01 09:00:00'}], customers: [{id: '1', phone_number: '0000000042'}]},
+  evaluation: {pass: false, reasons: ['wrong_start_datetime']}};
+const answer = (id, proposal) => ({message: {content: null}, call: {id, function: {name: 'propose_repair', arguments: '{}'}}, proposal: {evidence_explained: 'e', ...proposal}, usage: {}, cost: 0});
+const lastFeedback = messages => messages.at(-1).role === 'tool' ? JSON.parse(messages.at(-1).content) : null;
+
+test('search_code returns path:line hits across the app, bounded and time-limited', () => {
+  const {searchCode} = require('../lib/agent.cjs'), files = caseDefinition('keyboard-date').files;
+  const hit = searchCode({pattern: 'function getUnavailableDates\\('}, files);
+  assert.equal(hit.matches, 1);
+  assert.match(hit.text, /^assets\/js\/http\/booking_http_client\.js:\d+: function getUnavailableDates\(/);
+  assert.match(searchCode({pattern: 'SELECT-DATE', ignore_case: true, path: 'pages/booking.js'}, files).text, /^assets\/js\/pages\/booking\.js:\d+: /);
+  const many = searchCode({pattern: '\\.'}, files);
+  assert.equal(many.text.split('\n').length, 31); assert.match(many.text.split('\n').at(-1), /more matching lines/);
+  const invalid = searchCode({pattern: '('}, files);
+  assert.match(invalid.text, /Invalid regular expression/); assert.equal(invalid.error, 'invalid_pattern'); assert.equal(invalid.matches, undefined);
+  assert.deepEqual(searchCode({pattern: 'zz-no-such-text-zz'}, files), {matches: 0, text: 'No matches.'});
+  // The sources use CRLF line endings: a pattern anchored at the end of a line still matches.
+  assert.ok(files[0].content.includes('\r\n'));
+  assert.equal(searchCode({pattern: 'onMonthChange: \\(selectedDates, dateStr, instance\\) => \\{$'}, files).matches, 1);
+  assert.equal(searchCode({pattern: 'function getUnavailableDates\\(.*\\{$'}, files).matches, 1);
+  const started = Date.now(), slow = searchCode({pattern: '^(a+)+$'}, [{path: 'x.js', content: 'a'.repeat(34) + 'b'}], {timeout: 200});
+  assert.match(slow.text, /took too long/); assert.equal(slow.error, 'timeout');
+  assert.ok(Date.now() - started < 5000);
+});
+
+test('lookups: search_code and read_file are answered, editable files and re-reads get a short note', async () => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'af-agent-')), outcomes = [stuck, verified], replies = [];
+  const lookups = [{search: {pattern: 'function getUnavailableDates'}}, {read: 'assets/js/pages/booking.js'}, {read: 'assets/js/utils/ui.js'}, {read: 'assets/js/utils/ui.js'}, {search: {pattern: '('}}];
+  const model = async messages => {
+    if (messages.at(-1).role === 'tool') replies.push(messages.at(-1).content);
+    const next = lookups.shift();
+    return next ? {message: {content: null}, call: {id: 'l' + lookups.length, function: {name: next.search ? 'search_code' : 'read_file', arguments: '{}'}}, ...next, usage: {}, cost: 0}
+      : answer('p', {diagnosis: 'd', edits: featured.edits});
+  };
+  const trace = await runAgent({execute: async ({run}) => ({...outcomes.shift(), run_id: run.id}), model, root});
+  assert.equal(trace.state, 'verified');
+  assert.deepEqual(trace.steps.map(step => step.kind), ['observe', 'search', 'read', 'read', 'read', 'search', 'propose', 'verify']);
+  assert.equal(trace.steps[1].query, 'function getUnavailableDates'); assert.equal(trace.steps[1].matches, 1);
+  assert.match(replies[0], /booking_http_client\.js:\d+: function getUnavailableDates/);
+  assert.match(replies[1], /already have the complete original/); assert.equal(trace.steps[2].already_provided, true);
+  assert.match(replies[2], /window\.App\.Utils\.UI/);
+  assert.match(replies[3], /Already returned in attempt 1/); assert.equal(trace.steps[4].already_provided, true);
+  assert.match(replies[4], /Invalid regular expression/);
+  assert.deepEqual([trace.steps[5].error, 'matches' in trace.steps[5]], ['invalid_pattern', false], 'a search that did not run records no match count');
+});
+
+test('build_on_attempt keeps an earlier attempt\'s edits, drops duplicates, and is recorded', async () => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'af-agent-')), outcomes = [stuck, wrongDate, verified], executed = [];
+  const execute = async ({run, proposal, original}) => { if (!original) executed.push(proposal.proposal.edits); return {...outcomes.shift(), run_id: run.id}; };
+  const proposals = [{diagnosis: 'first', edits: [edit(0), edit(1)]}, {diagnosis: 'second', evidence_explained: 'the saved start', build_on_attempt: 1, edits: [edit(1), edit(2)]}];
+  const trace = await runAgent({execute, model: async () => answer('c', proposals.shift()), root});
+  assert.equal(trace.state, 'verified');
+  assert.deepEqual(executed[1], [edit(0), edit(1), edit(2)]);
+  const propose = trace.steps.filter(step => step.kind === 'propose')[1];
+  assert.equal(propose.build_on_attempt, 1); assert.equal(propose.kept_edits, 2); assert.equal(propose.evidence_explained, 'the saved start');
+  assert.equal(trace.accepted.build_on_attempt, 1); assert.deepEqual(trace.accepted.proposal.edits, executed[1]);
+});
+
+test('build_on_attempt is rejected before execution when it exceeds the edit cap or names no usable attempt', async () => {
+  const {MAX_EDITS} = require('../lib/agent.cjs');
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'af-agent-')), feedback = [];
+  let executions = 0;
+  const execute = async ({run, original}) => { executions++; return {...(original ? stuck : wrongDate), run_id: run.id}; };
+  const proposals = [{diagnosis: 'five', edits: [0, 1, 2, 3, 4].map(edit)}, {diagnosis: 'too many', build_on_attempt: 1, edits: [edit(5), edit(6)]},
+    {diagnosis: 'unknown base', build_on_attempt: 7, edits: [edit(5)]}];
+  const model = async messages => { feedback.push(lastFeedback(messages)); return answer('c' + feedback.length, proposals.shift()); };
+  const trace = await runAgent({execute, model, root, maxAttempts: 3});
+  assert.equal(executions, 2, 'only the original and attempt 1 ran in the fixture');
+  const verifies = trace.steps.filter(step => step.kind === 'verify');
+  assert.deepEqual(verifies.map(step => step.stage), ['outcome', 'format', 'format']);
+  assert.match(verifies[1].headline, new RegExp('5 edits and yours bring the proposal to 7, but the verifier accepts at most ' + MAX_EDITS));
+  assert.match(verifies[2].headline, /build_on_attempt 7 is not an earlier attempt .*those are: 1/);
+  assert.equal(feedback[2].verifier_evidence.stage, 'format');
+  assert.equal(feedback[2].best_attempt_so_far.attempt, 1, 'a rejected merge never becomes the best attempt');
+});
+
+test('build_on_attempt sent as a numeric string is read as that attempt; anything else is rejected as such', async () => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'af-agent-')), executed = [];
+  const execute = async ({run, proposal, original}) => { if (!original) executed.push(proposal.proposal.edits); return {...(original ? stuck : wrongDate), run_id: run.id}; };
+  const proposals = [{diagnosis: 'first', edits: [edit(0)]}, {diagnosis: 'string', build_on_attempt: '1', edits: [edit(1)]}, {diagnosis: 'word', build_on_attempt: 'one', edits: [edit(2)]}];
+  const trace = await runAgent({execute, model: async () => answer('c', proposals.shift()), root, maxAttempts: 3});
+  assert.deepEqual(executed[1], [edit(0), edit(1)]);
+  const [, second, third] = trace.steps.filter(step => step.kind === 'propose');
+  assert.equal(second.build_on_attempt, 1); assert.equal(second.kept_edits, 1); assert.equal(third.build_on_attempt, 'one');
+  assert.equal(trace.steps.at(-1).headline, 'Rejected before execution: build_on_attempt must be the number of an earlier attempt, not "one".');
+});
+
+test('an edit that is not an object is rejected: by the model client as malformed, by the loop at the apply stage', async () => {
+  const reply = args => async () => ({ok: true, status: 200, text: async () => JSON.stringify({choices: [{message: {tool_calls: [{id: 'c', function: {name: 'propose_repair', arguments: JSON.stringify(args)}}]}}], usage: {}})});
+  await assert.rejects(nemotron([], {key: 'k', fetchImpl: reply({diagnosis: 'd', evidence_explained: 'e', edits: [featured.edits[0], null]})}), error => error.malformed && /Every edit must be an object/.test(error.message));
+  await assert.rejects(nemotron([], {key: 'k', fetchImpl: reply({diagnosis: 'd', evidence_explained: 'e', edits: [{path: 'assets/js/pages/booking.js', old: 5, new: 'x'}]})}), error => error.malformed);
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'af-agent-'));
+  const trace = await runAgent({execute: async ({run}) => ({...stuck, run_id: run.id}), model: async () => answer('c', {diagnosis: 'd', edits: [featured.edits[0], null]}), root, maxAttempts: 1});
+  assert.equal(trace.state, 'not_verified'); assert.equal(trace.steps.at(-1).stage, 'apply');
+  assert.deepEqual(trace.steps.at(-1).evidence.anchors.map(anchor => anchor.occurrences_in_original), [1, 0]);
+  assert.match(trace.steps.at(-1).evidence.anchors[1].invalid, /not an object/);
+});
+
+test('rejection feedback carries a hypothesis ledger that flags explanations that changed nothing', async () => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'af-agent-')), outcomes = [stuck, wrongDate, wrongDate, stuck], feedback = [];
+  const execute = async ({run}) => ({...outcomes.shift(), run_id: run.id});
+  const model = async messages => { feedback.push(lastFeedback(messages)); return answer('c' + feedback.length, {diagnosis: 'Hypothesis ' + feedback.length, edits: featured.edits}); };
+  await runAgent({execute, model, root, maxAttempts: 3});
+  assert.equal(feedback[1].attempts_so_far.length, 1); assert.equal(feedback[1].unchanged_results, undefined);
+  const ledger = feedback.at(-1);
+  assert.deepEqual(ledger.attempts_so_far.map(item => [item.attempt, item.diagnosis, item.got_as_far_as]), [[1, 'Hypothesis 1', 'outcome'], [2, 'Hypothesis 2', 'outcome']]);
+  assert.match(ledger.attempts_so_far[1].verifier_said, /saved for 2026-11-01 09:00/);
+  assert.match(ledger.unchanged_results[0], /^Attempts 1, 2 ended with the identical verifier result: .*did not change the outcome/);
+  const {hypothesisLedger} = require('../lib/agent.cjs');
+  const notes = hypothesisLedger([{attempt: 1, diagnosis: 'd', stage: 'keyboard', headline: 'same as before'}, {attempt: 2, diagnosis: null, stage: 'format', headline: 'Rejected: x'}],
+    {headline: 'same as before'});
+  assert.match(notes.unchanged_results[0], /^Attempt 1 left the original failure unchanged/); assert.equal(notes.unchanged_results.length, 1);
+});
+
+test('the ledger groups one failure seen twice with different timing, and never groups crashes', async () => {
+  // The same wrong save and the same reset, 640 ms and 660 ms after typing (a page timer plus a request).
+  const resetAfter = ms => ({...wrongDate, keyboard: {workflow: {status: 'confirmation_observed'},
+    keyboard_actions: [{command: 'type', text: '02/11/2026', at: 1000, date_value: '02/11/2026'}, {command: 'inspect', at: 2000, date_value: '01/11/2026'}],
+    date_writes: [{at: 1000 + ms, value: '01/11/2026', via: 'value', stack: ['Object.setDateTimePickerValue (ui.min.js)']}]}});
+  const crash = {scenario, applied_source: {}, build: {status: 'TRUSTED_BUILD_PASS'}, error: 'Docker operation timed out after 180000 ms'};
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'af-agent-')), outcomes = [stuck, resetAfter(640), resetAfter(660), crash, crash, stuck], feedback = [];
+  const model = async messages => { feedback.push(lastFeedback(messages)); return answer('c' + feedback.length, {diagnosis: 'Hypothesis ' + feedback.length, edits: featured.edits}); };
+  await runAgent({execute: async ({run}) => ({...outcomes.shift(), run_id: run.id}), model, root, maxAttempts: 5});
+  assert.equal(feedback[2].attempts_so_far[0].verifier_said, feedback[2].attempts_so_far[1].verifier_said);
+  assert.deepEqual(feedback[2].verifier_evidence.date_field_writes.map(write => write.t), ['+0.7s']);
+  assert.match(feedback[2].unchanged_results[0], /^Attempts 1, 2 ended with the identical verifier result: .*changed the typed date to 01\/11\/2026"/);
+  const last = feedback.at(-1);
+  assert.match(last.attempts_so_far[3].verifier_said, /^The keyboard journey crashed: Docker operation timed out/);
+  assert.equal(last.unchanged_results.length, 1, 'two identical crashes say nothing about the explanations behind them');
+});
+
+test('a booking saved for the right date but reopened with another one says so, with the date field before and after Next', () => {
+  const reopenedWrong = {...wrongPhone, after: {appointments: [{id: '1', start_datetime: '2026-11-02 09:00:00'}], customers: [{id: '1', ...scenario.customer}]},
+    evaluation: {pass: false, reasons: ['reopen_date_mismatch']},
+    observer: {initial: {date_inputs: [{id: 'select-date', value: '02/11/2026', visible: false}]},
+      after_next1: {date_inputs: [{id: 'select-date', value: '24/10/2026', visible: true}], date: {selected_date_iso: '2026-10-24', ambiguous: false}}}};
+  const result = explain(reopenedWrong);
+  assert.equal(result.headline, 'Saved for the right date, but reopening the booking showed 2026-10-24 instead of 2026-11-02');
+  assert.deepEqual(result.evidence.reopen, {date_field_when_the_booking_link_opened: 'select-date="02/11/2026" (hidden)',
+    date_field_after_pressing_next_on_step_1: 'select-date="24/10/2026"', date_shown_after_reopening: '2026-10-24'});
+});
+
+test('Nemotron\'s reasoning is kept in the trace for audit but never sent back to the model', async () => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'af-agent-')), seen = [];
+  const trace = await runAgent({execute: async ({run, original}) => ({...(original ? stuck : verified), run_id: run.id}), root, maxAttempts: 1,
+    model: async messages => { seen.push(JSON.stringify(messages)); const reply = answer('c', {diagnosis: 'd', evidence_explained: 'e', edits: featured.edits}); reply.message.reasoning_content = 'private chain of thought'; return reply; }});
+  assert.equal(trace.steps.find(item => item.kind === 'propose').reasoning, 'private chain of thought');
+  assert.ok(seen.every(text => !text.includes('private chain of thought')));
+});
+
+test('explain names the code that silently changed the typed date', () => {
+  const initiator = ['send (jquery.min.js)', 'ajax (jquery.min.js)', 'getUnavailableDates (booking_http_client.min.js)', '(anonymous) (booking.min.js)', 'async setTimeout', 'onMonthChange (booking.min.js)', 'Ye (flatpickr.min.js)'];
+  const keyboard = {workflow: {status: 'confirmation_observed'},
+    keyboard_actions: [{command: 'type', text: '02/11/2026', at: 1000, date_value: '02/11/2026'}, {command: 'inspect', at: 2000, date_value: '01/11/2026'}],
+    page_requests: [{at: 1500, method: 'GET', path: '/index.php/booking/get_unavailable_dates', initiator}],
+    date_writes: [{at: 200, value: '25/10/2026', via: 'value', event: null, request: null, stack: ['Object.setDateTimePickerValue (ui.min.js)', 'Object.initialize (booking.min.js)']},
+      {at: 1700, value: '01/11/2026', via: 'value', event: 'load', request: 'GET /index.php/booking/get_unavailable_dates', stack: ['Object.Ye [as setDate] (flatpickr.min.js)',
+        'Object.setDateTimePickerValue (ui.min.js)', 'applyUnavailableDates (booking_http_client.min.js)', 'Object.<anonymous> (booking_http_client.min.js)', 'c (jquery.min.js)',
+        'Object.fireWith [as resolveWith] (jquery.min.js)', 'XMLHttpRequest.<anonymous> (jquery.min.js)']}]};
+  const {headline, evidence} = explain({...wrongDate, keyboard});
+  assert.equal(headline, 'Confirmation shown, but saved for 2026-11-01 09:00 instead of 2026-11-02 09:00; page code changed the typed date to 01/11/2026');
+  assert.deepEqual(evidence.date_field_writes, [{t: '-0.8s', value: '25/10/2026', by: 'setDateTimePickerValue ← initialize'},
+    {t: '+0.7s', value: '01/11/2026', by: 'setDate ← setDateTimePickerValue ← applyUnavailableDates ← resolveWith ← (response to GET /index.php/booking/get_unavailable_dates) ← send ← ajax ← getUnavailableDates ← (setTimeout) ← onMonthChange'}]);
+  assert.deepEqual(evidence.timeline_after_typing_date.map(item => item.t), ['+0.0s', '+0.5s', '+0.7s', '+1.0s']);
+  assert.match(evidence.timeline_after_typing_date[1].event, /^page request GET \/index\.php\/booking\/get_unavailable_dates from send ← ajax ← getUnavailableDates ← \(setTimeout\) ← onMonthChange$/);
+  assert.match(evidence.timeline_after_typing_date[2].event, /^page code set the date field to "01\/11\/2026" via setDate ← /);
+  // With DevTools async stacks the write carries its own async chain and is not stitched to a request.
+  const asyncStack = ['setDateTimePickerValue (ui.min.js)', 'applyUnavailableDates (booking_http_client.min.js)', 'async XMLHttpRequest.send', 'getUnavailableDates (booking_http_client.min.js)', 'async setTimeout', 'onMonthChange (booking.min.js)'];
+  const traced = explain({...wrongDate, keyboard: {...keyboard, date_writes: [{...keyboard.date_writes[1], async_stack: asyncStack}]}}).evidence;
+  assert.equal(traced.date_field_writes[0].by, 'setDate ← setDateTimePickerValue ← applyUnavailableDates ← resolveWith ← (XMLHttpRequest.send) ← getUnavailableDates ← (setTimeout) ← onMonthChange');
+  const cdpOnly = explain({...wrongDate, keyboard: {...keyboard, date_writes: [{...keyboard.date_writes[1], stack: [], async_stack: asyncStack}]}}).evidence;
+  assert.equal(cdpOnly.date_field_writes[0].by, 'setDateTimePickerValue ← applyUnavailableDates ← (XMLHttpRequest.send) ← getUnavailableDates ← (setTimeout) ← onMonthChange');
+  // Stuck waiting for the slot because the date moved: the keyboard evidence carries the same provenance.
+  const stuckAfterTyping = explain({...stuck, keyboard: {...keyboard, workflow: {status: 'unresolved', reason: 'booking_expected_ui_not_observed'},
+    last_observation: {inputs: [{id: 'select-date', type: 'text'}]}}});
+  assert.match(stuckAfterTyping.headline, /^Keyboard user got stuck: the expected control never appeared; page code changed the typed date to 01\/11\/2026/);
+  assert.equal(stuckAfterTyping.evidence.date_field_writes.length, 2);
+});
+
+test('the page hook reports date writes made by page code, not by keystrokes, with stack and request', () => {
+  const vm = require('node:vm');
+  const {recordDateWrites, DATE_WRITE, inspectorFrames} = require('../integration/portable/container-keyboard-booking-worker.cjs');
+  const reports = []; let poll;
+  const context = vm.createContext({URL, console: {trace: (...args) => reports.push(args)}, location: {href: 'http://127.0.0.1:8080/booking'}, setInterval: fn => { poll = fn; }, addEventListener: () => {}});
+  vm.runInContext(`globalThis.window = globalThis;
+    class HTMLInputElement { constructor(id) { this.id = id; this.stored = ''; } get value() { return this.stored; } set value(v) { this.stored = String(v); } }
+    class XMLHttpRequest { open() { return 'opened'; } }
+    Object.assign(globalThis, {HTMLInputElement, XMLHttpRequest, date: new HTMLInputElement('select-date'), email: new HTMLInputElement('email')});
+    globalThis.document = {getElementById: id => id === 'select-date' ? date : null};`, context);
+  vm.runInContext('(' + recordDateWrites + ')(' + JSON.stringify(DATE_WRITE) + ')', context);
+  vm.runInContext(`const xhr = new XMLHttpRequest(); globalThis.opened = xhr.open('GET', '/index.php/booking/get_unavailable_dates?selected_date=x');
+    function setDateTimePickerValue(value) { date.value = value; }
+    function applyUnavailableDates() { setDateTimePickerValue('01/11/2026'); }
+    window.event = {type: 'keydown', isTrusted: true}; date.value = '02/11/2026';
+    window.event = {type: 'load', isTrusted: true, target: xhr}; applyUnavailableDates();
+    window.event = undefined; date.value = '01/11/2026'; email.value = 'a@example.invalid';
+    date.stored = '05/11/2026';`, context);
+  poll();
+  assert.equal(context.opened, 'opened', 'the wrapped open still calls the original');
+  assert.equal(context.date.value, '05/11/2026');
+  assert.ok(reports.every(args => args[0] === DATE_WRITE));
+  const writes = reports.map(args => JSON.parse(args[1]));
+  assert.deepEqual(writes.map(write => [write.from, write.value, write.via]), [['02/11/2026', '01/11/2026', 'value'], ['01/11/2026', '05/11/2026', 'unseen']]);
+  assert.equal(writes[0].request, 'GET /index.php/booking/get_unavailable_dates'); assert.equal(writes[0].event, 'load');
+  assert.deepEqual(writes[0].stack.slice(0, 2), ['setDateTimePickerValue (evalmachine.<anonymous>)', 'applyUnavailableDates (evalmachine.<anonymous>)']);
+  assert.deepEqual(inspectorFrames({callFrames: [{functionName: '__afNote', url: ''}, {functionName: 'applyUnavailableDates', url: 'http://127.0.0.1:8080/assets/js/http/booking_http_client.min.js?1'}],
+    parent: {description: 'setTimeout', callFrames: [{functionName: '', url: 'http://127.0.0.1:8080/assets/js/pages/booking.min.js'}]}}),
+  ['applyUnavailableDates (booking_http_client.min.js)', 'async setTimeout', '(anonymous) (booking.min.js)']);
+});
+
+test('traces are stamped with the agent version and run conditions', async () => {
+  const {AGENT_VERSION} = require('../lib/agent.cjs');
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'af-agent-'));
+  const trace = await runAgent({execute: async ({run, original}) => ({...(original ? {...stuck, fixture_fingerprint: 'f'.repeat(64), execution_started_at_utc: '2026-10-25T09:00:00.000Z'} : verified), run_id: run.id}),
+    model: async () => answer('c', {diagnosis: 'd', edits: featured.edits}), root, maxAttempts: 3});
+  assert.equal(trace.agent_version, AGENT_VERSION); assert.equal(trace.max_attempts, 3); assert.equal(trace.temperature, require('../lib/agent.cjs').TEMPERATURE); assert.equal(trace.top_p, require('../lib/agent.cjs').TOP_P);
+  assert.equal(trace.scenario_date, '2026-11-02'); assert.equal(trace.scenario_crosses_month, true); assert.equal(trace.fixture_fingerprint, 'f'.repeat(64));
+  assert.ok(trace.git_commit === null || /^[a-f0-9]{40}$/.test(trace.git_commit));
+  assert.ok([true, false, null].includes(trace.git_dirty), 'whether the code that ran differs from that commit');
+});
+
+test('a pinned scenario date must be a Monday inside the booking window; the default for agent runs is next month', () => {
+  const {scenario, nextMonthScenarioDate} = require('../lib/fixture.cjs'), now = new Date('2026-10-25T12:00:00Z');
+  assert.equal(scenario(now, '2026-11-16').date, '2026-11-16'); assert.equal(scenario(now).date, '2026-11-02');
+  for (const bad of ['2026-11-17', '2026-10-19', '2027-01-25', '2026-02-30', '16/11/2026']) assert.throws(() => scenario(now, bad), /AF_SCENARIO_DATE must be a Monday/);
+  assert.equal(nextMonthScenarioDate(now), '2026-11-02');
+  assert.equal(nextMonthScenarioDate(new Date('2026-11-01T12:00:00Z')), '2026-12-07', 'the default 2026-11-09 stays in November');
+});
+
+test('nemotron requires evidence_explained and parses search_code calls', async () => {
+  const reply = (name, args) => async () => ({ok: true, status: 200, text: async () => JSON.stringify({choices: [{message: {tool_calls: [{id: 'c', function: {name, arguments: JSON.stringify(args)}}]}}], usage: {}})});
+  await assert.rejects(nemotron([], {key: 'k', fetchImpl: reply('propose_repair', {diagnosis: 'd', edits: []})}), error => error.malformed && /evidence_explained/.test(error.message));
+  const search = await nemotron([], {key: 'k', fetchImpl: reply('search_code', {pattern: 'setDate', path: 'utils'})});
+  assert.deepEqual(search.search, {pattern: 'setDate', path: 'utils', ignore_case: false});
+});
+
+test('the run summary groups totals per agent version', () => {
+  const {summarize} = require('../scripts/agent-summary.cjs');
+  const run = (agent_version, state, extra = {}) => ({case_id: 'keyboard-date', ...(agent_version ? {agent_version} : {}), state, estimated_cost_usd: 0.01, duration_ms: 1000,
+    started_at_utc: '2026-10-24T12:00:00.000Z', steps: [{kind: 'verify', stage: 'outcome'}, {kind: 'verify', stage: state === 'verified' ? 'passed' : 'outcome'}],
+    ...(state === 'verified' ? {accepted: {attempt: 2}} : {}), ...extra});
+  const sameMonth = run('2', 'verified', {started_at_utc: '2026-11-03T12:00:00.000Z', scenario_date: '2026-11-16', scenario_crosses_month: false});
+  const summary = summarize([run(undefined, 'not_verified'), run('2', 'verified'), run('2', 'not_verified'), sameMonth]);
+  assert.equal(summary.cases['keyboard-date'].runs, 4);
+  assert.deepEqual(Object.keys(summary.agent_versions), ['1', '2']);
+  assert.equal(summary.agent_versions['1'].cases['keyboard-date'].verified, 0);
+  assert.equal(summary.agent_versions['2'].runs, 3); assert.equal(summary.agent_versions['2'].cases['keyboard-date'].verified, 1);
+  assert.equal(summary.agent_versions['2'].cases['keyboard-date'].wrong_saves_caught, 3);
+  assert.equal(summary.agent_versions['2'].same_month_date_cases['keyboard-date'].runs, 1, 'a run that could not face the month-change reset is counted apart');
+  assert.equal(summary.agent_versions['1'].same_month_date_cases, undefined, 'version 1 traces derive their date from the clock: 2026-10-24 booked 2026-11-02');
 });

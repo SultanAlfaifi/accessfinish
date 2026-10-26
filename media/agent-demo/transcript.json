@@ -15,51 +15,57 @@
     },
     {
       "id": "phone-propose",
-      "script": "AccessFinish drives the journey in a real browser, then hands the evidence and the source code to NVIDIA Nemotron, on Nebius Token Factory. No hints. Nemotron finds the hard-coded value, and writes the fix.",
-      "heard": "Access Finish drives the journey in a real browser, then hands the evidence and the source code to NVIDIA Nemo-Tron on Nebius token factory. No hints. Nemo-Tron finds the hard-coded value and writes the fix.",
-      "word_match": 0.877
+      "script": "AccessFinish drives the journey in a real browser, then hands the evidence and the source code to NVIDIA Nemotron, on Nebius Token Factory. It is never told the cause. Nemotron finds the hard-coded value, and writes the fix.",
+      "heard": "Access finished drives the journey in a real browser, then hands the evidence and the source code to NVIDIA Nemotron on Nebius token factory. It is never told the cause. Nemotron finds the hard-coded value and writes the fix.",
+      "word_match": 0.962
     },
     {
       "id": "phone-proof",
-      "script": "Every fix is built in a fresh, offline sandbox, and checked for real: the saved database row, a fresh browser, and a second customer with a different number. Seven live runs. Seven verified fixes, on the first attempt, for about half a cent each.",
-      "heard": "Every fix is built in a fresh offline sandbox, and checked for real, the saved database row, a fresh browser, and a second customer with a different number. Seven live runs. Seven verified fixes. On the first attempt, for about half a cent each.",
-      "word_match": 1.0
+      "script": "Every fix is built in a fresh, offline sandbox, and checked for real: the saved database row, a fresh browser, and a second customer with a different number. Twenty-seven live runs. Twenty-seven verified fixes, for about a cent each.",
+      "heard": "Every fix is built in a fresh offline sandbox and checked for real. The Save Database Row, a fresh browser, and a second customer with a different number. 27 Live runs, 27 verified fixes for about a cent each.",
+      "word_match": 0.9
     },
     {
       "id": "keyboard-intro",
-      "script": "Now the harder case. A keyboard user can't reach the date picker at all.",
-      "heard": "Now the harder case. A keyboard user can't reach the date picker at all.",
-      "word_match": 1.0
-    },
-    {
-      "id": "keyboard-attempts",
-      "script": "Nemotron reads the source files, proposes fixes, and every attempt is built and tested. It makes the date reachable, and the page says the booking is confirmed.",
-      "heard": "Nemotron reads the source files, proposes fixes, and every attempt is built and tested. It makes the date reachable, and the page says the booking is confirmed.",
+      "script": "Now a real bug from the open-source app. A keyboard user can't reach the date picker at all.",
+      "heard": "Now a real bug from the open source app. A keyboard user can't reach the date picker at all.",
       "word_match": 1.0
     },
     {
       "id": "keyboard-wrong",
-      "script": "But AccessFinish reads the database. The booking was saved for the wrong day. Rejected.",
-      "heard": "But Access Finish reads the database. The booking was saved for the wrong day. Rejected.",
-      "word_match": 0.897
+      "script": "Nemotron makes the date reachable, and the page says the booking is confirmed. But AccessFinish reads the database. Saved for the wrong day. Rejected.",
+      "heard": "Nemotron makes the date reachable, and the page says the booking is confirmed, but Access Finish reads the database. Saved for the wrong day, rejected.",
+      "word_match": 0.939
     },
     {
-      "id": "keyboard-timeline",
-      "script": "And it shows exactly why. Seven tenths of a second after a background request, with no key pressed, the date resets itself to the first of the month.",
-      "heard": "and it shows exactly why. 7 tenths of a second after a background request. With no key pressed, the date resets itself to the first of the month.",
-      "word_match": 0.964
+      "id": "keyboard-provenance",
+      "script": "And it shows which code did it. Half a second after the date is typed, the month-change handler fetches unavailable dates, and overwrites what the user typed.",
+      "heard": "And it shows which code did it, half a second after the date is typed, the month change handler fetches unavailable dates, and overwrites what the user typed.",
+      "word_match": 1.0
+    },
+    {
+      "id": "keyboard-reopen",
+      "script": "With that evidence, Nemotron fixes the reset, and the right date is saved. But reopening the booking shows today's date. A second bug.",
+      "heard": "With that evidence, Nemotron fixes the reset and the right date is saved, but reopening the booking shows today's date, a second bug.",
+      "word_match": 1.0
+    },
+    {
+      "id": "keyboard-verified",
+      "script": "Nemotron fixes that too, building on its best attempt. Verified: saved, reopened in a fresh browser, and the mouse path still works.",
+      "heard": "Hmmm. Nemotron fixes that too, building on its best attempt. Verified. Saved. Reopened in a fresh browser, and the mouse path still works.",
+      "word_match": 0.978
     },
     {
       "id": "finding",
-      "script": "Fifteen fake booked confirmations, across seven runs. Not one got through.",
-      "heard": "15 fake-booked confirmations across seven runs, not one got through.",
-      "word_match": 0.909
+      "script": "Across twenty-seven keyboard runs, seventy-seven false booked confirmations were caught. Not one got through.",
+      "heard": "Across 27 keyboard runs, 77 false-booked confirmations were caught, not one got through.",
+      "word_match": 0.8
     },
     {
       "id": "facts",
-      "script": "Fourteen live runs, and forty-one cents of Nemotron. Fixes that are proven, not promised.",
-      "heard": "14 live runs and 41 cents of Nemotron. Fixes that are proven, not promised.",
-      "word_match": 0.828
+      "script": "Fifty-four live runs, for under seven dollars of Nemotron. Fixes that are proven, not promised.",
+      "heard": "54 Live runs for under $7 of Nemotron, fixes that are proven not promised.",
+      "word_match": 0.8
     },
     {
       "id": "close",
