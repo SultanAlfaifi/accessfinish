@@ -278,7 +278,10 @@
   async function renderSummary() {
     try {
       const summary = await json('agent-runs/summary.json'), phone = summary.cases['customer-phone'], keyboard = summary.cases['keyboard-date'];
-      if (phone) { $('#fact-phone').textContent = phone.first_attempt + ' / ' + phone.runs; $('#verdict-customer-phone').textContent = 'Fixed on the first attempt in ' + phone.first_attempt + ' of ' + phone.runs + ' runs'; }
+      if (phone) {
+        $('#fact-phone').textContent = phone.verified + ' / ' + phone.runs;
+        $('#verdict-customer-phone').textContent = 'Verified in ' + phone.verified + ' of ' + phone.runs + ' runs, ' + phone.first_attempt + ' on the first attempt';
+      }
       if (keyboard) {
         // Keyboard results from the first agent version that verified the case onwards (earlier versions never did).
         const caught = keyboard.false_booked_caught ?? keyboard.wrong_saves_caught;
@@ -288,6 +291,7 @@
         const span = since.length ? 'agent v' + since[0].version + (since.length > 1 ? '–v' + since.at(-1).version : '') : '';
         $('#fact-caught').textContent = String(caught); $('#why-caught').textContent = String(caught);
         $('#verdict-keyboard-date').textContent = (fixed ? 'Fixed by Nemotron in ' + fixed + ' of ' + tried + ' runs (' + span + ')' : 'Not fixed yet') + ' · ' + caught + ' false "booked" pages caught';
+        $('#verdict-keyboard-date').classList.toggle('good', fixed > 0); $('#verdict-keyboard-date').classList.toggle('caught', !fixed);
         $('#fact-keyboard').textContent = fixed ? fixed + ' / ' + tried : '0';
         $('#fact-keyboard-label').textContent = fixed ? 'keyboard runs fixed by Nemotron with no hints (' + span + ')' : 'keyboard runs fixed so far';
       }
