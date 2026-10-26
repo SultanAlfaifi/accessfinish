@@ -255,6 +255,19 @@ test('the harness only claims what its evidence shows: no progress for a broken 
   assert.equal(second.best_attempt_so_far.attempt, 1, 'the keyboard crash of attempt 2 is not the best attempt');
 });
 
+test('a failed anchor comes with the file\'s own lines to copy, and a compile error with a code frame of the patched file', () => {
+  const {anchorReport, codeFrame} = require('../lib/agent.cjs'), files = [{path: 'assets/js/pages/booking.js', content: 'a();\r\nconst x = {\r\n    b: 1,\r\n};\r\nc();\r\n'},
+    {path: 'application/views/components/booking_time_step.php', content: '<div></div>\r\n'}];
+  const [report] = anchorReport(files, [{path: 'assets/js/pages/booking.js', old: 'const x = {\n    b: 1\n};', new: 'z'}]);
+  assert.deepEqual(report.the_file_has, {from_line: 2, text: 'const x = {\n    b: 1,\n};\nc();\n'});
+  const [moved] = anchorReport(files, [{path: 'assets/js/pages/booking.js', old: '  // a comment\nc();', new: 'z'}]);
+  assert.equal(moved.the_file_has, undefined, 'no excerpt when the first line is nowhere in the file');
+  const frame = codeFrame(files, {reason: 'r', edits: [{path: 'assets/js/pages/booking.js', old: '    b: 1,', new: '    b: 1'}]},
+    'Docker operation failed: SyntaxError: /app/assets/js/pages/booking.js: Unexpected token (4:0)\n    at parse');
+  assert.equal(frame, '     1 | a();\n     2 | const x = {\n     3 |     b: 1\n>    4 | };\n     5 | c();\n     6 | \n         ^');
+  assert.equal(codeFrame(files, {reason: 'r', edits: []}, 'no location here'), null);
+});
+
 test('left_out advice only points at an attempt build_on_attempt accepts; an empty proposal is named as such', async () => {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'af-agent-')), replies = [];
   const bad = {path: 'assets/js/pages/booking.js', old: 'no such text anywhere', new: 'x'}, real = featured.edits[0];

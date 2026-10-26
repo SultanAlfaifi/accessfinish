@@ -70,12 +70,12 @@ async function main() {
   if (process.argv.includes('--publish')) {
     for (const dir of ['web/agent-runs', 'evidence/agent-runs']) fs.mkdirSync(path.join(project, dir), {recursive: true});
     fs.writeFileSync(path.join(project, 'evidence/agent-runs', trace.id + '.json'), JSON.stringify(trace, null, 2) + '\n');
-    // The page features the newest agent version's latest verified run, else its latest run; every run
-    // stays in evidence/agent-runs and in the totals.
+    // The page features the latest verified run of the newest version that has one, else the newest version's
+    // latest run; every run stays in evidence/agent-runs and in the totals.
     const featured = path.join(project, 'web/agent-runs', caseId + '.json'), current = fs.existsSync(featured) ? JSON.parse(fs.readFileSync(featured, 'utf8')) : null;
-    const rank = item => [Number(item.agent_version || 1), item.state === 'verified' ? 1 : 0];
-    const [version, verified] = rank(trace), [shownVersion, shownVerified] = current ? rank(current) : [0, 0];
-    if (version > shownVersion || version === shownVersion && verified >= shownVerified) {
+    const rank = item => [item.state === 'verified' ? 1 : 0, Number(item.agent_version || 1)];
+    const [verified, version] = rank(trace), [shownVerified, shownVersion] = current ? rank(current) : [0, 0];
+    if (verified > shownVerified || verified === shownVerified && version >= shownVersion) {
       fs.writeFileSync(featured, JSON.stringify(trace, null, 2) + '\n'); print('Published web/agent-runs/' + caseId + '.json');
     } else print('Recorded evidence/agent-runs/' + trace.id + '.json; the featured run stays the verified ' + current.id);
   }
