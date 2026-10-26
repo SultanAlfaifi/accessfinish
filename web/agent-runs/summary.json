@@ -1,26 +1,26 @@
 {
   "generated_from": "evidence/agent-runs",
   "model": "nvidia/nemotron-3-super-120b-a12b",
-  "runs": 24,
-  "cost_usd": 1.6026,
+  "runs": 34,
+  "cost_usd": 2.8467,
   "cases": {
+    "customer-phone": {
+      "runs": 17,
+      "verified": 17,
+      "first_attempt": 17,
+      "attempts": 17,
+      "wrong_saves_caught": 0,
+      "cost_usd": 0.1952,
+      "seconds": 1802
+    },
     "keyboard-date": {
-      "runs": 12,
+      "runs": 17,
       "verified": 0,
       "first_attempt": 0,
-      "attempts": 83,
-      "wrong_saves_caught": 32,
-      "cost_usd": 1.4662,
-      "seconds": 4425
-    },
-    "customer-phone": {
-      "runs": 12,
-      "verified": 12,
-      "first_attempt": 12,
-      "attempts": 12,
-      "wrong_saves_caught": 0,
-      "cost_usd": 0.1364,
-      "seconds": 1266
+      "attempts": 123,
+      "wrong_saves_caught": 45,
+      "cost_usd": 2.6514,
+      "seconds": 6249
     }
   },
   "agent_versions": {
@@ -69,6 +69,30 @@
           "wrong_saves_caught": 0,
           "cost_usd": 0.1051,
           "seconds": 565
+        }
+      }
+    },
+    "3": {
+      "runs": 10,
+      "cost_usd": 1.244,
+      "cases": {
+        "customer-phone": {
+          "runs": 5,
+          "verified": 5,
+          "first_attempt": 5,
+          "attempts": 5,
+          "wrong_saves_caught": 0,
+          "cost_usd": 0.0588,
+          "seconds": 536
+        },
+        "keyboard-date": {
+          "runs": 5,
+          "verified": 0,
+          "first_attempt": 0,
+          "attempts": 40,
+          "wrong_saves_caught": 13,
+          "cost_usd": 1.1852,
+          "seconds": 1824
         }
       }
     }
