@@ -192,9 +192,9 @@ def fade_in(layer, start, xy=(0, 0)):
 
 
 def scene_big_number():
-    label = text_layer([((0, 0), 'fake “booked” confirmations caught', font('InterDisplay-Bold', 64), WHITE, None, 1),
-                        ((0, 90), f"across {keyboard['runs']} live runs — not one got through", font('Inter-Medium', 38), MUTED, None, 1)], (1700, 160))
-    target = keyboard['wrong_saves_caught']
+    label = text_layer([((0, 0), 'false “booked” confirmations caught', font('InterDisplay-Bold', 64), WHITE, None, 1),
+                        ((0, 90), f"across {keyboard['runs']} live keyboard runs — not one got through", font('Inter-Medium', 38), MUTED, None, 1)], (1700, 160))
+    target = keyboard['false_booked_caught']
     def draw(frame, t, d):
         k = ease(clamp(t * d / 1.4))
         n = text_layer([((0, 0), str(round(target * k)), font('InterDisplay-Black', 300), ORANGE, None, 1)], (700, 360))
@@ -205,7 +205,7 @@ def scene_big_number():
 
 def scene_facts():
     tiles = [(f"{phone['first_attempt']}/{phone['runs']}", 'phone runs fixed and verified on the first attempt', GREEN),
-             (str(keyboard['wrong_saves_caught']), 'false “booked” confirmations caught', ORANGE),
+             (str(keyboard['false_booked_caught']), 'false “booked” confirmations caught', ORANGE),
              (f"${summary['cost_usd']:.2f}", f"of Nemotron for all {summary['runs']} live runs", WHITE),
              ('9', 'independent checks on every attempt', BLUE)]
     layers = []
@@ -256,15 +256,18 @@ SCENES = {
                               Card('phone-proof', RIGHT, 'pan', (1, 0.5, 0.0), (1, 0.5, 1.0)),
                               combine(fade_in(counter(f"{phone['first_attempt']} / {phone['runs']}", 'live runs fixed and verified on the first attempt', GREEN, (120, 560), 130), 0.62),
                                       pop(STAMP_VERIFIED, (1640, 860), 0.35))),
-    'keyboard-intro': scene_card('CASE 2 · KEYBOARD ONLY', 'Tab can’t reach the date picker.',
+    'keyboard-intro': scene_card('CASE 2 · A REAL UPSTREAM BUG', 'Tab can’t reach the date picker.',
                                  Card('kb-observe', RIGHT, 'fit', (1.0, 0.5, 0.3), (1.1, 0.5, 0.5))),
-    'keyboard-attempts': scene_card('8 ATTEMPTS · EACH BUILT AND TESTED', 'Nemotron reads the code and tries again.',
-                                    Card('kb-console', RIGHT, 'pan', (1, 0.5, 0.0), (1, 0.5, 1.0))),
     'keyboard-wrong': scene_card('THE CONFIRMATION LIED', '“Booked.” Saved for the wrong day.',
                                  Card('kb-compare', (860, 250, 1820, 700), 'fit', (1.0, 0.5, 0.5), (1.04, 0.5, 0.5)),
                                  pop(STAMP_REJECTED, (1340, 820), 0.42)),
-    'keyboard-timeline': scene_card('WHAT THE VERIFIER RECORDED', '0.7 s after a background request, the date changed by itself.',
-                                    Card('kb-history', (860, 250, 1820, 650), 'fit', (1.0, 0.5, 0.5), (1.06, 0.2, 0.8))),
+    'keyboard-provenance': scene_card('WHICH CODE CHANGED IT', 'The month-change handler overwrote the date the user typed.',
+                                      Card('kb-history', (860, 150, 1820, 950), 'fit', (1.0, 0.5, 0.3), (1.22, 0.5, 0.62))),
+    'keyboard-reopen': scene_card('A SECOND BUG', 'Saved correctly — but reopening shows today’s date.',
+                                  Card('kb-reopen', RIGHT, 'fit', (1.25, 0.5, 0.35), (1.25, 0.5, 0.62))),
+    'keyboard-verified': scene_card('FIXED BY NEMOTRON · NO HINTS', 'Both bugs fixed. Saved, reopened, mouse path intact.',
+                                    Card('kb-proof', RIGHT, 'pan', (1, 0.5, 0.0), (1, 0.5, 1.0)),
+                                    pop(STAMP_VERIFIED, (1640, 860), 0.4)),
     'finding': scene_big_number(),
     'facts': scene_facts(),
     'close': scene_close(),
