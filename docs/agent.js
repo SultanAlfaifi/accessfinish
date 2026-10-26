@@ -199,7 +199,7 @@
       wrap.append(el('p', '', evidence.stage === 'build' ? 'The trusted compiler rejected the patched code:' : evidence.stage === 'apply' ? 'The edit did not match the source exactly:' : 'The answer could not be used as a patch:'), pre);
       // Where a copied anchor stopped matching the file, as Nemotron was told.
       for (const anchor of (evidence.anchors || []).filter(item => item?.found_in_read_only_file)) wrap.append(facts([['Edit ' + (anchor.your_edit || anchor.edit) + ' targets read-only code', anchor.found_in_read_only_file]]));
-      for (const anchor of (evidence.anchors || []).filter(item => item?.first_mismatch && !item.found_in_read_only_file)) {
+      for (const anchor of (evidence.anchors || []).filter(item => item?.first_mismatch)) {
         const miss = anchor.first_mismatch;
         const which = anchor.your_edit ? 'Edit ' + anchor.your_edit : anchor.kept_from_attempt ? 'Edit kept from attempt ' + anchor.kept_from_attempt : 'Edit ' + anchor.edit;
         wrap.append(facts([[which + ', line ' + miss.old_line_number + ' of its anchor', 'Nemotron wrote: ' + miss.your_line], ['The file has', miss.original_line]]));

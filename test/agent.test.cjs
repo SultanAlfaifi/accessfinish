@@ -216,7 +216,7 @@ test('an edit naming the wrong editable file is moved, an empty edit is dropped,
   const div = {path: 'assets/js/pages/booking.js', old: '<div id="select-date" class="mx-auto my-4"></div>', new: '<input id="select-date">'};
   const {edits, adjustments} = resolveAnchors(files, [div, {path: 'assets/js/pages/booking.js', old: '', new: ''}]);
   assert.deepEqual(edits.map(edit => edit.path), ['application/views/components/booking_time_step.php']);
-  assert.match(adjustments[0].moved, /occurs once in application\/views\/components\/booking_time_step.php/);
+  assert.match(adjustments[0].moved, /occurs nowhere in assets\/js\/pages\/booking\.js but once in application\/views\/components\/booking_time_step\.php/);
   assert.match(adjustments[1].dropped, /old text is empty/);
   const [report] = anchorReport(files, [{path: 'assets/js/pages/booking.js', old: "if (setDate && !vars('manage_mode')) {\n  x();", new: 'y'}]);
   assert.match(report.found_in_read_only_file, /^assets\/js\/http\/booking_http_client\.js:\d+ \(only assets\/js\/pages\/booking\.js and application\/views\/components\/booking_time_step\.php can be edited\)$/);
@@ -232,10 +232,27 @@ test('an attempt that only fails the reopen check counts as further; the next at
   const model = async messages => { replies.push(messages.at(-1)); return answer('c' + replies.length, proposals[replies.length - 1]); };
   await runAgent({execute: async ({run, original}) => ({...(original ? stuck : outcomes.shift() || stuck), run_id: run.id}), model, root, maxAttempts: 4});
   const after2 = JSON.parse(replies[2].content), after3 = JSON.parse(replies[3].content);
-  assert.match(after2.progress, /^This attempt got further than any before \(to reopen \(the booking was saved correctly; only reopening it failed\)\)/);
+  assert.match(after2.progress, /^This attempt got further than the original code and every earlier attempt \(to reopen \(the booking was saved correctly; only reopening it failed\)\)/);
   assert.match(after2.progress, /build_on_attempt: 2/);
   assert.match(after3.left_out, /edits of attempt 2, which got further \(to reopen/);
   assert.equal(after3.best_attempt_so_far.attempt, 2, 'a later attempt that saved the wrong date again is not the best');
+});
+
+test('the harness only claims what its evidence shows: no progress for a broken build, no read-only claim for editable code, no move for an ambiguous anchor', async () => {
+  const {anchorReport, resolveAnchors} = require('../lib/agent.cjs'), {caseDefinition} = require('../lib/cases.cjs'), files = caseDefinition('keyboard-date').files;
+  // booking.js's own export block with one missing comma is a typo in editable code, not read-only code.
+  const typo = {path: 'assets/js/pages/booking.js', old: '    return {\n        manageMode,\n        updateConfirmFrame,\n        updateServiceDescription,\n        validateCustomerForm\n    };', new: 'x'};
+  const [report] = anchorReport(files, [typo]);
+  assert.equal(report.found_in_read_only_file, undefined); assert.equal(report.first_mismatch.your_line, '        validateCustomerForm');
+  // "select-timezone" occurs twice in the view and once in booking.js: an ambiguous anchor stays in its own file.
+  assert.deepEqual(resolveAnchors(files, [{path: 'application/views/components/booking_time_step.php', old: 'select-timezone', new: 'select-tz'}]).adjustments, []);
+  // A first attempt that breaks the build is never told it got further, and a crash never becomes the best attempt.
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'af-agent-')), replies = [], outcomes = [buildFailure, {}];
+  const model = async messages => { replies.push(messages.at(-1)); return answer('c' + replies.length, {diagnosis: 'd', edits: [featured.edits[replies.length - 1] || featured.edits[0]]}); };
+  await runAgent({execute: async ({run, original}) => ({...(original ? stuck : outcomes.shift() || stuck), run_id: run.id}), model, root, maxAttempts: 3});
+  const first = JSON.parse(replies[1].content), second = JSON.parse(replies[2].content);
+  assert.equal(first.progress, undefined); assert.equal(second.progress, undefined);
+  assert.equal(second.best_attempt_so_far.attempt, 1, 'the keyboard crash of attempt 2 is not the best attempt');
 });
 
 test('left_out advice only points at an attempt build_on_attempt accepts; an empty proposal is named as such', async () => {
@@ -259,10 +276,10 @@ test('a proposal of only no-op edits is rejected, and leaving out the furthest a
   const trace = await runAgent({execute: async ({run, original, proposal}) => ({...(original ? stuck : proposal.proposal.edits.length === real.length ? wrongDate : stuck), run_id: run.id}), model, root, maxAttempts: 4});
   const verifies = trace.steps.filter(item => item.kind === 'verify');
   assert.deepEqual(verifies.map(item => item.stage), ['outcome', 'format', 'keyboard', 'keyboard']);
-  assert.match(verifies[1].headline, /every edit leaves the code unchanged/);
+  assert.match(verifies[1].headline, /every edit was dropped: its new text is identical to its old text/);
   assert.deepEqual(trace.steps.filter(item => item.kind === 'propose')[1].adjustments.map(item => item.your_edit), [1]);
   const feedback = JSON.parse(replies[3].content);
-  assert.match(feedback.left_out, new RegExp('left out ' + (real.length - 1) + ' of the ' + real.length + ' edits of attempt 1, which got further \\(to outcome\\)\\. Set build_on_attempt: 1'));
+  assert.match(feedback.left_out, new RegExp('left out ' + (real.length - 1) + ' of the ' + real.length + ' edits of attempt 1, which got further \\(to outcome\\)\\. Keep them with build_on_attempt: 1'));
 });
 
 test('the agent can read other source files before proposing', async () => {
