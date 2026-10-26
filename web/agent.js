@@ -293,7 +293,7 @@
         $('#verdict-keyboard-date').textContent = (fixed ? 'Fixed by Nemotron in ' + fixed + ' of ' + tried + ' runs (' + span + ')' : 'Not fixed yet') + ' · ' + caught + ' false "booked" pages caught';
         $('#verdict-keyboard-date').classList.toggle('good', fixed > 0); $('#verdict-keyboard-date').classList.toggle('caught', !fixed);
         $('#fact-keyboard').textContent = fixed ? fixed + ' / ' + tried : '0';
-        $('#fact-keyboard-label').textContent = fixed ? 'keyboard runs fixed by Nemotron with no hints (' + span + ')' : 'keyboard runs fixed so far';
+        $('#fact-keyboard-label').textContent = fixed ? 'keyboard runs fixed by Nemotron, no diagnosis supplied (' + span + ')' : 'keyboard runs fixed so far';
       }
       $('#fact-cost').textContent = money(summary.cost_usd); $('#fact-runs').textContent = String(summary.runs);
     } catch {}

@@ -210,7 +210,7 @@ def scene_big_number():
 
 def scene_facts():
     tiles = [(f"{phone['verified']}/{phone['runs']}", f"phone runs verified, {phone['first_attempt']} on the first attempt", GREEN),
-             (f"{kb_fixed}/{kb_tried}", f"keyboard runs fixed with no hints ({kb_span})", BLUE),
+             (f"{kb_fixed}/{kb_tried}", f"keyboard runs fixed, no diagnosis supplied ({kb_span})", BLUE),
              (str(keyboard['false_booked_caught']), 'false “booked” confirmations caught', ORANGE),
              (f"${summary['cost_usd']:.2f}", f"of Nemotron for all {summary['runs']} live runs", WHITE)]
     layers = []
@@ -255,7 +255,7 @@ SCENES = {
     'hero': scene_hero(),
     'phone-observe': scene_card('CASE 1 · SAVED PHONE', 'The page said “booked”. The database saved 0000000000.',
                                 Card('phone-observe', RIGHT, 'fit', (1.0, 0.5, 0.3), (1.12, 0.5, 0.75))),
-    'phone-propose': scene_card('NVIDIA NEMOTRON · NO HINTS', 'Nemotron finds the hard-coded value and writes the fix.',
+    'phone-propose': scene_card('NVIDIA NEMOTRON · NO DIAGNOSIS SUPPLIED', 'Nemotron finds the hard-coded value and writes the fix.',
                                 Card('phone-propose', RIGHT, 'fit', (1.0, 0.5, 0.4), (1.1, 0.5, 0.6))),
     'phone-proof': scene_card('VERIFIED FOR REAL', 'Saved, reopened, and re-checked with a second customer.',
                               Card('phone-proof', RIGHT, 'pan', (1, 0.5, 0.0), (1, 0.5, 1.0)),
@@ -270,7 +270,7 @@ SCENES = {
                                       Card('kb-history', (860, 150, 1820, 950), 'fit', (1.0, 0.0, 0.3), (1.1, 0.0, 0.7))),
     'keyboard-reopen': scene_card('A SECOND BUG', 'Saved correctly — but reopening shows today’s date.',
                                   Card('kb-reopen', RIGHT, 'fit', (1.25, 0.5, 0.35), (1.25, 0.5, 0.62))),
-    'keyboard-verified': scene_card('FIXED BY NEMOTRON · NO HINTS', 'Both bugs fixed. Saved, reopened, mouse path intact.',
+    'keyboard-verified': scene_card('FIXED BY NEMOTRON · CAUSE NEVER GIVEN', 'Both bugs fixed. Saved, reopened, mouse path intact.',
                                     Card('kb-proof', RIGHT, 'pan', (1, 0.5, 0.0), (1, 0.5, 1.0)),
                                     pop(STAMP_VERIFIED, (1640, 860), 0.4)),
     'finding': scene_big_number(),

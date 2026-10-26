@@ -45,15 +45,15 @@
   <aside class="finding" id="finding" hidden>
     <h3>Not fixed in this run — and nothing false got through.</h3>
     <p>Every attempt that reached a <em>booked</em> page while the booking was saved, or reopened, with the wrong date was rejected.</p>
-    <p>The recorded timeline names the code behind it: right after the date is typed, the month-change handler in <code>booking.js</code> requests <code>get_unavailable_dates</code>, and the response handler overwrites the field with the first free day. Reopening a booking then resets the date to today when <b>Next</b> is pressed. Agent versions 4 and 5 fixed both on their own in 2 of 10 runs — see <a href="evidence.html">every run</a>.</p>
+    <p>The recorded timeline names the code behind it: right after the date is typed, the month-change handler in <code>booking.js</code> requests <code>get_unavailable_dates</code>, and the response handler overwrites the field with the first free day. Reopening a booking then resets the date to today when <b>Next</b> is pressed. Agent versions 4 and 5 fixed both, with no diagnosis supplied, in 2 of 10 runs — see <a href="evidence.html">every run</a>.</p>
   </aside>
 
   <section class="how" id="how" aria-labelledby="how-heading">
     <h2 id="how-heading">A loop that ends at the saved outcome, not the success page.</h2>
     <ol class="loop">
       <li><b>Observe</b><span>A real browser drives the journey with the keyboard only and records where focus goes and where it gets stuck.</span></li>
-      <li><b>Diagnose &amp; repair</b><span>Nemotron 3 Super reads the evidence and the source, finds the cause and writes exact code edits. No hints.</span></li>
-      <li><b>Verify for real</b><span>Each patch is built in a fresh, offline sandbox. The booking is made, read back from the database with a read-only account, and reopened in a fresh browser.</span></li>
+      <li><b>Diagnose &amp; repair</b><span>Nemotron 3 Super reads the evidence and the source, finds the cause and writes exact code edits. It is never told the cause.</span></li>
+      <li><b>Verify for real</b><span>Each patch that applies is built in a fresh, offline sandbox. The booking is made, read back from the database with a read-only account, and reopened in a fresh browser.</span></li>
       <li><b>Feed back</b><span>If anything is off — a build error, a stuck key, a wrong saved value, a broken mouse path — the evidence goes back to Nemotron and it tries again.</span></li>
     </ol>
     <div class="why">
@@ -66,12 +66,12 @@
     <div><strong id="fact-phone">—</strong><span>phone runs fixed and verified</span></div>
     <div><strong id="fact-caught">—</strong><span>false "booked" confirmations caught in the keyboard case</span></div>
     <div><strong id="fact-cost">—</strong><span>Nemotron cost for all <span id="fact-runs">—</span> live runs</span></div>
-    <div><strong id="fact-keyboard">—</strong><span id="fact-keyboard-label">keyboard runs fixed by Nemotron with no hints</span></div>
+    <div><strong id="fact-keyboard">—</strong><span id="fact-keyboard-label">keyboard runs fixed by Nemotron, no diagnosis supplied</span></div>
   </section>
 
   <p class="limits">Synthetic data in a pinned copy of the open-source Easy!Appointments app. Two journeys today; the phone fault was seeded on purpose. All runs were made live on GitHub Actions with Nemotron 3 Super on Nebius Token Factory, and every one, including failures, is saved with its raw evidence — see <a href="evidence.html">Evidence</a>.</p>
 </main>
 <footer><span>AccessFinish — finish the task, verify the result.</span><a href="https://github.com/SultanAlfaifi/accessfinish">MIT · source on GitHub</a></footer>
-<script src="agent.js?v=6d43abe48040ecaa"></script>
+<script src="agent.js?v=15daab1536f9a5e0"></script>
 </body>
 </html>
