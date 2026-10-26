@@ -4,11 +4,17 @@
 // Traces recorded before versioning count as version 1.
 const fs = require('node:fs'), path = require('node:path');
 const {scenario} = require('../lib/fixture.cjs');
-const totals = () => ({runs: 0, verified: 0, first_attempt: 0, attempts: 0, wrong_saves_caught: 0, cost_usd: 0, seconds: 0});
+const totals = () => ({runs: 0, verified: 0, first_attempt: 0, attempts: 0, executed: 0, false_booked_caught: 0, wrong_saves_caught: 0, reopen_mismatches_caught: 0,
+  runs_saved_correctly: 0, cost_usd: 0, seconds: 0});
+// An outcome failure where the saved booking was right and only reopening it showed something else.
+const reopenOnly = step => step.stage === 'outcome' && (step.evidence?.reasons || []).length > 0 && step.evidence.reasons.every(reason => /^reopen_/.test(reason))
+  && step.evidence.saved?.appointments?.[0]?.start === step.evidence.expected?.start;
 function count(item, run) {
-  const verifies = run.steps.filter(step => step.kind === 'verify');
-  item.runs++; item.attempts += verifies.length; item.cost_usd += run.estimated_cost_usd; item.seconds += run.duration_ms / 1000;
-  item.wrong_saves_caught += verifies.filter(step => step.stage === 'outcome').length;
+  const verifies = run.steps.filter(step => step.kind === 'verify'), outcomes = verifies.filter(step => step.stage === 'outcome');
+  item.runs++; item.attempts += verifies.length; item.executed += verifies.filter(step => step.run_id).length; item.cost_usd += run.estimated_cost_usd; item.seconds += run.duration_ms / 1000;
+  // Every outcome failure is a "booked" page with a wrong result: a wrong saved row, or a right row that reopens wrong.
+  item.false_booked_caught += outcomes.length; item.reopen_mismatches_caught += outcomes.filter(reopenOnly).length; item.wrong_saves_caught += outcomes.filter(step => !reopenOnly(step)).length;
+  if (run.state === 'verified' || outcomes.some(reopenOnly)) item.runs_saved_correctly++;
   if (run.state === 'verified') { item.verified++; if (run.accepted.attempt === 1) item.first_attempt++; }
 }
 // The keyboard-date reset only happens when the booked date is in a later month than the day of the run
