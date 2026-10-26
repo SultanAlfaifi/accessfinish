@@ -42,7 +42,8 @@
     {
       "id": "keyboard-verified",
       "text": "Nemotron fixes that too, building on its best attempt. Verified: saved, reopened in a fresh browser, and the mouse path still works.",
-      "say": "Nemo-tron fixes that too, building on its best attempt. Verified: saved, reopened in a fresh browser, and the mouse path still works."
+      "say": "Nemo-tron fixes that too, building on its best attempt. Verified: saved, reopened in a fresh browser, and the mouse path still works.",
+      "trim_start_seconds": 1.85
     },
     {
       "id": "finding",
