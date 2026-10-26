@@ -15,9 +15,9 @@
     },
     {
       "id": "phone-propose",
-      "script": "AccessFinish drives the journey in a real browser, then hands the evidence and the source code to NVIDIA Nemotron, on Nebius Token Factory. No hints. Nemotron finds the hard-coded value, and writes the fix.",
-      "heard": "Access Finish drives the journey in a real browser, then hands the evidence and the source code to NVIDIA Nemo-Tron on Nebius token factory. No hints. Nemo-Tron finds the hard-coded value and writes the fix.",
-      "word_match": 0.877
+      "script": "AccessFinish drives the journey in a real browser, then hands the evidence and the source code to NVIDIA Nemotron, on Nebius Token Factory. It is never told the cause. Nemotron finds the hard-coded value, and writes the fix.",
+      "heard": "Access finished drives the journey in a real browser, then hands the evidence and the source code to NVIDIA Nemotron on Nebius token factory. It is never told the cause. Nemotron finds the hard-coded value and writes the fix.",
+      "word_match": 0.962
     },
     {
       "id": "phone-proof",
@@ -51,9 +51,9 @@
     },
     {
       "id": "keyboard-verified",
-      "script": "Nemotron fixes that too, and keeps its first fix. Verified: saved, reopened in a fresh browser, and the mouse path still works. No hints.",
-      "heard": "Nemotron fixes that too, and keeps its first fix, verified, saved. Reopened in a fresh browser, and the mouse path still works, no hints.",
-      "word_match": 1.0
+      "script": "Nemotron fixes that too, building on its best attempt. Verified: saved, reopened in a fresh browser, and the mouse path still works.",
+      "heard": "Hmmm. Nemotron fixes that too, building on its best attempt. Verified. Saved. Reopened in a fresh browser, and the mouse path still works.",
+      "word_match": 0.978
     },
     {
       "id": "finding",
@@ -63,8 +63,8 @@
     },
     {
       "id": "facts",
-      "script": "Fifty-four live runs, for about six dollars of Nemotron. Fixes that are proven, not promised.",
-      "heard": "54 live runs for about $6 of Nemotron, fixes that are proven, not promised.",
+      "script": "Fifty-four live runs, for under seven dollars of Nemotron. Fixes that are proven, not promised.",
+      "heard": "54 Live runs for under $7 of Nemotron, fixes that are proven not promised.",
       "word_match": 0.8
     },
     {
