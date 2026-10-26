@@ -23,6 +23,11 @@ WHITE, MUTED, BLUE, GREEN, ORANGE, RED = (241, 245, 249), (148, 163, 184), (110,
 timeline = json.loads((DEMO / 'timeline.json').read_text())
 summary = json.loads((ROOT / 'web/agent-runs/summary.json').read_text())
 phone, keyboard = summary['cases']['customer-phone'], summary['cases']['keyboard-date']
+# Keyboard results from the first agent version that verified the case onwards (earlier versions never did).
+_versions = sorted((int(v), d['cases'].get('keyboard-date', {})) for v, d in summary['agent_versions'].items())
+_since = [(v, k) for v, k in _versions if v >= min((v for v, k in _versions if k.get('verified')), default=10**9)]
+kb_fixed, kb_tried = sum(k.get('verified', 0) for v, k in _since), sum(k.get('runs', 0) for v, k in _since)
+kb_span = f"agent v{_since[0][0]}–v{_since[-1][0]}" if len(_since) > 1 else (f"agent v{_since[0][0]}" if _since else '')
 
 ease = lambda t: t * t * (3 - 2 * t)
 clamp = lambda t: max(0.0, min(1.0, t))
@@ -204,10 +209,10 @@ def scene_big_number():
 
 
 def scene_facts():
-    tiles = [(f"{phone['first_attempt']}/{phone['runs']}", 'phone runs fixed and verified on the first attempt', GREEN),
+    tiles = [(f"{phone['verified']}/{phone['runs']}", f"phone runs verified, {phone['first_attempt']} on the first attempt", GREEN),
+             (f"{kb_fixed}/{kb_tried}", f"keyboard runs fixed with no hints ({kb_span})", BLUE),
              (str(keyboard['false_booked_caught']), 'false “booked” confirmations caught', ORANGE),
-             (f"${summary['cost_usd']:.2f}", f"of Nemotron for all {summary['runs']} live runs", WHITE),
-             ('9', 'independent checks on every attempt', BLUE)]
+             (f"${summary['cost_usd']:.2f}", f"of Nemotron for all {summary['runs']} live runs", WHITE)]
     layers = []
     for value, label, colour in tiles:
         tile = Image.new('RGBA', (380, 400), (0, 0, 0, 0))
@@ -254,7 +259,7 @@ SCENES = {
                                 Card('phone-propose', RIGHT, 'fit', (1.0, 0.5, 0.4), (1.1, 0.5, 0.6))),
     'phone-proof': scene_card('VERIFIED FOR REAL', 'Saved, reopened, and re-checked with a second customer.',
                               Card('phone-proof', RIGHT, 'pan', (1, 0.5, 0.0), (1, 0.5, 1.0)),
-                              combine(fade_in(counter(f"{phone['first_attempt']} / {phone['runs']}", 'live runs fixed and verified on the first attempt', GREEN, (120, 560), 130), 0.62),
+                              combine(fade_in(counter(f"{phone['verified']} / {phone['runs']}", f"live runs verified · {phone['first_attempt']} on the first attempt", GREEN, (120, 560), 130), 0.62),
                                       pop(STAMP_VERIFIED, (1640, 860), 0.35))),
     'keyboard-intro': scene_card('CASE 2 · A REAL UPSTREAM BUG', 'Tab can’t reach the date picker.',
                                  Card('kb-observe', RIGHT, 'fit', (1.0, 0.5, 0.3), (1.1, 0.5, 0.5))),

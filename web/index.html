@@ -45,7 +45,7 @@
   <aside class="finding" id="finding" hidden>
     <h3>Not fixed in this run — and nothing false got through.</h3>
     <p>Every attempt that reached a <em>booked</em> page while the booking was saved, or reopened, with the wrong date was rejected.</p>
-    <p>The recorded timeline names the code behind it: right after the date is typed, the month-change handler in <code>booking.js</code> requests <code>get_unavailable_dates</code>, and the response handler overwrites the field with the first free day. Reopening a booking then resets the date to today when <b>Next</b> is pressed. Agent version 4 fixed both on its own in one run — see <a href="evidence.html">every run</a>.</p>
+    <p>The recorded timeline names the code behind it: right after the date is typed, the month-change handler in <code>booking.js</code> requests <code>get_unavailable_dates</code>, and the response handler overwrites the field with the first free day. Reopening a booking then resets the date to today when <b>Next</b> is pressed. Agent versions 4 and 5 fixed both on their own in 2 of 10 runs — see <a href="evidence.html">every run</a>.</p>
   </aside>
 
   <section class="how" id="how" aria-labelledby="how-heading">
@@ -72,6 +72,6 @@
   <p class="limits">Synthetic data in a pinned copy of the open-source Easy!Appointments app. Two journeys today; the phone fault was seeded on purpose. All runs were made live on GitHub Actions with Nemotron 3 Super on Nebius Token Factory, and every one, including failures, is saved with its raw evidence — see <a href="evidence.html">Evidence</a>.</p>
 </main>
 <footer><span>AccessFinish — finish the task, verify the result.</span><a href="https://github.com/SultanAlfaifi/accessfinish">MIT · source on GitHub</a></footer>
-<script src="agent.js?v=d233f4d21bcd18f3"></script>
+<script src="agent.js?v=fb3b138fc0bc1124"></script>
 </body>
 </html>
