@@ -1,4 +1,4 @@
-# AccessFinish demo film (≈124 s)
+# AccessFinish demo film (≈128 s)
 
 The film is generated, not screen-recorded: `media/accessfinish-agent-demo.mp4` (1920×1080, narrated, captions burned in).
 
