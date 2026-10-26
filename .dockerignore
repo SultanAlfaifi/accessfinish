@@ -5,6 +5,5 @@ media
 evidence
 docs
 submission
-integration/windows-harness
 *.log
 .env*

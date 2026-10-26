@@ -13,4 +13,4 @@ http.createServer((request, response) => {
     response.writeHead(200, {'Content-Type': types[path.extname(file)], 'Content-Security-Policy': "default-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'", 'X-Content-Type-Options': 'nosniff', 'Cache-Control': 'no-store'});
     fs.createReadStream(file).pipe(response);
   } catch { response.writeHead(404, {'Content-Type': 'text/plain'}); response.end('Not found'); }
-}).listen(port, '127.0.0.1', () => console.log('Recorded review preview http://127.0.0.1:' + port));
+}).listen(port, '127.0.0.1', () => console.log('Recorded runs preview http://127.0.0.1:' + port));

@@ -1,9 +1,0 @@
-.review-main{max-width:800px;margin:48px auto;padding:0 24px 60px}
-.review-main h1{font-size:clamp(30px,5vw,48px);line-height:1.15}
-.review-main p,.review-main li{line-height:1.7}.review-main li{margin:8px 0}
-.review-main section{padding:24px 0;border-bottom:1px solid #d8dce7}
-.review-form{display:grid;gap:12px;margin:32px 0}
-.review-form>label:not(.approval){font-weight:600;margin-top:14px}
-.review-form textarea,.review-form select{width:100%;box-sizing:border-box;font:inherit;padding:12px;border:1px solid #8793a8;border-radius:6px;color:#18254b;background:white}
-.review-form textarea:focus-visible,.review-form select:focus-visible{outline:3px solid #2868ca;outline-offset:3px}
-.review-form button{justify-self:start}.review-form pre{white-space:pre-wrap;overflow-wrap:anywhere;max-height:400px;overflow-y:auto;background:#f2f5fa;padding:16px}

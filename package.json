@@ -1,8 +1,8 @@
 {
   "name": "accessfinish",
-  "version": "0.2.0",
+  "version": "1.0.0",
   "private": true,
-  "description": "A keyboard-task repair workbench with independently verified booking outcomes.",
+  "description": "A repair agent on NVIDIA Nemotron that accepts a fix only when a real user can finish the task: keyboard journey, saved data and fresh-browser reopen, verified in a sandbox.",
   "license": "MIT",
   "engines": {
     "node": ">=22"
@@ -14,9 +14,7 @@
     "demo:check": "node scripts/demo-check.cjs",
     "replay": "node scripts/replay-preview.cjs",
     "check:records": "node scripts/check-trials.cjs",
-    "check:submission": "node scripts/check-submission.cjs",
-    "review:video": "node scripts/review-demo.cjs",
-    "test:repair": "node scripts/run-case.cjs",
-    "check:phone-model": "node scripts/check-phone-model.cjs"
+    "check:phone-model": "node scripts/check-phone-model.cjs",
+    "check:evidence": "node scripts/check-evidence.cjs"
   }
 }

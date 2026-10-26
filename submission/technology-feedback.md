@@ -4,7 +4,7 @@ We used `nvidia/nemotron-3-super-120b-a12b` through Token Factory's OpenAI-compa
 
 **What worked well**
 - Tool calling was dependable: across 54 live agent runs, 258 proposals and 387 search_code/read_file calls, only 2 answers were not usable tool calls (4 more times it kept looking up code until the lookup limit). That let us validate edits before anything ran and keep model output away from shell execution.
-- Nemotron reasons well from causal evidence. Once the verifier recorded the call chain that overwrote the typed date (`setDate ← applyUnavailableDates ← getUnavailableDates ← onMonthChange`), its diagnoses named the real cause, and in 2 of 10 runs of our final agents it fixed a real two-part upstream accessibility bug without being told the cause, verified end to end. Before that evidence existed it often blamed time zones (15 of 43 diagnoses in the first version).
+- Nemotron reasons well from causal evidence. Once the verifier recorded the call chain that overwrote the typed date (`setDate ← applyUnavailableDates ← getUnavailableDates ← onMonthChange`), its diagnoses named the real cause, and in 2 of 10 runs of our final agents it fixed a real two-part upstream accessibility bug without being told the cause, verified end to end. Before that evidence existed, none of the first version's 43 diagnoses named the month-change handler and 11 blamed time zones; with it, 20 of 39 named it.
 - Cost made an iterative, many-attempt loop practical: all 54 runs (18 million input and 1 million output tokens) cost $6.38 at the public prices; a phone-case run costs about a cent.
 - On a seeded data fault (a hard-coded value in the request payload) Nemotron found and fixed the cause in 27 of 27 runs, 26 on the first attempt.
 
