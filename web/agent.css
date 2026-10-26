@@ -22,6 +22,7 @@ code,kbd,pre{font-family:var(--mono)}
 .hero h1 q{quotes:'“' '”'}.hero h1 span{color:var(--blue)}
 .lede{font-size:19px;color:var(--muted);max-width:640px;margin:22px 0 28px}
 .cta{display:inline-block;background:var(--ink);color:#fff;text-decoration:none;padding:13px 20px;border-radius:10px;font-weight:600}
+.actions{display:flex;flex-wrap:wrap;gap:12px;margin:0}.cta.secondary{background:transparent;color:var(--ink);border:1px solid var(--ink)}
 
 .agent{display:grid;gap:20px;padding:12px 0 56px}
 .cases{display:grid;grid-template-columns:1fr 1fr;gap:14px}
