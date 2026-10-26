@@ -145,6 +145,58 @@ test('anchors that differ only in indentation or blank lines are pinned to the e
   assert.deepEqual(resolveAnchors(twice, [{path: 'assets/js/pages/booking.js', old: 'a\nb', new: 'c'}]).adjustments, []);
 });
 
+test('the resolver never guesses: ambiguous anchors, anchors an earlier edit changed, and exact anchors with a lone CR are left alone', () => {
+  const {resolveAnchors} = require('../lib/agent.cjs'), {preview} = require('../lib/repair.cjs');
+  const php = {path: 'application/views/components/booking_time_step.php', content: '<div id="d"></div>\r\n'}, js = path => ({path: 'assets/js/pages/booking.js', content: path});
+  // "$(event)" occurs three times exactly; only one occurrence is a line of its own.
+  const thrice = [js('a($(event));\r\nb($(event));\r\n    $(event)\r\n'), php];
+  assert.deepEqual(resolveAnchors(thrice, [{path: 'assets/js/pages/booking.js', old: '$(event)', new: '$(event.target)'}]).adjustments, []);
+  // Edit 2's anchor is unique in the original but edit 1 changed it: not re-anchored onto edit 1's new line.
+  const overlap = [js('function f() {\r\n    if (ready) set(today);\r\n    log();\r\n}\r\n'), php];
+  const edits = [{path: 'assets/js/pages/booking.js', old: '    log();', new: '    log();\n    set(today);'}, {path: 'assets/js/pages/booking.js', old: 'if (ready) set(today);', new: 'if (ready) set(today, true);'}];
+  assert.deepEqual(resolveAnchors(overlap, edits).adjustments, []);
+  // A lone CR that preview() matches exactly is not touched.
+  const line = "    const $selectDate = $('#select-date');", cr = [js(line + '\r\n'), php], edit = {path: 'assets/js/pages/booking.js', old: line + '\r', new: line.replace('Date =', 'DateX =') + '\r'};
+  assert.deepEqual(resolveAnchors(cr, [edit]).edits, [edit]);
+  assert.equal(preview(cr, {reason: 'r', edits: resolveAnchors(cr, [edit]).edits}).files[0].content, line.replace('Date =', 'DateX =') + '\r\n');
+  // Mixed indentation shifts use the shift most lines share; a negative shift keeps relative indentation.
+  const deep = [js('x();\r\n            a();\r\n                b();\r\n'), php];
+  const shifted = resolveAnchors(deep, [{path: 'assets/js/pages/booking.js', old: 'a();\n    b();', new: 'a();\n    b();\n    c();'}]);
+  assert.match(shifted.adjustments[0].anchored, /shifted by 12 spaces/);
+  assert.equal(preview(deep, {reason: 'r', edits: shifted.edits}).files[0].content, 'x();\r\n            a();\r\n                b();\r\n                c();\r\n');
+  const shallow = [js('a();\r\n  b();\r\n'), php];
+  const out = resolveAnchors(shallow, [{path: 'assets/js/pages/booking.js', old: '    a();\n      b();', new: '    a();\n      b();\n    c();'}]);
+  assert.equal(preview(shallow, {reason: 'r', edits: out.edits}).files[0].content, 'a();\r\n  b();\r\nc();\r\n');
+});
+
+test('an edit re-sent on top of build_on_attempt is recognised even after the harness re-anchored it', async () => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'af-agent-')), replies = [];
+  // A real recorded slip: the right lines with four spaces of indentation instead of eight.
+  const indented = {path: 'assets/js/pages/booking.js', old: '    App.Utils.UI.setDateTimePickerValue($selectDate, new Date());\n\n    const browserTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;',
+    new: '    App.Utils.UI.setDateTimePickerValue($selectDate, new Date());\n\n    const browserTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone; // checked'};
+  const proposals = [{diagnosis: 'a', edits: [indented]}, {diagnosis: 'b', build_on_attempt: 1, edits: [indented, featured.edits[0]]}];
+  const model = async messages => { replies.push(messages.at(-1)); return answer('c' + replies.length, proposals[replies.length - 1]); };
+  const trace = await runAgent({execute: async ({run}) => ({...stuck, run_id: run.id}), model, root, maxAttempts: 2});
+  const proposes = trace.steps.filter(item => item.kind === 'propose'), verifies = trace.steps.filter(item => item.kind === 'verify');
+  assert.equal(proposes[0].adjustments[0].your_edit, 1); assert.match(proposes[0].adjustments[0].anchored, /shifted by 4 spaces/);
+  assert.deepEqual(proposes[0].proposed_edits, [indented], 'the model\'s own text is kept');
+  assert.equal(verifies[0].stage, 'keyboard');
+  assert.equal(proposes[1].edits.length, 2, 'the re-sent edit is dropped as a duplicate of the kept one');
+  assert.equal(verifies[1].stage, 'keyboard');
+});
+
+test('left_out advice only points at an attempt build_on_attempt accepts; an empty proposal is named as such', async () => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'af-agent-')), replies = [];
+  const bad = {path: 'assets/js/pages/booking.js', old: 'no such text anywhere', new: 'x'}, real = featured.edits[0];
+  const proposals = [{diagnosis: 'a', edits: [bad, real]}, {diagnosis: 'b', edits: []}, {diagnosis: 'c', edits: [real]}];
+  const model = async messages => { replies.push(messages.at(-1)); return answer('c' + replies.length, proposals[replies.length - 1]); };
+  const trace = await runAgent({execute: async ({run}) => ({...stuck, run_id: run.id}), model, root, maxAttempts: 3});
+  const verifies = trace.steps.filter(item => item.kind === 'verify');
+  assert.deepEqual(verifies.map(item => item.stage), ['apply', 'format', 'keyboard']);
+  assert.match(verifies[1].headline, /the proposal has no edits/);
+  assert.equal(JSON.parse(replies[2].content).left_out, undefined);
+});
+
 test('a proposal of only no-op edits is rejected, and leaving out the furthest attempt\'s edits is pointed out', async () => {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'af-agent-')), replies = [];
   const real = featured.edits, noop = [{...real[0], new: real[0].old}];
@@ -155,7 +207,7 @@ test('a proposal of only no-op edits is rejected, and leaving out the furthest a
   const verifies = trace.steps.filter(item => item.kind === 'verify');
   assert.deepEqual(verifies.map(item => item.stage), ['outcome', 'format', 'keyboard', 'keyboard']);
   assert.match(verifies[1].headline, /every edit leaves the code unchanged/);
-  assert.deepEqual(trace.steps.filter(item => item.kind === 'propose')[1].adjustments.map(item => item.edit), [1]);
+  assert.deepEqual(trace.steps.filter(item => item.kind === 'propose')[1].adjustments.map(item => item.your_edit), [1]);
   const feedback = JSON.parse(replies[3].content);
   assert.match(feedback.left_out, new RegExp('left out ' + (real.length - 1) + ' of the ' + real.length + ' edits of attempt 1, which got further \\(to outcome\\)\\. Set build_on_attempt: 1'));
 });

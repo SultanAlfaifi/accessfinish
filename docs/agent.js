@@ -171,13 +171,20 @@
       field.append(el('span', 'sr-only', 'Field'));
       head.append(field, header('Typed by the user', 'col'), header('Saved in the database', 'col')); thead.append(head);
       table.append(el('caption', 'sr-only', 'What the user typed compared with what the database saved'), thead, body);
+      let differs = false;
       for (const [label, a, b] of [['Appointment', expected.start, saved.appointments?.[0]?.start], ['Phone', typed.phone_number, customer.phone_number], ['Email', typed.email, customer.email]]) {
         if (!a && !b) continue;
+        differs = differs || a !== b;
         const row = el('tr', a === b ? '' : 'mismatch'), savedCell = el('td', '', b || '—');
         if (a !== b) savedCell.append(el('span', 'sr-only', ' (does not match)'));
         row.append(header(label, 'row'), el('td', '', a || '—'), savedCell); body.append(row);
       }
-      wrap.append(el('p', '', 'The confirmation page appeared. Reading the database tells a different story:'), table);
+      wrap.append(el('p', '', differs ? 'The confirmation page appeared. Reading the database tells a different story:' : 'The confirmation page appeared and the database row is right:'), table);
+      // The reopen check: the booking link opened in a fresh browser, before and after Next on step 1.
+      const reopen = evidence.reopen;
+      if (reopen && !differs) wrap.append(el('p', '', 'Then the booking link was opened in a fresh browser, as the customer would to check or change it:'),
+        facts([['Date field when the link opened', reopen.date_field_when_the_booking_link_opened], ['After pressing Next on step 1', reopen.date_field_after_pressing_next_on_step_1],
+          ['Date the customer sees', reopen.date_shown_after_reopening]]));
       if (evidence.timeline_after_typing_date?.length) {
         const list = el('ol', 'history');
         for (const item of evidence.timeline_after_typing_date) { const row = el('li', /no key pressed/.test(item.event) ? 'jump' : ''); row.append(el('code', '', item.t), el('span', '', item.event)); list.append(row); }
@@ -190,6 +197,14 @@
     } else if (evidence.stage === 'build' || evidence.stage === 'apply' || evidence.stage === 'format') {
       const pre = el('pre', 'log'); pre.textContent = evidence.error || '';
       wrap.append(el('p', '', evidence.stage === 'build' ? 'The trusted compiler rejected the patched code:' : evidence.stage === 'apply' ? 'The edit did not match the source exactly:' : 'The answer could not be used as a patch:'), pre);
+      // Where a copied anchor stopped matching the file, as Nemotron was told.
+      for (const anchor of (evidence.anchors || []).filter(item => item?.first_mismatch)) {
+        const miss = anchor.first_mismatch;
+        const which = anchor.your_edit ? 'Edit ' + anchor.your_edit : anchor.kept_from_attempt ? 'Edit kept from attempt ' + anchor.kept_from_attempt : 'Edit ' + anchor.edit;
+        wrap.append(facts([[which + ', line ' + miss.old_line_number + ' of its anchor', 'Nemotron wrote: ' + miss.your_line], ['The file has', miss.original_line]]));
+        if (miss.your_line === miss.original_line) wrap.append(el('p', 'micro', 'These look the same because this report, from agent version ' + (trace.agent_version || 1)
+          + ', compared the start of lines, so a line such as "}" matched "},". Version 3 compares whole lines and points to the real difference.'));
+      }
     } else if (evidence.stage === 'regression') {
       const flags = evidence.controls?.browser ? Object.entries(evidence.controls.browser).filter(([, value]) => typeof value === 'boolean') : [];
       const list = el('ul', 'checks'); for (const [key, value] of flags) list.append(el('li', value ? 'ok' : 'bad', key.replaceAll('_', ' ')));
@@ -237,6 +252,13 @@
       if (step.build_on_attempt) detail.append(el('p', '', 'Builds on attempt ' + step.build_on_attempt + (step.kept_edits ? ': keeps its ' + plural(step.kept_edits, 'edit') + ', then adds ' + (edits.length - step.kept_edits) + '.' : '.')));
       detail.append(el('h3', '', plural(edits.length, 'edit')));
       for (const edit of edits) detail.append(codeBlock(edit));
+      // Anything the harness changed before the verifier ran, as Nemotron was told.
+      // Edits are shown as the verifier applied them; Nemotron's own text stays in the trace (proposed_edits).
+      for (const item of Array.isArray(step.adjustments) ? step.adjustments : []) detail.append(el('p', 'micro', 'Harness: ' + (item.your_edit ? 'Nemotron\'s edit ' + item.your_edit
+        : item.kept_from_attempt ? 'the edit kept from attempt ' + item.kept_from_attempt : 'edit ' + item.edit) + ' — ' + (item.dropped ? 'dropped, ' + item.dropped : item.anchored) + '.'));
+      if (typeof step.reasoning === 'string' && step.reasoning) {
+        const box = el('details', 'reasoning'); box.append(el('summary', '', 'Nemotron\'s reasoning'), el('p', '', step.reasoning)); detail.append(box);
+      }
       if (step.usage) detail.append(el('p', 'micro', (step.usage.prompt_tokens || 0).toLocaleString() + ' input + ' + (step.usage.completion_tokens || 0).toLocaleString() + ' output tokens · ' + seconds(step.duration_ms)));
       return;
     }
