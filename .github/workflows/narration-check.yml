@@ -17,9 +17,11 @@ jobs:
       - name: Install Whisper (CPU)
         run: |
           sudo apt-get update && sudo apt-get install -y --no-install-recommends ffmpeg
-          python3 -m venv .venv
-          .venv/bin/pip install --index-url https://download.pytorch.org/whl/cpu torch==2.8.0
-          .venv/bin/pip install openai-whisper==20250625
+          # Python 3.12 through uv: the runner's newer default Python has no torch 2.8 wheels.
+          python3 -m venv /tmp/uv && /tmp/uv/bin/pip install --quiet uv
+          /tmp/uv/bin/uv venv --python 3.12 .venv
+          /tmp/uv/bin/uv pip install --python .venv/bin/python --index-url https://download.pytorch.org/whl/cpu torch==2.8.0
+          /tmp/uv/bin/uv pip install --python .venv/bin/python openai-whisper==20250625
       - name: Transcribe
         run: .venv/bin/python scripts/transcribe-narration.py
       - name: Commit the transcript

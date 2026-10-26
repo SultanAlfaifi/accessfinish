@@ -1,0 +1,249 @@
+{
+  "schema_version": 1,
+  "agent_version": "2",
+  "id": "agent-b217014ca565c6598cc86ec4",
+  "case_id": "customer-phone",
+  "title": "Save the phone the customer entered",
+  "goal": "A customer books the 09:00 slot, and the contact details they typed, including the phone number with its leading zeroes, are saved exactly and shown again when the booking is reopened.",
+  "model": "nvidia/nemotron-3-super-120b-a12b",
+  "provider": "Nebius Token Factory",
+  "temperature": 0.6,
+  "top_p": 0.95,
+  "max_attempts": 8,
+  "git_commit": "4a17e0d83c42916d9a0c034e2f82064b182cfdf9",
+  "git_dirty": false,
+  "fixture_fingerprint": "88eb9ab8238a5eb812249a3a90cd7216726b6032fb573eb9ffde21213a32b02d",
+  "scenario_date": "2026-11-02",
+  "scenario_crosses_month": true,
+  "started_at_utc": "2026-10-25T12:44:01.714Z",
+  "state": "verified",
+  "steps": [
+    {
+      "at_utc": "2026-10-25T12:44:44.110Z",
+      "kind": "observe",
+      "run_id": "run-3e28c7a5456519ab1fe8715684b3d5d9",
+      "duration_ms": 42392,
+      "headline": "Confirmation shown, but phone saved as 0000000000 instead of 0000000042",
+      "verified": false,
+      "evidence": {
+        "stage": "outcome",
+        "error": "Outcome verification failed: interaction_violation, wrong_customer_fields",
+        "reasons": [
+          "interaction_violation",
+          "wrong_customer_fields"
+        ],
+        "saved": {
+          "appointments": [
+            {
+              "start": "2026-11-02 09:00:00",
+              "end": "2026-11-02 09:30:00"
+            }
+          ],
+          "customers": [
+            {
+              "first_name": "Synthetic",
+              "last_name": "PhonePersistence",
+              "email": "phone-persistence@example.invalid",
+              "phone_number": "0000000000"
+            }
+          ]
+        },
+        "expected": {
+          "start": "2026-11-02 09:00:00",
+          "customer": {
+            "first_name": "Synthetic",
+            "last_name": "PhonePersistence",
+            "email": "phone-persistence@example.invalid",
+            "phone_number": "0000000042"
+          }
+        },
+        "text_typed_by_verifier": {
+          "first_name": "Synthetic",
+          "last_name": "PhonePersistence",
+          "email": "phone-persistence@example.invalid",
+          "phone_number": "0000000042"
+        },
+        "date_field_history": [
+          {
+            "after_action": 21,
+            "action": "no key pressed (page changed it)",
+            "date_field_value": "25/10/2026"
+          },
+          {
+            "after_action": 27,
+            "action": "type \"02/11/2026\"",
+            "date_field_value": "02/11/2026"
+          }
+        ],
+        "date_field_writes": [
+          {
+            "t": "-1.2s",
+            "value": "25/10/2026",
+            "by": "setDate ← setDateTimePickerValue ← initialize"
+          }
+        ],
+        "timeline_after_typing_date": [
+          {
+            "t": "+0.0s",
+            "event": "type \"02/11/2026\" → date field shows \"02/11/2026\""
+          },
+          {
+            "t": "+0.0s",
+            "event": "page request POST /index.php/booking/get_available_hours from send ← ajax ← getAvailableHours ← onChange ← setDate"
+          },
+          {
+            "t": "+9.1s",
+            "event": "page request POST /index.php/booking/register from send ← ajax ← registerAppointment ← dispatch ← handle"
+          }
+        ],
+        "keyboard_actions_total": 147,
+        "reopened": {
+          "selected_date_iso": "2026-11-02",
+          "evidence_kind": "date_input+flatpickr_selected_day",
+          "ambiguous": false
+        },
+        "reopen": {
+          "date_field_when_the_booking_link_opened": "select-date=\"02/11/2026\" (hidden)",
+          "date_field_after_pressing_next_on_step_1": "select-date=\"02/11/2026\"",
+          "date_shown_after_reopening": "2026-11-02"
+        }
+      }
+    },
+    {
+      "at_utc": "2026-10-25T12:44:50.485Z",
+      "kind": "search",
+      "query": "phone_number: '0000000000'",
+      "matches": 1,
+      "attempt": 1,
+      "usage": {
+        "completion_tokens": 167,
+        "prompt_tokens": 16321,
+        "total_tokens": 16488,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": null,
+          "audio_tokens": null,
+          "reasoning_tokens": 129,
+          "rejected_prediction_tokens": null
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": null,
+          "cached_tokens": 0,
+          "created_cache_tokens": 0,
+          "multimodal_tokens": null
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 16321
+      }
+    },
+    {
+      "at_utc": "2026-10-25T12:44:54.763Z",
+      "kind": "propose",
+      "attempt": 1,
+      "duration_ms": 10625,
+      "diagnosis": "The phone number is hardcoded to '0000000000' in the data.customer object when building the appointment payload, causing the submitted phone to lose the user's input.",
+      "evidence_explained": "\"phone_number: '0000000000',\" appears in assets/js/pages/booking.js at line 823, and the verifier shows saved phone_number \"0000000000\" while typed was \"0000000042\".",
+      "reasoning": "We need to see why phone number gets overwritten with zeros. In booking.js line 823 sets phone_number to constant '0000000000'. Should be actual value from $phoneNumber.val().\nLet's look at surrounding context. Probably they mistakenly hardcoded. Need to replace that line with proper variable.\n\nCheck line numbers around 823: Let's view relevant part of booking.js near that line. Use read_file? Already have content. Could search for that line.\n\nBut we need to edit exactly that line. Let's extract the old substring exactly as appears.\n\nFrom content: \"... phone_number: '0000000000',\\r\\n\"\n\nWe need to replace with something like: phone_number: $phoneNumber.val(),\n\nBut note that inside the data.customer object they also escape html elsewhere? Actually they assign raw values then later escape in updateConfirmFrame. For submission they likely want raw value. So replace with $phoneNumber.val().\n\nMake sure to keep same indentation and trailing comma.\n\nLet's locate the exact line: In the provided content, find:\n\n        data.customer = {\n            last_name: $lastName.val(),\n            first_name: $firstName.val(),\n            email: $email.val(),\n            phone_number: '0000000000',\n            address: $address.val(),\n            city: $city.val(),\n            zip_code: $zipCode.val(),\n            timezone: $selectTimezone.val(),\n            custom_field_1: $customField1.val(),\n            custom_field_2: $customField2.val(),\n            custom_field_3: $customField3.val(),\n            custom_field_4: $customField4.val(),\n            custom_field_5: $customField5.val(),\n        };\n\nThus old substring: \"phone_number: '0000000000',\" (including spaces?). Let's copy exactly as appears: there is 12 spaces before? Actually indentation: 8 spaces? We'll just match the line.\n\nWe'll replace with \"phone_number: $phoneNumber.val(),\".\n\nNow need to propose edit.\n\nAlso ensure we don't break anything else.\n\nPropose repair.",
+      "build_on_attempt": null,
+      "edits": [
+        {
+          "path": "assets/js/pages/booking.js",
+          "old": "            phone_number: '0000000000',",
+          "new": "            phone_number: $phoneNumber.val(),"
+        }
+      ],
+      "proposal_sha256": "d83fafb3a2f3f5441b06cfa7176819e4e9cadfe06e9b4518a002890c376d0464",
+      "usage": {
+        "completion_tokens": 665,
+        "prompt_tokens": 16401,
+        "total_tokens": 17066,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": null,
+          "audio_tokens": null,
+          "reasoning_tokens": 461,
+          "rejected_prediction_tokens": null
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": null,
+          "cached_tokens": 0,
+          "created_cache_tokens": 0,
+          "multimodal_tokens": null
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 16401
+      }
+    },
+    {
+      "at_utc": "2026-10-25T12:45:53.229Z",
+      "kind": "verify",
+      "attempt": 1,
+      "run_id": "run-4cbc373bc695ffbf33421c168fef6c91",
+      "duration_ms": 58465,
+      "verified": true,
+      "stage": "passed",
+      "headline": "Saved correctly, reopened in a fresh browser, regression checks passed",
+      "evidence": {
+        "stage": "passed",
+        "error": ""
+      }
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 32722,
+    "completion_tokens": 832
+  },
+  "estimated_cost_usd": 0.010565399999999999,
+  "source_sha256": "260110fce5c5d1fab3193c12224d98ed08192b04afe1f7c0c8d37dd6afaea658",
+  "accepted": {
+    "attempt": 1,
+    "proposal": {
+      "reason": "The phone number is hardcoded to '0000000000' in the data.customer object when building the appointment payload, causing the submitted phone to lose the user's input.",
+      "edits": [
+        {
+          "path": "assets/js/pages/booking.js",
+          "old": "            phone_number: '0000000000',",
+          "new": "            phone_number: $phoneNumber.val(),"
+        }
+      ]
+    },
+    "proposal_sha256": "d83fafb3a2f3f5441b06cfa7176819e4e9cadfe06e9b4518a002890c376d0464",
+    "run_id": "run-4cbc373bc695ffbf33421c168fef6c91",
+    "diagnosis": "The phone number is hardcoded to '0000000000' in the data.customer object when building the appointment payload, causing the submitted phone to lose the user's input.",
+    "evidence_explained": "\"phone_number: '0000000000',\" appears in assets/js/pages/booking.js at line 823, and the verifier shows saved phone_number \"0000000000\" while typed was \"0000000042\".",
+    "build_on_attempt": null,
+    "proof": {
+      "booking": {
+        "start": "2026-11-02 09:00:00",
+        "end": "2026-11-02 09:30:00",
+        "hash": "7ZWDGVbRqS9M"
+      },
+      "customer": {
+        "name": "Synthetic PhonePersistence",
+        "email": "phone-persistence@example.invalid",
+        "phone_number": "0000000042"
+      },
+      "typed": {
+        "first_name": "Synthetic",
+        "last_name": "PhonePersistence",
+        "email": "phone-persistence@example.invalid",
+        "phone_number": "0000000042"
+      },
+      "reopened_date": "2026-11-02",
+      "database_unchanged_by_reopen": true,
+      "keyboard_actions": 148,
+      "build_files": null,
+      "regression": {
+        "pass": true,
+        "reserved_slot_not_offered": true,
+        "cleared_date_without_browser_error": true,
+        "pointer_confirmation_observed": true,
+        "calendar_navigation_observed": true,
+        "browser_timezone": "UTC",
+        "page_errors": []
+      },
+      "isolation_verified": true
+    },
+    "patch": "diff --git a/assets/js/pages/booking.js b/assets/js/pages/booking.js\nindex 44e7cf0..c14dec1 100644\n--- a/assets/js/pages/booking.js\n+++ b/assets/js/pages/booking.js\n@@ -820,7 +820,7 @@ App.Pages.Booking = (function () {\n             last_name: $lastName.val(),\r\n             first_name: $firstName.val(),\r\n             email: $email.val(),\r\n-            phone_number: '0000000000',\r\n+            phone_number: $phoneNumber.val(),\r\n             address: $address.val(),\r\n             city: $city.val(),\r\n             zip_code: $zipCode.val(),\r\n"
+  },
+  "finished_at_utc": "2026-10-25T12:45:53.230Z",
+  "duration_ms": 111516
+}

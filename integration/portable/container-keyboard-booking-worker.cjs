@@ -94,8 +94,70 @@ function readBookingDiagnostic() {
       text: (active?.textContent || '').slice(0, 200), type: type(active), value: safe(active) ? String(active.value || '').slice(0, 1000) : null},
     body: (document.body?.innerText || '').slice(0, 12000), inputs, links};
 }
-function createSession({chromium}) {
-  let requests = [];
+// Causal provenance, injected before the app's own scripts. When page code (not a trusted
+// keystroke) changes a date field, report the new value, the request whose response was
+// being handled, and the call stack. Reported through console.trace so the record survives
+// navigation and DevTools can add the async call chain. Hooks never alter what they wrap.
+const DATE_WRITE = '__accessfinish_date_write';
+function recordDateWrites(mark) {
+  try {
+    const ids = new Set(['select-date', 'native-date', 'af-keyboard-date', 'native_date']), KEYSTROKE = /^(?:key|input|beforeinput|paste|cut|drop|composition)/;
+    const report = console.trace.bind(console), stringify = JSON.stringify, now = Date.now, requests = new WeakMap(), seen = {};
+    const field = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value'), doc = Math.random().toString(36).slice(2, 10);
+    let count = 0;
+    const frames = stack => String(stack || '').split('\n').slice(1).map(line => /^\s*at (?:(.+?) \()?([^()]*?)(?::\d+:\d+)?\)?$/.exec(line)).filter(Boolean)
+      .slice(0, 12).map(([, name, file]) => (name || '(anonymous)') + ' (' + (file.split(/[?#]/)[0].split('/').pop() || file) + ')');
+    const __afNote = (element, before, caller, via) => {
+      try {
+        const value = field.get.call(element), event = window.event; seen[element.id] = value;
+        if (value === before || count >= 60 || (event && event.isTrusted && KEYSTROKE.test(event.type))) return;
+        const holder = {}, limit = Error.stackTraceLimit;
+        Error.stackTraceLimit = 14; Error.captureStackTrace(holder, caller); Error.stackTraceLimit = limit;
+        report(mark, stringify({doc, seq: ++count, at: now(), id: element.id, from: String(before).slice(0, 40), value: String(value).slice(0, 40), via,
+          event: event ? String(event.type) : null, request: event && event.target instanceof XMLHttpRequest ? requests.get(event.target) || null : null,
+          stack: via === 'unseen' ? [] : frames(holder.stack)}));
+      } catch {}
+    };
+    for (const name of ['value', 'valueAsDate', 'valueAsNumber']) {
+      const descriptor = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, name), set = descriptor?.set;
+      if (!set || !descriptor.configurable) continue;
+      Object.defineProperty(HTMLInputElement.prototype, name, {...descriptor, set: function __afSet(next) {
+        let before; try { if (ids.has(this.id)) before = field.get.call(this); } catch {}
+        const result = set.call(this, next);
+        if (before !== undefined) __afNote(this, before, __afSet, name);
+        return result;
+      }});
+    }
+    const open = XMLHttpRequest.prototype.open;
+    XMLHttpRequest.prototype.open = function __afOpen(method, url) {
+      try { requests.set(this, String(method).toUpperCase() + ' ' + new URL(String(url), location.href).pathname.slice(0, 120)); } catch {}
+      return open.apply(this, arguments);
+    };
+    // Fallback for writes that bypass the setters: a change no keystroke or setter explains.
+    addEventListener('input', event => { try { if (event.isTrusted && ids.has(event.target?.id)) seen[event.target.id] = field.get.call(event.target); } catch {} }, true);
+    setInterval(function __afPoll() {
+      try {
+        for (const id of ids) {
+          const element = document.getElementById(id); if (!(element instanceof HTMLInputElement)) continue;
+          const value = field.get.call(element); if (id in seen && seen[id] !== value) __afNote(element, seen[id], __afPoll, 'unseen'); seen[id] = value;
+        }
+      } catch {}
+    }, 250);
+  } catch {}
+}
+// A DevTools protocol stack trace, async parents included, as 'function (file)' frames
+// with 'async <task>' hops. Frames of the provenance hooks themselves are left out.
+function inspectorFrames(stack, max = 20) {
+  const frames = [];
+  for (let level = stack, depth = 0; level && depth < 8 && frames.length < max; level = level.parent, depth++) {
+    if (depth) frames.push('async ' + String(level.description || 'task').slice(0, 40));
+    for (const frame of level.callFrames || []) if (frames.length < max && !/^__af/.test(frame.functionName))
+      frames.push((String(frame.functionName || '') || '(anonymous)').slice(0, 80) + ' (' + (String(frame.url || '').split(/[?#]/)[0].split('/').pop() || 'inline') + ')');
+  }
+  return frames;
+}
+function createSession({chromium, provenance = false}) {
+  let requests = [], initiators = [], writes = new Map();
   if (!chromium || typeof chromium.launch !== 'function') fail('browser_operation_failed');
   let browser = null, launchPromise = null, context = null, page = null, closed = false, closePromise = null, violated = false;
   async function stopContext() {
@@ -106,6 +168,35 @@ function createSession({chromium}) {
     if (closed) fail('browser_closed');
     if (!page) fail('browser_not_started');
     if (violated || !bookingPageUrl(page.url())) fail('navigation_outside_app');
+  }
+  // Best effort: which code changed the date field, and which code started each request
+  // (async call chains through CDP). A failure here leaves the journey untouched.
+  async function traceProvenance(owned, current) {
+    const keep = (record, stack) => {
+      const key = record.doc + ':' + record.seq, {doc, seq, ...write} = record;
+      if (writes.has(key) || writes.size < 60) writes.set(key, {...writes.get(key), ...write, ...(stack?.length && write.via !== 'unseen' ? {async_stack: stack} : {})});
+    };
+    current.on('console', message => {
+      try { const text = message.text(); if (message.type() === 'trace' && text.startsWith(DATE_WRITE + ' ')) keep(JSON.parse(text.slice(DATE_WRITE.length + 1))); } catch {}
+    });
+    await current.addInitScript(recordDateWrites, DATE_WRITE);
+    const cdp = await owned.newCDPSession(current);
+    cdp.on('Runtime.consoleAPICalled', event => {
+      try { if (event.type === 'trace' && event.args?.[0]?.value === DATE_WRITE) keep(JSON.parse(event.args[1].value), inspectorFrames(event.stackTrace)); } catch {}
+    });
+    cdp.on('Network.requestWillBeSent', event => {
+      try { if (['XHR', 'Fetch'].includes(event.type) && initiators.length < 300)
+        initiators.push({key: event.request.method + ' ' + new URL(event.request.url).pathname.slice(0, 120), stack: inspectorFrames(event.initiator?.stack, 16)}); } catch {}
+    });
+    // Never pause the page, for example on a `debugger` statement in a candidate edit; only track
+    // async stacks. Inactive breakpoints survive navigation (skipping pauses does not), and any
+    // pause that still happens is resumed at once.
+    cdp.on('Debugger.paused', () => { cdp.send('Debugger.resume').catch(() => {}); });
+    await cdp.send('Debugger.enable');
+    try { await cdp.send('Debugger.setBreakpointsActive', {active: false}); await cdp.send('Debugger.setSkipAllPauses', {skip: true}); }
+    catch (error) { await cdp.send('Debugger.disable').catch(() => {}); throw error; }
+    await cdp.send('Debugger.setAsyncCallStackDepth', {maxDepth: 16});
+    await cdp.send('Runtime.enable'); await cdp.send('Network.enable');
   }
   async function inspect() {
     assertActive();
@@ -135,9 +226,10 @@ function createSession({chromium}) {
           }
         });
         // Requests the page itself makes (XHR/fetch), for explaining failed journeys.
-        requests = [];
+        requests = []; initiators = []; writes = new Map();
         page.on('request', request => { if (['xhr', 'fetch'].includes(request.resourceType()) && requests.length < 300)
           requests.push({at: Date.now(), method: request.method(), path: new URL(request.url()).pathname.slice(0, 120)}); });
+        if (provenance) await Promise.race([traceProvenance(owned, currentPage), new Promise(resolve => setTimeout(resolve, 5000).unref())]).catch(() => {});
         await page.goto(url, {waitUntil: 'domcontentloaded', timeout: 10000});
         return await inspect();
       } catch (e) {
@@ -148,7 +240,16 @@ function createSession({chromium}) {
   }
   return {
     start: () => freshContext(TASK_URL),
-    requests: () => requests.slice(),
+    // Page requests in order; the k-th CDP record of the same method and path carries the initiator stack.
+    requests: () => {
+      const used = new Map();
+      return requests.map(request => {
+        const key = request.method + ' ' + request.path, index = used.get(key) || 0; used.set(key, index + 1);
+        const initiator = initiators.filter(item => item.key === key)[index]?.stack;
+        return initiator?.length ? {...request, initiator} : {...request};
+      });
+    },
+    dateWrites: () => [...writes.values()].sort((a, b) => a.at - b.at),
     // Operator-only. The model tool definitions must never expose this method.
     reopen: async hash => freshContext(ORIGIN + '/booking/reschedule/' + validateHash(hash)),
     inspect,
@@ -237,5 +338,5 @@ async function main() {
   finally { await session.close(); }
 }
 module.exports = {createSession, validateCommand, runProtocol, allowedUrl, diagnosticShape, PROTOCOL, TASK_URL,
-  bookingPageUrl, bookingHref, validateHash, readBookingDiagnostic, MAX_REQUEST_BYTES, MAX_RESPONSE_BYTES};
+  bookingPageUrl, bookingHref, validateHash, readBookingDiagnostic, recordDateWrites, inspectorFrames, DATE_WRITE, MAX_REQUEST_BYTES, MAX_RESPONSE_BYTES};
 if (require.main === module) main().catch(() => { process.stderr.write('container_keyboard_worker_stopped\n'); process.exitCode = 1; });
