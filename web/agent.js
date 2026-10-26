@@ -31,7 +31,7 @@
     if (step.kind === 'propose') return 'Attempt ' + step.attempt + ' · Nemotron proposes a fix';
     if (step.kind === 'read') return 'Attempt ' + step.attempt + ' · Nemotron opens a source file';
     if (step.kind === 'search') return 'Attempt ' + step.attempt + ' · Nemotron searches the code';
-    if (step.kind === 'verify') return 'Attempt ' + step.attempt + ' · Verify in a fresh sandbox';
+    if (step.kind === 'verify') return 'Attempt ' + step.attempt + (step.run_id || step.verified ? ' · Verify in a fresh sandbox' : ' · Rejected before execution');
     return 'Attempt ' + step.attempt + ' · ' + step.kind;
   }
   function stepLine(step) {
@@ -203,7 +203,8 @@
       for (const anchor of (evidence.anchors || []).filter(item => item?.first_mismatch)) {
         const miss = anchor.first_mismatch;
         const which = anchor.your_edit ? 'Edit ' + anchor.your_edit : anchor.kept_from_attempt ? 'Edit kept from attempt ' + anchor.kept_from_attempt : 'Edit ' + anchor.edit;
-        wrap.append(facts([[which + ', line ' + miss.old_line_number + ' of its anchor', 'Nemotron wrote: ' + miss.your_line], ['The file has', miss.original_line]]));
+        const lines = el('pre', 'log'); lines.textContent = 'Nemotron wrote: ' + miss.your_line + '\nThe file has:   ' + miss.original_line;
+        wrap.append(el('p', 'micro', which + ', line ' + miss.old_line_number + ' of its anchor' + (miss.your_line !== miss.original_line && miss.your_line.trim() === miss.original_line.trim() ? ' (differs only in indentation)' : '') + ':'), lines);
         if (anchor.the_file_has?.text) { const lines = el('pre', 'log'); lines.textContent = anchor.the_file_has.text; wrap.append(el('p', 'micro', 'The file\'s own lines from line ' + anchor.the_file_has.from_line + ', sent back to copy exactly:'), lines); }
         if (miss.your_line === miss.original_line) wrap.append(el('p', 'micro', 'These look the same because this report, from agent version ' + (trace.agent_version || 1)
           + ', compared the start of lines, so a line such as "}" matched "},". Version 3 compares whole lines and points to the real difference.'));
@@ -338,9 +339,11 @@
   function choose(index, pointer) {
     engaged = true; pause(true); if (following()) follow = false;
     selected = index; markSelected(); renderDetail(); renderStrip(caseId); setControls();
-    // In one column the evidence sits below the whole timeline: bring it into view after a tap, leaving focus on the step.
+    // In one column the evidence sits below the whole timeline: bring it into view after a tap, leaving focus on the
+    // step; after Enter or Space, move focus to it so keyboard users land on what they chose (Shift+Tab goes back).
     const top = $('#detail').getBoundingClientRect().top;
-    if (pointer && narrow.matches && (top < 0 || top > innerHeight * 0.75)) $('#detail').scrollIntoView({block: 'start', behavior: reduced.matches ? 'auto' : 'smooth'});
+    if (narrow.matches && !pointer) $('#detail').focus();
+    else if (pointer && narrow.matches && (top < 0 || top > innerHeight * 0.75)) $('#detail').scrollIntoView({block: 'start', behavior: reduced.matches ? 'auto' : 'smooth'});
   }
   function notify(text, id) { noticeCase = id; $('#notice').textContent = text; $('#notice').hidden = id !== caseId; }
 
@@ -420,7 +423,7 @@
     if (['127.0.0.1', 'localhost'].includes(location.hostname)) try { status = await json('/api/status'); $('#run-live').hidden = !status.agent_ready; } catch { status = null; }
     if (wantedRun) {
       try { const run = await json('agent-runs/runs/' + wantedRun + '.json'); if (CASES.includes(run.case_id)) { traces.set(run.case_id, run); caseId = run.case_id; } }
-      catch { notify('Run ' + wantedRun + ' is not in the published index, so the latest run is shown instead.', caseId); }
+      catch { notify('Run ' + wantedRun + ' is not in the published index, so the featured run is shown instead.', caseId); }
     }
     await Promise.all(CASES.filter(id => !traces.has(id)).map(id => json('agent-runs/' + id + '.json').then(run => traces.set(id, run), () => {})));
     select(caseId); renderSummary();
