@@ -30,7 +30,8 @@ function summarize(runs) {
   const cases = {}, versions = {};
   for (const run of runs) {
     count(cases[run.case_id] ||= totals(), run);
-    const version = versions[String(run.agent_version || '1')] ||= {runs: 0, cost_usd: 0, cases: {}};
+    const version = versions[String(run.agent_version || '1')] ||= {runs: 0, cost_usd: 0, max_attempts: [], cases: {}};
+    if (Number.isInteger(run.max_attempts) && !version.max_attempts.includes(run.max_attempts)) version.max_attempts.push(run.max_attempts);
     const bucket = crossesMonth(run) === false ? version.same_month_date_cases ||= {} : version.cases;
     version.runs++; version.cost_usd += run.estimated_cost_usd; count(bucket[run.case_id] ||= totals(), run);
   }

@@ -35,6 +35,29 @@
     return tr;
   }
 
+  // What each agent version changed (lib/agent.cjs AGENT_VERSION), shown next to its results from summary.json.
+  const CHANGES = {
+    1: 'Observe, propose, verify, feed back; read_file in the last run · up to 4, then 8 attempts',
+    2: 'Code search, call-chain provenance of the date field, attempt ledger, reopen evidence, sampling',
+    3: 'Whitespace-tolerant anchors, whole-line mismatch reports',
+    4: 'Reopen progress tracked, wrong-path edits moved, read-only code named, 12 attempts',
+  };
+  async function versions() {
+    const response = await fetch('agent-runs/summary.json'); if (!response.ok) return;
+    const summary = await response.json(), body = $('#versions');
+    for (const [version, data] of Object.entries(summary.agent_versions || {})) {
+      const keyboard = data.cases['keyboard-date'] || {}, phone = data.cases['customer-phone'] || {}, tr = el('tr'), name = el('th', 'nowrap', 'v' + version);
+      name.scope = 'row';
+      const limit = (data.max_attempts || []).length ? ' · up to ' + data.max_attempts.join(' or ') + ' attempts' : '';
+      tr.append(name, el('td', '', (CHANGES[version] || '') + limit), el('td', 'num', String(keyboard.runs || 0)),
+        el('td', 'num', (keyboard.runs_saved_correctly || 0) + ' / ' + (keyboard.runs || 0)), el('td', 'num', (keyboard.verified || 0) + ' / ' + (keyboard.runs || 0)),
+        el('td', 'num', (keyboard.executed ?? '—') + ' / ' + (keyboard.attempts || 0)), el('td', 'num', (phone.first_attempt || 0) + ' / ' + (phone.runs || 0)),
+        el('td', 'num', '$' + Number(data.cost_usd || 0).toFixed(2)));
+      body.append(tr);
+    }
+  }
+  versions().catch(() => {});
+
   (async () => {
     try {
       const response = await fetch('agent-runs/runs/index.json'); if (!response.ok) throw Error();
