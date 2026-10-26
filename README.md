@@ -21,7 +21,7 @@ Observe ──► Diagnose & repair ──► Verify for real ──► verified
 1. **Observe.** A headless browser books an appointment with the keyboard only, recording where focus goes and where it gets stuck.
 2. **Diagnose & repair.** Nemotron receives the user goal, the verifier's evidence and the complete source files — no diagnosis, no hints. It investigates with read-only `search_code` and `read_file` tools, then returns exact code edits plus the piece of evidence its diagnosis accounts for.
 3. **Verify for real.** Every proposal is built and run in a fresh, offline Docker sandbox. The verifier books with the keyboard, reads the saved row through a read-only database account, reopens the booking in a new browser, then runs regression checks (a mouse booking with different data through month navigation, clearing the date, a reserved slot, unchanged existing records, sandbox isolation).
-4. **Feed back.** A build error, a stuck key, a wrong saved value or a broken mouse path goes back to Nemotron as evidence, with a ledger of every earlier attempt and which explanations did not change the outcome, and it tries again (up to eight attempts). Nothing is accepted unless every check passes.
+4. **Feed back.** A build error, a stuck key, a wrong saved value or a broken mouse path goes back to Nemotron as evidence, with a ledger of every earlier attempt and which explanations did not change the outcome, and it tries again (up to twelve attempts since agent version 4, eight before). Nothing is accepted unless every check passes.
 
 ## Two broken journeys
 
