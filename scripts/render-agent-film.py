@@ -267,7 +267,7 @@ SCENES = {
                                  Card('kb-compare', (860, 250, 1820, 700), 'fit', (1.0, 0.5, 0.5), (1.04, 0.5, 0.5)),
                                  pop(STAMP_REJECTED, (1340, 820), 0.42)),
     'keyboard-provenance': scene_card('WHICH CODE CHANGED IT', 'The month-change handler overwrote the date the user typed.',
-                                      Card('kb-history', (860, 150, 1820, 950), 'fit', (1.0, 0.5, 0.3), (1.22, 0.5, 0.62))),
+                                      Card('kb-history', (860, 150, 1820, 950), 'fit', (1.0, 0.0, 0.3), (1.1, 0.0, 0.7))),
     'keyboard-reopen': scene_card('A SECOND BUG', 'Saved correctly — but reopening shows today’s date.',
                                   Card('kb-reopen', RIGHT, 'fit', (1.25, 0.5, 0.35), (1.25, 0.5, 0.62))),
     'keyboard-verified': scene_card('FIXED BY NEMOTRON · NO HINTS', 'Both bugs fixed. Saved, reopened, mouse path intact.',
