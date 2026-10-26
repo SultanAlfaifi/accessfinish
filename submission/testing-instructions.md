@@ -17,7 +17,7 @@ node scripts/agent.cjs --case keyboard-date
 
 Without a key, `node scripts/agent.cjs --case keyboard-date --recorded-model` runs the whole loop with Nemotron's recorded 21 October proposal instead of a live model call, to check the sandbox and verifier.
 
-The same runs execute on GitHub Actions in `.github/workflows/agent-run.yml` (it needs the `NEBIUS_API_KEY` repository secret), and `.github/workflows/clean-execution.yml` rebuilds the sandbox from scratch and replays every recorded proposal without a model.
+The same runs execute on GitHub Actions in `.github/workflows/agent-run.yml` (it needs the `NEBIUS_API_KEY` repository secret), and `.github/workflows/clean-execution.yml` rebuilds the sandbox from scratch and replays the five frozen single-shot proposals and the phone controls without a model.
 
 ## Checks
 

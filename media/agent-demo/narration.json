@@ -14,8 +14,8 @@
     },
     {
       "id": "phone-propose",
-      "text": "AccessFinish drives the journey in a real browser, then hands the evidence and the source code to NVIDIA Nemotron, on Nebius Token Factory. No hints. Nemotron finds the hard-coded value, and writes the fix.",
-      "say": "AccessFinish drives the journey in a real browser, then hands the evidence and the source code to NVIDIA Nemo-tron, on Nebius Token Factory. No hints. Nemo-tron finds the hard-coded value, and writes the fix."
+      "text": "AccessFinish drives the journey in a real browser, then hands the evidence and the source code to NVIDIA Nemotron, on Nebius Token Factory. It is never told the cause. Nemotron finds the hard-coded value, and writes the fix.",
+      "say": "AccessFinish drives the journey in a real browser, then hands the evidence and the source code to NVIDIA Nemo-tron, on Nebius Token Factory. It is never told the cause. Nemo-tron finds the hard-coded value, and writes the fix."
     },
     {
       "id": "phone-proof",
@@ -41,8 +41,8 @@
     },
     {
       "id": "keyboard-verified",
-      "text": "Nemotron fixes that too, and keeps its first fix. Verified: saved, reopened in a fresh browser, and the mouse path still works. No hints.",
-      "say": "Nemo-tron fixes that too, and keeps its first fix. Verified: saved, reopened in a fresh browser, and the mouse path still works. No hints."
+      "text": "Nemotron fixes that too, building on its best attempt. Verified: saved, reopened in a fresh browser, and the mouse path still works.",
+      "say": "Nemo-tron fixes that too, building on its best attempt. Verified: saved, reopened in a fresh browser, and the mouse path still works."
     },
     {
       "id": "finding",
@@ -50,8 +50,8 @@
     },
     {
       "id": "facts",
-      "text": "Fifty-four live runs, for about six dollars of Nemotron. Fixes that are proven, not promised.",
-      "say": "Fifty-four live runs, for about six dollars of Nemo-tron. Fixes that are proven, not promised."
+      "text": "Fifty-four live runs, for under seven dollars of Nemotron. Fixes that are proven, not promised.",
+      "say": "Fifty-four live runs, for under seven dollars of Nemo-tron. Fixes that are proven, not promised."
     },
     {
       "id": "close",

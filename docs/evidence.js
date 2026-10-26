@@ -37,7 +37,7 @@
 
   // What each agent version changed (lib/agent.cjs AGENT_VERSION), shown next to its results from summary.json.
   const CHANGES = {
-    1: 'Observe, propose, verify, feed back; read_file in the last run · up to 4, then 8 attempts',
+    1: 'Pre-versioning runs from seven loop commits; read_file in the last run · caps of 4, 6, then 8 attempts',
     2: 'Code search, call-chain provenance of the date field, attempt ledger, reopen evidence, sampling',
     3: 'Whitespace-tolerant anchors, whole-line mismatch reports',
     4: 'Reopen progress tracked, wrong-path edits moved, read-only code named, 12 attempts',

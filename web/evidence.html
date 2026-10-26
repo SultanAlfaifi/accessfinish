@@ -20,14 +20,14 @@
 
   <section class="facts" aria-label="Totals across all runs">
     <div><strong id="total-runs">—</strong><span>live agent runs</span></div>
-    <div><strong id="total-executed">—</strong><span>patches built and checked in a fresh sandbox</span><span class="aside" id="total-unexecuted-note" hidden><span id="total-unexecuted"></span> more rejected before execution: the edit could not be applied</span></div>
+    <div><strong id="total-executed">—</strong><span>patches built and checked in a fresh sandbox</span><span class="aside" id="total-unexecuted-note" hidden><span id="total-unexecuted"></span> more rejected before execution: an edit did not apply, or the answer was malformed</span></div>
     <div><strong id="total-caught">—</strong><span>false "booked" confirmations caught</span></div>
     <div><strong id="total-cost">—</strong><span>Nemotron cost for all of them</span></div>
   </section>
 
   <section class="runs-section" aria-labelledby="versions-heading">
     <h2 id="versions-heading">How the agent improved</h2>
-    <p>Each version changed the loop after reading the previous version's failed runs; results are never mixed across versions. The keyboard case has two bugs: the typed date is reset by page code, and reopening a booking resets it again. "Saved correctly" counts runs in which some attempt fixed the first.</p>
+    <p>Each version changed the loop after reading the previous version's failed runs; from v2 on, results are never mixed across versions (v1 groups the pre-versioning runs). The keyboard case has two bugs: the typed date is reset by page code, and reopening a booking resets it again. "Saved correctly" counts runs in which some attempt fixed the first.</p>
     <div class="table-scroll" role="region" aria-labelledby="versions-caption" tabindex="0">
       <table class="runs">
         <caption class="sr-only" id="versions-caption">Results per agent version</caption>
@@ -62,6 +62,6 @@
   </section>
 </main>
 <footer><span>AccessFinish — finish the task, verify the result.</span><a href="https://github.com/SultanAlfaifi/accessfinish">MIT · source on GitHub</a></footer>
-<script src="evidence.js?v=fab6ff6fda4ffd40"></script>
+<script src="evidence.js?v=ab65a8541515a6ee"></script>
 </body>
 </html>
