@@ -19,9 +19,9 @@ Observe ──► Diagnose & repair ──► Verify for real ──► verified
 ```
 
 1. **Observe.** A headless browser books an appointment with the keyboard only, recording where focus goes and where it gets stuck.
-2. **Diagnose & repair.** Nemotron receives the user goal, the verifier's evidence and the complete source files — no diagnosis, no hints — can open any other source file with a read-only `read_file` tool, and returns exact code edits.
+2. **Diagnose & repair.** Nemotron receives the user goal, the verifier's evidence and the complete source files — no diagnosis, no hints. It investigates with read-only `search_code` and `read_file` tools, then returns exact code edits plus the piece of evidence its diagnosis accounts for.
 3. **Verify for real.** Every proposal is built and run in a fresh, offline Docker sandbox. The verifier books with the keyboard, reads the saved row through a read-only database account, reopens the booking in a new browser, then runs regression checks (a mouse booking with different data through month navigation, clearing the date, a reserved slot, unchanged existing records, sandbox isolation).
-4. **Feed back.** A build error, a stuck key, a wrong saved value or a broken mouse path goes back to Nemotron as evidence, and it tries again (up to eight attempts). Nothing is accepted unless every check passes.
+4. **Feed back.** A build error, a stuck key, a wrong saved value or a broken mouse path goes back to Nemotron as evidence, with a ledger of every earlier attempt and which explanations did not change the outcome, and it tries again (up to eight attempts). Nothing is accepted unless every check passes.
 
 ## Two broken journeys
 
@@ -78,13 +78,16 @@ node scripts/agent.cjs --case keyboard-date
 node scripts/agent.cjs --case customer-phone
 ```
 
-Or start the page with `npm start`, open http://127.0.0.1:4177 and press **Run live**. Without a key, `npm run replay` serves the recorded runs at http://127.0.0.1:4178.
+Or start the page with `npm start`, open http://127.0.0.1:4177 and press **Run live**. Without a key, `npm run replay` serves the recorded runs at http://127.0.0.1:4178; `evidence.html` lists every live run, and `?case=keyboard-date&run=<id>` replays any of them.
 
 `--publish` saves a finished run (trace, verified patch and evidence) to `web/agent-runs/` and `evidence/agent-runs/`.
 
 ## Under the hood
 
-- **Model:** `nvidia/nemotron-3-super-120b-a12b` via `https://api.tokenfactory.nebius.com/v1/chat/completions`, with two tools: `read_file` (read-only, any app source file) and `propose_repair`. Edits must match the original source exactly once, or they are rejected before anything runs. Each request's tokens and cost are recorded.
+- **Model:** `nvidia/nemotron-3-super-120b-a12b` via `https://api.tokenfactory.nebius.com/v1/chat/completions` (temperature 0.6, top-p 0.95 since agent version 2), with three tools: `search_code` (a regular expression over the whole app source), `read_file` and `propose_repair` (diagnosis, `evidence_explained`, optional `build_on_attempt`, exact edits). Each request's tokens and cost are recorded, and Nemotron's reasoning is kept in the trace for audit only.
+- **Causal provenance:** the keyboard verifier hooks the date field's value setter before the app loads and attaches a DevTools async call stack, so evidence names the code that silently changed what the user typed — e.g. `setDate ← setDateTimePickerValue ← applyUnavailableDates ← (XMLHttpRequest) ← getUnavailableDates ← (setTimeout) ← onMonthChange`. A smoke test proves the debugger session never pauses the page.
+- **Edits:** each edit's `old` text must match the file exactly once. Since agent version 3, an anchor that occurs nowhere but exactly once when indentation, trailing spaces and blank lines are ignored is pinned to that code and re-indented (like `git apply --ignore-whitespace`); ambiguous anchors are never guessed, and every adjustment is recorded next to the model's own text.
+- **Comparable runs:** every trace records the agent version, commit, fixture fingerprint, temperature and booking date; one booking date (a Monday in a later month, so the date picker must change month) is pinned per CI job.
 - **Sandbox:** separate containers for the app, database, compiler, browser and verifier; no network, no model key, read-only roots, all capabilities dropped, CPU/memory/PID limits. Model output never becomes a shell command.
 - **App:** a pinned copy of the open-source [Easy!Appointments](https://github.com/alextselegidis/easyappointments) (GPL-3.0) with synthetic data.
 - **Code:** `lib/agent.cjs` (the loop), `lib/fixture.cjs` (sandbox and verifier), `integration/portable/` (browser workers and outcome evaluator), `web/` (the page).
