@@ -45,7 +45,7 @@ All 54 runs were made live on fresh GitHub Actions runners with Nemotron 3 Super
 
 ## Challenges we ran into
 
-Single-shot fixes weren't enough: in an earlier frozen test, five Nemotron attempts with an operator-supplied diagnosis gave 2/5 full passes on the keyboard case. With no diagnosis supplied, the first agent version never fixed it — Nemotron often blamed time zones (15 of 43 diagnoses). The breakthrough was evidence, not prompting: once the verifier recorded which code wrote the date field (the month-change handler's call chain), Nemotron's diagnoses named the real cause. The rest was harness engineering we measured run by run: whole-line mismatch reports, whitespace-tolerant anchors, tracking "saved correctly but reopened wrong" as progress, naming read-only code, returning the file's own lines and compiler code frames. Each change was reviewed adversarially and replayed against every recorded trace before a new live run.
+Single-shot fixes weren't enough: in an earlier frozen test, five Nemotron attempts with an operator-supplied diagnosis gave 2/5 full passes on the keyboard case. With no diagnosis supplied, the first agent version never fixed it: none of its 43 diagnoses named the month-change handler, and 11 blamed time zones. The turning point was agent v2, which recorded which code wrote the date field (the month-change handler's call chain) and fed it back with code search and an attempt ledger: 20 of its 39 diagnoses named the real cause. The rest was harness engineering we measured run by run: whole-line mismatch reports, whitespace-tolerant anchors, tracking "saved correctly but reopened wrong" as progress, naming read-only code, returning the file's own lines and compiler code frames. Each change was reviewed adversarially and replayed against every recorded trace before a new live run.
 
 ## Accomplishments that we're proud of
 
@@ -56,7 +56,7 @@ Single-shot fixes weren't enough: in an earlier frozen test, five Nemotron attem
 
 ## What we learned
 
-- **Evidence beats prompting.** The same model went from blaming time zones to naming the real cause once the verifier recorded the call chain that overwrote the typed date.
+- **Causal evidence changed the diagnoses.** The same model went from never naming the month-change handler (0 of 43 diagnoses in v1) to naming it in 20 of 39 (v2), once the verifier recorded the call chain that overwrote the typed date.
 - **A success page is a weak oracle.** In all 27 keyboard runs the first patch that reached a "booked" page was wrong; only reading back the saved row and reopening the booking told the truth.
 - **Many wasted attempts were mechanical.** 85 of 258 proposals were rejected before execution because an edit did not apply; returning the file's own lines with a failed edit, and tolerating whitespace, helped the model recover.
 - **Cheap inference makes honest iteration possible.** All 54 live runs cost $6.38, so every agent version could be measured live instead of argued about.

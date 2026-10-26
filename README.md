@@ -2,9 +2,9 @@
 
 # AccessFinish
 
-### The AI says “fixed.” We check the user can finish.
+<p><b><big>The AI says “fixed.” We check the user can finish.</big></b></p>
 
-A repair agent on **NVIDIA Nemotron 3 Super** (served by **Nebius Token Factory**) that accepts a fix only when a real keyboard user can finish the task, the database holds what they typed, and a fresh browser shows it back.
+A repair agent on **NVIDIA Nemotron 3 Super** (served by **Nebius Token Factory**) that accepts a fix only when a keyboard-only browser session (real keystrokes in a real browser) can finish the task, the database holds what was typed, and a fresh browser shows it back.
 
 [![Watch the film](https://img.shields.io/badge/%E2%96%B6%20Watch-the%202--minute%20film-ff0000?style=for-the-badge)](https://youtu.be/ZHSP0GYMM20)
 [![Live demo](https://img.shields.io/badge/Live-replay%20page-2f5bea?style=for-the-badge)](https://sultalfaifi.com/accessfinish/)
@@ -16,10 +16,11 @@ A repair agent on **NVIDIA Nemotron 3 Super** (served by **Nebius Token Factory*
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 
 <a href="https://youtu.be/ZHSP0GYMM20"><img src="web/media/film-poster.jpg" width="820" alt="Watch the 2-minute film on YouTube"></a>
+<br><sub>No YouTube? <a href="media/accessfinish-agent-demo.mp4">Watch the MP4 in the repository (20 MB)</a></sub>
 
 | **27 / 27** | **2 / 10** | **77** | **$6.38** |
 | :---: | :---: | :---: | :---: |
-| phone-fault runs fixed and verified, 26 on the first attempt | runs of agents v4–v5 where Nemotron fixed a **real upstream keyboard bug**, no diagnosis supplied | false “booked” pages caught: saved wrong (67) or reopened wrong (10), **none accepted** | for all **54 live runs** on Nebius Token Factory |
+runs on a **seeded** phone fault fixed and verified, 26 on the first attempt | runs of agents v4–v5 where Nemotron fixed a **real upstream keyboard bug**, no diagnosis supplied | false “booked” pages caught: saved wrong (67) or reopened wrong (10), **none accepted** | for all **54 live runs** on Nebius Token Factory |
 
 </div>
 
@@ -29,13 +30,15 @@ Ask an AI to fix a broken form and it will tell you it's fixed. The page loads, 
 
 In our runs this happened **77 times**: Nemotron's patch reached a “booked” page while the date was saved or reopened wrong. In **all 27** keyboard runs, the first patch that reached a “booked” page was wrong. A check that trusts the confirmation page would have shipped a broken fix every time.
 
+This matters at scale. About **1.3 billion people (16%)** live with a significant disability ([WHO](https://www.who.int/news-room/fact-sheets/detail/disability-and-health)), **95.9%** of the top million home pages have detectable WCAG failures ([WebAIM Million 2026](https://webaim.org/projects/million/)), and since **28 June 2025** the [European Accessibility Act](https://eur-lex.europa.eu/eli/dir/2019/882/oj) requires in-scope services such as e-commerce to be accessible. Meanwhile coding agents write a growing share of UI fixes, judged by green builds and success pages: exactly the signals that can lie.
+
 <p align="center"><img src="media/readme/booked-vs-verified.png" width="760" alt="Two booking confirmations from the same run. Attempt 2: typed 2026-11-02, saved 2026-11-01, rejected. Attempt 6: typed and saved 2026-11-02, verified."></p>
 
 ## How it works
 
 ```mermaid
 flowchart LR
-    O["👁 Observe<br/>real browser, keyboard only"] --> N["🧠 Nemotron 3 Super<br/>on Nebius Token Factory<br/>search_code · read_file · propose_repair"]
+    O["🔍 Observe<br/>real browser, keyboard only"] --> N["🧠 Nemotron 3 Super<br/>on Nebius Token Factory<br/>search_code · read_file · propose_repair"]
     N -->|"exact code edits + diagnosis"| V["🧪 Verify in an offline sandbox<br/>build · keyboard booking · read-only DB read-back<br/>fresh-browser reopen · regressions"]
     V -->|proven| A["✅ Accept<br/>patch + proof"]
     V -.->|"not proven: evidence fed back, up to 12 attempts"| N
@@ -48,39 +51,120 @@ flowchart LR
 
 ## Watch Nemotron fix a real bug
 
-The keyboard case is a real upstream bug in the open-source [Easy!Appointments](https://github.com/alextselegidis/easyappointments). It turned out to be **two bugs**. In live run [`2c87e16a`](evidence/agent-runs/agent-2c87e16a520f678b45cbbbeb.json) (agent v4), Nemotron found and fixed both:
+The keyboard case is real upstream code: the open-source [Easy!Appointments](https://github.com/alextselegidis/easyappointments), pinned at commit [`4bc7ecd`](https://github.com/alextselegidis/easyappointments/tree/4bc7ecd51f3dade8e041558f2c23dda65bd6c43e) with no defects injected ([`source-lock.json`](integration/portable/source-lock.json)). The date can't be reached by keyboard, and once it can, two more bugs lose it: the month-change handler overwrites a typed date with the first free day, and reopening a booking resets it to today. In live run [`2c87e16a`](evidence/agent-runs/agent-2c87e16a520f678b45cbbbeb.json) (agent v4), Nemotron fixed all of it:
 
 | Attempt | What Nemotron did | What the verifier found |
 | :---: | --- | --- |
 | 1 | Added a `tabindex` to the date `<div>` | ❌ Keyboard user still stuck: no date field to Tab to |
 | 2 | Turned the date `<div>` into a focusable `<input>` | ❌ Page said *booked*, database saved **1 Nov instead of 2 Nov** |
-| 3 | Stopped the month-change handlers resetting the date, but started over without attempt 2's fix | ❌ Stuck again |
+| 3 | Stopped the month-change handler resetting the date, but started over without attempt 2's fix | ❌ Stuck again |
 | 4 | Built on attempt 2: the focusable input **plus** the month-change guard | ❌ Saved right, but **reopening showed today** (26 Oct) |
 | 5 | Built on attempt 4: stop **Next** resetting the date to today | ❌ Rejected before execution: an edit didn't match the file exactly once |
 | 6 | The same fix on attempt 4, with edits that applied | ✅ **Verified**: keyboard, database, fresh-browser reopen, regressions |
 
 <table>
   <tr>
-    <td width="50%"><img src="media/readme/database-disagreed.png" alt="Attempt 2: the page said booked, the database saved 2026-11-01 instead of 2026-11-02"></td>
-    <td width="50%"><img src="media/readme/evidence-names-the-code.png" alt="The verifier records the call chain onMonthChange, getUnavailableDates, applyUnavailableDates, setDate that overwrote the typed date"></td>
-  </tr>
-  <tr>
-    <td><img src="media/readme/reopened-wrong.png" alt="Attempt 4: saved right, but reopening the booking showed 2026-10-26"></td>
-    <td><img src="media/readme/verified.png" alt="Attempt 6: verified, with every check listed"></td>
+    <td width="33%"><img src="media/readme/database-disagreed.png" alt="Attempt 2: the page said booked, the database saved 2026-11-01 instead of 2026-11-02"><br><sub><b>Attempt 2:</b> the page said booked; the database saved 1 Nov</sub></td>
+    <td width="33%"><img src="media/readme/reopened-wrong.png" alt="Attempt 4: saved right, but reopening the booking showed 2026-10-26"><br><sub><b>Attempt 4:</b> saved right, reopened as today</sub></td>
+    <td width="33%"><img src="media/readme/verified.png" alt="Attempt 6: verified, with every check listed"><br><sub><b>Attempt 6:</b> verified, every check listed</sub></td>
   </tr>
 </table>
 
-The breakthrough was **evidence, not prompting**. The verifier hooks the date field's value setter and records DevTools async stacks, so the evidence names the exact code that overwrote what the user typed: `setDate ← applyUnavailableDates ← getUnavailableDates ← onMonthChange`. In the first agent version, before that evidence existed, Nemotron blamed time zones in 15 of 43 diagnoses. With it, its diagnoses named the real cause.
+The turning point was **agent v2**, which gave Nemotron *causal evidence*. The verifier hooks the date field's value setter and records DevTools async stacks, so the evidence names the exact code that overwrote what the user typed: `setDate ← applyUnavailableDates ← getUnavailableDates ← onMonthChange`. In v1, no diagnosis named the month-change handler (0 of 43), and 11 blamed time zones. In v2, which added this evidence together with code search, an attempt ledger and sampling at temperature 0.6, 20 of 39 named it.
+
+<p align="center"><img src="media/readme/evidence-names-the-code.png" width="760" alt="The verifier records the call chain onMonthChange, getUnavailableDates, applyUnavailableDates, setDate that overwrote the typed date, and the evidence goes back to Nemotron"></p>
 
 Nemotron's final edits touch the same code sites as our earlier guided reference fix, but with guard logic of its own. The second verified run, [`2367fdf7`](evidence/agent-runs/agent-2367fdf762b0a63d26ee048b.json) (v5), got there on attempt 11. **Replay any run step by step on the [live page](https://sultalfaifi.com/accessfinish/?case=keyboard-date&run=agent-2c87e16a520f678b45cbbbeb).**
 
+<details>
+<summary><b>The patch Nemotron wrote (run 2c87e16a, attempt 6, verified)</b></summary>
+
+Copied verbatim from `accepted.patch` in [the trace](evidence/agent-runs/agent-2c87e16a520f678b45cbbbeb.json).
+
+```diff
+diff --git a/assets/js/pages/booking.js b/assets/js/pages/booking.js
+index 36697fc..c33b9dd 100644
+--- a/assets/js/pages/booking.js
++++ b/assets/js/pages/booking.js
+@@ -132,6 +132,11 @@ App.Pages.Booking = (function () {
+                             '-01',
+                     );
+ 
++                    // Skip if the month has not changed
++                    if (previousMoment.month() === displayedMonthMoment.month() && previousMoment.year() === displayedMonthMoment.year()) {
++                        return;
++                    }
++
+                     const monthChangeStep = detectDatepickerMonthChangeStep(previousMoment, displayedMonthMoment);
+ 
+                     App.Http.Booking.getUnavailableDates(
+@@ -154,6 +159,11 @@ App.Pages.Booking = (function () {
+                             '-01',
+                     );
+ 
++                    // Skip if the month has not changed
++                    if (previousMoment.month() === displayedMonthMoment.month() && previousMoment.year() === displayedMonthMoment.year()) {
++                        return;
++                    }
++
+                     const monthChangeStep = detectDatepickerMonthChangeStep(previousMoment, displayedMonthMoment);
+ 
+                     App.Http.Booking.getUnavailableDates(
+@@ -423,15 +433,22 @@ App.Pages.Booking = (function () {
+ 
+             // If we are on the first step, fetch unavailable dates and available hours for step 2.
+             if ($target.attr('data-step_index') === '1') {
+-                const todayMoment = moment();
+-
+-                App.Utils.UI.setDateTimePickerValue($selectDate, todayMoment.toDate());
+-
+-                App.Http.Booking.getUnavailableDates(
+-                    $selectProvider.val(),
+-                    $selectService.val(),
+-                    todayMoment.format('YYYY-MM-DD'),
+-                );
++                const selectedDate = App.Utils.UI.getDateTimePickerValue($selectDate);
++                if (!selectedDate) {
++                    const todayMoment = moment();
++                    App.Utils.UI.setDateTimePickerValue($selectDate, todayMoment.toDate());
++                    App.Http.Booking.getUnavailableDates(
++                        $selectProvider.val(),
++                        $selectService.val(),
++                        todayMoment.format('YYYY-MM-DD'),
++                    );
++                } else {
++                    App.Http.Booking.getUnavailableDates(
++                        $selectProvider.val(),
++                        $selectService.val(),
++                        moment(selectedDate).format('YYYY-MM-DD'),
++                    );
++                }
+             }
+ 
+             // If we are on the 2nd tab then the user should have an appointment hour selected.
+diff --git a/application/views/components/booking_time_step.php b/application/views/components/booking_time_step.php
+index 617dc3a..8eff1a6 100644
+--- a/application/views/components/booking_time_step.php
++++ b/application/views/components/booking_time_step.php
+@@ -13,7 +13,7 @@
+ 
+         <div class="row frame-content">
+             <div class="col-12 col-lg-6">
+-                <div id="select-date" class="mx-auto my-4"></div>
++                <input type="text" id="select-date" class="mx-auto my-4" />
+ 
+             </div>
+ 
+```
+</details>
+
 ## Results
 
-All **54 runs** were made live on fresh GitHub Actions runners with Nemotron 3 Super on Nebius Token Factory, **$6.38 in total**. After each batch we read the failed traces, improved the loop and bumped the agent version. From v2 on, results are never mixed across versions.
+All **54 runs** were made live on [fresh GitHub Actions runners](https://github.com/SultanAlfaifi/accessfinish/actions/workflows/agent-run.yml) with Nemotron 3 Super on Nebius Token Factory, **$6.38 in total**. After each batch we read the failed traces, improved the loop and bumped the agent version. From v2 on, results are never mixed across versions.
 
 | Agent | What changed | Keyboard: saved correctly | Keyboard: **verified** | Phone: verified (1st attempt) |
 | --- | --- | :---: | :---: | :---: |
-| v1 | observe → propose → verify → feed back (seven loop commits; 4, 6, then 8 attempts) | 0 / 7 | 0 / 7 | 7 / 7 (7) |
+| v1 | observe → propose → verify → feed back; attempt budget raised 4 → 6 → 8 during the batch (one run ended on a Token Factory 503 after 3 attempts) | 0 / 7 | 0 / 7 | 7 / 7 (7) |
 | v2 | `search_code`, call-chain provenance of the date field, attempt ledger, reopen evidence | 1 / 5 | 0 / 5 | 5 / 5 (5) |
 | v3 | Whitespace-tolerant anchors, whole-line mismatch reports | 2 / 5 | 0 / 5 | 5 / 5 (5) |
 | v4 | Reopen progress tracked, wrong-path edits moved, read-only code named, 12 attempts | 2 / 5 | **1 / 5** | 5 / 5 (5) |
@@ -97,9 +181,9 @@ Of 234 unverified keyboard attempts:
 
 - 85 were edits that did not apply (an anchor copied inexactly, overlapping, ambiguous or empty);
 - 77 reached a wrong “booked” page;
-- 51 left the keyboard user stuck;
+- 51 never finished the keyboard booking (47 stuck, 4 where the keyboard run crashed);
 - 13 did not compile;
-- 8 were malformed or repeated.
+- 8 produced no usable proposal (no tool call, missing fields, endless lookups, or edits that changed nothing).
 
 The harness now returns the file's own lines and compiler code frames. Every failure is in [the traces](https://sultalfaifi.com/accessfinish/evidence.html).
 </details>
@@ -111,8 +195,8 @@ The harness now returns the file's own lines and compiler code frames. Every fai
 | Original keyboard source (no fix) | blocked | blocked |
 | Phone patch that hard-codes the test number `0000000042` | rejected | rejected by a second customer typing `0000000073` |
 | Reference phone fix | verified | verified |
-| Nemotron's guided keyboard fix (21 Oct) | verified | verified on every agent run |
-| Five frozen single-shot proposals replayed on fresh runners (four replays) | 2 pass, 3 fail | accept/reject matched 5 / 5 every time; failure stage 5 / 5 on 21 and 23 Oct, 4 / 5 on 24 Oct ([why](evidence/reproduction-variation-20261024/README.md)) |
+| Nemotron's guided keyboard fix (21 Oct) | verified | verified as the pre-flight check of every live-agent CI job (a failure stops the job before any model call) |
+| Five frozen single-shot proposals replayed on fresh runners (four replays: 21 Oct, 23 Oct and twice on 24 Oct) | 2 pass, 3 fail | accept/reject matched 5 / 5 every time; failure stage 5 / 5 on 21 and 23 Oct, 4 / 5 on 24 Oct ([why](evidence/reproduction-variation-20261024/README.md)) |
 
 Before the agent, we measured single-shot, operator-guided repairs. Five frozen Nemotron requests **with the diagnosis supplied** gave 2/5 full passes on the keyboard case. The agent runs above supply no diagnosis. The guide to every evidence folder is [`evidence/README.md`](evidence/README.md).
 
@@ -133,7 +217,7 @@ node scripts/agent.cjs --case keyboard-date   # or --case customer-phone; add --
 | `npm run replay` | serves the recorded runs at http://127.0.0.1:4178 (`?case=keyboard-date&run=<id>` replays any run) |
 | `node scripts/agent.cjs --case keyboard-date --recorded-model` | runs the whole loop with Nemotron's recorded 21 Oct proposal, to check the sandbox and verifier |
 | `npm start` | the page at http://127.0.0.1:4177 with **Run live** (needs the key for live runs) |
-| `npm test` | 60 tests: the agent loop with a fake model, anchors, provenance (including a real-browser check), the server |
+| `npm test` | 60 tests: the agent loop with a fake model, anchors, provenance, the server (the real-browser provenance test runs in CI's sandbox browser image and skips locally without Playwright) |
 | `npm run check:evidence` · `check:records` · `check:phone-model` | re-verify the recorded evidence and its hashes |
 
 The same agent runs on GitHub Actions in [`agent-run.yml`](.github/workflows/agent-run.yml), using the `NEBIUS_API_KEY` repository secret. [`clean-execution.yml`](.github/workflows/clean-execution.yml) rebuilds the sandbox from scratch and replays the frozen proposals and controls without a model.
@@ -152,6 +236,9 @@ evidence/                  every live run and earlier trial, raw; start at evide
 media/                     the demo film, its narration and shots, README images
 submission/                Devpost story, judge guide, testing instructions, feedback on Nemotron and Token Factory
 test/                      60 tests
+server.cjs                 the local page with Run live (npm start)
+.github/workflows/         clean-execution (CI replay), agent-run (live Nemotron runs), narration (film voice)
+third_party/               the Easy!Appointments GPL-3.0 licence
 ```
 
 <details>
@@ -164,13 +251,6 @@ test/                      60 tests
 - **Sandbox:** separate containers for the app, database, compiler, browser and verifier. No network, no model key, read-only roots, all capabilities dropped, CPU/memory/PID limits. Model output never becomes a shell command.
 - **The film** is generated, not screen-recorded: real page close-ups ([`capture-film-assets.cjs`](scripts/capture-film-assets.cjs)), a Qwen3-TTS narration checked by Whisper ([`narrate.py`](scripts/narrate.py), [`transcribe-narration.py`](scripts/transcribe-narration.py)) and [`render-agent-film.py`](scripts/render-agent-film.py).
 </details>
-
-## Why it matters
-
-- About **1.3 billion people (16%)** live with a significant disability ([WHO](https://www.who.int/news-room/fact-sheets/detail/disability-and-health)), and many rely on a keyboard or assistive technology instead of a mouse.
-- **95.9%** of the top million home pages have automatically detectable WCAG failures ([WebAIM Million 2026](https://webaim.org/projects/million/)).
-- Since **28 June 2025**, the [European Accessibility Act](https://eur-lex.europa.eu/eli/dir/2019/882/oj) requires in-scope services, including e-commerce, to be accessible.
-- Coding agents now write a growing share of UI fixes. A green build or a confirmation page is exactly what they optimise for, and exactly what can be wrong. AccessFinish checks the outcome a person actually needs.
 
 ## Limits
 
