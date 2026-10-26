@@ -43,9 +43,9 @@
     <p class="sr-only" id="announcer" role="status"></p>
   </section>
   <aside class="finding" id="finding" hidden>
-    <h3>Not fixed yet — and nothing false got through.</h3>
-    <p>In every run, Nemotron made the date reachable with the keyboard, but some attempts saved the wrong day while the page said <em>booked</em>. The verifier rejected every one of them.</p>
-    <p>The recorded timeline shows why: right after the date is typed, the page requests <code>get_unavailable_dates</code> and, with no key pressed, the field jumps from <code>02/11</code> to <code>01/11</code>. That reset lives in <code>booking_http_client.js</code>, which selects the first available day of the month. In the last run Nemotron opened that file, but still proposed time-zone and input-format changes. The evidence is precise enough for a developer to fix it directly.</p>
+    <h3>Not fixed in this run — and nothing false got through.</h3>
+    <p>Every attempt that reached a <em>booked</em> page while the booking was saved, or reopened, with the wrong date was rejected.</p>
+    <p>The recorded timeline names the code behind it: right after the date is typed, the month-change handler in <code>booking.js</code> requests <code>get_unavailable_dates</code>, and the response handler overwrites the field with the first free day. Reopening a booking then resets the date to today when <b>Next</b> is pressed. Agent version 4 fixed both on its own in one run — see <a href="evidence.html">every run</a>.</p>
   </aside>
 
   <section class="how" id="how" aria-labelledby="how-heading">
@@ -57,7 +57,7 @@
       <li><b>Feed back</b><span>If anything is off — a build error, a stuck key, a wrong saved value, a broken mouse path — the evidence goes back to Nemotron and it tries again.</span></li>
     </ol>
     <div class="why">
-      <div><h3>Why not just check the confirmation page?</h3><p>Because it lies. In our runs, <strong id="why-caught">15</strong> AI fixes reached a <em>booked</em> confirmation while the database held the wrong date. In the phone case the page says <em>booked</em> while the database holds <code>0000000000</code>, and a patch that hardcodes the test number would fail when a second customer types <code>0000000073</code>. AccessFinish checks all of it.</p></div>
+      <div><h3>Why not just check the confirmation page?</h3><p>Because it lies. In our runs, <strong id="why-caught">—</strong> AI fixes reached a <em>booked</em> confirmation while the booking was saved, or reopened, with the wrong date. In the phone case the page says <em>booked</em> while the database holds <code>0000000000</code>, and a patch that hardcodes the test number would fail when a second customer types <code>0000000073</code>. AccessFinish checks all of it.</p></div>
       <div><h3>Why keyboard journeys?</h3><p>Millions of people navigate with a keyboard or assistive technology. A form that "loads" but can't be completed locks them out, and accessibility law in the EU and US now expects it to work.</p></div>
     </div>
   </section>
@@ -66,12 +66,12 @@
     <div><strong id="fact-phone">—</strong><span>phone runs fixed and verified on the first attempt</span></div>
     <div><strong id="fact-caught">—</strong><span>false "booked" confirmations caught in the keyboard case</span></div>
     <div><strong id="fact-cost">—</strong><span>Nemotron cost for all <span id="fact-runs">—</span> live runs</span></div>
-    <div><strong id="fact-checks">9</strong><span>independent checks per attempt</span></div>
+    <div><strong id="fact-keyboard">—</strong><span id="fact-keyboard-label">keyboard runs fixed by Nemotron with no hints</span></div>
   </section>
 
   <p class="limits">Synthetic data in a pinned copy of the open-source Easy!Appointments app. Two journeys today; the phone fault was seeded on purpose. All runs were made live on GitHub Actions with Nemotron 3 Super on Nebius Token Factory, and every one, including failures, is saved with its raw evidence — see <a href="evidence.html">Evidence</a>.</p>
 </main>
 <footer><span>AccessFinish — finish the task, verify the result.</span><a href="https://github.com/SultanAlfaifi/accessfinish">MIT · source on GitHub</a></footer>
-<script src="agent.js?v=6939280d3fbf14d8"></script>
+<script src="agent.js?v=d233f4d21bcd18f3"></script>
 </body>
 </html>
