@@ -211,6 +211,33 @@ test('repeats are dropped after anchoring, and a loose anchor is never pinned to
   assert.ok(sent.every(edits => edits.filter(item => item.new.includes('typedDate')).length === 1));
 });
 
+test('an edit naming the wrong editable file is moved, an empty edit is dropped, and read-only code is named', () => {
+  const {resolveAnchors, anchorReport} = require('../lib/agent.cjs'), {caseDefinition} = require('../lib/cases.cjs'), files = caseDefinition('keyboard-date').files;
+  const div = {path: 'assets/js/pages/booking.js', old: '<div id="select-date" class="mx-auto my-4"></div>', new: '<input id="select-date">'};
+  const {edits, adjustments} = resolveAnchors(files, [div, {path: 'assets/js/pages/booking.js', old: '', new: ''}]);
+  assert.deepEqual(edits.map(edit => edit.path), ['application/views/components/booking_time_step.php']);
+  assert.match(adjustments[0].moved, /occurs once in application\/views\/components\/booking_time_step.php/);
+  assert.match(adjustments[1].dropped, /old text is empty/);
+  const [report] = anchorReport(files, [{path: 'assets/js/pages/booking.js', old: "if (setDate && !vars('manage_mode')) {\n  x();", new: 'y'}]);
+  assert.match(report.found_in_read_only_file, /^assets\/js\/http\/booking_http_client\.js:\d+ \(only assets\/js\/pages\/booking\.js and application\/views\/components\/booking_time_step\.php can be edited\)$/);
+});
+
+test('an attempt that only fails the reopen check counts as further; the next attempt is told to build on it', async () => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'af-agent-')), replies = [];
+  const savedWrong = {...wrongPhone, after: {appointments: [{id: '1', start_datetime: '2026-11-01 09:00:00'}], customers: [{id: '1', ...scenario.customer}]}, evaluation: {pass: false, reasons: ['wrong_start_datetime']}};
+  const reopenWrong = {...wrongPhone, after: {appointments: [{id: '1', start_datetime: '2026-11-02 09:00:00'}], customers: [{id: '1', ...scenario.customer}]}, evaluation: {pass: false, reasons: ['reopen_date_mismatch']},
+    observer: {after_next1: {date_inputs: [], date: {selected_date_iso: '2026-10-26'}}}};
+  const outcomes = [savedWrong, reopenWrong, savedWrong];
+  const proposals = [{diagnosis: 'a', edits: [featured.edits[0]]}, {diagnosis: 'b', build_on_attempt: 1, edits: [featured.edits[1]]}, {diagnosis: 'c', build_on_attempt: 1, edits: [featured.edits[2] || featured.edits[1]]}, {diagnosis: 'd', edits: [featured.edits[0]]}];
+  const model = async messages => { replies.push(messages.at(-1)); return answer('c' + replies.length, proposals[replies.length - 1]); };
+  await runAgent({execute: async ({run, original}) => ({...(original ? stuck : outcomes.shift() || stuck), run_id: run.id}), model, root, maxAttempts: 4});
+  const after2 = JSON.parse(replies[2].content), after3 = JSON.parse(replies[3].content);
+  assert.match(after2.progress, /^This attempt got further than any before \(to reopen \(the booking was saved correctly; only reopening it failed\)\)/);
+  assert.match(after2.progress, /build_on_attempt: 2/);
+  assert.match(after3.left_out, /edits of attempt 2, which got further \(to reopen/);
+  assert.equal(after3.best_attempt_so_far.attempt, 2, 'a later attempt that saved the wrong date again is not the best');
+});
+
 test('left_out advice only points at an attempt build_on_attempt accepts; an empty proposal is named as such', async () => {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'af-agent-')), replies = [];
   const bad = {path: 'assets/js/pages/booking.js', old: 'no such text anywhere', new: 'x'}, real = featured.edits[0];
