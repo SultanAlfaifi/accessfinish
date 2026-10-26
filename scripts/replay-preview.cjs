@@ -6,6 +6,8 @@ http.createServer((request, response) => {
   try {
     if (request.method !== 'GET' || !['127.0.0.1:' + port, 'localhost:' + port].includes(request.headers.host)) throw Error();
     const pathname = decodeURIComponent(new URL(request.url, 'http://localhost').pathname);
+    // Recorded runs only: tell the page there is no live agent, as server.cjs would without a key.
+    if (pathname === '/api/status') { response.writeHead(200, {'Content-Type': 'application/json'}); return response.end('{"agent_ready":false}'); }
     const file = path.resolve(web, '.' + (pathname === '/' ? '/index.html' : pathname));
     if (!file.startsWith(web + path.sep) || !types[path.extname(file)] || fs.lstatSync(file).isSymbolicLink() || !fs.statSync(file).isFile()) throw Error();
     response.writeHead(200, {'Content-Type': types[path.extname(file)], 'Content-Security-Policy': "default-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'", 'X-Content-Type-Options': 'nosniff', 'Cache-Control': 'no-store'});

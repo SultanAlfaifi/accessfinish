@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="description" content="An agent on NVIDIA Nemotron that keeps repairing a broken user journey until the saved result is verified, not just the confirmation page.">
-  <title>AccessFinish</title><link rel="stylesheet" href="agent.css?v=68cd102714202ece">
+  <title>AccessFinish</title><link rel="stylesheet" href="agent.css?v=bd6d90fb4b9cd125">
 </head>
 <body>
 <a class="skip" href="#agent">Skip to the agent</a>
@@ -57,7 +57,7 @@
       <li><b>Feed back</b><span>If anything is off — a build error, a stuck key, a wrong saved value, a broken mouse path — the evidence goes back to Nemotron and it tries again.</span></li>
     </ol>
     <div class="why">
-      <div><h3>Why not just check the confirmation page?</h3><p>Because it lies. In our runs, <strong id="why-caught">—</strong> AI fixes reached a <em>booked</em> confirmation while the booking was saved, or reopened, with the wrong date. In the phone case the page says <em>booked</em> while the database holds <code>0000000000</code>, and a patch that hardcodes the test number would fail when a second customer types <code>0000000073</code>. AccessFinish checks all of it.</p></div>
+      <div><h3>Why not just check the confirmation page?</h3><p>Because it lies. In our runs, an AI fix reached a <em>booked</em> confirmation <strong id="why-caught">—</strong> times while the booking was saved, or reopened, with the wrong date. In the phone case the page says <em>booked</em> while the database holds <code>0000000000</code>, and a patch that hardcodes the test number would fail when a second customer types <code>0000000073</code>. AccessFinish checks all of it.</p></div>
       <div><h3>Why keyboard journeys?</h3><p>Millions of people navigate with a keyboard or assistive technology. A form that "loads" but can't be completed locks them out, and accessibility law in the EU and US now expects it to work.</p></div>
     </div>
   </section>
@@ -72,6 +72,6 @@
   <p class="limits">Synthetic data in a pinned copy of the open-source Easy!Appointments app. Two journeys today; the phone fault was seeded on purpose. All runs were made live on GitHub Actions with Nemotron 3 Super on Nebius Token Factory, and every one, including failures, is saved with its raw evidence — see <a href="evidence.html">Evidence</a>.</p>
 </main>
 <footer><span>AccessFinish — finish the task, verify the result.</span><a href="https://github.com/SultanAlfaifi/accessfinish">MIT · source on GitHub</a></footer>
-<script src="agent.js?v=15daab1536f9a5e0"></script>
+<script src="agent.js?v=baae404964b80654"></script>
 </body>
 </html>
