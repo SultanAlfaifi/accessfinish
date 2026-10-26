@@ -200,7 +200,8 @@
       // Where a copied anchor stopped matching the file, as Nemotron was told.
       for (const anchor of (evidence.anchors || []).filter(item => item?.first_mismatch)) {
         const miss = anchor.first_mismatch;
-        wrap.append(facts([['Edit ' + anchor.edit + ', line ' + miss.old_line_number + ' of its anchor', 'Nemotron wrote: ' + miss.your_line], ['The file has', miss.original_line]]));
+        const which = anchor.your_edit ? 'Edit ' + anchor.your_edit : anchor.kept_from_attempt ? 'Edit kept from attempt ' + anchor.kept_from_attempt : 'Edit ' + anchor.edit;
+        wrap.append(facts([[which + ', line ' + miss.old_line_number + ' of its anchor', 'Nemotron wrote: ' + miss.your_line], ['The file has', miss.original_line]]));
         if (miss.your_line === miss.original_line) wrap.append(el('p', 'micro', 'These look the same because this report, from agent version ' + (trace.agent_version || 1)
           + ', compared the start of lines, so a line such as "}" matched "},". Version 3 compares whole lines and points to the real difference.'));
       }
@@ -252,7 +253,9 @@
       detail.append(el('h3', '', plural(edits.length, 'edit')));
       for (const edit of edits) detail.append(codeBlock(edit));
       // Anything the harness changed before the verifier ran, as Nemotron was told.
-      for (const item of Array.isArray(step.adjustments) ? step.adjustments : []) detail.append(el('p', 'micro', 'Harness: edit ' + item.edit + ' — ' + (item.dropped ? 'dropped, ' + item.dropped : item.anchored) + '.'));
+      // Edits are shown as the verifier applied them; Nemotron's own text stays in the trace (proposed_edits).
+      for (const item of Array.isArray(step.adjustments) ? step.adjustments : []) detail.append(el('p', 'micro', 'Harness: ' + (item.your_edit ? 'Nemotron\'s edit ' + item.your_edit
+        : item.kept_from_attempt ? 'the edit kept from attempt ' + item.kept_from_attempt : 'edit ' + item.edit) + ' — ' + (item.dropped ? 'dropped, ' + item.dropped : item.anchored) + '.'));
       if (typeof step.reasoning === 'string' && step.reasoning) {
         const box = el('details', 'reasoning'); box.append(el('summary', '', 'Nemotron\'s reasoning'), el('p', '', step.reasoning)); detail.append(box);
       }

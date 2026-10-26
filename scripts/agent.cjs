@@ -56,6 +56,7 @@ async function main() {
         + (step.limited ? ' (lookup limit reached, not run)' : step.error ? ' (not run: ' + step.error.replaceAll('_', ' ') + ')' : ' → ' + step.matches + ' matches'));
       if (step.kind === 'propose') print('Attempt ' + step.attempt + ' Nemotron: ' + step.diagnosis + ' (' + step.edits.length + ' edits'
         + (step.build_on_attempt ? ', ' + (step.kept_edits ?? 0) + ' kept from attempt ' + step.build_on_attempt : '') + ')');
+      for (const item of step.kind === 'propose' ? step.adjustments || [] : []) print('          harness: ' + (item.your_edit ? 'edit ' + item.your_edit : 'kept edit') + ' ' + (item.dropped ? 'dropped, ' + item.dropped : item.anchored));
       if (step.kind === 'verify') print('          ' + (step.verified ? '✓ ' : '✗ ') + step.headline);
     }
     shown = current.steps.length;

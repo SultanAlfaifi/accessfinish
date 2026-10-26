@@ -1,26 +1,76 @@
 {
   "generated_from": "evidence/agent-runs",
   "model": "nvidia/nemotron-3-super-120b-a12b",
-  "runs": 14,
-  "cost_usd": 0.4086,
+  "runs": 24,
+  "cost_usd": 1.6026,
   "cases": {
     "keyboard-date": {
-      "runs": 7,
+      "runs": 12,
       "verified": 0,
       "first_attempt": 0,
-      "attempts": 43,
-      "wrong_saves_caught": 15,
-      "cost_usd": 0.3773,
-      "seconds": 2240
+      "attempts": 83,
+      "wrong_saves_caught": 32,
+      "cost_usd": 1.4662,
+      "seconds": 4425
     },
     "customer-phone": {
-      "runs": 7,
-      "verified": 7,
-      "first_attempt": 7,
-      "attempts": 7,
+      "runs": 12,
+      "verified": 12,
+      "first_attempt": 12,
+      "attempts": 12,
       "wrong_saves_caught": 0,
-      "cost_usd": 0.0313,
-      "seconds": 701
+      "cost_usd": 0.1364,
+      "seconds": 1266
+    }
+  },
+  "agent_versions": {
+    "1": {
+      "runs": 14,
+      "cost_usd": 0.4086,
+      "cases": {
+        "keyboard-date": {
+          "runs": 7,
+          "verified": 0,
+          "first_attempt": 0,
+          "attempts": 43,
+          "wrong_saves_caught": 15,
+          "cost_usd": 0.3773,
+          "seconds": 2240
+        },
+        "customer-phone": {
+          "runs": 7,
+          "verified": 7,
+          "first_attempt": 7,
+          "attempts": 7,
+          "wrong_saves_caught": 0,
+          "cost_usd": 0.0313,
+          "seconds": 701
+        }
+      }
+    },
+    "2": {
+      "runs": 10,
+      "cost_usd": 1.194,
+      "cases": {
+        "keyboard-date": {
+          "runs": 5,
+          "verified": 0,
+          "first_attempt": 0,
+          "attempts": 40,
+          "wrong_saves_caught": 17,
+          "cost_usd": 1.0889,
+          "seconds": 2185
+        },
+        "customer-phone": {
+          "runs": 5,
+          "verified": 5,
+          "first_attempt": 5,
+          "attempts": 5,
+          "wrong_saves_caught": 0,
+          "cost_usd": 0.1051,
+          "seconds": 565
+        }
+      }
     }
   }
 }
