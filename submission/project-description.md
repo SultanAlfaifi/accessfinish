@@ -16,39 +16,41 @@ It matters at scale: about 1.3 billion people (16%) live with a significant disa
 
 AccessFinish is a repair agent for broken user journeys. Given a goal like "a keyboard-only customer books the 09:00 slot and it's saved for that date", it:
 
-1. **Observes** the journey in a real browser using only the keyboard, recording where focus goes and where it gets stuck.
-2. **Diagnoses and repairs** with NVIDIA Nemotron 3 Super: the model gets the goal, the verifier's evidence and the source files — no hints — and proposes exact code edits.
-3. **Verifies for real** in a fresh offline sandbox: build, keyboard booking, database read-back through a read-only account, reopen in a fresh browser, plus regression checks (mouse booking with different data, clearing the date, reserved slots, untouched records, sandbox isolation).
-4. **Feeds the evidence back** when anything fails — a compile error, a stuck key, a wrong saved value, a page request that silently changed the date — and tries again, up to eight attempts. The agent can also open any other source file with a read-only `read_file` tool, like a developer following the code.
+1. **Observes** the journey in a real browser using only the keyboard, recording where focus goes, where it gets stuck, and which page code changes what the user typed.
+2. **Diagnoses and repairs** with NVIDIA Nemotron 3 Super: the model gets the goal, the verifier's evidence and the source files — no hints — investigates with read-only `search_code` and `read_file` tools, and proposes exact code edits plus the evidence its diagnosis accounts for.
+3. **Verifies for real** in a fresh offline sandbox: build, keyboard booking, database read-back through a read-only account, reopen in a fresh browser, plus regression checks (mouse booking with different data through month navigation, clearing the date, reserved slots, untouched records, sandbox isolation).
+4. **Feeds the evidence back** when anything fails — a compile error with its code frame, a stuck key, a wrong saved value, the call chain that silently overwrote the date — with a ledger of every earlier attempt and which one got furthest, and tries again, up to twelve attempts.
 
-The web page replays each run as a timeline: the stuck keyboard trail, Nemotron's diagnosis and diff, each verifier verdict, and the final proof with a downloadable patch.
+The web page replays each run as a timeline: the stuck keyboard trail, Nemotron's searches, diagnosis and diff, each verifier verdict with its evidence, and the final proof with a downloadable patch. An evidence page lists all 54 live runs with their raw traces and the results of every agent version.
 
 ## How we built it
 
-- **Model:** `nvidia/nemotron-3-super-120b-a12b` on **Nebius Token Factory**, with two tools: `read_file` (read-only, any app source file) and `propose_repair`. Edits must match the original source exactly once or they are rejected before execution. Token usage and cost are recorded for every request.
+- **Model:** `nvidia/nemotron-3-super-120b-a12b` on **Nebius Token Factory**, with three tools: `search_code` (a regular expression over the app source), `read_file` and `propose_repair`. Edits must match the source exactly once; the harness tolerates whitespace slips like `git apply --ignore-whitespace` and records every adjustment next to the model's own text. Token usage, cost and Nemotron's reasoning are recorded for every request.
+- **Causal provenance:** the verifier hooks the date field's value setter before the app loads and attaches DevTools async stack traces, so evidence names the exact call chain that overwrote what the user typed.
 - **Verifier:** Node.js orchestration of Docker containers for the app (PHP), MariaDB, a trusted Babel compiler, Playwright browsers and a read-only SQL reader. Candidate code runs with no network, no model key, read-only roots, dropped capabilities and resource limits.
 - **Target app:** a pinned copy of open-source Easy!Appointments with synthetic data. Two journeys: a real upstream keyboard bug in the date picker, and a seeded fault where confirmation hides a wrong saved phone number.
-- **Page:** plain HTML, CSS and JavaScript, no dependencies.
+- **Page:** plain HTML, CSS and JavaScript, no dependencies, keyboard and screen-reader accessible.
 
 ## Results
 
-All runs were made live on fresh GitHub Actions runners with Nemotron 3 Super on Nebius Token Factory, 14 runs for $0.41 in total:
+All 54 runs were made live on fresh GitHub Actions runners with Nemotron 3 Super on Nebius Token Factory, $6.38 in total. After each batch we read the failed traces, improved the loop and bumped the agent version; results are never mixed across versions.
 
-- **Saved phone:** fixed and verified on the first attempt in **7 of 7** runs, about 100 seconds and half a cent each.
-- **Keyboard date (real upstream bug):** not fixed by the agent yet — 0 of 7. Of 43 proposals, 7 were rejected before running, 21 left the keyboard user stuck, and **15 were false successes: "booked" on screen, the wrong day in the database**. Every run produced at least one, so a confirmation-page check would have shipped a wrong patch in **7 of 7 runs**. AccessFinish accepted none.
-- The recorded timeline pinpoints why: right after the date is typed, the month-change callback requests `get_unavailable_dates` and, with no key pressed, the field jumps from 02/11 to 01/11. The bug is fixable inside the files the agent may edit — Nemotron's own operator-guided fix from 21 October passes this verifier and is re-verified on every run — so the gap is diagnosis, not an impossible task.
+- **Saved phone (seeded fault):** verified in **27 of 27** runs, 26 on the first attempt, about a cent each.
+- **Keyboard date (real upstream bug): fixed by Nemotron with no hints in 2 of 10 runs of agents v4–v5** (0 of 17 in v1–v3). It is two bugs: typing a date in a later month fires the date picker's month-change handler, which overwrites the typed date with the first free day; and reopening a booking resets the date to today. In the first verified run Nemotron made the date reachable, was rejected for saving 1 Nov instead of 2 Nov, traced the reset through the recorded call chain `setDate ← applyUnavailableDates ← getUnavailableDates ← onMonthChange`, saved the right date, then fixed the reopen bug on top — verified on attempt 6, with a three-part patch of its own.
+- **Every false success was caught:** across 27 keyboard runs, **77 attempts reached a "booked" page while the booking was saved, or reopened, with the wrong date.** In all 27 runs the first patch that reached a "booked" page was wrong, so a confirmation-page check would have shipped a wrong patch every time. AccessFinish accepted none.
+- **Agent versions, keyboard runs that saved the right date:** v1 0/7 → v2 1/5 → v3 2/5 → v4 2/5 → v5 2/5; verified: v4 1/5, v5 1/5.
 - **Verifier calibration:** the original keyboard source stays blocked; a phone patch that hard-codes the test number is rejected when a second customer types a different one; the reference fixes verify; five archived single-shot proposals replay to their recorded outcomes on a fresh runner.
 
 ## Challenges
 
-Single-shot fixes weren't enough. In an earlier frozen test, five Nemotron attempts with an operator-supplied diagnosis gave 2/5 full passes on the keyboard case: two didn't compile and one fixed the keyboard but broke the mouse calendar. One earlier repair even saved the *wrong date* while showing success. Those are exactly the failures a confirmation-page check misses — so we built the loop around the verifier's evidence instead of the model's confidence. The hardest part was making that evidence precise enough for a model to reason from: we went from "saved the wrong day" to a second-by-second timeline of the page's own requests and the moment the date changed by itself.
+Single-shot fixes weren't enough: in an earlier frozen test, five Nemotron attempts with an operator-supplied diagnosis gave 2/5 full passes on the keyboard case. With no hints at all, the first agent version never fixed it — Nemotron kept blaming time zones. The breakthrough was evidence, not prompting: once the verifier recorded which code wrote the date field (the month-change handler's call chain), Nemotron's diagnoses named the real cause. The rest was harness engineering we measured run by run: whole-line mismatch reports, whitespace-tolerant anchors, tracking "saved correctly but reopened wrong" as progress, naming read-only code, returning the file's own lines and compiler code frames. Each change was reviewed adversarially and replayed against every recorded trace before a new live run.
 
 ## Accomplishments
 
-- A verifier that refused all 15 false successes — fixes whose confirmation page said "booked" while the wrong date was saved — and that would have let a wrong patch ship in 7 of 7 runs had it trusted the confirmation page.
-- Evidence a developer can act on: the keyboard focus trail, typed vs saved values, and a timeline of the page's own requests showing the moment the date changed by itself.
-- Proof that's hard to fake: the database row, the fresh-browser reopen, and a second customer that defeats hardcoded fixes.
-- Every run, including failures, is kept with its raw evidence.
+- Nemotron fixed a real upstream accessibility bug — two bugs, in fact — on its own, verified end to end with no hints.
+- A verifier that refused all 77 false successes, and that would have let a wrong patch ship in 27 of 27 keyboard runs had it trusted the confirmation page.
+- Evidence a developer can act on: the keyboard focus trail, typed vs saved values, and the call chain of the page code that changed the date.
+- Every run, including failures, is public with its raw evidence and the agent version that produced it.
 
 ## What's next
 
