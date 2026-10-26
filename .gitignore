@@ -1,12 +1,9 @@
 .runtime/
-.runtime-*.json
 node_modules/
 .env
 .env.*
 *.dpapi.json
 *.log
-media/raw/
-media/review/
 artifacts/
 __pycache__/
 *.pyc

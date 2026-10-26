@@ -5,7 +5,6 @@
 /lib/runs.cjs -text
 /lib/repair.cjs -text
 /lib/case-source.cjs -text
-/scripts/trial.cjs -text
 /integration/portable/* -text
 /evidence/competition-20261021/** -text
 /web/featured-case.json -text
@@ -13,11 +12,7 @@
 /web/records/* -text
 /lib/cases.cjs -text
 /scripts/run-case.cjs -text
-/scripts/phone-model-trial.cjs -text
-/scripts/phone-model-execute.cjs -text
-/evidence/extension-20261023*/** -text
 /evidence/phone-model-20261023/** -text
 /web/cases/* -text
-/web/phone-model-report.json -text
 /evidence/extension-ci-20261023/** -text
 /evidence/reproduction-variation-20261024/** -text

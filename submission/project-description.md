@@ -1,10 +1,12 @@
-# AccessFinish
+# AccessFinish — project story
 
-## Elevator pitch
+The text submitted to Devpost (Nebius × NVIDIA Global AI Hackathon, track: Coding and Agentic Engineering).
 
-The AI says "fixed". AccessFinish checks the user can finish — and accepts no fix until they can.
+**Elevator pitch:** The AI says "fixed." We check the user can finish: a Nemotron repair agent that drives the real journey by keyboard, reads what was saved, and rejects every fix until it is proven.
 
 *Access:* can a keyboard user get through? *Finish:* is what they typed actually saved?
+
+▶ [Watch the 2-minute film](https://youtu.be/ZHSP0GYMM20) · [Replay the agent's runs](https://sultalfaifi.com/accessfinish/) · [Every run with its raw evidence](https://sultalfaifi.com/accessfinish/evidence.html) · [Source on GitHub](https://github.com/SultanAlfaifi/accessfinish)
 
 ## Inspiration
 
@@ -41,21 +43,24 @@ All 54 runs were made live on fresh GitHub Actions runners with Nemotron 3 Super
 - **Agent versions, keyboard runs that saved the right date:** v1 0/7 → v2 1/5 → v3 2/5 → v4 2/5 → v5 2/5; verified: v4 1/5, v5 1/5.
 - **Verifier calibration:** the original keyboard source stays blocked; a phone patch that hard-codes the test number is rejected when a second customer types a different one; the reference fixes verify; five archived single-shot proposals keep their accept/reject decision in every fresh-runner replay.
 
-## Challenges
+## Challenges we ran into
 
 Single-shot fixes weren't enough: in an earlier frozen test, five Nemotron attempts with an operator-supplied diagnosis gave 2/5 full passes on the keyboard case. With no diagnosis supplied, the first agent version never fixed it — Nemotron often blamed time zones (15 of 43 diagnoses). The breakthrough was evidence, not prompting: once the verifier recorded which code wrote the date field (the month-change handler's call chain), Nemotron's diagnoses named the real cause. The rest was harness engineering we measured run by run: whole-line mismatch reports, whitespace-tolerant anchors, tracking "saved correctly but reopened wrong" as progress, naming read-only code, returning the file's own lines and compiler code frames. Each change was reviewed adversarially and replayed against every recorded trace before a new live run.
 
-## Accomplishments
+## Accomplishments that we're proud of
 
 - Nemotron fixed a real upstream accessibility bug — two bugs, in fact — without being told the cause, verified end to end.
 - A verifier that refused all 77 false successes, and that would have let a wrong patch ship in 27 of 27 keyboard runs had it trusted the confirmation page.
 - Evidence a developer can act on: the keyboard focus trail, typed vs saved values, and the call chain of the page code that changed the date.
 - Every run, including failures, is public with its raw evidence and the agent version that produced it.
 
+## What we learned
+
+- **Evidence beats prompting.** The same model went from blaming time zones to naming the real cause once the verifier recorded the call chain that overwrote the typed date.
+- **A success page is a weak oracle.** In all 27 keyboard runs the first patch that reached a "booked" page was wrong; only reading back the saved row and reopening the booking told the truth.
+- **Many wasted attempts were mechanical.** 85 of 258 proposals were rejected before execution because an edit did not apply; returning the file's own lines with a failed edit, and tolerating whitespace, helped the model recover.
+- **Cheap inference makes honest iteration possible.** All 54 live runs cost $6.38, so every agent version could be measured live instead of argued about.
+
 ## What's next
 
 More journey types (sign-up, checkout, settings), screen-reader-driven verification, and a GitHub app that opens a pull request with the verified patch and its proof attached.
-
-## Built with
-
-NVIDIA Nemotron 3 Super · Nebius Token Factory · Node.js · Docker · Playwright · PHP · MariaDB · Easy!Appointments (GPL-3.0)

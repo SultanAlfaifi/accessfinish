@@ -1,9 +1,0 @@
-AccessFinish v0.2 working demonstration
-
-Audience: Nebius x NVIDIA hackathon judges and developers/accessibility QA engineers.
-Delivery: 1600 x 900, 30 fps, exactly 140 seconds / 4200 frames. Silent English captions; no music, narration, stock footage, or paid media generation.
-Visual direction: Preserve the actual workbench identity: indigo ink, blue focus and review actions, restrained blocked/verified colors. Use readable source changes and outcome evidence as the picture.
-Production: FFmpeg is the master compositor. Actual CUA captures show the recorded Nemotron request, exact patch, approved hash, a fresh isolated execution, saved booking, and all five frozen outcomes. Captures have edited timing and are not continuous-frame footage or a speed benchmark.
-Provenance: All picture assets come from the project-owned local workbench and synthetic fixture data. No external account, API key, user browser profile, or real customer data is shown. System fonts are referenced, not redistributed.
-Evidence: Film execution run-9c34bf83fb3c7409d2da1537aa8427f3 replays the recorded evaluation-4 proposal without a new model call. The frozen generation experiment remains 2 full passes out of 5 attempts on 1 guided exposed case.
-Review: Full decode, dimensions, 30 fps, 4200 decoded frames, 140-second duration, and zero audio streams pass. Contact sheet and selected full-size encoded frames inspected. Full continuous entrant playback and publication approval remain pending.

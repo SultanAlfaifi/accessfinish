@@ -29,7 +29,6 @@ jobs:
       - run: node scripts/check-evidence.cjs
       - run: node scripts/check-trials.cjs
       - run: npm run check:phone-model
-      - run: npm run check:submission
   isolated-booking:
     needs: checks
     runs-on: ubuntu-latest
