@@ -6,7 +6,7 @@ AccessFinish is a repair agent built on **NVIDIA Nemotron 3 Super** (served by *
 
 *Access:* can a keyboard user get through? *Finish:* is what they typed actually saved?
 
-▶ **Live page:** https://sultalfaifi.com/accessfinish/ · Track: **Coding and Agentic Engineering**
+▶ **Live page:** https://sultalfaifi.com/accessfinish/ · **Film (2 min):** https://youtu.be/ZHSP0GYMM20 · Track: **Coding and Agentic Engineering**
 
 **In 54 live runs:** a seeded data fault fixed and verified 27/27 times · a real upstream keyboard bug fixed by Nemotron, with no diagnosis supplied, in 2 of 10 runs of agents v4–v5 · **77 false "booked" confirmations caught, none accepted**.
 
