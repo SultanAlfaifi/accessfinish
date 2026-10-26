@@ -25,6 +25,21 @@
     <div><strong id="total-cost">—</strong><span>Nemotron cost for all of them</span></div>
   </section>
 
+  <section class="runs-section" aria-labelledby="versions-heading">
+    <h2 id="versions-heading">How the agent improved</h2>
+    <p>Each version changed the loop after reading the previous version's failed runs; results are never mixed across versions. The keyboard case has two bugs: the typed date is reset by page code, and reopening a booking resets it again. "Saved correctly" counts runs in which some attempt fixed the first.</p>
+    <div class="table-scroll" role="region" aria-labelledby="versions-caption" tabindex="0">
+      <table class="runs">
+        <caption class="sr-only" id="versions-caption">Results per agent version</caption>
+        <thead><tr>
+          <th scope="col">Version</th><th scope="col">What changed</th><th scope="col" class="num">Keyboard runs</th><th scope="col" class="num">Saved correctly</th>
+          <th scope="col" class="num">Verified</th><th scope="col" class="num">Executed / attempts</th><th scope="col" class="num">Phone: first-attempt fixes</th><th scope="col" class="num">Cost</th>
+        </tr></thead>
+        <tbody id="versions"></tbody>
+      </table>
+    </div>
+  </section>
+
   <section class="runs-section" aria-labelledby="runs-heading">
     <h2 id="runs-heading" tabindex="-1">Live agent runs</h2>
     <p><b>Replay</b> opens the run in the timeline on the home page. <b>Trace</b> is the copy the page replays. <b>Raw</b> is the complete trace with all of its evidence, pinned to the commit that recorded it; the agent column links to the code the agent ran.</p>
@@ -47,6 +62,6 @@
   </section>
 </main>
 <footer><span>AccessFinish — finish the task, verify the result.</span><a href="https://github.com/SultanAlfaifi/accessfinish">MIT · source on GitHub</a></footer>
-<script src="evidence.js?v=b3219b0722447fe9"></script>
+<script src="evidence.js?v=e36459ae593e672b"></script>
 </body>
 </html>
