@@ -6,7 +6,7 @@ Ask an AI to fix a broken form and it will say it's fixed. AccessFinish doesn't 
 
 Live results (54 runs on GitHub Actions, $6.38 of Nemotron in total):
 - Saved phone: fixed and verified in 27 of 27 runs, 26 on the first attempt.
-- Keyboard date, a real upstream bug: fixed by Nemotron with no hints in 2 of 10 runs of the final agent versions. Along the way, 77 attempts showed a "booked" confirmation while the booking was saved, or reopened, with the wrong date; AccessFinish rejected every one and recorded which code caused it.
+- Keyboard date, a real upstream bug: fixed by Nemotron, with no diagnosis supplied, in 2 of 10 runs of the final agent versions. Along the way, 77 attempts showed a "booked" confirmation while the booking was saved, or reopened, with the wrong date; AccessFinish rejected every one and recorded which code caused it.
 
 Source, evidence and every run: https://github.com/SultanAlfaifi/accessfinish
 Live page: https://sultalfaifi.com/accessfinish/
