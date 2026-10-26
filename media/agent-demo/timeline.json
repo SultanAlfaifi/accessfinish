@@ -3,10 +3,10 @@
   "voice": "Aiden",
   "language": "English",
   "device": "cpu",
-  "model_load_seconds": 132.4,
+  "model_load_seconds": 22.4,
   "sample_rate": 24000,
   "gap_seconds": 0.45,
-  "duration_seconds": 109.75,
+  "duration_seconds": 122.84,
   "narration_file": "narration.wav",
   "beats": [
     {
@@ -41,81 +41,91 @@
     },
     {
       "id": "phone-proof",
-      "text": "Every fix is built in a fresh, offline sandbox, and checked for real: the saved database row, a fresh browser, and a second customer with a different number. Seven live runs. Seven verified fixes, on the first attempt, for about half a cent each.",
-      "spoken": "Every fix is built in a fresh, offline sandbox, and checked for real: the saved database row, a fresh browser, and a second customer with a different number. Seven live runs. Seven verified fixes, on the first attempt, for about half a cent each.",
+      "text": "Every fix is built in a fresh, offline sandbox, and checked for real: the saved database row, a fresh browser, and a second customer with a different number. Twenty-seven live runs. Twenty-seven verified fixes, for about a cent each.",
+      "spoken": "Every fix is built in a fresh, offline sandbox, and checked for real: the saved database row, a fresh browser, and a second customer with a different number. Twenty-seven live runs. Twenty-seven verified fixes, for about a cent each.",
       "file": "beats/phone-proof.wav",
       "start_seconds": 36.55,
-      "end_seconds": 55.59,
-      "generation_seconds": 106.8,
-      "sha256": "151610ebb92933a3d6c403611fbc102315e8b881f681af94f686518db3ab6f9b"
+      "end_seconds": 52.87,
+      "generation_seconds": 99.6,
+      "sha256": "36cbdce6263bb8968e66797040f65eda87130626d927dd8d3f37400ec5a4e2ae"
     },
     {
       "id": "keyboard-intro",
-      "text": "Now the harder case. A keyboard user can't reach the date picker at all.",
-      "spoken": "Now the harder case. A keyboard user can't reach the date picker at all.",
+      "text": "Now a real bug from the open-source app. A keyboard user can't reach the date picker at all.",
+      "spoken": "Now a real bug from the open-source app. A keyboard user can't reach the date picker at all.",
       "file": "beats/keyboard-intro.wav",
-      "start_seconds": 56.04,
-      "end_seconds": 61.24,
-      "generation_seconds": 30.0,
-      "sha256": "d8762237d4173c88cd595c31124ad04ef2bc209dc64c64ab426c699b50b731cb"
-    },
-    {
-      "id": "keyboard-attempts",
-      "text": "Nemotron reads the source files, proposes fixes, and every attempt is built and tested. It makes the date reachable, and the page says the booking is confirmed.",
-      "spoken": "Nemo-tron reads the source files, proposes fixes, and every attempt is built and tested. It makes the date reachable, and the page says the booking is confirmed.",
-      "file": "beats/keyboard-attempts.wav",
-      "start_seconds": 61.69,
-      "end_seconds": 72.01,
-      "generation_seconds": 42.9,
-      "sha256": "4fc7137772e9a1c5c3704d9609261f73cdd7dec78e443b8e90829c2d938000fc"
+      "start_seconds": 53.32,
+      "end_seconds": 59.24,
+      "generation_seconds": 35.6,
+      "sha256": "e4f7e08af98bff37a94de0210a819b34468b4f4111c693682ef8f16176b7bde4"
     },
     {
       "id": "keyboard-wrong",
-      "text": "But AccessFinish reads the database. The booking was saved for the wrong day. Rejected.",
-      "spoken": "But AccessFinish reads the database. The booking was saved for the wrong day. Rejected.",
+      "text": "Nemotron makes the date reachable, and the page says the booking is confirmed. But AccessFinish reads the database. Saved for the wrong day. Rejected.",
+      "spoken": "Nemo-tron makes the date reachable, and the page says the booking is confirmed. But AccessFinish reads the database. Saved for the wrong day. Rejected.",
       "file": "beats/keyboard-wrong.wav",
-      "start_seconds": 72.46,
-      "end_seconds": 78.86,
-      "generation_seconds": 36.3,
-      "sha256": "d660b763f402c335aae1e7152fdae6bd37ec9a85f61263ad29a60bf7b8b42950"
+      "start_seconds": 59.69,
+      "end_seconds": 70.57,
+      "generation_seconds": 66.2,
+      "sha256": "23fa3f0785e57769331e80a63f7656784e5f6fa970e4f238d0a991afccf1e0c3"
     },
     {
-      "id": "keyboard-timeline",
-      "text": "And it shows exactly why. Seven tenths of a second after a background request, with no key pressed, the date resets itself to the first of the month.",
-      "spoken": "And it shows exactly why. Seven tenths of a second after a background request, with no key pressed, the date resets itself to the first of the month.",
-      "file": "beats/keyboard-timeline.wav",
-      "start_seconds": 79.31,
-      "end_seconds": 89.39,
-      "generation_seconds": 56.4,
-      "sha256": "7ebf4114b263fd6ae488b0dc671e768145958d22e8c9d2524187c16a7fc5b1ce"
+      "id": "keyboard-provenance",
+      "text": "And it shows which code did it. Half a second after the date is typed, the month-change handler fetches unavailable dates, and overwrites what the user typed.",
+      "spoken": "And it shows which code did it. Half a second after the date is typed, the month-change handler fetches unavailable dates, and overwrites what the user typed.",
+      "file": "beats/keyboard-provenance.wav",
+      "start_seconds": 71.02,
+      "end_seconds": 81.34,
+      "generation_seconds": 62.4,
+      "sha256": "19fb518dbf9576bbf378d17370f9cccdcfcfe19d0c8522b6eef2546be0453360"
+    },
+    {
+      "id": "keyboard-reopen",
+      "text": "With that evidence, Nemotron fixes the reset, and the right date is saved. But reopening the booking shows today's date. A second bug.",
+      "spoken": "With that evidence, Nemo-tron fixes the reset, and the right date is saved. But reopening the booking shows today's date. A second bug.",
+      "file": "beats/keyboard-reopen.wav",
+      "start_seconds": 81.79,
+      "end_seconds": 90.59,
+      "generation_seconds": 53.0,
+      "sha256": "2b26852de31dbcd633dfecc3e32098333f29e7d5aa0cda4a4cd53a040ad53e45"
+    },
+    {
+      "id": "keyboard-verified",
+      "text": "Nemotron fixes that too, and keeps its first fix. Verified: saved, reopened in a fresh browser, and the mouse path still works. No hints.",
+      "spoken": "Nemo-tron fixes that too, and keeps its first fix. Verified: saved, reopened in a fresh browser, and the mouse path still works. No hints.",
+      "file": "beats/keyboard-verified.wav",
+      "start_seconds": 91.04,
+      "end_seconds": 101.84,
+      "generation_seconds": 65.6,
+      "sha256": "c4a66ba89b10d196b21ca07fc20cd28a218ad20e685fc9de383d9c2e29188029"
     },
     {
       "id": "finding",
-      "text": "Fifteen fake booked confirmations, across seven runs. Not one got through.",
-      "spoken": "Fifteen fake booked confirmations, across seven runs. Not one got through.",
+      "text": "Across twenty-seven keyboard runs, seventy-seven false booked confirmations were caught. Not one got through.",
+      "spoken": "Across twenty-seven keyboard runs, seventy-seven false booked confirmations were caught. Not one got through.",
       "file": "beats/finding.wav",
-      "start_seconds": 89.84,
-      "end_seconds": 96.64,
-      "generation_seconds": 38.8,
-      "sha256": "9c9f2383735521054d32c91cbd15c980ee3ea12d4379ec8bc8dfb21b7bb188ea"
+      "start_seconds": 102.29,
+      "end_seconds": 109.97,
+      "generation_seconds": 46.7,
+      "sha256": "0f1da9509ecf39ba0d999ea8358acf2208c0bf0fd60702ab0c1a923b54c8cdaf"
     },
     {
       "id": "facts",
-      "text": "Fourteen live runs, and forty-one cents of Nemotron. Fixes that are proven, not promised.",
-      "spoken": "Fourteen live runs, and forty-one cents of Nemo-tron. Fixes that are proven, not promised.",
+      "text": "Fifty-four live runs, for about six dollars of Nemotron. Fixes that are proven, not promised.",
+      "spoken": "Fifty-four live runs, for about six dollars of Nemo-tron. Fixes that are proven, not promised.",
       "file": "beats/facts.wav",
-      "start_seconds": 97.09,
-      "end_seconds": 104.53,
-      "generation_seconds": 39.8,
-      "sha256": "3787f3e055cd4813773b98ad2e9404cb36e1aba9a67d4f6ba7cdf0556e3f1cc5"
+      "start_seconds": 110.42,
+      "end_seconds": 117.62,
+      "generation_seconds": 43.9,
+      "sha256": "c132308b75c933c533e4fd60314d8e18352d1a78bf36bb65f3476a9dab94b914"
     },
     {
       "id": "close",
       "text": "AccessFinish. Finish the task. Verify the result.",
       "spoken": "AccessFinish. Finish the task. Verify the result.",
       "file": "beats/close.wav",
-      "start_seconds": 104.98,
-      "end_seconds": 109.3,
+      "start_seconds": 118.07,
+      "end_seconds": 122.39,
       "generation_seconds": 23.4,
       "sha256": "3d1108de5a75986f53af55792cc6f3ac316cf43ec8e65ee087a257acc2df2927"
     }
