@@ -119,6 +119,47 @@ test('a near-miss anchor reports the first line that differs from the original',
   assert.deepEqual(report.first_mismatch, {old_line_number: 3, your_line: 'THREE', original_line: 'three'});
 });
 
+test('the mismatch report compares whole lines, so "}" does not count as matching "},"', () => {
+  const {anchorReport} = require('../lib/agent.cjs');
+  const files = [{path: 'assets/js/pages/booking.js', content: 'a({\r\n  b: 1,\r\n},\r\nc);\r\n'}];
+  const [report] = anchorReport(files, [{path: 'assets/js/pages/booking.js', old: 'a({\n  b: 1,\n}\nc);', new: 'x'}]);
+  assert.deepEqual(report.first_mismatch, {old_line_number: 3, your_line: '}', original_line: '},'});
+});
+
+test('anchors that differ only in indentation or blank lines are pinned to the exact code; no-op edits are dropped', () => {
+  const {resolveAnchors} = require('../lib/agent.cjs'), {preview} = require('../lib/repair.cjs');
+  const js = 'function f() {\r\n        if (ready) {\r\n            const today = now();\r\n\r\n            set(today);\r\n        }\r\n}\r\n', php = '<div id="d"></div>\r\n';
+  const files = [{path: 'assets/js/pages/booking.js', content: js}, {path: 'application/views/components/booking_time_step.php', content: php}];
+  const loose = {path: 'assets/js/pages/booking.js', old: 'if (ready) {\n    const today = now();\n    set(today);\n}', new: 'if (ready) {\n    const today = now();\n    if (!value()) set(today);\n}'};
+  const noop = {path: 'application/views/components/booking_time_step.php', old: '<div id="d"></div>', new: '<div id="d"></div>'};
+  const {edits, adjustments} = resolveAnchors(files, [noop, loose]);
+  assert.equal(edits.length, 1);
+  assert.deepEqual(adjustments.map(item => Object.keys(item)[1]), ['dropped', 'anchored']);
+  assert.match(adjustments[1].anchored, /shifted by 8 spaces/);
+  const patched = preview(files, {reason: 'r', edits}).files.find(file => file.path.endsWith('.js')).content;
+  assert.equal(patched, 'function f() {\r\n        if (ready) {\r\n            const today = now();\r\n            if (!value()) set(today);\r\n        }\r\n}\r\n');
+  // An exact anchor is left alone, and a loose anchor that matches twice is not guessed.
+  const exact = {path: 'assets/js/pages/booking.js', old: 'set(today);', new: 'set(today, true);'};
+  assert.deepEqual(resolveAnchors(files, [exact]).edits, [exact]);
+  const twice = [{path: 'assets/js/pages/booking.js', content: 'a\n  b\na\n    b\n'}, files[1]];
+  assert.deepEqual(resolveAnchors(twice, [{path: 'assets/js/pages/booking.js', old: 'a\nb', new: 'c'}]).adjustments, []);
+});
+
+test('a proposal of only no-op edits is rejected, and leaving out the furthest attempt\'s edits is pointed out', async () => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'af-agent-')), replies = [];
+  const real = featured.edits, noop = [{...real[0], new: real[0].old}];
+  const proposals = [{diagnosis: 'a', edits: real}, {diagnosis: 'b', edits: noop}, {diagnosis: 'c', edits: [real[0]]}, {diagnosis: 'd', edits: [real[0]]}];
+  const model = async messages => { replies.push(messages.at(-1)); return answer('c' + replies.length, proposals[replies.length - 1]); };
+  const wrongDate = {...wrongPhone, after: {appointments: [{id: '1', start_datetime: '2026-11-01 09:00:00'}], customers: [{id: '1', ...scenario.customer}]}, evaluation: {pass: false, reasons: ['wrong_start_datetime']}};
+  const trace = await runAgent({execute: async ({run, original, proposal}) => ({...(original ? stuck : proposal.proposal.edits.length === real.length ? wrongDate : stuck), run_id: run.id}), model, root, maxAttempts: 4});
+  const verifies = trace.steps.filter(item => item.kind === 'verify');
+  assert.deepEqual(verifies.map(item => item.stage), ['outcome', 'format', 'keyboard', 'keyboard']);
+  assert.match(verifies[1].headline, /every edit leaves the code unchanged/);
+  assert.deepEqual(trace.steps.filter(item => item.kind === 'propose')[1].adjustments.map(item => item.edit), [1]);
+  const feedback = JSON.parse(replies[3].content);
+  assert.match(feedback.left_out, new RegExp('left out ' + (real.length - 1) + ' of the ' + real.length + ' edits of attempt 1, which got further \\(to outcome\\)\\. Set build_on_attempt: 1'));
+});
+
 test('the agent can read other source files before proposing', async () => {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'af-agent-'));
   const outcomes = [stuck, verified], seen = [];
