@@ -15,5 +15,5 @@ Synthetic data in a pinned copy of open-source Easy!Appointments (GPL-3.0). Acce
 Narration: Qwen3-TTS 0.6B CustomVoice, voice Aiden. No music.
 
 Upload
-File: media/accessfinish-agent-demo.mp4 (128-second film, 1920x1080, narrated, captions burned in)
+File: media/accessfinish-agent-demo.mp4 (126-second film, 1920x1080, narrated, captions burned in)
 Visibility: Public. Not made for kids. Category: Science & Technology.

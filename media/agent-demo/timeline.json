@@ -6,7 +6,7 @@
   "model_load_seconds": 22.9,
   "sample_rate": 24000,
   "gap_seconds": 0.45,
-  "duration_seconds": 126.6,
+  "duration_seconds": 124.75,
   "narration_file": "narration.wav",
   "beats": [
     {
@@ -95,17 +95,18 @@
       "spoken": "Nemo-tron fixes that too, building on its best attempt. Verified: saved, reopened in a fresh browser, and the mouse path still works.",
       "file": "beats/keyboard-verified.wav",
       "start_seconds": 92.0,
-      "end_seconds": 105.28,
+      "end_seconds": 103.43,
       "generation_seconds": 62.8,
-      "sha256": "d7be20585de9abb70bd42a7c2687575cc6090834890d814179338029f325a1fb"
+      "sha256": "d7be20585de9abb70bd42a7c2687575cc6090834890d814179338029f325a1fb",
+      "trim_start_seconds": 1.85
     },
     {
       "id": "finding",
       "text": "Across twenty-seven keyboard runs, seventy-seven false booked confirmations were caught. Not one got through.",
       "spoken": "Across twenty-seven keyboard runs, seventy-seven false booked confirmations were caught. Not one got through.",
       "file": "beats/finding.wav",
-      "start_seconds": 105.73,
-      "end_seconds": 113.41,
+      "start_seconds": 103.88,
+      "end_seconds": 111.56,
       "generation_seconds": 46.7,
       "sha256": "0f1da9509ecf39ba0d999ea8358acf2208c0bf0fd60702ab0c1a923b54c8cdaf"
     },
@@ -114,8 +115,8 @@
       "text": "Fifty-four live runs, for under seven dollars of Nemotron. Fixes that are proven, not promised.",
       "spoken": "Fifty-four live runs, for under seven dollars of Nemo-tron. Fixes that are proven, not promised.",
       "file": "beats/facts.wav",
-      "start_seconds": 113.86,
-      "end_seconds": 121.38,
+      "start_seconds": 112.01,
+      "end_seconds": 119.53,
       "generation_seconds": 35.7,
       "sha256": "efb2cdcbb7e0fb530a95c51afd7c36e21b5c3e82807194ef7719b807632bc430"
     },
@@ -124,8 +125,8 @@
       "text": "AccessFinish. Finish the task. Verify the result.",
       "spoken": "AccessFinish. Finish the task. Verify the result.",
       "file": "beats/close.wav",
-      "start_seconds": 121.83,
-      "end_seconds": 126.15,
+      "start_seconds": 119.98,
+      "end_seconds": 124.3,
       "generation_seconds": 23.4,
       "sha256": "3d1108de5a75986f53af55792cc6f3ac316cf43ec8e65ee087a257acc2df2927"
     }
