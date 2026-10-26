@@ -185,6 +185,32 @@ test('an edit re-sent on top of build_on_attempt is recognised even after the ha
   assert.equal(verifies[1].stage, 'keyboard');
 });
 
+test('repeats are dropped after anchoring, and a loose anchor is never pinned to code an earlier edit rewrote', async () => {
+  const {resolveAnchors} = require('../lib/agent.cjs'), {preview} = require('../lib/repair.cjs');
+  const js = {path: 'assets/js/pages/booking.js', content: 'go();\r\n        a();\r\n        b();\r\n'}, php = {path: 'application/views/components/booking_time_step.php', content: '<div></div>\r\n'}, files = [js, php];
+  const R = {path: js.path, old: 'a();\nb();', new: 'a();\nb();\nc();'}, R4 = {path: js.path, old: '    a();\n    b();', new: '    a();\n    b();\n    c();'};
+  const both = resolveAnchors(files, [R, R4]);
+  assert.equal(both.edits.length, 1); assert.equal(both.adjustments[1].dropped, 'once anchored, it repeats an earlier edit');
+  // Edit 1 re-indents the lines edit 2 names in the original: edit 2 is left for the verifier to reject.
+  const wrap = {path: js.path, old: '        a();\n        b();', new: '        if (x) {\n            a();\n            b();\n        }'};
+  assert.deepEqual(resolveAnchors(files, [wrap, R]).adjustments, []);
+  // Old and new differing only in blank lines become a no-op once aligned, and are dropped.
+  const spaced = [{...js, content: 'go();\r\n        a();\r\n\r\n        b();\r\n'}, php], blank = {path: js.path, old: 'a();\nb();', new: 'a();\n\nb();'};
+  assert.match(resolveAnchors(spaced, [blank]).adjustments[0].dropped, /changes nothing/);
+  assert.equal(preview(files, {reason: 'r', edits: resolveAnchors(files, [R]).edits}).files[0].content, 'go();\r\n        a();\r\n        b();\r\n        c();\r\n');
+  // Through a two-level build_on chain, re-sending the first attempt's slipped text is still a repeat.
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'af-agent-')), sent = [];
+  const indented = {path: 'assets/js/pages/booking.js', old: '    App.Utils.UI.setDateTimePickerValue($selectDate, new Date());\n\n    const browserTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;',
+    new: '    App.Utils.UI.setDateTimePickerValue($selectDate, new Date());\n\n    const browserTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;\n    const typedDate = null;'};
+  const proposals = [{diagnosis: 'a', edits: [indented]}, {diagnosis: 'b', build_on_attempt: 1, edits: [featured.edits[0]]}, {diagnosis: 'c', build_on_attempt: 2, edits: [indented]}];
+  const trace = await runAgent({execute: async ({run, proposal, original}) => { if (!original) sent.push(proposal.proposal.edits); return {...stuck, run_id: run.id}; },
+    model: async () => answer('c', proposals.shift()), root, maxAttempts: 3});
+  const third = trace.steps.filter(item => item.kind === 'propose')[2];
+  assert.equal(sent.length, 2, 'the third proposal only repeats kept edits, so it is not run again'); assert.equal(third.adjustments[0].duplicate_of, 'an edit kept from an earlier attempt');
+  assert.match(trace.steps.filter(item => item.kind === 'verify')[2].headline, /every edit repeats one kept from attempt 2/);
+  assert.ok(sent.every(edits => edits.filter(item => item.new.includes('typedDate')).length === 1));
+});
+
 test('left_out advice only points at an attempt build_on_attempt accepts; an empty proposal is named as such', async () => {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'af-agent-')), replies = [];
   const bad = {path: 'assets/js/pages/booking.js', old: 'no such text anywhere', new: 'x'}, real = featured.edits[0];
