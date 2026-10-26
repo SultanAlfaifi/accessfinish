@@ -41,6 +41,7 @@
     2: 'Code search, call-chain provenance of the date field, attempt ledger, reopen evidence, sampling',
     3: 'Whitespace-tolerant anchors, whole-line mismatch reports',
     4: 'Reopen progress tracked, wrong-path edits moved, read-only code named, 12 attempts',
+    5: 'The file\'s own lines returned with a failed anchor; a code frame with a compile error',
   };
   async function versions() {
     const response = await fetch('agent-runs/summary.json'); if (!response.ok) return;

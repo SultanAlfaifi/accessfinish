@@ -197,12 +197,14 @@
     } else if (evidence.stage === 'build' || evidence.stage === 'apply' || evidence.stage === 'format') {
       const pre = el('pre', 'log'); pre.textContent = evidence.error || '';
       wrap.append(el('p', '', evidence.stage === 'build' ? 'The trusted compiler rejected the patched code:' : evidence.stage === 'apply' ? 'The edit did not match the source exactly:' : 'The answer could not be used as a patch:'), pre);
+      if (evidence.code_around_error) { const frame = el('pre', 'log'); frame.textContent = evidence.code_around_error; wrap.append(el('p', 'micro', 'The patched code around the error, as sent back to Nemotron:'), frame); }
       // Where a copied anchor stopped matching the file, as Nemotron was told.
       for (const anchor of (evidence.anchors || []).filter(item => item?.found_in_read_only_file)) wrap.append(facts([['Edit ' + (anchor.your_edit || anchor.edit) + ' targets read-only code', anchor.found_in_read_only_file]]));
       for (const anchor of (evidence.anchors || []).filter(item => item?.first_mismatch)) {
         const miss = anchor.first_mismatch;
         const which = anchor.your_edit ? 'Edit ' + anchor.your_edit : anchor.kept_from_attempt ? 'Edit kept from attempt ' + anchor.kept_from_attempt : 'Edit ' + anchor.edit;
         wrap.append(facts([[which + ', line ' + miss.old_line_number + ' of its anchor', 'Nemotron wrote: ' + miss.your_line], ['The file has', miss.original_line]]));
+        if (anchor.the_file_has?.text) { const lines = el('pre', 'log'); lines.textContent = anchor.the_file_has.text; wrap.append(el('p', 'micro', 'The file\'s own lines from line ' + anchor.the_file_has.from_line + ', sent back to copy exactly:'), lines); }
         if (miss.your_line === miss.original_line) wrap.append(el('p', 'micro', 'These look the same because this report, from agent version ' + (trace.agent_version || 1)
           + ', compared the start of lines, so a line such as "}" matched "},". Version 3 compares whole lines and points to the real difference.'));
       }
