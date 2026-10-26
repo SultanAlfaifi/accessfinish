@@ -17,9 +17,11 @@ jobs:
       - name: Install Qwen3-TTS (CPU)
         run: |
           sudo apt-get update && sudo apt-get install -y --no-install-recommends sox ffmpeg
-          python3 -m venv .venv
-          .venv/bin/pip install --index-url https://download.pytorch.org/whl/cpu torch==2.8.0 torchaudio==2.8.0
-          .venv/bin/pip install qwen-tts==0.1.1
+          # Python 3.12 through uv: the runner's newer default Python has no torch 2.8 wheels.
+          python3 -m venv /tmp/uv && /tmp/uv/bin/pip install --quiet uv
+          /tmp/uv/bin/uv venv --python 3.12 .venv
+          /tmp/uv/bin/uv pip install --python .venv/bin/python --index-url https://download.pytorch.org/whl/cpu torch==2.8.0 torchaudio==2.8.0
+          /tmp/uv/bin/uv pip install --python .venv/bin/python qwen-tts==0.1.1
       - name: Generate narration
         run: .venv/bin/python scripts/narrate.py
       - name: Commit the audio

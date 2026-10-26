@@ -8,6 +8,8 @@ AccessFinish is a repair agent built on **NVIDIA Nemotron 3 Super** (served by *
 
 ▶ **Live page:** https://sultalfaifi.com/accessfinish/ · Track: **Coding and Agentic Engineering**
 
+**In 54 live runs:** a seeded data fault fixed and verified 27/27 times · a real upstream keyboard bug fixed by Nemotron with no hints in 2 of 10 runs of the current agent · **77 false "booked" confirmations caught, none accepted**.
+
 ![AccessFinish agent timeline](media/workbench-preview.png)
 
 ## The loop
@@ -39,21 +41,24 @@ The phone case shows why outcome checks matter: a patch that hardcodes the sampl
 - Since **28 June 2025** the [European Accessibility Act](https://eur-lex.europa.eu/eli/dir/2019/882/oj) requires in-scope services, including e-commerce, to be accessible.
 - Coding agents now write a growing share of UI fixes. A green build or a confirmation page is exactly what they optimise for — and exactly what can be wrong. AccessFinish checks the outcome a person actually needs.
 
-## Results (live, 24 October 2026)
+## Results (live, 22–26 October 2026)
 
-Every run below was made live on a fresh GitHub Actions runner with Nemotron 3 Super on Nebius Token Factory. Traces, patches and raw evidence for all of them are in [`evidence/agent-runs/`](evidence/agent-runs/); totals are in [`web/agent-runs/summary.json`](web/agent-runs/summary.json). These first 14 runs span the agent's development: between keyboard runs we added richer evidence, raised the attempt limit from 4 to 8 and, in the last run, the `read_file` tool.
+Every run below was made live on a fresh GitHub Actions runner with Nemotron 3 Super on Nebius Token Factory: **54 runs, $6.38 of Nemotron in total**. Traces, patches and raw evidence for all of them are in [`evidence/agent-runs/`](evidence/agent-runs/) and on the [evidence page](web/evidence.html); totals are in [`web/agent-runs/summary.json`](web/agent-runs/summary.json). After each batch we read the failed traces, changed the loop and bumped the agent version; results are never mixed across versions.
 
-| Journey | Runs | Verified | Attempts | Typical time | Nemotron cost |
-| --- | --- | --- | --- | --- | --- |
-| **Saved phone** | 7 | **7 / 7, all on the first attempt** | 7 | ~100 s | $0.0313 total |
-| **Keyboard date** | 7 | 0 / 7 | 43 | 3–12 min | $0.3773 total |
+| Agent | What changed | Keyboard: saved correctly | Keyboard: **verified** | Phone: verified (1st attempt) |
+| --- | --- | --- | --- | --- |
+| v1 | Observe → propose → verify → feed back, `read_file`; 4, then 8 attempts | 0 / 7 | 0 / 7 | 7 / 7 (7) |
+| v2 | `search_code`, call-chain provenance of the date field, attempt ledger, reopen evidence | 1 / 5 | 0 / 5 | 5 / 5 (5) |
+| v3 | Whitespace-tolerant anchors, whole-line mismatch reports | 2 / 5 | 0 / 5 | 5 / 5 (5) |
+| v4 | Reopen progress tracked, wrong-path edits moved, read-only code named, 12 attempts | 2 / 5 | **1 / 5** | 5 / 5 (5) |
+| v5 | The file's own lines with a failed anchor; a code frame with a compile error | 2 / 5 | **1 / 5** | 5 / 5 (4) |
 
-- **Phone:** in every run Nemotron traced the wrong saved value to the hardcoded `phone_number` in the booking payload, and the fix passed all nine checks, including a second customer with a different number.
-- **Keyboard date:** not fixed by the agent yet. Of its 43 proposals, 7 were rejected before running, 21 left the keyboard user stuck, and **15 were false successes: the page said "booked" while the database held the wrong day** (1 Nov instead of 2 Nov). Every one of the 7 runs produced at least one false success (first at attempt 2–6), so a confirmation-page check would have shipped a wrong patch in **7 of 7 runs**. AccessFinish accepted none.
-- **Why the date was wrong:** the recorded timeline shows that right after the date is typed, the month-change callback in `booking.js` (`onMonthChange`, line 118) requests `get_unavailable_dates`, and with no key pressed the field jumps from `02/11` to `01/11`, because `booking_http_client.js` then selects the first available day of the month. Nemotron kept proposing time-zone and format changes instead.
-- **It is fixable inside the editable files:** with an operator-supplied diagnosis, Nemotron wrote a fix on 21 October that guards those callbacks while the date input has focus ([`web/featured-case.json`](web/featured-case.json)). It passes this verifier, and every agent run re-verifies it in CI before calling the model. So the gap is diagnosis, not an impossible task.
+- **Phone (seeded fault):** 27 of 27 runs verified, 26 on the first attempt (in the other, Nemotron's first answer named an earlier attempt that did not exist yet). Nemotron traces the wrong saved value to the hardcoded `phone_number` in the booking payload, and the fix passes all nine checks, including a second customer with a different number. About a cent per run.
+- **Keyboard date (real upstream bug): fixed by Nemotron with no hints in 2 of 10 runs of agents v4–v5.** It is two bugs. Typing a date in a later month fires the date picker's month-change handler, which requests `get_unavailable_dates` and overwrites the typed date with the first free day; and reopening a saved booking resets the date to today when **Next** is pressed. In run [`2c87e16a`](evidence/agent-runs/agent-2c87e16a520f678b45cbbbeb.json) (v4) Nemotron made the date reachable (attempt 2, rejected: saved for 1 Nov instead of 2 Nov), traced the reset through the recorded call chain `setDate ← applyUnavailableDates ← getUnavailableDates ← onMonthChange` (attempt 4: saved correctly, but reopening showed today), then built on that attempt to keep the date on **Next** (attempt 6: **verified**). Its three-part patch differs from our earlier reference fix; it passed the keyboard booking, the read-only database check, the fresh-browser reopen, a mouse booking through month navigation, clearing the date, a reserved slot and sandbox isolation. The second verified run, [`2367fdf7`](evidence/agent-runs/agent-2367fdf762b0a63d26ee048b.json) (v5), got there on attempt 11.
+- **Every false success was caught.** Across 27 keyboard runs, **77 attempts reached a "booked" page while the booking was saved, or reopened, with the wrong date**. In all 27 runs the first patch that reached a "booked" page was wrong, so a confirmation-page check would have shipped a wrong patch every time. AccessFinish accepted none of them.
+- **Where attempts still go:** most unverified attempts are edits whose anchor text Nemotron copied inexactly (a dropped comma, a missing line) or that target code in a read-only file; the harness now returns the file's own lines and names read-only code, and the remaining failures are in [the traces](web/evidence.html).
 
-That keyboard result is the point of AccessFinish: a model, a confirmation page and a green build all said "done", and the saved outcome said otherwise.
+That keyboard result is the point of AccessFinish: a model, a confirmation page and a green build all said "done" 77 times, and the saved outcome said otherwise — until the fix was real.
 
 ## Verifier calibration
 
@@ -99,11 +104,11 @@ npm run check:records         # earlier recorded evaluation is intact
 
 ## Earlier evidence
 
-Before the agent, we measured single-shot, operator-guided repairs: on 21 October five frozen Nemotron requests on the keyboard case gave **2/5** full passes (two compile errors, one broken calendar navigation). There the operator supplied the diagnosis; the agent runs above supply none. All raw requests, responses and executions are kept in [`evidence/`](evidence/) and browsable on the [evidence page](web/workbench.html).
+Before the agent, we measured single-shot, operator-guided repairs: on 21 October five frozen Nemotron requests on the keyboard case gave **2/5** full passes (two compile errors, one broken calendar navigation). There the operator supplied the diagnosis; the agent runs above supply none. All raw requests, responses and executions are kept in [`evidence/`](evidence/) and browsable on the [earlier trials page](web/workbench.html).
 
 ## Limits
 
-Two journeys in one application; the phone fault was seeded on purpose. The data is synthetic. This is not a screen-reader user study.
+Two journeys in one application; the phone fault was seeded on purpose. The keyboard bug is fixed in 2 of 10 runs, not reliably, and the agent may edit only two files (`booking.js` and the time-step view). The data is synthetic. This is not a screen-reader user study.
 
 ## License
 
