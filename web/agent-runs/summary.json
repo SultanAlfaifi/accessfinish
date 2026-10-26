@@ -1,34 +1,34 @@
 {
   "generated_from": "evidence/agent-runs",
   "model": "nvidia/nemotron-3-super-120b-a12b",
-  "runs": 44,
-  "cost_usd": 4.4074,
+  "runs": 54,
+  "cost_usd": 6.3786,
   "cases": {
     "keyboard-date": {
-      "runs": 22,
-      "verified": 1,
+      "runs": 27,
+      "verified": 2,
       "first_attempt": 0,
-      "attempts": 177,
-      "executed": 111,
-      "false_booked_caught": 58,
-      "wrong_saves_caught": 52,
-      "reopen_mismatches_caught": 6,
-      "runs_saved_correctly": 5,
-      "cost_usd": 4.1338,
-      "seconds": 8604
+      "attempts": 236,
+      "executed": 143,
+      "false_booked_caught": 77,
+      "wrong_saves_caught": 67,
+      "reopen_mismatches_caught": 10,
+      "runs_saved_correctly": 7,
+      "cost_usd": 6.0506,
+      "seconds": 11646
     },
     "customer-phone": {
-      "runs": 22,
-      "verified": 22,
-      "first_attempt": 22,
-      "attempts": 22,
-      "executed": 22,
+      "runs": 27,
+      "verified": 27,
+      "first_attempt": 26,
+      "attempts": 28,
+      "executed": 27,
       "false_booked_caught": 0,
       "wrong_saves_caught": 0,
       "reopen_mismatches_caught": 0,
-      "runs_saved_correctly": 22,
-      "cost_usd": 0.2736,
-      "seconds": 2325
+      "runs_saved_correctly": 27,
+      "cost_usd": 0.328,
+      "seconds": 2897
     }
   },
   "agent_versions": {
@@ -167,6 +167,41 @@
           "runs_saved_correctly": 5,
           "cost_usd": 0.0784,
           "seconds": 523
+        }
+      }
+    },
+    "5": {
+      "runs": 10,
+      "cost_usd": 1.9712,
+      "max_attempts": [
+        12
+      ],
+      "cases": {
+        "keyboard-date": {
+          "runs": 5,
+          "verified": 1,
+          "first_attempt": 0,
+          "attempts": 59,
+          "executed": 32,
+          "false_booked_caught": 19,
+          "wrong_saves_caught": 15,
+          "reopen_mismatches_caught": 4,
+          "runs_saved_correctly": 2,
+          "cost_usd": 1.9167,
+          "seconds": 3042
+        },
+        "customer-phone": {
+          "runs": 5,
+          "verified": 5,
+          "first_attempt": 4,
+          "attempts": 6,
+          "executed": 5,
+          "false_booked_caught": 0,
+          "wrong_saves_caught": 0,
+          "reopen_mismatches_caught": 0,
+          "runs_saved_correctly": 5,
+          "cost_usd": 0.0545,
+          "seconds": 572
         }
       }
     }
