@@ -7,6 +7,9 @@ const root = path.resolve(__dirname, '..'), source = path.join(root, 'evidence/a
 const REPO = 'https://github.com/SultanAlfaifi/accessfinish', CONTEXT = 3; // one more than the page shows, so it still marks the hidden lines
 const read = file => JSON.parse(fs.readFileSync(file, 'utf8'));
 const git = args => { try { return cp.execFileSync('git', args, {cwd: root, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore']}); } catch { return ''; } };
+// Commits rewritten for authorship keep their trees; traces name the old commit, links use the new one.
+const renamed = (() => { try { return read(path.join(root, 'evidence/commit-map.json')).map; } catch { return {}; } })();
+const current = sha => { if (!sha) return sha; const old = Object.keys(renamed).find(key => key.startsWith(sha)); return old ? renamed[old] : sha; };
 
 // The workflow commits traces as "Record live agent runs from <sha>", <sha> being the agent's source.
 // A shallow clone grafts its oldest commits as roots that seem to add every file, so those commits are
@@ -52,8 +55,8 @@ for (const name of fs.readdirSync(source).filter(name => /^agent-[a-f0-9]{24}\.j
   if (run.id !== id) throw Error(name + ' holds trace ' + run.id);
   const verifies = run.steps.filter(step => step.kind === 'verify'), executed = verifies.filter(step => step.run_id).length;
   // Version 2 traces name their own commit; earlier ones are known by the workflow commit that recorded them.
-  const before = previous.get(id) || {}, origin = known.get(id) || {recorded_in: before.recorded_in || null, agent_commit: before.agent_commit || null};
-  const commit = run.git_commit || origin.agent_commit, ref = origin.recorded_in || process.env.GITHUB_REF_NAME || 'HEAD';
+  const before = previous.get(id) || {}, origin = known.get(id) || {recorded_in: current(before.recorded_in)?.slice(0, 7) || null, agent_commit: before.agent_commit || null};
+  const commit = current(run.git_commit || origin.agent_commit), ref = origin.recorded_in || process.env.GITHUB_REF_NAME || 'HEAD';
   const raw = 'evidence/agent-runs/' + name, sha256 = crypto.createHash('sha256').update(bytes).digest('hex');
   runs.push({id, case_id: run.case_id, title: run.title, started_at_utc: run.started_at_utc, finished_at_utc: run.finished_at_utc || null,
     state: run.state, error: run.error || undefined, featured: featured.has(id) || undefined,

@@ -75,7 +75,7 @@ function createServer({root = runtimeRoot(), execute = fixture.execute} = {}) {
       if (req.method !== 'GET') return send(res, 405, {error: 'Method not allowed.'});
       const relative = url.pathname === '/' ? 'index.html' : decodeURIComponent(url.pathname).replace(/^\//, ''), file = path.resolve(web, relative);
       if (!file.startsWith(web + path.sep) || !fs.existsSync(file) || !fs.statSync(file).isFile()) return send(res, 404, {error: 'File not found.'});
-      const mime = {'.html': 'text/html; charset=utf-8', '.css': 'text/css; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.json': 'application/json; charset=utf-8', '.svg': 'image/svg+xml', '.png': 'image/png'};
+      const mime = {'.html': 'text/html; charset=utf-8', '.css': 'text/css; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.json': 'application/json; charset=utf-8', '.svg': 'image/svg+xml', '.png': 'image/png', '.jpg': 'image/jpeg'};
       const indexHtml = file === path.join(web, 'workbench.html') ? fs.readFileSync(file, 'utf8').replace('data-mode="recorded-review"', 'data-mode="local"') : null;
       res.writeHead(200, {'Content-Type': mime[path.extname(file)] || 'application/octet-stream', 'X-Content-Type-Options': 'nosniff', 'Content-Security-Policy': "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'none'; frame-ancestors 'none'"});
       if (indexHtml !== null) res.end(indexHtml); else fs.createReadStream(file).pipe(res);

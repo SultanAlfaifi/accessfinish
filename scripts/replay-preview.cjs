@@ -1,7 +1,7 @@
 'use strict';
 const http = require('node:http'), fs = require('node:fs'), path = require('node:path');
 const web = path.resolve(__dirname, '../web'), port = 4178;
-const types = {'.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.css': 'text/css; charset=utf-8', '.json': 'application/json; charset=utf-8', '.png': 'image/png'};
+const types = {'.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.css': 'text/css; charset=utf-8', '.json': 'application/json; charset=utf-8', '.png': 'image/png', '.jpg': 'image/jpeg'};
 http.createServer((request, response) => {
   try {
     if (request.method !== 'GET' || !['127.0.0.1:' + port, 'localhost:' + port].includes(request.headers.host)) throw Error();

@@ -2,6 +2,10 @@
 
 **The AI says "fixed". AccessFinish checks the user can finish.**
 
+[![Watch the 2-minute film on YouTube](web/media/film-poster.jpg)](https://youtu.be/ZHSP0GYMM20)
+
+▶ **Watch the 2-minute film:** https://youtu.be/ZHSP0GYMM20
+
 AccessFinish is a repair agent built on **NVIDIA Nemotron 3 Super** (served by **Nebius Token Factory**). It doesn't trust a green confirmation page. It drives the real user journey with a keyboard, reads what was actually saved in the database, reopens it in a fresh browser, feeds every failure back to Nemotron — and **accepts no fix until that saved outcome is correct**.
 
 *Access:* can a keyboard user get through? *Finish:* is what they typed actually saved?
