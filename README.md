@@ -18,9 +18,9 @@ A repair agent on **NVIDIA Nemotron 3 Super** (served by **Nebius Token Factory*
 <a href="https://youtu.be/ZHSP0GYMM20"><img src="web/media/film-poster.jpg" width="820" alt="Watch the 2-minute film on YouTube"></a>
 <br><sub>No YouTube? <a href="media/accessfinish-agent-demo.mp4">Watch the MP4 in the repository (20 MB)</a></sub>
 
-| **27 / 27** | **2 / 10** | **77** | **$6.38** |
+| **0 / 77** | **2 / 10** | **27 / 27** | **$6.38** |
 | :---: | :---: | :---: | :---: |
-runs on a **seeded** phone fault fixed and verified, 26 on the first attempt | runs of agents v4–v5 where Nemotron fixed a **real upstream keyboard bug**, no diagnosis supplied | false “booked” pages caught: saved wrong (67) or reopened wrong (10), **none accepted** | for all **54 live runs** on Nebius Token Factory |
+| false “booked” fixes accepted: 67 saved the wrong date, 10 reopened wrong. In **27 of 27** keyboard runs the first “booked” patch was wrong | runs of agents v4–v5 where Nemotron fixed a **real upstream keyboard bug**, no root cause supplied (2 of 27 keyboard runs overall) | runs verified on a **seeded** phone fault, our calibration control, 26 on the first attempt | estimated Nemotron cost for all **54 live runs** at list price: about **$1.70** per verified keyboard fix |
 
 </div>
 
@@ -31,6 +31,15 @@ Ask an AI to fix a broken form and it will tell you it's fixed. The page loads, 
 In our runs this happened **77 times**: Nemotron's patch reached a “booked” page while the date was saved or reopened wrong. In **all 27** keyboard runs, the first patch that reached a “booked” page was wrong. A check that trusts the confirmation page would have shipped a broken fix every time.
 
 This matters at scale. About **1.3 billion people (16%)** live with a significant disability ([WHO](https://www.who.int/news-room/fact-sheets/detail/disability-and-health)), **95.9%** of the top million home pages have detectable WCAG failures ([WebAIM Million 2026](https://webaim.org/projects/million/)), and since **28 June 2025** the [European Accessibility Act](https://eur-lex.europa.eu/eli/dir/2019/882/oj) requires in-scope services such as e-commerce to be accessible. Meanwhile coding agents write a growing share of UI fixes, judged by green builds and success pages: exactly the signals that can lie.
+
+### What existing checks would have said about attempt 2's patch
+
+| Check | What it looks at | Verdict on a patch that saves 1 Nov instead of 2 Nov |
+| --- | --- | --- |
+| axe / Lighthouse | Accessibility rules on one rendered page state: roles, labels, contrast | Out of scope: the wrong date only appears after typing, submitting and reading the database |
+| The app's own tests | The pinned Easy!Appointments source ships two PHP unit-test files (array and validation helpers); none exercises the booking page | Nothing runs |
+| A test or LLM judge that reads the confirmation page | The page after submitting | ✅ “booked”: it passes. In all 27 keyboard runs, the first patch to reach that page was wrong |
+| **AccessFinish** | The saved row (read-only database account) and the booking reopened in a fresh browser | ❌ **Rejected**: saved 1 Nov instead of 2 Nov, with the call chain of the code that changed the typed date |
 
 <p align="center"><img src="media/readme/booked-vs-verified.png" width="760" alt="Two booking confirmations from the same run. Attempt 2: typed 2026-11-02, saved 2026-11-01, rejected. Attempt 6: typed and saved 2026-11-02, verified."></p>
 
@@ -45,7 +54,7 @@ flowchart LR
 ```
 
 1. **Observe.** A headless browser books an appointment with the keyboard only, recording where focus goes, where it gets stuck, and which page code changes what the user typed.
-2. **Diagnose & repair.** Nemotron gets the goal, the verifier's evidence and the source files, **never the cause or the fix**. It investigates with read-only `search_code` and `read_file`, then returns exact code edits plus the evidence its diagnosis explains.
+2. **Diagnose & repair.** Nemotron gets the goal, the verifier's evidence and the source files, but **no root cause and no fix** (the acceptance checks do name the date field and how the verifier types into it). It investigates with read-only `search_code` and `read_file`, then returns exact code edits plus the evidence its diagnosis explains.
 3. **Verify for real.** Each candidate is built and run in a fresh, offline Docker sandbox: keyboard booking, the saved row read back through a read-only database account, the booking reopened in a fresh browser, and regression checks (a mouse booking with different data through month navigation, clearing the date, a reserved slot, unchanged records, sandbox isolation).
 4. **Feed back.** A compile error with its code frame, a stuck key, a wrong saved value, or the call chain that silently overwrote the date goes back to Nemotron, along with a ledger of every earlier attempt and which one got furthest. **Nothing is accepted unless every check passes.**
 
@@ -74,7 +83,7 @@ The turning point was **agent v2**, which gave Nemotron *causal evidence*. The v
 
 <p align="center"><img src="media/readme/evidence-names-the-code.png" width="760" alt="The verifier records the call chain onMonthChange, getUnavailableDates, applyUnavailableDates, setDate that overwrote the typed date, and the evidence goes back to Nemotron"></p>
 
-Nemotron's final edits touch the same code sites as our earlier guided reference fix, but with guard logic of its own. The second verified run, [`2367fdf7`](evidence/agent-runs/agent-2367fdf762b0a63d26ee048b.json) (v5), got there on attempt 11. **Replay any run step by step on the [live page](https://sultalfaifi.com/accessfinish/?case=keyboard-date&run=agent-2c87e16a520f678b45cbbbeb).**
+Nemotron's final edits touch the same code sites as our earlier guided reference fix, but with guard logic of its own. The second verified run, [`2367fdf7`](evidence/agent-runs/agent-2367fdf762b0a63d26ee048b.json) (v5), got there on attempt 11. **Replay any run step by step on the [live page](https://sultalfaifi.com/accessfinish/?case=keyboard-date&run=agent-2c87e16a520f678b45cbbbeb#agent).**
 
 <details>
 <summary><b>The patch Nemotron wrote (run 2c87e16a, attempt 6, verified)</b></summary>
@@ -170,9 +179,9 @@ All **54 runs** were made live on [fresh GitHub Actions runners](https://github.
 | v4 | Reopen progress tracked, wrong-path edits moved, read-only code named, 12 attempts | 2 / 5 | **1 / 5** | 5 / 5 (5) |
 | v5 | The file's own lines returned with a failed anchor; a code frame with a compile error | 2 / 5 | **1 / 5** | 5 / 5 (4) |
 
-- **Saved phone (seeded fault):** the confirmation page said success while the database stored `0000000000` instead of the number typed. Nemotron traced it to a hard-coded `phone_number` in the booking payload. Verified in **27 of 27** runs, 26 on the first attempt (in 3 of them, the edit applied only after the harness's recorded whitespace re-anchoring), about a cent per run.
-- **Keyboard date (real upstream bug):** fixed by Nemotron, with no diagnosis supplied, in **2 of 10 runs of agents v4–v5** (0 of 17 before).
-- **“No diagnosis supplied”** means Nemotron gets the goal, the acceptance checks (which name the date field and how the verifier types into it), the verifier's evidence and the harness's notes on its own earlier attempts, but never the cause or the fix.
+- **Saved phone (seeded fault, our calibration control):** the confirmation page said success while the database stored `0000000000` instead of the number typed. Nemotron traced it to a hard-coded `phone_number` in the booking payload. Verified in **27 of 27** runs, 26 on the first attempt (in 3 of them, the edit applied only after the harness's recorded whitespace re-anchoring), about a cent per run.
+- **Keyboard date (real upstream bug):** fixed by Nemotron, with no root cause supplied, in **2 of 10 runs of agents v4–v5** (0 of 17 before; 2 of 27 overall). v2–v3 allowed 8 attempts and v4–v5 allowed 12; the v5 run was verified on attempt 11.
+- **“No root cause supplied”** means Nemotron gets the goal, the acceptance checks (which name the date field and how the verifier types into it), the verifier's evidence and the harness's notes on its own earlier attempts, but never the cause or the fix.
 
 <details>
 <summary><b>Where the unverified attempts went</b></summary>
@@ -199,6 +208,43 @@ The harness now returns the file's own lines and compiler code frames. Every fai
 | Five frozen single-shot proposals replayed on fresh runners (four replays: 21 Oct, 23 Oct and twice on 24 Oct) | 2 pass, 3 fail | accept/reject matched 5 / 5 every time; failure stage 5 / 5 on 21 and 23 Oct, 4 / 5 on 24 Oct ([why](evidence/reproduction-variation-20261024/README.md)) |
 
 Before the agent, we measured single-shot, operator-guided repairs. Five frozen Nemotron requests **with the diagnosis supplied** gave 2/5 full passes on the keyboard case. The agent runs above supply no diagnosis. The guide to every evidence folder is [`evidence/README.md`](evidence/README.md).
+
+### Nemotron on Token Factory, by the numbers
+
+From the usage Token Factory returned with each of the **645** requests (258 proposals and 387 `search_code` / `read_file` lookups), summed by [`scripts/token-stats.cjs`](scripts/token-stats.cjs) into [`web/agent-runs/usage.json`](web/agent-runs/usage.json):
+
+- **78%** of the 18.0M prompt tokens were served from the prompt cache, because each attempt resends the growing conversation.
+- **80%** of the 1.04M output tokens were reasoning. It is kept in the traces for audit and never sent back.
+- A median of **19 s** (p90: 46 s) from the start of an attempt to Nemotron's proposal, including its lookups.
+- About **$1.70** per verified keyboard fix in agents v4–v5, and about **$0.01** per run on the phone control.
+
+The $6.38 is the traces' estimate at the public list price ($0.30 / $0.90 per million input / output tokens, cached input counted at the full price), not a billed amount.
+
+## What “verified” proves, and what it doesn't
+
+| Proves | Doesn't prove |
+| --- | --- |
+| A keyboard-only browser session reaches the date, books the slot and sees the confirmation | That the calendar grid works with arrow keys: the verifier types the date into the field its acceptance checks name |
+| The saved row, read with a read-only account, holds the date and customer that were typed | Anything a screen-reader user study would show |
+| Reopening the booking in a fresh browser shows the same date | That it generalises: one app, two journeys, two editable files |
+| A mouse booking with different data, a cleared date and a reserved slot still behave; no other record changed | Which days the calendar disables after a typed month change: the oracle does not check that |
+
+## Use it as a merge gate
+
+The goal is a check in CI: a coding agent (or a person) opens a pull request, AccessFinish runs the journey in its sandbox and blocks the merge unless the outcome is proven. [`examples/pr-comment.md`](examples/pr-comment.md) is the comment it would post, rendered by [`scripts/pr-comment.cjs`](scripts/pr-comment.cjs) from the recorded run `2c87e16a`: attempts 2 and 4 blocked with their evidence, attempt 6 verified with every check and the patch. It is generated from the trace and posted nowhere; the GitHub app is the next step.
+
+## Add a journey
+
+What is generic and what each new journey needs, with today's line counts:
+
+| Reused as is | Written per journey (booking today) |
+| --- | --- |
+| The agent loop: tools, exact-edit anchors, attempt ledger, feedback ([`lib/agent.cjs`](lib/agent.cjs), 582 lines) | A keyboard driver that records the focus trail and the setter/async-stack provenance ([`container-keyboard-booking-worker.cjs`](integration/portable/container-keyboard-booking-worker.cjs) 342 + [`booking-keyboard-macros.cjs`](integration/portable/booking-keyboard-macros.cjs) 70) |
+| The sandbox: offline containers, read-only database account, fresh-browser runs, isolation audit ([`lib/fixture.cjs`](lib/fixture.cjs), 254) | The outcome rule: what "saved correctly" means ([`outcome-evaluator.cjs`](integration/portable/outcome-evaluator.cjs) 185) and the read-only queries ([`select-evaluator.php`](integration/portable/select-evaluator.php) 13) |
+| Run records, evidence index, the replay and evidence pages, the PR comment | The reopen observer (175) and regression controls (56) |
+| | The case: goal, acceptance checks and the editable files ([`lib/cases.cjs`](lib/cases.cjs) 33, [`lib/repair.cjs`](lib/repair.cjs) `PATHS`), plus the app's fixture data |
+
+Only the booking journey exists today; a second app or journey has not been built, so this is the cost estimate, not a result.
 
 ## Try it
 
@@ -234,6 +280,7 @@ scripts/                   evidence index and checks, CI replays, the film pipel
 web/                       the replay page and the evidence page (docs/ is the GitHub Pages copy)
 evidence/                  every live run and earlier trial, raw; start at evidence/README.md
 media/                     the demo film, its narration and shots, README images
+examples/                  the PR comment AccessFinish would post as a merge gate (rendered from a recorded run)
 submission/                Devpost story, judge guide, testing instructions, feedback on Nemotron and Token Factory
 test/                      60 tests
 server.cjs                 the local page with Run live (npm start)

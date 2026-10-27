@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="description" content="Every live AccessFinish agent run with Nemotron, including the failures: attempts, verdicts, false confirmations caught, cost and the raw trace of each.">
-  <title>Evidence · AccessFinish</title><link rel="stylesheet" href="agent.css?v=c33f2f2a7ab9916a">
+  <title>Evidence · AccessFinish</title><link rel="stylesheet" href="agent.css?v=695faa05bbd1b077">
 </head>
 <body>
 <a class="skip" href="#runs-heading">Skip to the runs</a>
@@ -22,18 +22,31 @@
     <div><strong id="total-runs">—</strong><span>live agent runs</span></div>
     <div><strong id="total-executed">—</strong><span>patches built and checked in a fresh sandbox</span><span class="aside" id="total-unexecuted-note" hidden><span id="total-unexecuted"></span> more rejected before execution: an edit did not apply, or the answer was malformed</span></div>
     <div><strong id="total-caught">—</strong><span>false "booked" confirmations caught</span></div>
-    <div><strong id="total-cost">—</strong><span>Nemotron cost for all of them</span></div>
+    <div><strong id="total-cost">—</strong><span>estimated Nemotron cost for all of them (list price)</span></div>
+  </section>
+
+  <section class="runs-section" aria-labelledby="usage-heading">
+    <h2 id="usage-heading">Nemotron on Token Factory, by the numbers</h2>
+    <p>From the usage Token Factory returned with every request, summed by <code>scripts/token-stats.cjs</code>. Cost is the traces' estimate at the public list price ($0.30 / $0.90 per million input / output tokens, cached input counted at the full price), not a billed amount.</p>
+    <div class="facts usage" id="usage" aria-live="off">
+      <div><strong id="u-requests">—</strong><span>model requests (proposals plus <code>search_code</code> / <code>read_file</code> lookups)</span></div>
+      <div><strong id="u-cached">—</strong><span>of prompt tokens served from the prompt cache: each attempt resends the growing conversation</span></div>
+      <div><strong id="u-reasoning">—</strong><span>of output tokens were reasoning, kept in the traces for audit and never sent back</span></div>
+      <div><strong id="u-latency">—</strong><span>median from the start of an attempt to Nemotron's proposal, including its lookups (<span id="u-p90">—</span> at p90)</span></div>
+      <div><strong id="u-fix">—</strong><span>per verified keyboard fix in agents v4–v5 (all runs' cost ÷ verified fixes)</span></div>
+      <div><strong id="u-phone">—</strong><span>per run on the seeded phone control</span></div>
+    </div>
   </section>
 
   <section class="runs-section" aria-labelledby="versions-heading">
     <h2 id="versions-heading">How the agent improved</h2>
-    <p>Each version changed the loop after reading the previous version's failed runs; from v2 on, results are never mixed across versions (v1 groups the pre-versioning runs). The keyboard case has two bugs: the typed date is reset by page code, and reopening a booking resets it again. "Saved correctly" counts runs in which some attempt fixed the first.</p>
+    <p>Each version changed the loop after reading the previous version's failed runs; from v2 on, results are never mixed across versions (v1 groups the pre-versioning runs). Each version ran 5 keyboard and 5 phone runs (v1: 7 each), one square per run below. The keyboard case has two bugs: the typed date is reset by page code, and reopening a booking resets it again. "Saved correctly" counts runs in which some attempt fixed the first.</p>
     <div class="table-scroll" role="region" aria-labelledby="versions-caption" tabindex="0">
       <table class="runs">
         <caption class="sr-only" id="versions-caption">Results per agent version</caption>
         <thead><tr>
-          <th scope="col">Version</th><th scope="col">What changed</th><th scope="col" class="num">Keyboard runs</th><th scope="col" class="num">Saved correctly</th>
-          <th scope="col" class="num">Verified</th><th scope="col" class="num">Executed / attempts</th><th scope="col" class="num">Phone: first-attempt fixes</th><th scope="col" class="num">Cost</th>
+          <th scope="col">Version</th><th scope="col" class="num">Keyboard: verified</th><th scope="col" class="num">Keyboard: saved correctly</th><th scope="col">Keyboard runs</th>
+          <th scope="col" class="num">Phone: first-attempt fixes</th><th scope="col" class="num">Executed / attempts</th><th scope="col" class="num">Cost</th><th scope="col">What changed</th>
         </tr></thead>
         <tbody id="versions"></tbody>
       </table>
@@ -42,6 +55,12 @@
 
   <section class="runs-section" aria-labelledby="runs-heading">
     <h2 id="runs-heading" tabindex="-1">Live agent runs</h2>
+    <fieldset class="filters"><legend>Show</legend>
+      <label><input type="radio" name="filter" value="all" checked> All runs</label>
+      <label><input type="radio" name="filter" value="keyboard-date"> Keyboard (real bug)</label>
+      <label><input type="radio" name="filter" value="customer-phone"> Phone (seeded control)</label>
+      <label><input type="radio" name="filter" value="verified"> Verified only</label>
+    </fieldset>
     <p><b>Replay</b> opens the run in the timeline on the home page. <b>Trace</b> is the copy the page replays. <b>Raw</b> is the complete trace with all of its evidence, pinned to the commit that recorded it; the agent column links to the code the agent ran.</p>
     <div class="table-scroll" role="region" aria-labelledby="runs-caption" tabindex="0">
       <table class="runs">
@@ -62,6 +81,6 @@
   </section>
 </main>
 <footer><span>AccessFinish — finish the task, verify the result.</span><a href="https://github.com/SultanAlfaifi/accessfinish">MIT · source on GitHub</a></footer>
-<script src="evidence.js?v=ab65a8541515a6ee"></script>
+<script src="evidence.js?v=46457951d9f2a45d"></script>
 </body>
 </html>

@@ -172,7 +172,9 @@
       head.append(field, header('Typed by the user', 'col'), header('Saved in the database', 'col')); thead.append(head);
       table.append(el('caption', 'sr-only', 'What the user typed compared with what the database saved'), thead, body);
       let differs = false;
-      for (const [label, a, b] of [['Appointment', expected.start, saved.appointments?.[0]?.start], ['Phone', typed.phone_number, customer.phone_number], ['Email', typed.email, customer.email]]) {
+      // The keyboard journey tests the date only; its synthetic customer always types 0000000000, so the contact rows stay out of the way.
+      const rows = [['Appointment', expected.start, saved.appointments?.[0]?.start], ['Phone', typed.phone_number, customer.phone_number], ['Email', typed.email, customer.email]];
+      for (const [label, a, b] of trace?.case_id === 'keyboard-date' ? rows.slice(0, 1) : rows) {
         if (!a && !b) continue;
         differs = differs || a !== b;
         const row = el('tr', a === b ? '' : 'mismatch'), savedCell = el('td', '', b || '—');
@@ -223,6 +225,7 @@
       ['Saved customer', [proof.customer?.name, proof.customer?.phone_number].filter(Boolean).join(' · ')],
       ['Typed by the user', proof.typed && [proof.typed.first_name + ' ' + proof.typed.last_name, proof.typed.phone_number].join(' · ')],
       ['Reopened in a fresh browser', proof.reopened_date], ['Keyboard actions', proof.keyboard_actions]]));
+    if (trace.case_id === 'keyboard-date') box.append(el('p', 'micro', 'This journey\'s synthetic customer types the phone 0000000000; only the date is under test here.'));
     const list = el('ul', 'checks'); for (const check of CHECKS) list.append(el('li', 'ok', check)); box.append(list);
     if (trace.accepted.patch) {
       if (patchUrl) URL.revokeObjectURL(patchUrl);
@@ -281,7 +284,7 @@
       const summary = await json('agent-runs/summary.json'), phone = summary.cases['customer-phone'], keyboard = summary.cases['keyboard-date'];
       if (phone) {
         $('#fact-phone').textContent = phone.verified + ' / ' + phone.runs;
-        $('#verdict-customer-phone').textContent = 'Verified in ' + phone.verified + ' of ' + phone.runs + ' runs, ' + phone.first_attempt + ' on the first attempt';
+        $('#verdict-customer-phone').textContent = 'Seeded control · verified in ' + phone.verified + ' of ' + phone.runs + ' runs, ' + phone.first_attempt + ' on the first attempt';
       }
       if (keyboard) {
         // Keyboard results from the first agent version that verified the case onwards (earlier versions never did).
@@ -294,7 +297,7 @@
         $('#verdict-keyboard-date').textContent = (fixed ? 'Fixed by Nemotron in ' + fixed + ' of ' + tried + ' runs (' + span + ')' : 'Not fixed yet') + ' · ' + caught + ' false "booked" pages caught';
         $('#verdict-keyboard-date').classList.toggle('good', fixed > 0); $('#verdict-keyboard-date').classList.toggle('caught', !fixed);
         $('#fact-keyboard').textContent = fixed ? fixed + ' / ' + tried : '0';
-        $('#fact-keyboard-label').textContent = fixed ? 'keyboard runs fixed by Nemotron, no diagnosis supplied (' + span + ')' : 'keyboard runs fixed so far';
+        $('#fact-keyboard-label').textContent = fixed ? 'keyboard runs fixed by Nemotron, no root cause supplied (' + span + '; ' + keyboard.verified + ' of ' + keyboard.runs + ' overall)' : 'keyboard runs fixed so far';
       }
       $('#fact-cost').textContent = money(summary.cost_usd); $('#fact-runs').textContent = String(summary.runs);
     } catch {}
@@ -342,7 +345,7 @@
     // In one column the evidence sits below the whole timeline: bring it into view after a tap, leaving focus on the
     // step; after Enter or Space, move focus to it so keyboard users land on what they chose (Shift+Tab goes back).
     const top = $('#detail').getBoundingClientRect().top;
-    if (narrow.matches && !pointer) $('#detail').focus();
+    if (narrow.matches && !pointer) { $('#detail').focus({preventScroll: true}); $('#detail').scrollIntoView({block: 'start'}); }
     else if (pointer && narrow.matches && (top < 0 || top > innerHeight * 0.75)) $('#detail').scrollIntoView({block: 'start', behavior: reduced.matches ? 'auto' : 'smooth'});
   }
   function notify(text, id) { noticeCase = id; $('#notice').textContent = text; $('#notice').hidden = id !== caseId; }
@@ -427,5 +430,7 @@
     }
     await Promise.all(CASES.filter(id => !traces.has(id)).map(id => json('agent-runs/' + id + '.json').then(run => traces.set(id, run), () => {})));
     select(caseId); renderSummary();
+    // A shared link to a case or run lands on the replay, not the hero.
+    if (wantedRun || params.has('case')) { $('#tab-' + caseId)?.focus({preventScroll: true}); $('#agent').scrollIntoView({block: 'start'}); }
   })();
 })();

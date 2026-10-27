@@ -1,0 +1,103 @@
+{
+  "generated_from": "evidence/agent-runs",
+  "generator": "scripts/token-stats.cjs",
+  "note": "Requests are the model calls that returned usage. Cost is the traces' estimate at the public list price ($0.30 / $0.90 per million input / output tokens), with cached input counted at the full input price; it is not a billed amount.",
+  "runs": 54,
+  "requests": 645,
+  "prompt_tokens": 18007651,
+  "cached_prompt_tokens": 14072080,
+  "cached_share": 0.781,
+  "completion_tokens": 1043874,
+  "reasoning_tokens": 837954,
+  "reasoning_share": 0.803,
+  "estimated_cost_usd": 6.38,
+  "seconds_to_proposal": {
+    "median": 18.9,
+    "p90": 45.9,
+    "note": "From the start of an attempt to Nemotron's proposal, including its code lookups."
+  },
+  "phone_cost_per_run_usd": 0.012,
+  "keyboard_v4_v5_cost_per_verified_fix_usd": 1.7,
+  "by_case_and_version": [
+    {
+      "case_id": "customer-phone",
+      "agent_version": "1",
+      "runs": 7,
+      "verified": 7,
+      "cost_usd": 0.031,
+      "median_run_minutes": 1.7
+    },
+    {
+      "case_id": "customer-phone",
+      "agent_version": "2",
+      "runs": 5,
+      "verified": 5,
+      "cost_usd": 0.105,
+      "median_run_minutes": 1.9
+    },
+    {
+      "case_id": "customer-phone",
+      "agent_version": "3",
+      "runs": 5,
+      "verified": 5,
+      "cost_usd": 0.059,
+      "median_run_minutes": 1.8
+    },
+    {
+      "case_id": "customer-phone",
+      "agent_version": "4",
+      "runs": 5,
+      "verified": 5,
+      "cost_usd": 0.078,
+      "median_run_minutes": 1.7
+    },
+    {
+      "case_id": "customer-phone",
+      "agent_version": "5",
+      "runs": 5,
+      "verified": 5,
+      "cost_usd": 0.054,
+      "median_run_minutes": 1.9
+    },
+    {
+      "case_id": "keyboard-date",
+      "agent_version": "1",
+      "runs": 7,
+      "verified": 0,
+      "cost_usd": 0.377,
+      "median_run_minutes": 4.5
+    },
+    {
+      "case_id": "keyboard-date",
+      "agent_version": "2",
+      "runs": 5,
+      "verified": 0,
+      "cost_usd": 1.089,
+      "median_run_minutes": 7.3
+    },
+    {
+      "case_id": "keyboard-date",
+      "agent_version": "3",
+      "runs": 5,
+      "verified": 0,
+      "cost_usd": 1.185,
+      "median_run_minutes": 6.2
+    },
+    {
+      "case_id": "keyboard-date",
+      "agent_version": "4",
+      "runs": 5,
+      "verified": 1,
+      "cost_usd": 1.482,
+      "median_run_minutes": 7.6
+    },
+    {
+      "case_id": "keyboard-date",
+      "agent_version": "5",
+      "runs": 5,
+      "verified": 1,
+      "cost_usd": 1.917,
+      "median_run_minutes": 10.5
+    }
+  ]
+}
