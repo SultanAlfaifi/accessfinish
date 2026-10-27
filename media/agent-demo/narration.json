@@ -6,24 +6,16 @@
   "beats": [
     {
       "id": "hero",
-      "text": "Ask an AI to fix a broken form, and it will tell you it's fixed. The page loads. A confirmation appears. But did the user's booking actually get saved, correctly?"
-    },
-    {
-      "id": "phone-observe",
-      "text": "Here, the booking page says success. But the database stored the wrong phone number. Nobody notices, unless you check what was saved."
-    },
-    {
-      "id": "phone-propose",
-      "text": "AccessFinish drives the journey in a real browser, then hands the evidence and the source code to NVIDIA Nemotron, on Nebius Token Factory. It is never told the cause. Nemotron finds the hard-coded value, and writes the fix.",
-      "say": "AccessFinish drives the journey in a real browser, then hands the evidence and the source code to NVIDIA Nemo-tron, on Nebius Token Factory. It is never told the cause. Nemo-tron finds the hard-coded value, and writes the fix."
-    },
-    {
-      "id": "phone-proof",
-      "text": "Every fix is built in a fresh, offline sandbox, and checked for real: the saved database row, a fresh browser, and a second customer with a different number. Twenty-seven live runs. Twenty-seven verified fixes, for about a cent each."
+      "text": "Both of these pages say booked. Only one booking was saved right. An AI agent said fixed, both times. AccessFinish checks that the user can actually finish."
     },
     {
       "id": "keyboard-intro",
-      "text": "Now a real bug from the open-source app. A keyboard user can't reach the date picker at all."
+      "text": "Here is a real bug in the open-source Easy Appointments app. A keyboard user can't reach the date picker at all."
+    },
+    {
+      "id": "keyboard-propose",
+      "text": "AccessFinish drives the journey in a real browser, then hands the evidence and the source code to NVIDIA Nemotron, on Nebius Token Factory. No root cause is given. Nemotron searches the code, and writes a fix.",
+      "say": "AccessFinish drives the journey in a real browser, then hands the evidence and the source code to NVIDIA Nemo-tron, on Nebius Token Factory. No root cause is given. Nemo-tron searches the code, and writes a fix."
     },
     {
       "id": "keyboard-wrong",
@@ -50,9 +42,14 @@
       "text": "Across twenty-seven keyboard runs, seventy-seven false booked confirmations were caught. Not one got through."
     },
     {
+      "id": "phone-control",
+      "text": "As a control, we also planted a simple fault: a wrong phone number behind a success page. Nemotron fixed it in all twenty-seven runs, for about a cent each.",
+      "say": "As a control, we also planted a simple fault: a wrong phone number behind a success page. Nemo-tron fixed it in all twenty-seven runs, for about a cent each."
+    },
+    {
       "id": "facts",
-      "text": "Fifty-four live runs, for under seven dollars of Nemotron. Fixes that are proven, not promised.",
-      "say": "Fifty-four live runs, for under seven dollars of Nemo-tron. Fixes that are proven, not promised."
+      "text": "Fifty-four live runs, for under seven dollars of Nemotron. On the real bug, the final agents found a verified fix in two of ten runs. Fixes that are proven, not promised.",
+      "say": "Fifty-four live runs, for under seven dollars of Nemo-tron. On the real bug, the final agents found a verified fix in two of ten runs. Fixes that are proven, not promised."
     },
     {
       "id": "close",

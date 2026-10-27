@@ -23,8 +23,6 @@ async function main() {
   const unstick = () => page.addStyleTag({content: '.detail{position:static!important;max-height:none!important;overflow:visible!important}'});
 
   await page.goto(URL + '?case=customer-phone'); await page.waitForTimeout(800); await unstick();
-  await open(/Run the journey on the original code/); await shot('#detail', 'phone-observe');
-  await open(/Attempt 1 · Nemotron proposes/); await shot('#detail', 'phone-propose');
   await open(/Attempt 1 · Verify/); await shot('#detail', 'phone-proof');
 
   const run = JSON.parse(fs.readFileSync(path.join(__dirname, '../evidence/agent-runs', KB_RUN + '.json'), 'utf8'));
@@ -35,6 +33,7 @@ async function main() {
   await page.click('#show-all').catch(() => {}); await page.waitForTimeout(300);
   await open(/Run the journey on the original code/); await shot('#detail', 'kb-observe');
   await shot('.console', 'kb-console');
+  await open(new RegExp('Attempt ' + wrong.attempt + ' · Nemotron proposes')); await shot('#detail', 'kb-propose');
   await open(new RegExp('Attempt ' + wrong.attempt + ' · Verify')); await shot('#detail .compare', 'kb-compare'); await shot('#detail .history', 'kb-history');
   await open(new RegExp('Attempt ' + reopen.attempt + ' · Verify')); await shot('#detail', 'kb-reopen');
   await open(new RegExp('Attempt ' + run.accepted.attempt + ' · Nemotron proposes')); await shot('#detail', 'kb-fix');

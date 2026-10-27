@@ -3,33 +3,21 @@
   "beats": [
     {
       "id": "hero",
-      "script": "Ask an AI to fix a broken form, and it will tell you it's fixed. The page loads. A confirmation appears. But did the user's booking actually get saved, correctly?",
-      "heard": "Ask an AI to fix a broken form, and it will tell you it's fixed. The page loads. A confirmation appears. But did the user's booking actually get saved correctly?",
-      "word_match": 1.0
-    },
-    {
-      "id": "phone-observe",
-      "script": "Here, the booking page says success. But the database stored the wrong phone number. Nobody notices, unless you check what was saved.",
-      "heard": "Here, the booking page says success, but the database stored the wrong phone number. Nobody notices unless you check what was saved.",
-      "word_match": 1.0
-    },
-    {
-      "id": "phone-propose",
-      "script": "AccessFinish drives the journey in a real browser, then hands the evidence and the source code to NVIDIA Nemotron, on Nebius Token Factory. It is never told the cause. Nemotron finds the hard-coded value, and writes the fix.",
-      "heard": "Access finished drives the journey in a real browser, then hands the evidence and the source code to NVIDIA Nemotron on Nebius token factory. It is never told the cause. Nemotron finds the hard-coded value and writes the fix.",
-      "word_match": 0.962
-    },
-    {
-      "id": "phone-proof",
-      "script": "Every fix is built in a fresh, offline sandbox, and checked for real: the saved database row, a fresh browser, and a second customer with a different number. Twenty-seven live runs. Twenty-seven verified fixes, for about a cent each.",
-      "heard": "Every fix is built in a fresh offline sandbox and checked for real. The Save Database Row, a fresh browser, and a second customer with a different number. 27 Live runs, 27 verified fixes for about a cent each.",
-      "word_match": 0.9
+      "script": "Both of these pages say booked. Only one booking was saved right. An AI agent said fixed, both times. AccessFinish checks that the user can actually finish.",
+      "heard": "Both of these pages say booked. Only one booking was saved right. An AI agent said fixed both times. Access finished checks that the user can actually finish.",
+      "word_match": 0.945
     },
     {
       "id": "keyboard-intro",
-      "script": "Now a real bug from the open-source app. A keyboard user can't reach the date picker at all.",
-      "heard": "Now a real bug from the open source app. A keyboard user can't reach the date picker at all.",
-      "word_match": 1.0
+      "script": "Here is a real bug in the open-source Easy Appointments app. A keyboard user can't reach the date picker at all.",
+      "heard": "Here's a real bug in the open source easy appointments app. A keyboard user can't reach the date picker at all.",
+      "word_match": 0.957
+    },
+    {
+      "id": "keyboard-propose",
+      "script": "AccessFinish drives the journey in a real browser, then hands the evidence and the source code to NVIDIA Nemotron, on Nebius Token Factory. No root cause is given. Nemotron searches the code, and writes a fix.",
+      "heard": "Access finish drives the journey in a real browser, then hands the evidence and the source code to NVIDIA Nemotron on Nebious Token Factory. No root cause is given. Nemotron searches the code and writes a fix.",
+      "word_match": 0.932
     },
     {
       "id": "keyboard-wrong",
@@ -62,10 +50,16 @@
       "word_match": 0.8
     },
     {
+      "id": "phone-control",
+      "script": "As a control, we also planted a simple fault: a wrong phone number behind a success page. Nemotron fixed it in all twenty-seven runs, for about a cent each.",
+      "heard": "As a control, we also planted a simple fault, a wrong phone number behind a success page. Nemotron fixed it in all 27 runs for about a cent each.",
+      "word_match": 0.949
+    },
+    {
       "id": "facts",
-      "script": "Fifty-four live runs, for under seven dollars of Nemotron. Fixes that are proven, not promised.",
-      "heard": "54 Live runs for under $7 of Nemotron, fixes that are proven not promised.",
-      "word_match": 0.8
+      "script": "Fifty-four live runs, for under seven dollars of Nemotron. On the real bug, the final agents found a verified fix in two of ten runs. Fixes that are proven, not promised.",
+      "heard": "54 live runs for under $7 of Nemotron. On the real bug, the final agents found a verified fix in two of 10 runs, fixes that are proven not promised.",
+      "word_match": 0.871
     },
     {
       "id": "close",
