@@ -1,4 +1,4 @@
-# AccessFinish demo film (≈126 s)
+# AccessFinish demo film (≈118 s)
 
 The film is generated, not screen-recorded: `media/accessfinish-agent-demo.mp4` (1920×1080, narrated, captions burned in).
 
@@ -12,15 +12,14 @@ Numbers come from `web/agent-runs/summary.json`. The "Narration check" workflow 
 
 | Beat | On screen |
 | --- | --- |
-| hero | "The AI says 'fixed.'" → "Did the booking actually get saved?" |
-| phone-observe | Real typed-vs-saved table: phone saved as 0000000000 |
-| phone-propose | Nemotron's diagnosis and one-line diff |
-| phone-proof | Proof card pans through nine checks, VERIFIED stamp, 27 / 27 counter |
-| keyboard-intro | A real upstream bug: Tab trail ending in "stuck" |
+| hero | The two "booked" pages from one run: attempt 2 REJECTED (saved 1 Nov), attempt 6 VERIFIED |
+| keyboard-intro | A real upstream bug in Easy!Appointments: the Tab trail ending in "stuck" |
+| keyboard-propose | Nemotron's searches, diagnosis and edit (attempt 2); no root cause given |
 | keyboard-wrong | Typed 2 Nov vs saved 1 Nov, REJECTED stamp |
 | keyboard-provenance | The timeline naming the call chain that overwrote the typed date |
-| keyboard-reopen | Saved correctly, but the date field after Next on reopen shows today |
+| keyboard-reopen | Saved correctly, but the date after Next on reopen shows today |
 | keyboard-verified | Proof card of attempt 6, VERIFIED stamp |
-| finding | Counter to 77 false "booked" confirmations |
-| facts | 27/27 · 2/10 · 77 · $6.38 |
+| finding | Counter to 77 false "booked" confirmations caught |
+| phone-control | The seeded phone fault as a calibration control: 27 / 27 verified |
+| facts | 0/77 accepted · 2/10 (v4–v5; 2 of 27 overall) · 27/27 control · $6.38 estimated |
 | close | AccessFinish — Finish the task. Verify the result. |
