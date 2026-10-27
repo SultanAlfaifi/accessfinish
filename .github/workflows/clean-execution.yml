@@ -1,7 +1,7 @@
 name: Clean setup and recorded-proposal execution
 on:
   push:
-    branches: [codex/submission]
+    branches: [main]
   pull_request:
   workflow_dispatch:
 permissions:

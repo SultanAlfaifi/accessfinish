@@ -64,6 +64,6 @@ Single-shot fixes weren't enough: in an earlier frozen test, five Nemotron attem
 
 ## What's next
 
-A merge gate in CI: a coding agent or a person opens a pull request, AccessFinish runs the journey in its sandbox and blocks the merge unless the outcome is proven. [Here is the comment it would post](https://github.com/SultanAlfaifi/accessfinish/blob/codex/submission/examples/pr-comment.md), rendered from a recorded run. Then more journey types (sign-up, checkout, settings), an arrow-key calendar check, and screen-reader-driven verification.
+A merge gate in CI: a coding agent or a person opens a pull request, AccessFinish runs the journey in its sandbox and blocks the merge unless the outcome is proven. [Here is the comment it would post](https://github.com/SultanAlfaifi/accessfinish/blob/main/examples/pr-comment.md), rendered from a recorded run. Then more journey types (sign-up, checkout, settings), an arrow-key calendar check, and screen-reader-driven verification.
 
 **What "verified" doesn't prove yet:** that the calendar grid works with arrow keys (the verifier types the date into the field its acceptance checks name), anything a screen-reader user study would show, generality beyond one app and two journeys, or which days the calendar disables after a typed month change.

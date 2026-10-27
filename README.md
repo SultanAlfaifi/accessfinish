@@ -10,7 +10,7 @@ A repair agent on **NVIDIA Nemotron 3 Super** (served by **Nebius Token Factory*
 [![Live demo](https://img.shields.io/badge/Live-replay%20page-2f5bea?style=for-the-badge)](https://sultalfaifi.com/accessfinish/)
 [![Evidence](https://img.shields.io/badge/All%2054%20runs-raw%20evidence-13795b?style=for-the-badge)](https://sultalfaifi.com/accessfinish/evidence.html)
 
-[![CI](https://github.com/SultanAlfaifi/accessfinish/actions/workflows/clean-execution.yml/badge.svg?branch=codex/submission)](https://github.com/SultanAlfaifi/accessfinish/actions/workflows/clean-execution.yml)
+[![CI](https://github.com/SultanAlfaifi/accessfinish/actions/workflows/clean-execution.yml/badge.svg?branch=main)](https://github.com/SultanAlfaifi/accessfinish/actions/workflows/clean-execution.yml)
 ![Model](https://img.shields.io/badge/model-nemotron--3--super--120b--a12b-76b900)
 ![Track](https://img.shields.io/badge/track-Coding%20%26%20Agentic%20Engineering-141d3b)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
