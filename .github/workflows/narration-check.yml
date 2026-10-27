@@ -29,6 +29,8 @@ jobs:
           git config user.name "accessfinish-agent"
           git config user.email "accessfinish-agent@users.noreply.github.com"
           git add media/agent-demo/transcript.json
+          # A re-run on unchanged audio (e.g. a squash merge carrying [transcribe]) has nothing to commit.
+          if git diff --cached --quiet; then echo "Transcript unchanged."; exit 0; fi
           git commit -m "Transcribe demo narration from ${GITHUB_SHA::7}"
           git pull --rebase origin "$GITHUB_REF_NAME"
           git push origin "HEAD:$GITHUB_REF_NAME"

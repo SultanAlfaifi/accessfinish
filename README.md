@@ -6,7 +6,7 @@
 
 A repair agent on **NVIDIA Nemotron 3 Super** (served by **Nebius Token Factory**) that accepts a fix only when a keyboard-only browser session (real keystrokes in a real browser) can finish the task, the database holds what was typed, and a fresh browser shows it back.
 
-[![Watch the film](https://img.shields.io/badge/%E2%96%B6%20Watch-the%202--minute%20film-ff0000?style=for-the-badge)](https://youtu.be/ZHSP0GYMM20)
+[![Watch the film](https://img.shields.io/badge/%E2%96%B6%20Watch-the%202--minute%20film-ff0000?style=for-the-badge)](https://youtu.be/frrtIo-7kB8)
 [![Live demo](https://img.shields.io/badge/Live-replay%20page-2f5bea?style=for-the-badge)](https://sultalfaifi.com/accessfinish/)
 [![Evidence](https://img.shields.io/badge/All%2054%20runs-raw%20evidence-13795b?style=for-the-badge)](https://sultalfaifi.com/accessfinish/evidence.html)
 
@@ -15,7 +15,7 @@ A repair agent on **NVIDIA Nemotron 3 Super** (served by **Nebius Token Factory*
 ![Track](https://img.shields.io/badge/track-Coding%20%26%20Agentic%20Engineering-141d3b)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 
-<a href="https://youtu.be/ZHSP0GYMM20"><img src="web/media/film-poster.jpg" width="820" alt="Watch the 2-minute film on YouTube"></a>
+<a href="https://youtu.be/frrtIo-7kB8"><img src="web/media/film-poster.jpg" width="820" alt="Watch the 2-minute film on YouTube"></a>
 <br><sub>No YouTube? <a href="media/accessfinish-agent-demo.mp4">Watch the MP4 in the repository (20 MB)</a></sub>
 
 | **0 / 77** | **2 / 10** | **27 / 27** | **$6.38** |
