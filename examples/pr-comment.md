@@ -119,4 +119,4 @@ index 617dc3a..8eff1a6 100644
 ```
 </details>
 
-<sub>Model: nvidia/nemotron-3-super-120b-a12b on Nebius Token Factory · 6 attempts · estimated $0.13 at list price · <a href="https://github.com/SultanAlfaifi/accessfinish/blob/codex/submission/evidence/agent-runs/agent-2c87e16a520f678b45cbbbeb.json">raw trace</a></sub>
+<sub>Model: nvidia/nemotron-3-super-120b-a12b on Nebius Token Factory · 6 attempts · estimated $0.13 at list price · <a href="https://github.com/SultanAlfaifi/accessfinish/blob/main/evidence/agent-runs/agent-2c87e16a520f678b45cbbbeb.json">raw trace</a></sub>

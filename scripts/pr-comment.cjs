@@ -46,5 +46,5 @@ if (trace.accepted) {
   out.push('', '<details><summary>Patch (' + trace.accepted.patch.split('\n').length + ' lines)</summary>', '', '```diff', trace.accepted.patch.trimEnd(), '```', '</details>', '');
 }
 out.push('<sub>Model: ' + trace.model + ' on ' + trace.provider + ' · ' + verifies.length + ' attempts · estimated $' + Number(trace.estimated_cost_usd || 0).toFixed(2)
-  + ' at list price · <a href="' + REPO + '/blob/codex/submission/evidence/agent-runs/' + id + '.json">raw trace</a></sub>');
+  + ' at list price · <a href="' + REPO + '/blob/main/evidence/agent-runs/' + id + '.json">raw trace</a></sub>');
 process.stdout.write(out.join('\n') + '\n');
