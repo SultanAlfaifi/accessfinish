@@ -35,10 +35,11 @@ const perVerified = list => { const verified = list.reduce((s, g) => s + g.verif
 const keyboardFinal = byCase('keyboard-date').filter(group => ['4', '5'].includes(group.agent_version));
 const result = {
   generated_from: 'evidence/agent-runs', generator: 'scripts/token-stats.cjs',
-  note: 'Requests are the model calls that returned usage. Cost is the traces\' estimate at the public list price ($0.30 / $0.90 per million input / output tokens), with cached input counted at the full input price; it is not a billed amount.',
+  note: 'Requests are the proposals and lookups whose usage the trace records per step (two malformed answers are counted only in the run totals, run_prompt_tokens and run_completion_tokens); the cache and reasoning shares are over those requests. Cost is the traces\' estimate at the public list price ($0.30 / $0.90 per million input / output tokens), with cached input counted at the full input price; it is not a billed amount.',
   runs: traces.length, requests: totals.requests,
   prompt_tokens: totals.prompt_tokens, cached_prompt_tokens: totals.cached_prompt_tokens, cached_share: round(totals.cached_prompt_tokens / totals.prompt_tokens, 3),
   completion_tokens: totals.completion_tokens, reasoning_tokens: totals.reasoning_tokens, reasoning_share: round(totals.reasoning_tokens / totals.completion_tokens, 3),
+  run_prompt_tokens: traces.reduce((s, t) => s + (t.usage?.prompt_tokens || 0), 0), run_completion_tokens: traces.reduce((s, t) => s + (t.usage?.completion_tokens || 0), 0),
   estimated_cost_usd: round(cost, 2),
   seconds_to_proposal: {median: round(quantile(proposalSeconds, 0.5), 1), p90: round(quantile(proposalSeconds, 0.9), 1), note: 'From the start of an attempt to Nemotron\'s proposal, including its code lookups.'},
   phone_cost_per_run_usd: round(byCase('customer-phone').reduce((s, g) => s + g.cost_usd, 0) / byCase('customer-phone').reduce((s, g) => s + g.runs, 0), 3),

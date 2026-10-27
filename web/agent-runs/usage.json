@@ -1,7 +1,7 @@
 {
   "generated_from": "evidence/agent-runs",
   "generator": "scripts/token-stats.cjs",
-  "note": "Requests are the model calls that returned usage. Cost is the traces' estimate at the public list price ($0.30 / $0.90 per million input / output tokens), with cached input counted at the full input price; it is not a billed amount.",
+  "note": "Requests are the proposals and lookups whose usage the trace records per step (two malformed answers are counted only in the run totals, run_prompt_tokens and run_completion_tokens); the cache and reasoning shares are over those requests. Cost is the traces' estimate at the public list price ($0.30 / $0.90 per million input / output tokens), with cached input counted at the full input price; it is not a billed amount.",
   "runs": 54,
   "requests": 645,
   "prompt_tokens": 18007651,
@@ -10,6 +10,8 @@
   "completion_tokens": 1043874,
   "reasoning_tokens": 837954,
   "reasoning_share": 0.803,
+  "run_prompt_tokens": 18067346,
+  "run_completion_tokens": 1064880,
   "estimated_cost_usd": 6.38,
   "seconds_to_proposal": {
     "median": 18.9,

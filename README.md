@@ -20,7 +20,7 @@ A repair agent on **NVIDIA Nemotron 3 Super** (served by **Nebius Token Factory*
 
 | **0 / 77** | **2 / 10** | **27 / 27** | **$6.38** |
 | :---: | :---: | :---: | :---: |
-| false “booked” fixes accepted: 67 saved the wrong date, 10 reopened wrong. In **27 of 27** keyboard runs the first “booked” patch was wrong | runs of agents v4–v5 where Nemotron fixed a **real upstream keyboard bug**, no root cause supplied (2 of 27 keyboard runs overall) | runs verified on a **seeded** phone fault, our calibration control, 26 on the first attempt | estimated Nemotron cost for all **54 live runs** at list price: about **$1.70** per verified keyboard fix |
+| false “booked” fixes accepted: 67 saved the wrong date, 10 reopened wrong. In **27 of 27** keyboard runs the first “booked” patch was wrong | runs of agents v4–v5 where Nemotron fixed a **real upstream keyboard bug**, no root cause supplied (2 of 27 keyboard runs overall) | runs verified on a **seeded** phone fault, our calibration control, 26 on the first attempt | estimated Nemotron cost for all **54 live runs** at list price: about **$1.70** per verified keyboard fix in agents v4–v5 |
 
 </div>
 
@@ -37,7 +37,7 @@ This matters at scale. About **1.3 billion people (16%)** live with a significan
 | Check | What it looks at | Verdict on a patch that saves 1 Nov instead of 2 Nov |
 | --- | --- | --- |
 | axe / Lighthouse | Accessibility rules on one rendered page state: roles, labels, contrast | Out of scope: the wrong date only appears after typing, submitting and reading the database |
-| The app's own tests | The pinned Easy!Appointments source ships two PHP unit-test files (array and validation helpers); none exercises the booking page | Nothing runs |
+| The app's own tests | The pinned Easy!Appointments source ships two PHP unit-test files (array and validation helpers); none exercises the booking page | ✅ Pass: no test touches `booking.js` or the booking view |
 | A test or LLM judge that reads the confirmation page | The page after submitting | ✅ “booked”: it passes. In all 27 keyboard runs, the first patch to reach that page was wrong |
 | **AccessFinish** | The saved row (read-only database account) and the booking reopened in a fresh browser | ❌ **Rejected**: saved 1 Nov instead of 2 Nov, with the call chain of the code that changed the typed date |
 
@@ -207,14 +207,14 @@ The harness now returns the file's own lines and compiler code frames. Every fai
 | Nemotron's guided keyboard fix (21 Oct) | verified | verified as the pre-flight check of every live-agent CI job (a failure stops the job before any model call) |
 | Five frozen single-shot proposals replayed on fresh runners (four replays: 21 Oct, 23 Oct and twice on 24 Oct) | 2 pass, 3 fail | accept/reject matched 5 / 5 every time; failure stage 5 / 5 on 21 and 23 Oct, 4 / 5 on 24 Oct ([why](evidence/reproduction-variation-20261024/README.md)) |
 
-Before the agent, we measured single-shot, operator-guided repairs. Five frozen Nemotron requests **with the diagnosis supplied** gave 2/5 full passes on the keyboard case. The agent runs above supply no diagnosis. The guide to every evidence folder is [`evidence/README.md`](evidence/README.md).
+Before the agent, we measured single-shot, operator-guided repairs. Five frozen Nemotron requests **with the diagnosis supplied** gave 2/5 full passes on the keyboard case. The agent runs above supply no root cause. The guide to every evidence folder is [`evidence/README.md`](evidence/README.md).
 
 ### Nemotron on Token Factory, by the numbers
 
-From the usage Token Factory returned with each of the **645** requests (258 proposals and 387 `search_code` / `read_file` lookups), summed by [`scripts/token-stats.cjs`](scripts/token-stats.cjs) into [`web/agent-runs/usage.json`](web/agent-runs/usage.json):
+From the usage Token Factory returned with each of the **645** proposals and lookups whose usage the traces record per step (258 proposals and 387 `search_code` / `read_file` calls; 2 malformed answers are counted only in the run totals), summed by [`scripts/token-stats.cjs`](scripts/token-stats.cjs) into [`web/agent-runs/usage.json`](web/agent-runs/usage.json):
 
-- **78%** of the 18.0M prompt tokens were served from the prompt cache, because each attempt resends the growing conversation.
-- **80%** of the 1.04M output tokens were reasoning. It is kept in the traces for audit and never sent back.
+- **78%** of those requests' 18.0M prompt tokens were served from the prompt cache, because each attempt resends the growing conversation.
+- **80%** of their 1.04M output tokens were reasoning. It is kept in the traces for audit and never sent back.
 - A median of **19 s** (p90: 46 s) from the start of an attempt to Nemotron's proposal, including its lookups.
 - About **$1.70** per verified keyboard fix in agents v4–v5, and about **$0.01** per run on the phone control.
 
@@ -241,7 +241,7 @@ What is generic and what each new journey needs, with today's line counts:
 | --- | --- |
 | The agent loop: tools, exact-edit anchors, attempt ledger, feedback ([`lib/agent.cjs`](lib/agent.cjs), 582 lines) | A keyboard driver that records the focus trail and the setter/async-stack provenance ([`container-keyboard-booking-worker.cjs`](integration/portable/container-keyboard-booking-worker.cjs) 342 + [`booking-keyboard-macros.cjs`](integration/portable/booking-keyboard-macros.cjs) 70) |
 | The sandbox: offline containers, read-only database account, fresh-browser runs, isolation audit ([`lib/fixture.cjs`](lib/fixture.cjs), 254) | The outcome rule: what "saved correctly" means ([`outcome-evaluator.cjs`](integration/portable/outcome-evaluator.cjs) 185) and the read-only queries ([`select-evaluator.php`](integration/portable/select-evaluator.php) 13) |
-| Run records, evidence index, the replay and evidence pages, the PR comment | The reopen observer (175) and regression controls (56) |
+| Run records, evidence index, the replay and evidence pages, the PR comment | The reopen observer ([`container-booking-pilot-observer.cjs`](integration/portable/container-booking-pilot-observer.cjs) 175) and regression controls ([`regression-controls.cjs`](integration/portable/regression-controls.cjs) 56) |
 | | The case: goal, acceptance checks and the editable files ([`lib/cases.cjs`](lib/cases.cjs) 33, [`lib/repair.cjs`](lib/repair.cjs) `PATHS`), plus the app's fixture data |
 
 Only the booking journey exists today; a second app or journey has not been built, so this is the cost estimate, not a result.

@@ -27,9 +27,9 @@
 
   <section class="runs-section" aria-labelledby="usage-heading">
     <h2 id="usage-heading">Nemotron on Token Factory, by the numbers</h2>
-    <p>From the usage Token Factory returned with every request, summed by <code>scripts/token-stats.cjs</code>. Cost is the traces' estimate at the public list price ($0.30 / $0.90 per million input / output tokens, cached input counted at the full price), not a billed amount.</p>
+    <p>From the usage Token Factory returned with every proposal and lookup, summed by <code>scripts/token-stats.cjs</code>. Cost is the traces' estimate at the public list price ($0.30 / $0.90 per million input / output tokens, cached input counted at the full price), not a billed amount.</p>
     <div class="facts usage" id="usage" aria-live="off">
-      <div><strong id="u-requests">—</strong><span>model requests (proposals plus <code>search_code</code> / <code>read_file</code> lookups)</span></div>
+      <div><strong id="u-requests">—</strong><span>proposals and <code>search_code</code> / <code>read_file</code> lookups with recorded usage (2 malformed answers count only in run totals)</span></div>
       <div><strong id="u-cached">—</strong><span>of prompt tokens served from the prompt cache: each attempt resends the growing conversation</span></div>
       <div><strong id="u-reasoning">—</strong><span>of output tokens were reasoning, kept in the traces for audit and never sent back</span></div>
       <div><strong id="u-latency">—</strong><span>median from the start of an attempt to Nemotron's proposal, including its lookups (<span id="u-p90">—</span> at p90)</span></div>

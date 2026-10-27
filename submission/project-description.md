@@ -40,7 +40,7 @@ All 54 runs were made live on fresh GitHub Actions runners with Nemotron 3 Super
 - **Every false success was caught:** across 27 keyboard runs, **77 attempts reached a "booked" page while the date was saved wrong (67) or reopened wrong (10).** In all 27 runs the first patch that reached a "booked" page was wrong, so a confirmation-page check would have shipped a wrong patch every time. AccessFinish accepted none.
 - **Keyboard date (real upstream bug): fixed by Nemotron, with no root cause supplied, in 2 of 10 runs of agents v4–v5** (0 of 17 before; 2 of 27 overall). It is two bugs: typing a date in a later month fires the date picker's month-change handler, which overwrites the typed date with the first free day; and reopening a booking resets the date to today. In the first verified run Nemotron made the date reachable, was rejected for saving 1 Nov instead of 2 Nov, traced the reset through the recorded call chain `setDate ← applyUnavailableDates ← getUnavailableDates ← onMonthChange`, saved the right date, then — after the harness noted that attempt had got furthest — fixed the reopen bug on top: verified on attempt 6, with four edits at the same code sites as our earlier guided fix but guard logic of its own.
 - **Saved phone (seeded fault, our calibration control):** verified in **27 of 27** runs, 26 on the first attempt (3 of them after the harness's recorded whitespace re-anchoring), about a cent each.
-- **Nemotron on Token Factory, by the numbers:** 645 requests (258 proposals, 387 code lookups); 78% of prompt tokens served from the prompt cache; 80% of output tokens were reasoning; a median of 19 s from the start of an attempt to a proposal; about $1.70 per verified keyboard fix and about $0.01 per phone run.
+- **Nemotron on Token Factory, by the numbers:** 645 proposals and code lookups with per-step usage (258 and 387); 78% of prompt tokens served from the prompt cache; 80% of output tokens were reasoning; a median of 19 s from the start of an attempt to a proposal; about $1.70 per verified keyboard fix in agents v4–v5 and about $0.01 per phone run.
 - **Agent versions, keyboard runs that saved the right date:** v1 0/7 → v2 1/5 → v3 2/5 → v4 2/5 → v5 2/5; verified: v4 1/5, v5 1/5.
 - **Verifier calibration:** the original keyboard source stays blocked; a phone patch that hard-codes the test number is rejected when a second customer types a different one; the reference fixes verify; five archived single-shot proposals keep their accept/reject decision in every fresh-runner replay.
 
@@ -50,7 +50,7 @@ Single-shot fixes weren't enough: in an earlier frozen test, five Nemotron attem
 
 ## Accomplishments that we're proud of
 
-- Nemotron fixed a real upstream accessibility bug — two bugs, in fact — without being told the cause, verified end to end.
+- Nemotron fixed a real upstream accessibility bug — two bugs, in fact — with no root cause supplied, verified end to end.
 - A verifier that refused all 77 false successes, and that would have let a wrong patch ship in 27 of 27 keyboard runs had it trusted the confirmation page.
 - Evidence a developer can act on: the keyboard focus trail, typed vs saved values, and the call chain of the page code that changed the date.
 - Every run, including failures, is public with its raw evidence and the agent version that produced it.
