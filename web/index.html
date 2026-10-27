@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="description" content="An agent on NVIDIA Nemotron that keeps repairing a broken user journey until the saved result is verified, not just the confirmation page.">
-  <title>AccessFinish</title><link rel="stylesheet" href="agent.css?v=c33f2f2a7ab9916a">
+  <title>AccessFinish</title><link rel="stylesheet" href="agent.css?v=695faa05bbd1b077">
 </head>
 <body>
 <a class="skip" href="#agent">Skip to the agent</a>
@@ -15,24 +15,24 @@
   <section class="hero with-film">
     <div class="hero-text">
     <p class="eyebrow">NVIDIA Nemotron · Nebius Token Factory</p>
-    <h1>The AI says <q>fixed</q>.<br><span>We check the user can finish.</span></h1>
+    <h1>The AI says “fixed.”<br><span>We check the user can finish.</span></h1>
     <p class="lede">AccessFinish is a repair agent that doesn't trust a green page. It drives the real journey with a keyboard, reads what was actually saved, reopens it in a fresh browser, and keeps fixing until the outcome is right.</p>
-    <p class="actions"><a class="cta" href="https://youtu.be/ZHSP0GYMM20"><span aria-hidden="true">▶ </span>Watch the 2-minute film</a><a class="cta secondary" href="#agent">Replay the agent's runs</a></p>
+    <p class="actions"><a class="cta" href="#agent">Replay the agent's runs</a><a class="cta secondary" href="https://youtu.be/ZHSP0GYMM20"><span aria-hidden="true">▶ </span>Watch the 2-minute film</a></p>
     </div>
     <a class="film" href="https://youtu.be/ZHSP0GYMM20">
       <img src="media/film-poster.jpg" width="1280" height="720" alt="">
-      <span class="film-label"><b>Watch the 2-minute film</b><span>On YouTube · narrated, with captions · Nemotron fixes a real keyboard bug and AccessFinish proves it</span></span>
+      <span class="film-label"><b>Film · 2 minutes</b><span>On YouTube · narrated, with captions · Nemotron fixes a real keyboard bug and AccessFinish proves it</span></span>
     </a>
   </section>
 
   <section class="agent" id="agent" aria-labelledby="agent-heading">
     <h2 id="agent-heading" class="sr-only">Agent run</h2>
     <div class="cases" role="tablist" aria-label="Broken journey">
-      <button type="button" role="tab" class="case" id="tab-customer-phone" data-case="customer-phone" aria-selected="true" tabindex="0" aria-controls="case-panel" aria-labelledby="name-customer-phone" aria-describedby="tag-customer-phone note-customer-phone verdict-customer-phone strip-customer-phone"><span class="tag lie" id="tag-customer-phone">Wrong data saved</span><strong id="name-customer-phone">Save the phone the customer typed</strong><small id="note-customer-phone">The confirmation page says success. The database disagrees.</small><span class="verdict good" id="verdict-customer-phone"></span><span class="strip" id="strip-customer-phone"></span></button>
-      <button type="button" role="tab" class="case" id="tab-keyboard-date" data-case="keyboard-date" aria-selected="false" tabindex="-1" aria-controls="case-panel" aria-labelledby="name-keyboard-date" aria-describedby="tag-keyboard-date note-keyboard-date verdict-keyboard-date strip-keyboard-date"><span class="tag stuck" id="tag-keyboard-date">Keyboard blocked</span><strong id="name-keyboard-date">Book an appointment without a mouse</strong><small id="note-keyboard-date">The calendar looks fine. Tab can't reach it.</small><span class="verdict caught" id="verdict-keyboard-date"></span><span class="strip" id="strip-keyboard-date"></span></button>
+      <button type="button" role="tab" class="case" id="tab-keyboard-date" data-case="keyboard-date" aria-selected="true" tabindex="0" aria-controls="case-panel" aria-labelledby="name-keyboard-date" aria-describedby="tag-keyboard-date note-keyboard-date verdict-keyboard-date strip-keyboard-date"><span class="tag stuck" id="tag-keyboard-date">Real upstream bug</span><strong id="name-keyboard-date">Book an appointment without a mouse</strong><small id="note-keyboard-date">The calendar looks fine. Tab can't reach it.</small><span class="verdict caught" id="verdict-keyboard-date"></span><span class="strip" id="strip-keyboard-date"></span></button>
+      <button type="button" role="tab" class="case" id="tab-customer-phone" data-case="customer-phone" aria-selected="false" tabindex="-1" aria-controls="case-panel" aria-labelledby="name-customer-phone" aria-describedby="tag-customer-phone note-customer-phone verdict-customer-phone strip-customer-phone"><span class="tag lie" id="tag-customer-phone">Seeded control</span><strong id="name-customer-phone">Save the phone the customer typed</strong><small id="note-customer-phone">A fault we planted to calibrate the verifier: the page says success, the database disagrees.</small><span class="verdict good" id="verdict-customer-phone"></span><span class="strip" id="strip-customer-phone"></span></button>
     </div>
 
-    <div class="panel" id="case-panel" role="tabpanel" aria-labelledby="name-customer-phone">
+    <div class="panel" id="case-panel" role="tabpanel" aria-labelledby="name-keyboard-date">
       <div class="console">
         <div class="console-head">
           <p class="run"><span class="dot" aria-hidden="true"></span><span id="run-label">Recorded run</span> · <a href="evidence.html">All runs</a></p>
@@ -51,33 +51,51 @@
   <aside class="finding" id="finding" hidden>
     <h3>Not fixed in this run — and nothing false got through.</h3>
     <p>Every attempt that reached a <em>booked</em> page while the booking was saved, or reopened, with the wrong date was rejected.</p>
-    <p>The recorded timeline names the code behind it: right after the date is typed, the month-change handler in <code>booking.js</code> requests <code>get_unavailable_dates</code>, and the response handler overwrites the field with the first free day. Reopening a booking then resets the date to today when <b>Next</b> is pressed. Agent versions 4 and 5 fixed both, with no diagnosis supplied, in 2 of 10 runs — see <a href="evidence.html">every run</a>.</p>
+    <p>The recorded timeline names the code behind it: right after the date is typed, the month-change handler in <code>booking.js</code> requests <code>get_unavailable_dates</code>, and the response handler overwrites the field with the first free day. Reopening a booking then resets the date to today when <b>Next</b> is pressed. Agent versions 4 and 5 fixed both, with no root cause supplied, in 2 of 10 runs (2 of 27 keyboard runs overall) — see <a href="evidence.html">every run</a>.</p>
   </aside>
 
   <section class="how" id="how" aria-labelledby="how-heading">
     <h2 id="how-heading">A loop that ends at the saved outcome, not the success page.</h2>
     <ol class="loop">
       <li><b>Observe</b><span>A real browser drives the journey with the keyboard only and records where focus goes and where it gets stuck.</span></li>
-      <li><b>Diagnose &amp; repair</b><span>Nemotron 3 Super reads the evidence and the source, finds the cause and writes exact code edits. It is never told the cause.</span></li>
+      <li><b>Diagnose &amp; repair</b><span>Nemotron 3 Super reads the evidence and the source, finds the cause and writes exact code edits. No root cause is supplied; the acceptance checks name the date field the verifier types into.</span></li>
       <li><b>Verify for real</b><span>Each patch that applies is built in a fresh, offline sandbox. The booking is made, read back from the database with a read-only account, and reopened in a fresh browser.</span></li>
       <li><b>Feed back</b><span>If anything is off — a build error, a stuck key, a wrong saved value, a broken mouse path — the evidence goes back to Nemotron and it tries again.</span></li>
     </ol>
     <div class="why">
       <div><h3>Why not just check the confirmation page?</h3><p>Because it lies. In our runs, an AI fix reached a <em>booked</em> confirmation <strong id="why-caught">—</strong> times while the booking was saved, or reopened, with the wrong date. In the phone case the page says <em>booked</em> while the database holds <code>0000000000</code>, and a patch that hardcodes the test number would fail when a second customer types <code>0000000073</code>. AccessFinish checks all of it.</p></div>
-      <div><h3>Why keyboard journeys?</h3><p>Millions of people navigate with a keyboard or assistive technology. A form that "loads" but can't be completed locks them out, and accessibility law in the EU and US now expects it to work.</p></div>
+      <div><h3>Why keyboard journeys?</h3><p>Millions of people navigate with a keyboard or assistive technology. A form that "loads" but can't be completed locks them out, and since June 2025 the European Accessibility Act expects in-scope services to work for them.</p></div>
     </div>
   </section>
 
   <section class="facts" aria-label="Run totals">
-    <div><strong id="fact-phone">—</strong><span>phone runs fixed and verified</span></div>
-    <div><strong id="fact-caught">—</strong><span>false "booked" confirmations caught in the keyboard case</span></div>
-    <div><strong id="fact-cost">—</strong><span>Nemotron cost for all <span id="fact-runs">—</span> live runs</span></div>
-    <div><strong id="fact-keyboard">—</strong><span id="fact-keyboard-label">keyboard runs fixed by Nemotron, no diagnosis supplied</span></div>
+    <div><strong>0 / <span id="fact-caught">—</span></strong><span>false "booked" fixes accepted: every one was caught by the database read-back or the reopen</span></div>
+    <div><strong id="fact-keyboard">—</strong><span id="fact-keyboard-label">keyboard runs fixed by Nemotron, no root cause supplied</span></div>
+    <div><strong id="fact-phone">—</strong><span>runs verified on the seeded phone control</span></div>
+    <div><strong id="fact-cost">—</strong><span>estimated Nemotron cost (list price) for all <span id="fact-runs">—</span> live runs</span></div>
+  </section>
+
+  <section class="proves" aria-labelledby="proves-heading">
+    <h2 id="proves-heading">What “verified” proves, and what it doesn't</h2>
+    <div class="proves-grid">
+      <div><h3>Proves</h3><ul>
+        <li>A keyboard-only browser session reaches the date, books the slot and sees the confirmation.</li>
+        <li>The database row, read with a read-only account, holds the date and customer that were typed.</li>
+        <li>Reopening the booking in a fresh browser shows the same date.</li>
+        <li>A mouse booking with different data, a cleared date and a reserved slot still behave, and nothing else in the database changed.</li>
+      </ul></div>
+      <div><h3>Doesn't prove</h3><ul>
+        <li>That the calendar grid is usable with arrow keys: the verifier types the date into the field it names in its acceptance checks.</li>
+        <li>Anything a screen-reader user study would show.</li>
+        <li>That it generalises: one app, two journeys, two editable files.</li>
+        <li>Which days the calendar disables after a typed month change; the oracle does not check that.</li>
+      </ul></div>
+    </div>
   </section>
 
   <p class="limits">Synthetic data in a pinned copy of the open-source Easy!Appointments app. Two journeys today; the phone fault was seeded on purpose. All runs were made live on GitHub Actions with Nemotron 3 Super on Nebius Token Factory, and every one, including failures, is saved with its raw evidence — see <a href="evidence.html">Evidence</a>.</p>
 </main>
 <footer><span>AccessFinish — finish the task, verify the result.</span><a href="https://github.com/SultanAlfaifi/accessfinish">MIT · source on GitHub</a></footer>
-<script src="agent.js?v=baae404964b80654"></script>
+<script src="agent.js?v=640424b3f4d907a1"></script>
 </body>
 </html>

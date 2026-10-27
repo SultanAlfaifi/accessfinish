@@ -13,6 +13,7 @@
   }
   function row(run) {
     const tr = el('tr'), name = el('th'), id = 'run-' + run.id;
+    tr.dataset.case = run.case_id; tr.dataset.state = run.state;
     name.scope = 'row'; name.id = id;
     name.append(el('span', '', CASES[run.case_id] || run.title || run.case_id), el('span', 'id', run.id.slice(6, 14)));
     if (run.featured) name.append(el('span', 'tag feature', 'On the home page'));
@@ -50,14 +51,40 @@
       const keyboard = data.cases['keyboard-date'] || {}, phone = data.cases['customer-phone'] || {}, tr = el('tr'), name = el('th', 'nowrap', 'v' + version);
       name.scope = 'row';
       const limit = (data.max_attempts || []).length ? ' · up to ' + data.max_attempts.join(' or ') + ' attempts' : '';
-      tr.append(name, el('td', '', (CHANGES[version] || '') + limit), el('td', 'num', String(keyboard.runs || 0)),
-        el('td', 'num', (keyboard.runs_saved_correctly || 0) + ' / ' + (keyboard.runs || 0)), el('td', 'num', (keyboard.verified || 0) + ' / ' + (keyboard.runs || 0)),
-        el('td', 'num', (keyboard.executed ?? '—') + ' / ' + (keyboard.attempts || 0)), el('td', 'num', (phone.first_attempt || 0) + ' / ' + (phone.runs || 0)),
-        el('td', 'num', '$' + Number(data.cost_usd || 0).toFixed(2)));
+      // One square per keyboard run: verified, saved correctly but not verified, or never saved right.
+      const squares = el('td'), grid = el('span', 'squares'), runs = keyboard.runs || 0, verified = keyboard.verified || 0, saved = keyboard.runs_saved_correctly || 0;
+      grid.setAttribute('aria-hidden', 'true');
+      for (let i = 0; i < runs; i++) grid.append(el('span', 'sq ' + (i < verified ? 'ok' : i < saved ? 'saved' : '')));
+      squares.append(el('span', 'nowrap', runs + ' '), grid);
+      tr.append(name, el('td', 'num' + (verified ? ' good' : ''), verified + ' / ' + runs), el('td', 'num', saved + ' / ' + runs), squares,
+        el('td', 'num', (phone.first_attempt || 0) + ' / ' + (phone.runs || 0)), el('td', 'num', (keyboard.executed ?? '—') + ' / ' + (keyboard.attempts || 0)),
+        el('td', 'num', '$' + Number(data.cost_usd || 0).toFixed(2)), el('td', '', (CHANGES[version] || '') + limit));
       body.append(tr);
     }
   }
   versions().catch(() => {});
+
+  async function usage() {
+    const response = await fetch('agent-runs/usage.json'); if (!response.ok) return;
+    const u = await response.json(), percent = value => Math.round(value * 100) + '%';
+    $('#u-requests').textContent = String(u.requests); $('#u-cached').textContent = percent(u.cached_share); $('#u-reasoning').textContent = percent(u.reasoning_share);
+    $('#u-latency').textContent = Math.round(u.seconds_to_proposal.median) + ' s'; $('#u-p90').textContent = Math.round(u.seconds_to_proposal.p90) + ' s';
+    $('#u-fix').textContent = '$' + u.keyboard_v4_v5_cost_per_verified_fix_usd.toFixed(2); $('#u-phone').textContent = '$' + u.phone_cost_per_run_usd.toFixed(3);
+  }
+  usage().catch(() => {});
+
+  // Filter the runs table by case or verdict.
+  let allRuns = [];
+  function applyFilter() {
+    const value = document.querySelector('input[name=filter]:checked')?.value || 'all';
+    let shown = 0;
+    for (const tr of $('#runs').children) {
+      const visible = value === 'all' || tr.dataset.case === value || (value === 'verified' && tr.dataset.state === 'verified');
+      tr.hidden = !visible; shown += visible ? 1 : 0;
+    }
+    if (allRuns.length) $('#runs-status').textContent = (value === 'all' ? '' : 'Showing ' + shown + ' of ' + allRuns.length + ' runs. ') + allRuns.length + ' runs, ' + allRuns.filter(r => r.state === 'verified').length + ' verified. Totals cover every run in evidence/agent-runs.';
+  }
+  for (const input of document.querySelectorAll('input[name=filter]')) input.addEventListener('change', applyFilter);
 
   (async () => {
     try {
@@ -68,8 +95,7 @@
       $('#total-runs').textContent = String(totals.runs); $('#total-executed').textContent = String(totals.executed);
       $('#total-unexecuted').textContent = String(unexecuted); $('#total-unexecuted-note').hidden = !unexecuted;
       $('#total-caught').textContent = String(totals.false_booked_caught); $('#total-cost').textContent = '$' + totals.cost_usd.toFixed(2);
-      $('#runs').replaceChildren(...index.runs.map(row));
-      $('#runs-status').textContent = totals.runs + ' runs, ' + totals.verified_runs + ' verified. Totals cover every run in evidence/agent-runs.';
+      $('#runs').replaceChildren(...index.runs.map(row)); allRuns = index.runs; applyFilter();
     } catch {
       $('#runs-status').textContent = 'The run index could not be loaded. Build it with: node scripts/evidence-index.cjs';
     }
