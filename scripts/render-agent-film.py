@@ -83,7 +83,7 @@ def faded(layer, alpha):
 class Card:
     """A real screenshot in a rounded white panel, with zoom or pan."""
     def __init__(self, name, box, mode='fit', start=(1.0, 0.5, 0.5), end=(1.08, 0.5, 0.5)):
-        self.src = Image.open(SHOTS / f'{name}.png').convert('RGB')
+        self.src = Image.open(name if isinstance(name, pathlib.Path) else SHOTS / f'{name}.png').convert('RGB')
         self.box, self.mode, self.start, self.end = box, mode, start, end
         x0, y0, x1, y1 = box
         self.w, self.h = x1 - x0, y1 - y0
@@ -155,14 +155,10 @@ RIGHT = (900, 110, 1800, 900)
 
 
 def scene_hero():
-    l1 = text_layer([((0, 0), 'The AI says “fixed.”', font('InterDisplay-Bold', 110), WHITE, None, 1)], (1800, 160))
-    l2 = text_layer([((0, 0), 'Did the booking actually get saved?', font('InterDisplay-Bold', 78), BLUE, None, 1)], (1800, 120))
-    brand = text_layer([((160, 120), 'AccessFinish', font('Inter-Bold', 34), WHITE, None, 1),
-                        ((160, 168), 'NVIDIA Nemotron · Nebius Token Factory', font('Inter-Medium', 24), MUTED, None, 1)])
+    """Opens on the two "booked" pages from one run: attempt 2 rejected, attempt 6 verified."""
+    cover = Card(ROOT / 'media/readme/booked-vs-verified.png', (270, 24, 1650, 944), 'fit', (1.0, 0.5, 0.5), (1.04, 0.5, 0.45))
     def draw(frame, t, d):
-        frame.alpha_composite(faded(brand, clamp(t * d / 0.8)))
-        a = ease(clamp((t * d - 0.3) / 0.8)); frame.alpha_composite(faded(l1, a), (160, 400 - int((1 - a) * 30)))
-        b = ease(clamp((t * d - d * 0.55) / 0.8)); frame.alpha_composite(faded(l2, b), (160, 560 - int((1 - b) * 30)))
+        cover.draw(frame, t, ease(clamp(t * d / 0.5)))
     return draw
 
 
@@ -209,10 +205,10 @@ def scene_big_number():
 
 
 def scene_facts():
-    tiles = [(f"{phone['verified']}/{phone['runs']}", f"phone runs verified, {phone['first_attempt']} on the first attempt", GREEN),
-             (f"{kb_fixed}/{kb_tried}", f"keyboard runs fixed, no diagnosis supplied ({kb_span})", BLUE),
-             (str(keyboard['false_booked_caught']), 'false “booked” confirmations caught', ORANGE),
-             (f"${summary['cost_usd']:.2f}", f"of Nemotron for all {summary['runs']} live runs", WHITE)]
+    tiles = [(f"0/{keyboard['false_booked_caught']}", 'false “booked” fixes accepted', ORANGE),
+             (f"{kb_fixed}/{kb_tried}", f"real-bug runs fixed, no root cause given ({kb_span}; {keyboard['verified']} of {keyboard['runs']} overall)", BLUE),
+             (f"{phone['verified']}/{phone['runs']}", 'seeded control runs verified', GREEN),
+             (f"${summary['cost_usd']:.2f}", f"estimated Nemotron cost, all {summary['runs']} live runs", WHITE)]
     layers = []
     for value, label, colour in tiles:
         tile = Image.new('RGBA', (380, 400), (0, 0, 0, 0))
@@ -253,16 +249,10 @@ def combine(*parts):
 
 SCENES = {
     'hero': scene_hero(),
-    'phone-observe': scene_card('CASE 1 · SAVED PHONE', 'The page said “booked”. The database saved 0000000000.',
-                                Card('phone-observe', RIGHT, 'fit', (1.0, 0.5, 0.3), (1.12, 0.5, 0.75))),
-    'phone-propose': scene_card('NVIDIA NEMOTRON · NO DIAGNOSIS SUPPLIED', 'Nemotron finds the hard-coded value and writes the fix.',
-                                Card('phone-propose', RIGHT, 'fit', (1.0, 0.5, 0.4), (1.1, 0.5, 0.6))),
-    'phone-proof': scene_card('VERIFIED FOR REAL', 'Saved, reopened, and re-checked with a second customer.',
-                              Card('phone-proof', RIGHT, 'pan', (1, 0.5, 0.0), (1, 0.5, 1.0)),
-                              combine(fade_in(counter(f"{phone['verified']} / {phone['runs']}", f"live runs verified · {phone['first_attempt']} on the first attempt", GREEN, (120, 560), 130), 0.62),
-                                      pop(STAMP_VERIFIED, (1640, 860), 0.35))),
-    'keyboard-intro': scene_card('CASE 2 · A REAL UPSTREAM BUG', 'Tab can’t reach the date picker.',
+    'keyboard-intro': scene_card('A REAL UPSTREAM BUG · EASY!APPOINTMENTS', 'Tab can’t reach the date picker.',
                                  Card('kb-observe', RIGHT, 'fit', (1.0, 0.5, 0.3), (1.1, 0.5, 0.5))),
+    'keyboard-propose': scene_card('NVIDIA NEMOTRON · NO ROOT CAUSE GIVEN', 'Nemotron searches the code and writes a fix.',
+                                   Card('kb-propose', RIGHT, 'fit', (1.0, 0.5, 0.2), (1.1, 0.5, 0.5))),
     'keyboard-wrong': scene_card('THE CONFIRMATION LIED', '“Booked.” Saved for the wrong day.',
                                  Card('kb-compare', (860, 250, 1820, 700), 'fit', (1.0, 0.5, 0.5), (1.04, 0.5, 0.5)),
                                  pop(STAMP_REJECTED, (1340, 820), 0.42)),
@@ -270,10 +260,14 @@ SCENES = {
                                       Card('kb-history', (860, 150, 1820, 950), 'fit', (1.0, 0.0, 0.3), (1.1, 0.0, 0.7))),
     'keyboard-reopen': scene_card('A SECOND BUG', 'Saved correctly — but reopening shows today’s date.',
                                   Card('kb-reopen', RIGHT, 'fit', (1.25, 0.5, 0.35), (1.25, 0.5, 0.62))),
-    'keyboard-verified': scene_card('FIXED BY NEMOTRON · CAUSE NEVER GIVEN', 'Both bugs fixed. Saved, reopened, mouse path intact.',
+    'keyboard-verified': scene_card('FIXED BY NEMOTRON · NO ROOT CAUSE GIVEN', 'Both bugs fixed. Saved, reopened, mouse path intact.',
                                     Card('kb-proof', RIGHT, 'pan', (1, 0.5, 0.0), (1, 0.5, 1.0)),
                                     pop(STAMP_VERIFIED, (1640, 860), 0.4)),
     'finding': scene_big_number(),
+    'phone-control': scene_card('CALIBRATION CONTROL · A SEEDED FAULT', 'A planted wrong phone number: fixed in every run.',
+                                Card('phone-proof', RIGHT, 'pan', (1, 0.5, 0.0), (1, 0.5, 1.0)),
+                                combine(fade_in(counter(f"{phone['verified']} / {phone['runs']}", f"live runs verified · {phone['first_attempt']} on the first attempt", GREEN, (120, 560), 130), 0.45),
+                                        pop(STAMP_VERIFIED, (1640, 860), 0.3))),
     'facts': scene_facts(),
     'close': scene_close(),
 }
