@@ -2,8 +2,13 @@
 <html lang="en">
 <head>
   <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="icon" href="media/favicon.svg" type="image/svg+xml">
+  <meta property="og:type" content="website"><meta property="og:site_name" content="AccessFinish"><meta property="og:url" content="https://sultalfaifi.com/accessfinish/">
+  <meta property="og:title" content="AccessFinish: the AI says “fixed.” We check the user can finish."><meta property="og:description" content="A repair agent on NVIDIA Nemotron (Nebius Token Factory) that accepts a fix only when a keyboard user can finish the task, the database holds what was typed, and a fresh browser shows it back.">
+  <meta property="og:image" content="https://sultalfaifi.com/accessfinish/media/film-poster.jpg"><meta property="og:image:width" content="1280"><meta property="og:image:height" content="720">
+  <meta name="twitter:card" content="summary_large_image">
   <meta name="description" content="An agent on NVIDIA Nemotron that keeps repairing a broken user journey until the saved result is verified, not just the confirmation page.">
-  <title>AccessFinish</title><link rel="stylesheet" href="agent.css?v=695faa05bbd1b077">
+  <title>AccessFinish</title><link rel="stylesheet" href="agent.css?v=63098d26160dc104">
 </head>
 <body>
 <a class="skip" href="#agent">Skip to the agent</a>
@@ -51,7 +56,7 @@
   <aside class="finding" id="finding" hidden>
     <h3>Not fixed in this run — and nothing false got through.</h3>
     <p>Every attempt that reached a <em>booked</em> page while the booking was saved, or reopened, with the wrong date was rejected.</p>
-    <p>The recorded timeline names the code behind it: right after the date is typed, the month-change handler in <code>booking.js</code> requests <code>get_unavailable_dates</code>, and the response handler overwrites the field with the first free day. Reopening a booking then resets the date to today when <b>Next</b> is pressed. Agent versions 4 and 5 fixed both, with no root cause supplied, in 2 of 10 runs (2 of 27 keyboard runs overall) — see <a href="evidence.html">every run</a>.</p>
+    <p>The recorded timeline names the code behind it: right after the date is typed, the month-change handler in <code>booking.js</code> requests <code>get_unavailable_dates</code>, and the response handler overwrites the field with the first free day. Reopening a booking then resets the date to today when <b>Next</b> is pressed. With the date unreachable by keyboard to begin with, that is three layers; agent versions 4 and 5 fixed all three, with no root cause supplied, in 2 of 10 runs (2 of 27 keyboard runs overall) — see <a href="evidence.html">every run</a>.</p>
   </aside>
 
   <section class="how" id="how" aria-labelledby="how-heading">
@@ -96,6 +101,6 @@
   <p class="limits">Synthetic data in a pinned copy of the open-source Easy!Appointments app. Two journeys today; the phone fault was seeded on purpose. All runs were made live on GitHub Actions with Nemotron 3 Super on Nebius Token Factory, and every one, including failures, is saved with its raw evidence — see <a href="evidence.html">Evidence</a>.</p>
 </main>
 <footer><span>AccessFinish — finish the task, verify the result.</span><a href="https://github.com/SultanAlfaifi/accessfinish">MIT · source on GitHub</a></footer>
-<script src="agent.js?v=640424b3f4d907a1"></script>
+<script src="agent.js?v=c51eb5ba6774ca68"></script>
 </body>
 </html>

@@ -57,9 +57,9 @@
   }
   function outcomeText(run = trace) {
     if (run.state === 'verified') return 'Verified on attempt ' + run.accepted.attempt + ' · ' + seconds(run.duration_ms) + ' · ' + money(run.estimated_cost_usd);
-    if (run.state === 'error') return 'Stopped: ' + run.error;
+    if (run.state === 'error') { const error = String(run.error).replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim(); return 'Stopped: ' + (error.length > 120 ? error.slice(0, 119) + '…' : error); }
     const verifies = run.steps.filter(step => step.kind === 'verify');
-    return 'Not verified after ' + plural(verifies.length, 'attempt') + ' — no patch accepted, ' + verifies.filter(step => step.stage === 'outcome').length + ' false "booked" pages caught';
+    return 'Not verified after ' + plural(verifies.length, 'attempt') + ' — no patch accepted, ' + plural(verifies.filter(step => step.stage === 'outcome').length, 'false "booked" page') + ' caught';
   }
 
   // One live region, polite and throttled: only the newest headline is spoken. The replay that starts on

@@ -182,6 +182,7 @@ jobs:
           git config user.name "accessfinish-agent"
           git config user.email "accessfinish-agent@users.noreply.github.com"
           git add media/live-film
+          if git diff --cached --quiet; then echo 'Narration unchanged.'; exit 0; fi
           git commit -m "Generate the film narration (Qwen3-TTS, Aiden) from ${GITHUB_SHA::7}"
           git pull --rebase origin "$GITHUB_REF_NAME"
           git push origin "HEAD:$GITHUB_REF_NAME"

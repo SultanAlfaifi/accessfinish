@@ -10,7 +10,7 @@ AccessFinish is a repair agent on **NVIDIA Nemotron 3 Super**, served by **Nebiu
 
 Coding agents write a growing share of UI fixes, and they judge success by the signals that are easiest to fake: a green build, a page that loads, a confirmation message. For people who rely on a keyboard or assistive technology, "it renders" is not the same as "I can finish".
 
-We saw this as soon as we asked an agent to fix a booking form that keyboard users couldn't complete. It soon produced patches that reached the "booked" page while the booking was saved for the wrong day. In our runs this happened **77 times**. In **all 27** keyboard runs, the first patch that reached a "booked" page was wrong, so a check that trusts the confirmation page would have shipped a broken fix every time.
+We saw this as soon as we asked an agent to fix a booking form that keyboard users couldn't complete. It soon produced patches that reached the "booked" page while the booking was saved, or reopened, with the wrong date. In our runs this happened **77 times**. In **all 27** keyboard runs, the first patch that reached a "booked" page was wrong, so a check that trusts the confirmation page would have shipped a broken fix every time.
 
 The usual checks miss it. Rule scanners such as axe or Lighthouse inspect one rendered page and never type a date or read the database, and the app's own tests never touch the booking page. Meanwhile, about **1.3 billion people (16%)** live with a significant disability (WHO), **95.9%** of the top million home pages have detectable WCAG failures (WebAIM Million 2026), and since **28 June 2025** the European Accessibility Act requires in-scope services such as e-commerce to be accessible.
 
@@ -19,7 +19,7 @@ The usual checks miss it. Rule scanners such as axe or Lighthouse inspect one re
 You give AccessFinish a goal, such as *"a keyboard-only customer books the 09:00 slot, and it is saved and reopens with that exact date"*. It then loops:
 
 1. **Observe.** A real browser runs the journey with the keyboard only. It records where focus goes, where it gets stuck, and which page code changed what the user typed.
-2. **Repair.** Nemotron gets the goal, the evidence and the source code, but **never the root cause or the fix**. It investigates with read-only `search_code` and `read_file`, then proposes exact code edits and explains which evidence its diagnosis accounts for.
+2. **Repair.** Nemotron gets the goal, the evidence and the source code, but **never the root cause or the fix** (the acceptance checks do name the date field and how the verifier types into it). It investigates with read-only `search_code` and `read_file`, then proposes exact code edits and explains which evidence its diagnosis accounts for.
 3. **Verify.** Each candidate is built and run in a fresh, offline sandbox. A keyboard-only browser makes the booking, a read-only database account reads back what was saved, and a fresh browser reopens the booking. Regression checks follow: a mouse booking with different data through month navigation, a cleared date, a reserved slot, untouched records and sandbox isolation.
 4. **Feed back.** Whatever failed goes back to Nemotron: a compile error with its code frame, a stuck key, a wrong saved value, or the call chain that overwrote the date. A ledger of earlier attempts goes with it. Nemotron gets up to 12 attempts, and **nothing is accepted unless every check passes.**
 
@@ -36,14 +36,14 @@ The web page replays any run step by step: the stuck keyboard trail, Nemotron's 
 
 ## Results
 
-All **54 runs** were made live on fresh GitHub Actions runners, **$6.38 in total** (estimated at list price). After each batch we read the failed traces, improved the loop and released a new agent version. Results are never mixed across versions.
+All **54 runs** were made live on fresh GitHub Actions runners, **$6.38 in total** (estimated at list price). After each batch we read the failed traces, improved the loop and released a new agent version. From v2 on, results are never mixed across versions.
 
 - **0 of 77 false fixes accepted.** 67 saved the wrong date and 10 reopened wrong. The database read-back or the reopen caught every one.
 - **Real upstream bug:** fixed by Nemotron, with no root cause supplied, in **2 of 10 runs of agents v4–v5** (0 of 17 before). In the first verified run, Nemotron's final four edits touch the same code sites as our earlier guided fix, with guard logic of its own.
 - **Why 2 of 10, while the phone control verifies 27 of 27:** the keyboard bug has three layers, and each stays hidden until the one before is fixed. First the date can't be reached; then it is overwritten half a second after typing; then reopening resets it to today. One patch must fix all three, with no root cause supplied. The phone fault is a single bug in one line.
 - **Seeded phone control:** verified in **27 of 27** runs, 26 on the first attempt, at about a cent per run.
 - **Nemotron on Token Factory:** 78% of prompt tokens came from the prompt cache and 80% of output tokens were reasoning. A proposal took a median of 19 s, and a verified keyboard fix in agents v4–v5 cost about $1.70.
-- **The demo video** records a further live run on 29 October. It rejects a "booked" page that saved 1 Nov instead of 9 Nov, then a booking that reopened as today, and is verified on attempt 5, about six minutes after **Run live**, for about $0.09. It was one of five live takes recorded for the video, and only that one verified; all five traces are in the repository.
+- **The demo video** records a further live run on 29 October. It rejects a "booked" page that saved 1 Nov instead of 9 Nov, then a booking that reopened as today, and is verified on attempt 5, about six minutes after **Run live**, for about $0.09. It was one of five live takes recorded for the video, and only that one verified; five more runs started by mistake that day (one verified). All ten traces are in the repository.
 
 ## Challenges we ran into
 
