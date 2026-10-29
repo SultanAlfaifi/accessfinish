@@ -1,6 +1,6 @@
 # Third party notices
 
-## Easy Appointments
+## Easy!Appointments
 
 Easy!Appointments is developed by A.Tselegidis and contributors and distributed under GNU GPL version 3. Upstream: https://github.com/alextselegidis/easyappointments, commit `4bc7ecd51f3dade8e041558f2c23dda65bd6c43e`.
 
@@ -12,4 +12,4 @@ The `operator-reference-proposal.json` is a diagnostic reference control combini
 
 ## Assets
 
-The AccessFinish mark, interface layout, diagrams, captions and demo film were created for this project. System fonts are referenced without bundling font files. The film uses no music or third-party stock media; it shows the original AccessFinish interface and its synthetic case data, and its narration was generated with Qwen3-TTS. NVIDIA and Nebius names identify the model and service used; no affiliation or endorsement is claimed.
+The AccessFinish mark, interface layout, diagrams, captions, poster and demo films were created for this project. System fonts are referenced without bundling font files. The films use no music or third-party stock media. The screen recording (`media/accessfinish-live-demo.mp4`) shows the AccessFinish interface, the pinned Easy!Appointments app (GPL-3.0, see above) with synthetic data, a Chromium browser and a terminal; the earlier generated film shows the AccessFinish interface and its synthetic case data. Both narrations were generated with Qwen3-TTS. NVIDIA and Nebius names identify the model and service used; no affiliation or endorsement is claimed.
