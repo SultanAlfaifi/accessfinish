@@ -18,7 +18,7 @@ on:
         default: 'before,live,after'
   push:
     # Not main or dev: a squash merge's message would carry the [film] tags of these commits.
-    branches: ['claude/**']
+    branches: ['film/**']
 permissions:
   contents: write
   actions: read

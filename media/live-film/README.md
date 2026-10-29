@@ -38,4 +38,4 @@ node scripts/film/shoot.cjs --scene live --xvfb --out take
 node scripts/film/serve-app.cjs --trace take/trace.json && node scripts/film/shoot.cjs --scene after --xvfb --out take
 ```
 
-Or run the Film recording workflow by hand, or push to a `claude/**` branch a commit whose message starts with `[film]` (see `.github/workflows/film.yml`); each take is a paid live run. The voice-over is `narration.json`, spoken by Qwen3-TTS (speaker Aiden) through `scripts/narrate.py` with `AF_NARRATION_DIR=media/live-film` (`[narrate-film]`), and `python3 scripts/film/render-live-film.py` edits the film.
+Or run the Film recording workflow by hand, or push to a `film/**` branch a commit whose message starts with `[film]` (see `.github/workflows/film.yml`); each take is a paid live run. The voice-over is `narration.json`, spoken by Qwen3-TTS (speaker Aiden) through `scripts/narrate.py` with `AF_NARRATION_DIR=media/live-film` (`[narrate-film]`), and `python3 scripts/film/render-live-film.py` edits the film.
