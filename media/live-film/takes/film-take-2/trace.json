@@ -1,0 +1,775 @@
+{
+  "schema_version": 1,
+  "agent_version": "5",
+  "id": "agent-31b12339b788b3733653fe84",
+  "case_id": "keyboard-date",
+  "title": "Reach the date with a keyboard",
+  "goal": "A customer who uses only the keyboard books the 09:00 slot on a chosen date, and the booking is saved and reopens with that exact date.",
+  "model": "nvidia/nemotron-3-super-120b-a12b",
+  "provider": "Nebius Token Factory",
+  "temperature": 0.6,
+  "top_p": 0.95,
+  "max_attempts": 12,
+  "git_commit": "a2bc73911a63e11a964afccd8c5e05d131808c3f",
+  "git_dirty": false,
+  "fixture_fingerprint": "88eb9ab8238a5eb812249a3a90cd7216726b6032fb573eb9ffde21213a32b02d",
+  "scenario_date": "2026-11-09",
+  "scenario_crosses_month": true,
+  "started_at_utc": "2026-10-29T13:43:58.516Z",
+  "state": "verified",
+  "steps": [
+    {
+      "at_utc": "2026-10-29T13:44:28.094Z",
+      "kind": "observe",
+      "run_id": "run-d86c8b7eab74988335e020d764ce5f51",
+      "duration_ms": 29576,
+      "headline": "Keyboard user got stuck at the date step: there is no date field to Tab to",
+      "verified": false,
+      "evidence": {
+        "stage": "keyboard",
+        "reason": "booking_expected_ui_not_observed",
+        "focus_trail": [
+          "Tab → SELECT #select-service \"Please Select                        \n  \"",
+          "Home → SELECT #select-service \"Please Select                        \n  \"",
+          "ArrowDown → SELECT #select-service \"Please Select                        \n  \"",
+          "ArrowDown → SELECT #select-service \"Please Select                        \n  \"",
+          "Tab → SELECT #select-provider \"Jane Doe\"",
+          "Tab → BUTTON #button-next-1 \"Next\"",
+          "Enter → BUTTON #button-next-1 \"Next\""
+        ],
+        "page": {
+          "focus": {
+            "tag": "BODY",
+            "id": "",
+            "role": null
+          },
+          "inputs": [
+            "select-timezone:select-one"
+          ],
+          "visible_text": "AccessFinish Synthetic Booking\nService │ Jane Doe\n1\n2\n3\n4\nAppointment Date & Time\nOctober\nNovember\nDecember\nSun\nMon\nTue\nWed\nThu\nFri\nSat\n1\n2\n3\n4\n5\n6\n7\n8\n9\n10\n11\n12\n13\n14\n15\n16\n17\n18\n19\n20\n21\n22\n23\n24\n25\n26\n27\n28\n29\n30\n31\nTimezone\nUTC\nAdak (-10:00)\nAtka (-10:00)\nAnchorage (-9:00)\nJuneau (-9:00)\nNome (-9:00)\nYakutat (-9:00)\nDawson (-8:00)\nEnsenada (-8:00)\nLos_Angeles (-8:00)\nTijuana (-8:00)\nVancouver (-8:00)\nWhitehorse (-8:00)\nBoise (-7:00)\nCambridge_Bay (-7:00)\nChihuahua (-7:00)\nDawson_Creek (-7:00)\nDenver (-7:00)\nEdmonton (-7:00)\nHermosillo (-7:00)\nInuvik (-7:00)\nMazatlan (-7:00)\nPhoenix (-7:00…"
+        }
+      }
+    },
+    {
+      "at_utc": "2026-10-29T13:44:32.548Z",
+      "kind": "propose",
+      "attempt": 1,
+      "duration_ms": 4423,
+      "diagnosis": "The date picker container lacks a tabindex, making it unfocusable for keyboard navigation, so the verifier cannot focus the date field and type the date.",
+      "evidence_explained": "\"focus_trail\": [... \"Tab → SELECT #select-service\", \"... Tab → BUTTON #button-next-1 \\\"Next\\\"\", \"Enter → BUTTON #button-next-1 \\\"Next\\\"\"] after which the verifier expects to tab to the date field but the focus remains on BODY with only the timezone select visible, indicating the date field was not reachable.",
+      "reasoning": "We need diagnose why keyboard flow fails at date selection step. Evidence: focus trail shows after pressing Enter on button-next-1, still on body, inputs includes select-timezone only. Means date picker didn't appear? Probably date field not focused due to missing native-date id? In booking.js they use $selectDate = $('#select-date'); That's a div, not input. They initialize datepicker on that div. Keyboard navigation: they tab to date field with id \"select-date\" (or \"native-date\") but the div may not be focusable unless tabindex. Need to add tabindex=\"0\" to make it focusable. Also they need to handle keydown Enter to select date? Actually they type date then press Enter; datepicker likely expects change event when value changes via input. But they use flatpickr? UI datepicker? They set value via setDateTimePickerValue which likely sets input? However $selectDate is div, flatpickr creates hidden input? Might need to make div focusable and listen for keypress.\n\nSimpler: add tabindex=\"0\" to the div in PHP file. Edit booking_time_step.php: change <div id=\"select-date\" class=\"mx-auto my-4\"></div> to include tabindex=\"0\".\n\nLet's propose that.",
+      "build_on_attempt": null,
+      "edits": [
+        {
+          "path": "application/views/components/booking_time_step.php",
+          "old": "<div id=\"select-date\" class=\"mx-auto my-4\"></div>",
+          "new": "<div id=\"select-date\" class=\"mx-auto my-4\" tabindex=\"0\"></div>"
+        }
+      ],
+      "proposal_sha256": "850144a3c97982fb79ee85c136fbbe0cd945b85c7f89812dbe53ad30f482afc3",
+      "usage": {
+        "completion_tokens": 479,
+        "prompt_tokens": 16112,
+        "total_tokens": 16591,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": null,
+          "audio_tokens": null,
+          "reasoning_tokens": 263,
+          "rejected_prediction_tokens": null
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": null,
+          "cached_tokens": 16096,
+          "created_cache_tokens": 0,
+          "multimodal_tokens": null
+        },
+        "prompt_cache_hit_tokens": 16096,
+        "prompt_cache_miss_tokens": 16
+      }
+    },
+    {
+      "at_utc": "2026-10-29T13:44:58.012Z",
+      "kind": "verify",
+      "attempt": 1,
+      "run_id": "run-efda5798b5e5fea2a9f7c32c6cb047f5",
+      "duration_ms": 25462,
+      "verified": false,
+      "stage": "keyboard",
+      "headline": "Keyboard user got stuck at the date step: there is no date field to Tab to",
+      "evidence": {
+        "stage": "keyboard",
+        "reason": "booking_expected_ui_not_observed",
+        "focus_trail": [
+          "Tab → SELECT #select-service \"Please Select                        \n  \"",
+          "Home → SELECT #select-service \"Please Select                        \n  \"",
+          "ArrowDown → SELECT #select-service \"Please Select                        \n  \"",
+          "ArrowDown → SELECT #select-service \"Please Select                        \n  \"",
+          "Tab → SELECT #select-provider \"Jane Doe\"",
+          "Tab → BUTTON #button-next-1 \"Next\"",
+          "Enter → BUTTON #button-next-1 \"Next\""
+        ],
+        "page": {
+          "focus": {
+            "tag": "BODY",
+            "id": "",
+            "role": null
+          },
+          "inputs": [
+            "select-timezone:select-one"
+          ],
+          "visible_text": "AccessFinish Synthetic Booking\nService │ Jane Doe\n1\n2\n3\n4\nAppointment Date & Time\nOctober\nNovember\nDecember\nSun\nMon\nTue\nWed\nThu\nFri\nSat\n1\n2\n3\n4\n5\n6\n7\n8\n9\n10\n11\n12\n13\n14\n15\n16\n17\n18\n19\n20\n21\n22\n23\n24\n25\n26\n27\n28\n29\n30\n31\nTimezone\nUTC\nAdak (-10:00)\nAtka (-10:00)\nAnchorage (-9:00)\nJuneau (-9:00)\nNome (-9:00)\nYakutat (-9:00)\nDawson (-8:00)\nEnsenada (-8:00)\nLos_Angeles (-8:00)\nTijuana (-8:00)\nVancouver (-8:00)\nWhitehorse (-8:00)\nBoise (-7:00)\nCambridge_Bay (-7:00)\nChihuahua (-7:00)\nDawson_Creek (-7:00)\nDenver (-7:00)\nEdmonton (-7:00)\nHermosillo (-7:00)\nInuvik (-7:00)\nMazatlan (-7:00)\nPhoenix (-7:00…"
+        }
+      }
+    },
+    {
+      "at_utc": "2026-10-29T13:45:00.801Z",
+      "kind": "search",
+      "query": "initializeDatePicker",
+      "matches": 6,
+      "attempt": 2,
+      "usage": {
+        "completion_tokens": 199,
+        "prompt_tokens": 17075,
+        "total_tokens": 17274,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": null,
+          "audio_tokens": null,
+          "reasoning_tokens": 172,
+          "rejected_prediction_tokens": null
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": null,
+          "cached_tokens": 0,
+          "created_cache_tokens": 8432,
+          "multimodal_tokens": null
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 17075
+      }
+    },
+    {
+      "at_utc": "2026-10-29T13:45:02.458Z",
+      "kind": "read",
+      "path": "assets/js/utils/ui.js",
+      "found": true,
+      "attempt": 2,
+      "usage": {
+        "completion_tokens": 86,
+        "prompt_tokens": 17257,
+        "total_tokens": 17343,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": null,
+          "audio_tokens": null,
+          "reasoning_tokens": 57,
+          "rejected_prediction_tokens": null
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": null,
+          "cached_tokens": 17056,
+          "created_cache_tokens": 0,
+          "multimodal_tokens": null
+        },
+        "prompt_cache_hit_tokens": 17056,
+        "prompt_cache_miss_tokens": 201
+      }
+    },
+    {
+      "at_utc": "2026-10-29T13:45:07.877Z",
+      "kind": "propose",
+      "attempt": 2,
+      "duration_ms": 9864,
+      "diagnosis": "The date picker container is a div that flatpickr turns into a non-focusable element; changing it to an input makes it keyboard-focusable and typable.",
+      "evidence_explained": "After selecting provider and clicking Next, the verifier's focus trail shows focus on BODY with only the timezone select visible, meaning the date field (#select-date) is not reachable via Tab.",
+      "reasoning": "We need to understand why the date field isn't focusable. The flatpickr initialization likely creates an input inside the div? Actually flatpickr when applied to a div creates an input element? Usually flatpickr is applied to an input element. Here they apply to a div, which may create a hidden input? But the verifier sees no date field to tab to. Perhaps the flatpickr-generated input is not focusable because it's not in the tab order (maybe it's hidden or has tabindex=-1). We could add tabindex=\"0\" to the div itself, but maybe the generated input is what needs focus. Let's see how flatpickr works: If you call flatpickr on a div, it wraps the div with a flatpickr container and creates an input inside? Actually flatpickr can be attached to any element, but if it's not an input, it creates a fake input? I think flatpickr creates an input element and appends it to the target? Not sure.\n\nAlternatively, maybe the issue is that the date field is not rendered because the timezone selection changed? But the verifier sees the timezone select present.\n\nLet's look at the booking.js code: they initialize date picker on $selectDate which is $('#select-date'). That's the div. They also set value via App.Utils.UI.setDateTimePickerValue($selectDate, new Date()); So they expect flatpickr to work on a div.\n\nMaybe the problem is that the flatpickr input is not focusable because it's not a form control. We could change the div to an input type=\"text\" or input type=\"date\"? However the verifier says they can type date into the field (they press Control+A, type date). So they expect an input that accepts typing.\n\nThus we should change the div to an input element. But we must keep the id and classes for JS to work. Let's change the div to an input type=\"text\" with same id and class.\n\nCheck if any other code expects a div? Probably not.\n\nLet's edit application/views/components/booking_time_step.php: replace <div id=\"select-date\" class=\"mx-auto my-4\"></div> with <input type=\"text\" id=\"select-date\" class=\"mx-auto my-4\" />.\n\nBut note that flatpickr may need readonly? It has allowInput: true, so typing works.\n\nLet's do that.\n\nAlso ensure we don't break anything else.\n\nWe'll propose that edit.",
+      "build_on_attempt": null,
+      "edits": [
+        {
+          "path": "application/views/components/booking_time_step.php",
+          "old": "<div id=\"select-date\" class=\"mx-auto my-4\"></div>",
+          "new": "<input type=\"text\" id=\"select-date\" class=\"mx-auto my-4\" />"
+        }
+      ],
+      "proposal_sha256": "0d518378ed36c8610db8c0dede8d7ffb189f548a674f5ccb70b55321eddf84c2",
+      "usage": {
+        "completion_tokens": 696,
+        "prompt_tokens": 19486,
+        "total_tokens": 20182,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": null,
+          "audio_tokens": null,
+          "reasoning_tokens": 516,
+          "rejected_prediction_tokens": null
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": null,
+          "cached_tokens": 17232,
+          "created_cache_tokens": 0,
+          "multimodal_tokens": null
+        },
+        "prompt_cache_hit_tokens": 17232,
+        "prompt_cache_miss_tokens": 2254
+      }
+    },
+    {
+      "at_utc": "2026-10-29T13:45:48.916Z",
+      "kind": "verify",
+      "attempt": 2,
+      "run_id": "run-caaabdaae730c0bbeb943df11e70618d",
+      "duration_ms": 40961,
+      "verified": false,
+      "stage": "outcome",
+      "headline": "Confirmation shown, but saved for 2026-11-01 09:00 instead of 2026-11-09 09:00; page code changed the typed date to 01/11/2026",
+      "evidence": {
+        "stage": "outcome",
+        "error": "Outcome verification failed: wrong_start_datetime, wrong_end_datetime_or_duration, reopen_date_mismatch",
+        "reasons": [
+          "wrong_start_datetime",
+          "wrong_end_datetime_or_duration",
+          "reopen_date_mismatch"
+        ],
+        "saved": {
+          "appointments": [
+            {
+              "start": "2026-11-01 09:00:00",
+              "end": "2026-11-01 09:30:00"
+            }
+          ],
+          "customers": [
+            {
+              "first_name": "Synthetic",
+              "last_name": "ExploratoryBooking",
+              "email": "exploratory-booking@example.invalid",
+              "phone_number": "0000000000"
+            }
+          ]
+        },
+        "expected": {
+          "start": "2026-11-09 09:00:00",
+          "customer": {
+            "first_name": "Synthetic",
+            "last_name": "ExploratoryBooking",
+            "email": "exploratory-booking@example.invalid",
+            "phone_number": "0000000000"
+          }
+        },
+        "text_typed_by_verifier": {
+          "first_name": "Synthetic",
+          "last_name": "ExploratoryBooking",
+          "email": "exploratory-booking@example.invalid",
+          "phone_number": "0000000000"
+        },
+        "date_field_history": [
+          {
+            "after_action": 22,
+            "action": "no key pressed (page changed it)",
+            "date_field_value": "29/10/2026"
+          },
+          {
+            "after_action": 28,
+            "action": "type \"09/11/2026\"",
+            "date_field_value": "09/11/2026"
+          },
+          {
+            "after_action": 37,
+            "action": "no key pressed (page changed it)",
+            "date_field_value": "01/11/2026"
+          }
+        ],
+        "date_field_writes": [
+          {
+            "t": "-1.2s",
+            "value": "29/10/2026",
+            "by": "setDate ← setDateTimePickerValue ← initialize"
+          },
+          {
+            "t": "+0.6s",
+            "value": "01/11/2026",
+            "by": "setDate ← setDateTimePickerValue ← applyUnavailableDates ← resolveWith ← (XMLHttpRequest.send) ← send ← ajax ← getUnavailableDates ← (setTimeout) ← onMonthChange ← setDate"
+          }
+        ],
+        "timeline_after_typing_date": [
+          {
+            "t": "+0.0s",
+            "event": "type \"09/11/2026\" → date field shows \"09/11/2026\""
+          },
+          {
+            "t": "+0.0s",
+            "event": "page request POST /index.php/booking/get_available_hours from send ← ajax ← getAvailableHours ← onChange ← setDate"
+          },
+          {
+            "t": "+0.5s",
+            "event": "page request GET /index.php/booking/get_unavailable_dates from send ← ajax ← getUnavailableDates ← (setTimeout) ← onMonthChange ← setDate"
+          },
+          {
+            "t": "+0.6s",
+            "event": "page code set the date field to \"01/11/2026\" via setDate ← setDateTimePickerValue ← applyUnavailableDates ← resolveWith ← (XMLHttpRequest.send) ← send ← ajax ← getUnavailableDates ← (setTimeout) ← onMonthChange ← setDate"
+          },
+          {
+            "t": "+0.6s",
+            "event": "page request POST /index.php/booking/get_available_hours from send ← ajax ← getAvailableHours ← applyUnavailableDates ← fireWith ← (XMLHttpRequest.send) ← send ← ajax ← getUnavailableDates ← (setTimeout)"
+          },
+          {
+            "t": "+0.7s",
+            "event": "no key pressed (page changed it) → date field shows \"01/11/2026\""
+          },
+          {
+            "t": "+9.7s",
+            "event": "page request POST /index.php/booking/register from send ← ajax ← registerAppointment ← dispatch ← handle"
+          }
+        ],
+        "keyboard_actions_total": 156,
+        "reopened": {
+          "selected_date_iso": "2026-10-29",
+          "evidence_kind": "date_input+flatpickr_selected_day",
+          "ambiguous": false
+        },
+        "reopen": {
+          "date_field_when_the_booking_link_opened": "select-date=\"01/11/2026\" (hidden)",
+          "date_field_after_pressing_next_on_step_1": "select-date=\"29/10/2026\"",
+          "date_shown_after_reopening": "2026-10-29"
+        }
+      }
+    },
+    {
+      "at_utc": "2026-10-29T13:45:53.811Z",
+      "kind": "search",
+      "query": "applyUnavailableDates",
+      "matches": 4,
+      "attempt": 3,
+      "usage": {
+        "completion_tokens": 592,
+        "prompt_tokens": 21015,
+        "total_tokens": 21607,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": null,
+          "audio_tokens": null,
+          "reasoning_tokens": 564,
+          "rejected_prediction_tokens": null
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": null,
+          "cached_tokens": 19456,
+          "created_cache_tokens": 0,
+          "multimodal_tokens": null
+        },
+        "prompt_cache_hit_tokens": 19456,
+        "prompt_cache_miss_tokens": 1559
+      }
+    },
+    {
+      "at_utc": "2026-10-29T13:45:55.092Z",
+      "kind": "read",
+      "path": "assets/js/http/booking_http_client.js",
+      "found": true,
+      "attempt": 3,
+      "usage": {
+        "completion_tokens": 66,
+        "prompt_tokens": 21168,
+        "total_tokens": 21234,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": null,
+          "audio_tokens": null,
+          "reasoning_tokens": 34,
+          "rejected_prediction_tokens": null
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": null,
+          "cached_tokens": 20992,
+          "created_cache_tokens": 0,
+          "multimodal_tokens": null
+        },
+        "prompt_cache_hit_tokens": 20992,
+        "prompt_cache_miss_tokens": 176
+      }
+    },
+    {
+      "at_utc": "2026-10-29T13:46:05.428Z",
+      "kind": "search",
+      "query": "function applyUnavailableDates",
+      "matches": 1,
+      "attempt": 3,
+      "usage": {
+        "completion_tokens": 1106,
+        "prompt_tokens": 25234,
+        "total_tokens": 26340,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": null,
+          "audio_tokens": null,
+          "reasoning_tokens": 1077,
+          "rejected_prediction_tokens": null
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": null,
+          "cached_tokens": 20992,
+          "created_cache_tokens": 0,
+          "multimodal_tokens": null
+        },
+        "prompt_cache_hit_tokens": 20992,
+        "prompt_cache_miss_tokens": 4242
+      }
+    },
+    {
+      "at_utc": "2026-10-29T13:46:41.482Z",
+      "kind": "propose",
+      "attempt": 3,
+      "duration_ms": 52566,
+      "diagnosis": "The date picker's onMonthChange handler runs after a 500ms timeout when the month changes due to user input, causing the date to be overridden to the first available day of the month. Clearing this timeout on user input prevents the override while preserving month navigation updates.",
+      "evidence_explained": "\"page request GET /index.php/booking/get_unavailable_dates from send ← ajax ← getUnavailableDates ← (setTimeout) ← onMonthChange ← setDate\" shows the delayed call that overrides the user's typed date.",
+      "reasoning": "We are given that the verifier typed the date \"09/11/2026\" (which is DD/MM/YYYY) but the page code changed it to \"01/11/2026\".\n Looking at the timeline:\n   - After typing, the date field shows \"09/11/2026\".\n   - Then a series of events happen, and at t=\"+0.6s\" the page code sets the date field to \"01/11/2026\".\n\n The evidence shows that the change is caused by:\n   setDate ← setDateTimePickerValue ← applyUnavailableDates ← resolveWith ← (XMLHttpRequest.send) ← send ← ajax ← getUnavailableDates ← (setTimeout) ← onMonthChange ← setDate\n\n Specifically, the function `applyUnavailableDates` is called with `setDate=true` (because in the call from `getUnavailableDates` we see `applyUnavailableDates(response, selectedDateString, true)`).\n\n In `applyUnavailableDates`, we have:\n   if (setDate && !vars('manage_mode')) {\n        for (let i = 1; i <= numberOfDays; i++) {\n            const currentDate = new Date(selectedDate.getFullYear(), selectedDate.getMonth(), i);\n            if (unavailableDates.indexOf(moment(currentDate).format('YYYY-MM-DD')) === -1) {\n                App.Utils.UI.setDateTimePickerValue($selectDate, currentDate);\n                getAvailableHours(moment(currentDate).format('YYYY-MM-DD'));\n                break;\n            }\n        }\n   }\n\n This loop is trying to set the date to the first available day in the month (starting from day 1) that is not in the unavailableDates list.\n\n However, note that the verifier typed a specific date (the 9th) and we want to keep that date if it is available.\n\n The problem is that the code is overriding the user's selected date with the first available date of the month.\n\n We should only set the date automatically if the user hasn't selected a date? Or we should respect the user's input.\n\n Looking at the code, the `setDate` flag is passed as `true` from `getUnavailableDates` when called from the `onMonthChange` handler and also from the initial load.\n\n But note: the verifier's action is typing in the date field, which triggers the `onChange` event of the date picker.\n\n However, the `onChange` event does not call `getUnavailableDates`? Let's check:\n\n In the date picker initialization in `booking.js`:\n   onChange: (selectedDates) => {\n        App.Http.Booking.getAvailableHours(moment(selectedDates[0]).format('YYYY-MM-DD'));\n        App.Pages.Booking.updateConfirmFrame();\n   },\n\n So when the user types a date and presses Enter, the `onChange` fires, which calls `getAvailableHours` and `updateConfirmFrame`.\n\n It does NOT call `getUnavailableDates`.\n\n Therefore, the override must be coming from elsewhere.\n\n Looking at the timeline again, the change happens after a delay (setTimeout) and is triggered by `onMonthChange`.\n\n How did the month change? The verifier did not change the month. They typed the date.\n\n But note: the date picker might be interpreting the input and changing the month internally? Or perhaps the flatpickr instance is updating the displayed month when a date is typed?\n\n However, the evidence shows:\n   - At t=\"+0.6s\": page code set the date field to \"01/11/2026\" via setDate ← setDateTimePickerValue ← applyUnavailableDates ← ... ← onMonthChange ← setDate\n\n So the `onMonthChange` handler was called.\n\n Let's look at the `onMonthChange` handler in the date picker initialization:\n\n   onMonthChange: (selectedDates, dateStr, instance) => {\n        $selectDate.parent().fadeTo(400, 0.3); // Change opacity during loading\n\n        if (monthTimeout) {\n            clearTimeout(monthTimeout);\n        }\n\n        monthTimeout = setTimeout(() => {\n            const previousMoment = moment(instance.selectedDates[0]);\n\n            const displayedMonthMoment = moment(\n                instance.currentYearElement.value +\n                    '-' +\n                    String(Number(instance.monthsDropdownContainer.value) + 1).padStart(2, '0') +\n                    '-01',\n            );\n\n            const monthChangeStep = detectDatepickerMonthChangeStep(previousMoment, displayedMonthMoment);\n\n            App.Http.Booking.getUnavailableDates(\n                $selectProvider.val(),\n                $selectService.val(),\n                displayedMonthMoment.format('YYYY-MM-DD'),\n                monthChangeStep,\n            );\n        }, 500);\n   },\n\n This handler is called when the month changes in the date picker UI (e.g., when the user clicks the next/previous month button).\n\n But note: the verifier typed a date and pressed Enter. Did that cause a month change?\n\n It might have if the typed date was in a different month than the currently displayed month.\n\n However, the verifier was trying to book the 09:00 slot on a chosen date. The evidence shows:\n   - The verifier typed \"09/11/2026\" (which is 9th November 2026) and then the page changed it to \"01/11/2026\" (1st November 2026).\n\n So the month remained November, but the day changed from 9 to 1.\n\n Therefore, the month did not change, so `onMonthChange` should not have been called.\n\n But wait: the timeline shows that the change came from `onMonthChange`. How?\n\n Let me re-examine the timeline:\n\n   [{\"t\":\"+0.0s\",\"event\":\"type \\\"09/11/2026\\\" → date field shows \\\"09/11/2026\\\"\"},\n    {\"t\":\"+0.0s\",\"event\":\"page request POST /index.php/booking/get_available_hours from send ← ajax ← getAvailableHours ← onChange ← setDate\"},\n    {\"t\":\"+0.5s\",\"event\":\"page request GET /index.php/booking/get_unavailable_dates from send ← ajax ← getUnavailableDates ← (setTimeout) ← onMonthChange ← setDate\"},\n    ...]\n\n So there is a GET request for `get_unavailable_dates` that is triggered by a `setTimeout` that came from `onMonthChange`.\n\n How did `onMonthChange` get triggered? It must have been triggered by the flatpickr instance when the date was set.\n\n Alternatively, note that the verifier's action of typing the date and pressing Enter might have caused the flatpickr instance to update and then trigger an internal month change?\n\n However, the evidence shows that the date field value after typing was \"09/11/2026\", so the month was November…",
+      "build_on_attempt": null,
+      "edits": [
+        {
+          "path": "assets/js/pages/booking.js",
+          "old": "            onChange: (selectedDates) => {\n                App.Http.Booking.getAvailableHours(moment(selectedDates[0]).format('YYYY-MM-DD'));\n                App.Pages.Booking.updateConfirmFrame();\n            },",
+          "new": "            onChange: (selectedDates) => {\n                if (monthTimeout) {\n                    clearTimeout(monthTimeout);\n                }\n                App.Http.Booking.getAvailableHours(moment(selectedDates[0]).format('YYYY-MM-DD'));\n                App.Pages.Booking.updateConfirmFrame();\n            },"
+        }
+      ],
+      "proposal_sha256": "a71cbec8377f66499bd6611a2d58e12ad445369aa905d09ea6647a54ff2e0e3e",
+      "usage": {
+        "completion_tokens": 6226,
+        "prompt_tokens": 25309,
+        "total_tokens": 31535,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": null,
+          "audio_tokens": null,
+          "reasoning_tokens": 5935,
+          "rejected_prediction_tokens": null
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": null,
+          "cached_tokens": 25216,
+          "created_cache_tokens": 80,
+          "multimodal_tokens": null
+        },
+        "prompt_cache_hit_tokens": 25216,
+        "prompt_cache_miss_tokens": 93
+      }
+    },
+    {
+      "at_utc": "2026-10-29T13:47:09.529Z",
+      "kind": "verify",
+      "attempt": 3,
+      "run_id": "run-829a41da781b379549f7129b86a49956",
+      "duration_ms": 28046,
+      "verified": false,
+      "stage": "keyboard",
+      "headline": "Keyboard user got stuck at the date step: there is no date field to Tab to",
+      "evidence": {
+        "stage": "keyboard",
+        "reason": "booking_expected_ui_not_observed",
+        "focus_trail": [
+          "Tab → SELECT #select-service \"Please Select                        \n  \"",
+          "Home → SELECT #select-service \"Please Select                        \n  \"",
+          "ArrowDown → SELECT #select-service \"Please Select                        \n  \"",
+          "ArrowDown → SELECT #select-service \"Please Select                        \n  \"",
+          "Tab → SELECT #select-provider \"Jane Doe\"",
+          "Tab → BUTTON #button-next-1 \"Next\"",
+          "Enter → BUTTON #button-next-1 \"Next\""
+        ],
+        "page": {
+          "focus": {
+            "tag": "BODY",
+            "id": "",
+            "role": null
+          },
+          "inputs": [
+            "select-timezone:select-one"
+          ],
+          "visible_text": "AccessFinish Synthetic Booking\nService │ Jane Doe\n1\n2\n3\n4\nAppointment Date & Time\nOctober\nNovember\nDecember\nSun\nMon\nTue\nWed\nThu\nFri\nSat\n1\n2\n3\n4\n5\n6\n7\n8\n9\n10\n11\n12\n13\n14\n15\n16\n17\n18\n19\n20\n21\n22\n23\n24\n25\n26\n27\n28\n29\n30\n31\nTimezone\nUTC\nAdak (-10:00)\nAtka (-10:00)\nAnchorage (-9:00)\nJuneau (-9:00)\nNome (-9:00)\nYakutat (-9:00)\nDawson (-8:00)\nEnsenada (-8:00)\nLos_Angeles (-8:00)\nTijuana (-8:00)\nVancouver (-8:00)\nWhitehorse (-8:00)\nBoise (-7:00)\nCambridge_Bay (-7:00)\nChihuahua (-7:00)\nDawson_Creek (-7:00)\nDenver (-7:00)\nEdmonton (-7:00)\nHermosillo (-7:00)\nInuvik (-7:00)\nMazatlan (-7:00)\nPhoenix (-7:00…"
+        }
+      }
+    },
+    {
+      "at_utc": "2026-10-29T13:47:51.513Z",
+      "kind": "read",
+      "path": "assets/js/http/booking_http_client.js",
+      "found": true,
+      "already_provided": true,
+      "attempt": 4,
+      "usage": {
+        "completion_tokens": 7286,
+        "prompt_tokens": 26750,
+        "total_tokens": 34036,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": null,
+          "audio_tokens": null,
+          "reasoning_tokens": 7254,
+          "rejected_prediction_tokens": null
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": null,
+          "cached_tokens": 25280,
+          "created_cache_tokens": 0,
+          "multimodal_tokens": null
+        },
+        "prompt_cache_hit_tokens": 25280,
+        "prompt_cache_miss_tokens": 1470
+      }
+    },
+    {
+      "at_utc": "2026-10-29T13:47:54.744Z",
+      "kind": "propose",
+      "attempt": 4,
+      "duration_ms": 45214,
+      "diagnosis": "The date picker container needed to be an input for keyboard focus, and the onChange handler must clear the month-change timeout to prevent overriding the user-selected date with the first available day of the month.",
+      "evidence_explained": "Attempt 2 showed the date field became focusable and typable, but the verifier's evidence revealed the page code later changed the typed date to the first of the month via a delayed getUnavailableDates call from onMonthChange. Attempt 3's fix clears that timeout on user input, stopping the override while preserving month navigation updates.",
+      "reasoning": "We need to combine the successful edit from attempt 2 (making #select-date an input) with the fix from attempt 3 (clearing monthTimeout on onChange). Also ensure we keep the edit from attempt 2. Since the system asks to either build_on_attempt or send full proposal. Let's build_on_attempt: 2 and add the extra edit.\n\nBut note: attempt 3's edit was to onChange handler. However attempt 3 failed because it left out the input change. So we need to apply both.\n\nThus we propose build_on_attempt: 2 and add an edit to booking.js onChange handler to clear monthTimeout.\n\nLet's craft the proposal.",
+      "build_on_attempt": 2,
+      "kept_edits": 1,
+      "edits": [
+        {
+          "path": "application/views/components/booking_time_step.php",
+          "old": "<div id=\"select-date\" class=\"mx-auto my-4\"></div>",
+          "new": "<input type=\"text\" id=\"select-date\" class=\"mx-auto my-4\" />"
+        },
+        {
+          "path": "assets/js/pages/booking.js",
+          "old": "            onChange: (selectedDates) => {\n                App.Http.Booking.getAvailableHours(moment(selectedDates[0]).format('YYYY-MM-DD'));\n                App.Pages.Booking.updateConfirmFrame();\n            },",
+          "new": "            onChange: (selectedDates) => {\n                if (monthTimeout) {\n                    clearTimeout(monthTimeout);\n                }\n                App.Http.Booking.getAvailableHours(moment(selectedDates[0]).format('YYYY-MM-DD'));\n                App.Pages.Booking.updateConfirmFrame();\n            },"
+        }
+      ],
+      "proposal_sha256": "ab8f970ac076359cd7909d6e109e562d98a648b45e0a2213f7d22eccea539270",
+      "usage": {
+        "completion_tokens": 450,
+        "prompt_tokens": 26815,
+        "total_tokens": 27265,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": null,
+          "audio_tokens": null,
+          "reasoning_tokens": 141,
+          "rejected_prediction_tokens": null
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": null,
+          "cached_tokens": 26720,
+          "created_cache_tokens": 0,
+          "multimodal_tokens": null
+        },
+        "prompt_cache_hit_tokens": 26720,
+        "prompt_cache_miss_tokens": 95
+      }
+    },
+    {
+      "at_utc": "2026-10-29T13:48:41.723Z",
+      "kind": "verify",
+      "attempt": 4,
+      "run_id": "run-91d8de22d43195bbc7339db56ce7ea68",
+      "duration_ms": 46978,
+      "verified": false,
+      "stage": "outcome",
+      "headline": "Saved for the right date, but reopening the booking showed 2026-10-29 instead of 2026-11-09",
+      "evidence": {
+        "stage": "outcome",
+        "error": "Outcome verification failed: reopen_date_mismatch",
+        "reasons": [
+          "reopen_date_mismatch"
+        ],
+        "saved": {
+          "appointments": [
+            {
+              "start": "2026-11-09 09:00:00",
+              "end": "2026-11-09 09:30:00"
+            }
+          ],
+          "customers": [
+            {
+              "first_name": "Synthetic",
+              "last_name": "ExploratoryBooking",
+              "email": "exploratory-booking@example.invalid",
+              "phone_number": "0000000000"
+            }
+          ]
+        },
+        "expected": {
+          "start": "2026-11-09 09:00:00",
+          "customer": {
+            "first_name": "Synthetic",
+            "last_name": "ExploratoryBooking",
+            "email": "exploratory-booking@example.invalid",
+            "phone_number": "0000000000"
+          }
+        },
+        "text_typed_by_verifier": {
+          "first_name": "Synthetic",
+          "last_name": "ExploratoryBooking",
+          "email": "exploratory-booking@example.invalid",
+          "phone_number": "0000000000"
+        },
+        "date_field_history": [
+          {
+            "after_action": 22,
+            "action": "no key pressed (page changed it)",
+            "date_field_value": "29/10/2026"
+          },
+          {
+            "after_action": 28,
+            "action": "type \"09/11/2026\"",
+            "date_field_value": "09/11/2026"
+          }
+        ],
+        "date_field_writes": [
+          {
+            "t": "-1.2s",
+            "value": "29/10/2026",
+            "by": "setDate ← setDateTimePickerValue ← initialize"
+          }
+        ],
+        "timeline_after_typing_date": [
+          {
+            "t": "+0.0s",
+            "event": "type \"09/11/2026\" → date field shows \"09/11/2026\""
+          },
+          {
+            "t": "+0.0s",
+            "event": "page request POST /index.php/booking/get_available_hours from send ← ajax ← getAvailableHours ← onChange ← setDate"
+          },
+          {
+            "t": "+9.1s",
+            "event": "page request POST /index.php/booking/register from send ← ajax ← registerAppointment ← dispatch ← handle"
+          }
+        ],
+        "keyboard_actions_total": 148,
+        "reopened": {
+          "selected_date_iso": "2026-10-29",
+          "evidence_kind": "date_input+flatpickr_selected_day",
+          "ambiguous": false
+        },
+        "reopen": {
+          "date_field_when_the_booking_link_opened": "select-date=\"09/11/2026\" (hidden)",
+          "date_field_after_pressing_next_on_step_1": "select-date=\"29/10/2026\"",
+          "date_shown_after_reopening": "2026-10-29"
+        }
+      }
+    },
+    {
+      "at_utc": "2026-10-29T13:49:08.177Z",
+      "kind": "propose",
+      "attempt": 5,
+      "duration_ms": 26452,
+      "diagnosis": "In manage mode, clicking Next on step 1 overrides the appointment date with today's date, causing the reopened booking to show the wrong date. The fix is to skip setting the date to today and fetching unavailable hours when in manage mode.",
+      "evidence_explained": "\"date_field_after_pressing_next_on_step_1\":\"select-date=\\\"29/10/2026\\\"\" shows the date being changed to today's date when clicking Next on step 1 during manage mode reopening.",
+      "reasoning": "We are getting closer. The booking is now saved correctly (start: 2026-11-09 09:00:00) but when reopening the booking link, the date shown is 2026-10-29 (which is the date initially set by the page on load?).\n\nLooking at the evidence:\n- After typing the date, the date field shows \"09/11/2026\" (which is 9 Nov 2026 in DD/MM/YYYY format? Actually note: the verifier types in DD/MM/YYYY format because the date field is type=text? But the business timezone is Asia/Riyadh and the verifier is typing in the local format? However, the saved appointment is in 2026-11-09, which is correct.\n\nBut when reopening, the date field shows 29/10/2026 (which is 29 Oct 2026). This suggests that when the booking is reopened (in manage mode?), the date is being set incorrectly.\n\nNote: The verifier says \"Reopening the booking link in a fresh browser shows the same date and contact details.\" So we are testing the flow where after booking, we get a confirmation page with a link to view the booking, and then we open that link in a fresh browser (so manage mode?).\n\nIn the code, when manageMode is true, we load the appointment data and set the date accordingly.\n\nLet's look at the applyAppointmentData function in booking.js:\n\n    function applyAppointmentData(appointment, provider, customer) {\n        try {\n            // Select Service & Provider\n            $selectService.val(appointment.id_services).trigger('change');\n            $selectProvider.val(appointment.id_users_provider);\n\n            // Set Appointment Date\n            const startMoment = moment(appointment.start_datetime);\n            App.Utils.UI.setDateTimePickerValue($selectDate, startMoment.toDate());\n            App.Http.Booking.getAvailableHours(startMoment.format('YYYY-MM-DD'));\n\n            // Update unavailable dates while in manage mode\n\n            App.Http.Booking.getUnavailableDates(\n                appointment.id_users_provider,\n                appointment.id_services,\n                startMoment.format('YYYY-MM-DD'),\n            );\n\n            // Apply Customer's Data\n            ...\n        } catch (exc) {\n            return false;\n        }\n    }\n\nThis sets the date from the appointment's start_datetime. The start_datetime is stored in the database as a string in UTC? Or in the business timezone?\n\nNote: The verifier says the business timezone is Asia/Riyadh and the browser timezone is UTC. The verifier types the date in the local format (DD/MM/YYYY) but the time is 09:00 Riyadh (which is 06:00 UTC). The saved appointment start is in the database in UTC? Or in the business timezone?\n\nLooking at the registerAppointment function in booking_http_client.js, we see that the start_datetime is built in the updateConfirmFrame function:\n\n        data.appointment = {\n            start_datetime:\n                moment(App.Utils.UI.getDateTimePickerValue($selectDate)).format('YYYY-MM-DD') +\n                ' ' +\n                moment($('.selected-hour').data('value'), 'HH:mm').format('HH:mm') +\n                ':00',\n            ...\n\nHere, the date from the date picker is in the browser's local time? Actually, the date picker returns a Date object (which is in UTC but interpreted as local?). Then we format it as 'YYYY-MM-DD' without timezone. Then we append the time (which is in HH:mm, and we assume it's in the business timezone?).\n\nBut note: The selected hour comes from the available hours list, which is built in getAvailableHours:\n\n                const availableHourMoment = moment\n                    .tz(selectedDate + ' ' + availableHour + ':00', providerTimezone)\n                    .tz(selectedTimezone);\n\nSo the available hour is converted from providerTimezone to selectedTimezone (which is the timezone selected in the dropdown). In the verifier's flow, the timezone dropdown is set to UTC (because the browser timezone is UTC and it's supported). The providerTimezone is Asia/Riyadh (business timezone). So the available hour moment is in UTC.\n\nThen, in the updateConfirmFrame, we take the date from the date picker (which is a Date object) and format it as YYYY-MM-DD. This Date object is in UTC? Actually, the date picker (flatpickr) returns a Date object that represents the chosen date in the browser's local time? But note: we set the date picker to static and allowInput, and we are typing a date string. The date string is interpreted in the context of the date format (DMY, MDY, YMD) and then converted to a Date object.\n\nGiven the complexity, the issue might be that when reopening the booking in manage mode, the date is being set from the appointment's start_datetime (which is stored in UTC?) and then displayed in the date picker, which might be off by a day due to timezone conversion.\n\nHowever, the evidence shows that the saved appointment start is 2026-11-09 09:00:00 (which is the correct date and time in UTC? or in Riyadh?). Let's check: 09:00 Riyadh is 06:00 UTC. So if the start_datetime is stored in UTC, then 2026-11-09 06:00:00 UTC would be 09:00 Riyadh. But the saved appointment shows 09:00:00, which suggests it's stored in Riyadh time? Or maybe the database stores the datetime in UTC and the display converts it.\n\nLook at the evidence: the saved appointment start is \"2026-11-09 09:00:00\". The verifier expected start is also \"2026-11-09 09:00:00\". So the saving is correct.\n\nNow, when reopening, the date field shows 29/10/2026 (which is 2026-10-29). That's 11 days earlier. Why?\n\nPerhaps the issue is that the date picker is being set with a Date object that is in UTC, but the date picker interprets it as local time (UTC) and then displays the date in the business timezone? Or vice versa.\n\nAlternatively, note that the verifier types the date in DD/MM/YYYY format (because the date field is type=text and the format is DMY). The verifier types \"09/11/2026\" meaning 9 November 2026. The date picker then sets the date to 2026-11-09.\n\nWhen reopening, the date field shows 29/10/2026 (29 October 2026). This is exactly 11 days before. Could it be that th…",
+      "build_on_attempt": 4,
+      "kept_edits": 2,
+      "edits": [
+        {
+          "path": "application/views/components/booking_time_step.php",
+          "old": "<div id=\"select-date\" class=\"mx-auto my-4\"></div>",
+          "new": "<input type=\"text\" id=\"select-date\" class=\"mx-auto my-4\" />"
+        },
+        {
+          "path": "assets/js/pages/booking.js",
+          "old": "            onChange: (selectedDates) => {\n                App.Http.Booking.getAvailableHours(moment(selectedDates[0]).format('YYYY-MM-DD'));\n                App.Pages.Booking.updateConfirmFrame();\n            },",
+          "new": "            onChange: (selectedDates) => {\n                if (monthTimeout) {\n                    clearTimeout(monthTimeout);\n                }\n                App.Http.Booking.getAvailableHours(moment(selectedDates[0]).format('YYYY-MM-DD'));\n                App.Pages.Booking.updateConfirmFrame();\n            },"
+        },
+        {
+          "path": "assets/js/pages/booking.js",
+          "old": "            // If we are on the first step, fetch unavailable dates and available hours for step 2.\n            if ($target.attr('data-step_index') === '1') {\n                const todayMoment = moment();\n\n                App.Utils.UI.setDateTimePickerValue($selectDate, todayMoment.toDate());\n\n                App.Http.Booking.getUnavailableDates(\n                    $selectProvider.val(),\n                    $selectService.val(),\n                    todayMoment.format('YYYY-MM-DD'),\n                );\n            }",
+          "new": "            // If we are on the first step, fetch unavailable dates and available hours for step 2.\n            if ($target.attr('data-step_index') === '1' && !manageMode) {\n                const todayMoment = moment();\n\n                App.Utils.UI.setDateTimePickerValue($selectDate, todayMoment.toDate());\n\n                App.Http.Booking.getUnavailableDates(\n                    $selectProvider.val(),\n                    $selectService.val(),\n                    todayMoment.format('YYYY-MM-DD'),\n                );\n            }"
+        }
+      ],
+      "proposal_sha256": "4cd3a425bd33230e9c710c7b4172c5e04eb229861854cdea87639df39866f818",
+      "usage": {
+        "completion_tokens": 5870,
+        "prompt_tokens": 28358,
+        "total_tokens": 34228,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": null,
+          "audio_tokens": null,
+          "reasoning_tokens": 5459,
+          "rejected_prediction_tokens": null
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": null,
+          "cached_tokens": 0,
+          "created_cache_tokens": 16864,
+          "multimodal_tokens": null
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 28358
+      }
+    },
+    {
+      "at_utc": "2026-10-29T13:50:06.333Z",
+      "kind": "verify",
+      "attempt": 5,
+      "run_id": "run-ab0aaee92eb6817095426f19929f2486",
+      "duration_ms": 58153,
+      "verified": true,
+      "stage": "passed",
+      "headline": "Saved correctly, reopened in a fresh browser, regression checks passed",
+      "evidence": {
+        "stage": "passed",
+        "error": ""
+      }
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 244579,
+    "completion_tokens": 23056
+  },
+  "estimated_cost_usd": 0.0941241,
+  "source_sha256": "398c85542878892ac7e555de74559964759e385bf8d0c181515d9126f13bef5c",
+  "accepted": {
+    "attempt": 5,
+    "proposal": {
+      "reason": "In manage mode, clicking Next on step 1 overrides the appointment date with today's date, causing the reopened booking to show the wrong date. The fix is to skip setting the date to today and fetching unavailable hours when in manage mode.",
+      "edits": [
+        {
+          "path": "application/views/components/booking_time_step.php",
+          "old": "<div id=\"select-date\" class=\"mx-auto my-4\"></div>",
+          "new": "<input type=\"text\" id=\"select-date\" class=\"mx-auto my-4\" />"
+        },
+        {
+          "path": "assets/js/pages/booking.js",
+          "old": "            onChange: (selectedDates) => {\n                App.Http.Booking.getAvailableHours(moment(selectedDates[0]).format('YYYY-MM-DD'));\n                App.Pages.Booking.updateConfirmFrame();\n            },",
+          "new": "            onChange: (selectedDates) => {\n                if (monthTimeout) {\n                    clearTimeout(monthTimeout);\n                }\n                App.Http.Booking.getAvailableHours(moment(selectedDates[0]).format('YYYY-MM-DD'));\n                App.Pages.Booking.updateConfirmFrame();\n            },"
+        },
+        {
+          "path": "assets/js/pages/booking.js",
+          "old": "            // If we are on the first step, fetch unavailable dates and available hours for step 2.\n            if ($target.attr('data-step_index') === '1') {\n                const todayMoment = moment();\n\n                App.Utils.UI.setDateTimePickerValue($selectDate, todayMoment.toDate());\n\n                App.Http.Booking.getUnavailableDates(\n                    $selectProvider.val(),\n                    $selectService.val(),\n                    todayMoment.format('YYYY-MM-DD'),\n                );\n            }",
+          "new": "            // If we are on the first step, fetch unavailable dates and available hours for step 2.\n            if ($target.attr('data-step_index') === '1' && !manageMode) {\n                const todayMoment = moment();\n\n                App.Utils.UI.setDateTimePickerValue($selectDate, todayMoment.toDate());\n\n                App.Http.Booking.getUnavailableDates(\n                    $selectProvider.val(),\n                    $selectService.val(),\n                    todayMoment.format('YYYY-MM-DD'),\n                );\n            }"
+        }
+      ]
+    },
+    "proposal_sha256": "4cd3a425bd33230e9c710c7b4172c5e04eb229861854cdea87639df39866f818",
+    "run_id": "run-ab0aaee92eb6817095426f19929f2486",
+    "diagnosis": "In manage mode, clicking Next on step 1 overrides the appointment date with today's date, causing the reopened booking to show the wrong date. The fix is to skip setting the date to today and fetching unavailable hours when in manage mode.",
+    "evidence_explained": "\"date_field_after_pressing_next_on_step_1\":\"select-date=\\\"29/10/2026\\\"\" shows the date being changed to today's date when clicking Next on step 1 during manage mode reopening.",
+    "build_on_attempt": 4,
+    "proof": {
+      "booking": {
+        "start": "2026-11-09 09:00:00",
+        "end": "2026-11-09 09:30:00",
+        "hash": "V4egAxmtbRdc"
+      },
+      "customer": {
+        "name": "Synthetic ExploratoryBooking",
+        "email": "exploratory-booking@example.invalid",
+        "phone_number": "0000000000"
+      },
+      "typed": {
+        "first_name": "Synthetic",
+        "last_name": "ExploratoryBooking",
+        "email": "exploratory-booking@example.invalid",
+        "phone_number": "0000000000"
+      },
+      "reopened_date": "2026-11-09",
+      "database_unchanged_by_reopen": true,
+      "keyboard_actions": 148,
+      "build_files": null,
+      "regression": {
+        "pass": true,
+        "reserved_slot_not_offered": true,
+        "cleared_date_without_browser_error": true,
+        "pointer_confirmation_observed": true,
+        "calendar_navigation_observed": true,
+        "browser_timezone": "UTC",
+        "page_errors": []
+      },
+      "isolation_verified": true
+    }
+  },
+  "finished_at_utc": "2026-10-29T13:50:06.334Z",
+  "duration_ms": 367818
+}
