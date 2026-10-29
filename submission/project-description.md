@@ -43,7 +43,7 @@ All **54 runs** were made live on fresh GitHub Actions runners, **$6.38 in total
 - **Why 2 of 10, while the phone control verifies 27 of 27:** the keyboard bug has three layers, and each stays hidden until the one before is fixed. First the date can't be reached; then it is overwritten half a second after typing; then reopening resets it to today. One patch must fix all three, with no root cause supplied. The phone fault is a single bug in one line.
 - **Seeded phone control:** verified in **27 of 27** runs, 26 on the first attempt, at about a cent per run.
 - **Nemotron on Token Factory:** 78% of prompt tokens came from the prompt cache and 80% of output tokens were reasoning. A proposal took a median of 19 s, and a verified keyboard fix in agents v4–v5 cost about $1.70.
-- **The demo video** records a further live run on 29 October. It rejects a "booked" page that saved 1 Nov instead of 9 Nov, then a booking that reopened as today, and is verified on attempt 5, about six minutes after **Run live**, for about $0.09. It was one of five live takes recorded for the video, and only that one verified; all five traces are in the repository.
+- **The demo video** records a further live run on 29 October. It rejects a "booked" page that saved 1 Nov instead of 9 Nov, then a booking that reopened as today, and is verified on attempt 5, about six minutes after **Run live**, for about $0.09. It was one of five live takes recorded for the video, and only that one verified; five more runs started by mistake that day (one verified). All ten traces are in the repository.
 
 ## Challenges we ran into
 
