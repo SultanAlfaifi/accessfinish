@@ -1,0 +1,353 @@
+{
+  "scene": "before",
+  "date": "2026-11-09",
+  "customer": {
+    "first": "Layla",
+    "last": "Hassan",
+    "email": "layla.hassan@example.invalid",
+    "phone": "0551234567"
+  },
+  "recorded_at_utc": "2026-10-29T14:52:16.182Z",
+  "calendar_reached": false,
+  "focus_trail": [
+    {
+      "id": "select-timezone",
+      "tag": "SELECT",
+      "className": "form-select mb-3",
+      "text": "UTC"
+    },
+    {
+      "id": "",
+      "tag": "BUTTON",
+      "className": "btn btn-outline-secondary w-100 shadow-none available-hour s",
+      "text": "6:00 am"
+    },
+    {
+      "id": "",
+      "tag": "BUTTON",
+      "className": "btn btn-outline-secondary w-100 shadow-none available-hour",
+      "text": "6:15 am"
+    },
+    {
+      "id": "",
+      "tag": "BUTTON",
+      "className": "btn btn-outline-secondary w-100 shadow-none available-hour",
+      "text": "6:30 am"
+    },
+    {
+      "id": "",
+      "tag": "BUTTON",
+      "className": "btn btn-outline-secondary w-100 shadow-none available-hour",
+      "text": "6:45 am"
+    },
+    {
+      "id": "",
+      "tag": "BUTTON",
+      "className": "btn btn-outline-secondary w-100 shadow-none available-hour",
+      "text": "7:00 am"
+    },
+    {
+      "id": "",
+      "tag": "BUTTON",
+      "className": "btn btn-outline-secondary w-100 shadow-none available-hour",
+      "text": "7:15 am"
+    },
+    {
+      "id": "",
+      "tag": "BUTTON",
+      "className": "btn btn-outline-secondary w-100 shadow-none available-hour",
+      "text": "7:30 am"
+    },
+    {
+      "id": "",
+      "tag": "BUTTON",
+      "className": "btn btn-outline-secondary w-100 shadow-none available-hour",
+      "text": "7:45 am"
+    },
+    {
+      "id": "",
+      "tag": "BUTTON",
+      "className": "btn btn-outline-secondary w-100 shadow-none available-hour",
+      "text": "8:00 am"
+    },
+    {
+      "id": "",
+      "tag": "BUTTON",
+      "className": "btn btn-outline-secondary w-100 shadow-none available-hour",
+      "text": "8:15 am"
+    },
+    {
+      "id": "",
+      "tag": "BUTTON",
+      "className": "btn btn-outline-secondary w-100 shadow-none available-hour",
+      "text": "8:30 am"
+    },
+    {
+      "id": "",
+      "tag": "BUTTON",
+      "className": "btn btn-outline-secondary w-100 shadow-none available-hour",
+      "text": "8:45 am"
+    },
+    {
+      "id": "",
+      "tag": "BUTTON",
+      "className": "btn btn-outline-secondary w-100 shadow-none available-hour",
+      "text": "9:00 am"
+    }
+  ],
+  "events": [
+    {
+      "t": 0,
+      "event": "recording",
+      "fps": 30
+    },
+    {
+      "t": 2.58,
+      "event": "booking-page"
+    },
+    {
+      "t": 3.25,
+      "event": "key",
+      "key": "Tab",
+      "focus": {
+        "id": "select-service",
+        "tag": "SELECT",
+        "className": "form-select mb-4",
+        "text": "Please Select"
+      }
+    },
+    {
+      "t": 3.56,
+      "event": "key",
+      "key": "Home",
+      "focus": {
+        "id": "select-service",
+        "tag": "SELECT",
+        "className": "form-select mb-4",
+        "text": "Please Select"
+      }
+    },
+    {
+      "t": 4.02,
+      "event": "key",
+      "key": "ArrowDown",
+      "focus": {
+        "id": "select-service",
+        "tag": "SELECT",
+        "className": "form-select mb-4",
+        "text": "Fixture Alternate"
+      }
+    },
+    {
+      "t": 4.48,
+      "event": "key",
+      "key": "ArrowDown",
+      "focus": {
+        "id": "select-service",
+        "tag": "SELECT",
+        "className": "form-select mb-4",
+        "text": "Service"
+      }
+    },
+    {
+      "t": 5.14,
+      "event": "key",
+      "key": "Tab",
+      "focus": {
+        "id": "select-provider",
+        "tag": "SELECT",
+        "className": "form-select mb-4",
+        "text": "Jane Doe"
+      }
+    },
+    {
+      "t": 5.81,
+      "event": "key",
+      "key": "Tab",
+      "focus": {
+        "id": "button-next-1",
+        "tag": "BUTTON",
+        "className": "btn button-next btn-dark",
+        "text": "Next"
+      }
+    },
+    {
+      "t": 7.42,
+      "event": "key",
+      "key": "Enter",
+      "focus": {
+        "id": "",
+        "tag": "BODY",
+        "className": "",
+        "text": "AccessFinish Synthetic Booking\nService │ Jane Doe\n1\n2\n3\n4\nAp"
+      }
+    },
+    {
+      "t": 7.42,
+      "event": "date-step"
+    },
+    {
+      "t": 8.23,
+      "event": "key",
+      "key": "Tab",
+      "focus": {
+        "id": "select-timezone",
+        "tag": "SELECT",
+        "className": "form-select mb-3",
+        "text": "UTC"
+      }
+    },
+    {
+      "t": 9.04,
+      "event": "key",
+      "key": "Tab",
+      "focus": {
+        "id": "",
+        "tag": "BUTTON",
+        "className": "btn btn-outline-secondary w-100 shadow-none available-hour s",
+        "text": "6:00 am"
+      }
+    },
+    {
+      "t": 9.85,
+      "event": "key",
+      "key": "Tab",
+      "focus": {
+        "id": "",
+        "tag": "BUTTON",
+        "className": "btn btn-outline-secondary w-100 shadow-none available-hour",
+        "text": "6:15 am"
+      }
+    },
+    {
+      "t": 10.66,
+      "event": "key",
+      "key": "Tab",
+      "focus": {
+        "id": "",
+        "tag": "BUTTON",
+        "className": "btn btn-outline-secondary w-100 shadow-none available-hour",
+        "text": "6:30 am"
+      }
+    },
+    {
+      "t": 11.46,
+      "event": "key",
+      "key": "Tab",
+      "focus": {
+        "id": "",
+        "tag": "BUTTON",
+        "className": "btn btn-outline-secondary w-100 shadow-none available-hour",
+        "text": "6:45 am"
+      }
+    },
+    {
+      "t": 12.27,
+      "event": "key",
+      "key": "Tab",
+      "focus": {
+        "id": "",
+        "tag": "BUTTON",
+        "className": "btn btn-outline-secondary w-100 shadow-none available-hour",
+        "text": "7:00 am"
+      }
+    },
+    {
+      "t": 13.08,
+      "event": "key",
+      "key": "Tab",
+      "focus": {
+        "id": "",
+        "tag": "BUTTON",
+        "className": "btn btn-outline-secondary w-100 shadow-none available-hour",
+        "text": "7:15 am"
+      }
+    },
+    {
+      "t": 13.89,
+      "event": "key",
+      "key": "Tab",
+      "focus": {
+        "id": "",
+        "tag": "BUTTON",
+        "className": "btn btn-outline-secondary w-100 shadow-none available-hour",
+        "text": "7:30 am"
+      }
+    },
+    {
+      "t": 14.69,
+      "event": "key",
+      "key": "Tab",
+      "focus": {
+        "id": "",
+        "tag": "BUTTON",
+        "className": "btn btn-outline-secondary w-100 shadow-none available-hour",
+        "text": "7:45 am"
+      }
+    },
+    {
+      "t": 15.5,
+      "event": "key",
+      "key": "Tab",
+      "focus": {
+        "id": "",
+        "tag": "BUTTON",
+        "className": "btn btn-outline-secondary w-100 shadow-none available-hour",
+        "text": "8:00 am"
+      }
+    },
+    {
+      "t": 16.31,
+      "event": "key",
+      "key": "Tab",
+      "focus": {
+        "id": "",
+        "tag": "BUTTON",
+        "className": "btn btn-outline-secondary w-100 shadow-none available-hour",
+        "text": "8:15 am"
+      }
+    },
+    {
+      "t": 17.11,
+      "event": "key",
+      "key": "Tab",
+      "focus": {
+        "id": "",
+        "tag": "BUTTON",
+        "className": "btn btn-outline-secondary w-100 shadow-none available-hour",
+        "text": "8:30 am"
+      }
+    },
+    {
+      "t": 17.92,
+      "event": "key",
+      "key": "Tab",
+      "focus": {
+        "id": "",
+        "tag": "BUTTON",
+        "className": "btn btn-outline-secondary w-100 shadow-none available-hour",
+        "text": "8:45 am"
+      }
+    },
+    {
+      "t": 18.73,
+      "event": "key",
+      "key": "Tab",
+      "focus": {
+        "id": "",
+        "tag": "BUTTON",
+        "className": "btn btn-outline-secondary w-100 shadow-none available-hour",
+        "text": "9:00 am"
+      }
+    },
+    {
+      "t": 18.73,
+      "event": "calendar-reached",
+      "reached": false
+    },
+    {
+      "t": 21.23,
+      "event": "end"
+    }
+  ]
+}

@@ -24,6 +24,10 @@ The workflow recorded five live runs in parallel on 29 Oct 2026 ([`takes.json`](
 
 The film uses take 2, the one that verified. One verified run in five is in line with the published results (2 of 10 for agents v4–v5); these five runs are not part of the 54 published runs. The patched-app scene was re-shot once (`retake-after/`) with the same patch, to keep the on-screen key labels on one line.
 
+## Unplanned takes
+
+On 29 Oct at 14:48 UTC a commit whose message only mentioned the workflow's `[film]` tag started the workflow again by mistake: five more live runs, about $1.70 of Nemotron. Their traces and event logs are kept in `unplanned-takes/` ([`unplanned-takes.json`](unplanned-takes.json)), without their videos: one verified (take 3, on attempt 6) and four did not verify in 12 attempts. The film does not use them. The workflow now starts only when a commit message *begins* with the tag.
+
 ## Reproduce
 
 ```sh
@@ -34,4 +38,4 @@ node scripts/film/shoot.cjs --scene live --xvfb --out take
 node scripts/film/serve-app.cjs --trace take/trace.json && node scripts/film/shoot.cjs --scene after --xvfb --out take
 ```
 
-Or push a commit whose message contains `[film]` (see `.github/workflows/film.yml`). The voice-over is `narration.json`, spoken by Qwen3-TTS (speaker Aiden) through `scripts/narrate.py` with `AF_NARRATION_DIR=media/live-film` (`[narrate-film]`), and `python3 scripts/film/render-live-film.py` edits the film.
+Or push a commit whose message starts with `[film]` (see `.github/workflows/film.yml`). The voice-over is `narration.json`, spoken by Qwen3-TTS (speaker Aiden) through `scripts/narrate.py` with `AF_NARRATION_DIR=media/live-film` (`[narrate-film]`), and `python3 scripts/film/render-live-film.py` edits the film.
