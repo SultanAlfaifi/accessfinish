@@ -8,7 +8,7 @@ Every shot is a span between two logged events. Speed-ups are labelled on screen
 redrawn or re-enacted. Beat lengths come from media/live-film/timeline.json (scripts/narrate.py with
 AF_NARRATION_DIR=media/live-film); --draft estimates them from the word count and renders silent.
 """
-import json, pathlib, subprocess, sys, tempfile
+import json, pathlib, re, subprocess, sys, tempfile
 from PIL import Image, ImageDraw, ImageFont
 
 ROOT = pathlib.Path(__file__).resolve().parents[2]
@@ -106,8 +106,8 @@ def label_png(path, scene, speed):
     img.save(path)
 
 
-def caption_png(path, text, bottom=H - 70):
-    """A caption box whose bottom edge sits at `bottom` (raised in the app scenes, above the on-screen keys)."""
+def caption_png(path, text, bottom=H - 70, top=None):
+    """A caption box with its bottom edge at `bottom`, or its top edge at `top`."""
     img = Image.new('RGBA', (W, H), (0, 0, 0, 0))
     d = ImageDraw.Draw(img)
     f, maxw = font('SemiBold', 40), 1480
@@ -120,23 +120,28 @@ def caption_png(path, text, bottom=H - 70):
             lines.append(line); line = word
     lines.append(line)
     widest = max(f.getlength(l) for l in lines)
+    if top is not None:
+        bottom = top + 18 + len(lines) * 54
     top = bottom - len(lines) * 54
-    d.rounded_rectangle((W / 2 - widest / 2 - 30, top - 18, W / 2 + widest / 2 + 30, bottom + 14), radius=18, fill=(8, 12, 26, 215))
+    d.rounded_rectangle((W / 2 - widest / 2 - 30, top - 18, W / 2 + widest / 2 + 30, bottom + 14), radius=18, fill=(8, 12, 26, 238))
     for i, l in enumerate(lines):
         d.text((W / 2 - f.getlength(l) / 2, top + i * 54), l, font=f, fill=(255, 255, 255))
     img.save(path)
 
 
 def chunks(text):
-    """Caption chunks: sentences, long ones split at a comma."""
+    """Caption chunks: sentences (not split after a.m./p.m.); a long one is split at the comma or colon
+    nearest its middle, colons preferred, unless that would leave one part much longer than the other."""
+    protected = text.replace('a.m. ', 'a.m.\u00a0').replace('p.m. ', 'p.m.\u00a0')
     out = []
-    for sentence in [s.strip() + ('' if s.strip().endswith(('.', '?', '!')) else '.') for s in text.replace('? ', '?|').replace('. ', '.|').replace('! ', '!|').split('|') if s.strip()]:
-        if len(sentence) > 95 and ', ' in sentence:
-            mid = sentence.rfind(', ', 0, len(sentence) // 2 + 20)
-            out += [sentence[:mid + 1], sentence[mid + 2:]]
+    for sentence in [part.strip() for part in re.split(r'(?<=[.?!]) ', protected) if part.strip()]:
+        marks = [(i, abs(i - len(sentence) / 2) - (15 if sentence[i] == ':' else 0)) for i in range(len(sentence)) if sentence[i:i + 2] in (', ', ': ')]
+        best = min(marks, key=lambda mark: mark[1], default=None)
+        if len(sentence) > 95 and best and abs(best[0] - len(sentence) / 2) < len(sentence) * 0.3:
+            out += [sentence[:best[0] + 1], sentence[best[0] + 2:]]
         else:
             out.append(sentence)
-    return out
+    return [chunk.replace('\u00a0', ' ') for chunk in out]
 
 
 def run(args):
@@ -164,6 +169,7 @@ def end_card(path, duration):
 
 # Seconds of footage held after a beat's voice ends, before the next beat speaks: room for the
 # live run's results on screen. Every other beat follows the next after the narration's own gap.
+CAPTION = {'book': {'top': 150}, 'reopen': {'top': 150}, 'saved': {'bottom': H - 40}}
 HOLD = {'stuck': 0.8, 'sandbox': 1.0, 'wrong': 1.6, 'today': 1.6, 'verified': 1.4, 'book': 0.5, 'saved': 1.0}
 
 
@@ -204,13 +210,15 @@ def main():
             joined = tmp / f'{i:02d}-joined.mp4'
             run(['-f', 'concat', '-safe', '0', '-i', str(listing), '-c', 'copy', str(joined)])
             # Captions: the beat's sentences, each shown for its share of the spoken beat.
-            bottom = H - 150 if plan[0][0] in ('before', 'after') else H - 70
+            # Captions stay clear of what matters: the on-screen keys at the bottom of the app, the focused
+            # slot and fields mid-page while booking (caption over the app's header instead), the saved row.
+            place = CAPTION.get(beat['id'], {'bottom': H - 150} if plan[0][0] in ('before', 'after') else {'bottom': H - 70})
             text_chunks = chunks(beat['text']); words = [len(c.split()) for c in text_chunks]
             inputs, graph, prev, cursor = ['-i', str(joined)], '[0:v]tpad=stop_mode=clone:stop_duration=30[base];', 'base', voice_at
             for k, c in enumerate(text_chunks):
-                png = tmp / f'{i:02d}-cap{k}.png'; caption_png(png, c, bottom); inputs += ['-i', str(png)]
+                png = tmp / f'{i:02d}-cap{k}.png'; caption_png(png, c, **place); inputs += ['-i', str(png)]
                 length = spoken[beat['id']] * words[k] / sum(words)
-                end = cursor + length + (0.35 if k + 1 < len(text_chunks) else max(0.3, duration - cursor - length - 0.05))
+                end = cursor + length if k + 1 < len(text_chunks) else max(cursor + length + 0.3, duration - 0.05)
                 graph += f"[{prev}][{k + 1}:v]overlay=0:0:enable='between(t,{cursor:.3f},{end:.3f})'[c{k}];"
                 prev, cursor = f'c{k}', cursor + length
             run([*inputs, '-filter_complex', graph + f'[{prev}]format=yuv420p[out]', '-map', '[out]', '-t', f'{duration:.3f}', '-c:v', 'libx264', '-crf', '18', '-preset', 'veryfast', str(piece)])
