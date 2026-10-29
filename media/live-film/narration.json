@@ -38,11 +38,12 @@
     },
     {
       "id": "book",
-      "text": "Now the patched app, with nothing but the keyboard. Tab reaches the new date field. Type the ninth of November, pick nine o'clock, fill in the details, and confirm. Booked."
+      "text": "Now the patched app, with nothing but the keyboard. Tab reaches the new date field. Type the ninth of November, pick six a.m. UTC, which is nine in Riyadh, fill in the details, and confirm. Booked.",
+      "say": "Now the patched app, with nothing but the keyboard. Tab reaches the new date field. Type the ninth of November, pick six a.m. U.T.C., which is nine in Riyadh, fill in the details, and confirm. Booked."
     },
     {
       "id": "saved",
-      "text": "The database agrees: November ninth, nine o'clock, and the name that was typed."
+      "text": "The database agrees: November ninth, nine o'clock Riyadh time, and the name that was typed."
     },
     {
       "id": "reopen",
