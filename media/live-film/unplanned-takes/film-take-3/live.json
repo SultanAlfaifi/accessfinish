@@ -1,0 +1,279 @@
+{
+  "scene": "live",
+  "date": "2026-11-09",
+  "customer": {
+    "first": "Layla",
+    "last": "Hassan",
+    "email": "layla.hassan@example.invalid",
+    "phone": "0551234567"
+  },
+  "recorded_at_utc": "2026-10-29T15:02:44.228Z",
+  "run_id": "agent-5151721819c510a713836a9f",
+  "state": "verified",
+  "verified": true,
+  "events": [
+    {
+      "t": 0,
+      "event": "recording",
+      "fps": 15
+    },
+    {
+      "t": 3.5,
+      "event": "server-terminal"
+    },
+    {
+      "t": 6.99,
+      "event": "page-hero"
+    },
+    {
+      "t": 9.42,
+      "event": "agent-panel"
+    },
+    {
+      "t": 12.56,
+      "event": "run-live",
+      "id": "agent-5151721819c510a713836a9f"
+    },
+    {
+      "t": 32.67,
+      "event": "peek",
+      "window": "docker ps"
+    },
+    {
+      "t": 39.27,
+      "event": "peek-end"
+    },
+    {
+      "t": 41.27,
+      "event": "step",
+      "index": 0,
+      "kind": "observe",
+      "attempt": null,
+      "verified": false,
+      "stage": null,
+      "headline": "Keyboard user got stuck at the date step: there is no date field to Tab to"
+    },
+    {
+      "t": 45.28,
+      "event": "step",
+      "index": 1,
+      "kind": "propose",
+      "attempt": 1,
+      "verified": null,
+      "stage": null,
+      "headline": "The date picker container lacks a tabindex attribute, making it unreachable via keyboard Tab navigation, so the date step is skipped."
+    },
+    {
+      "t": 65.37,
+      "event": "peek",
+      "window": "docker ps"
+    },
+    {
+      "t": 71.96,
+      "event": "peek-end"
+    },
+    {
+      "t": 73.97,
+      "event": "step",
+      "index": 2,
+      "kind": "verify",
+      "attempt": 1,
+      "verified": false,
+      "stage": "keyboard",
+      "headline": "Keyboard user got stuck at the date step: there is no date field to Tab to"
+    },
+    {
+      "t": 79.97,
+      "event": "step",
+      "index": 3,
+      "kind": "search",
+      "attempt": 2,
+      "verified": null,
+      "stage": null,
+      "headline": "native-date"
+    },
+    {
+      "t": 81.98,
+      "event": "step",
+      "index": 4,
+      "kind": "search",
+      "attempt": 2,
+      "verified": null,
+      "stage": null,
+      "headline": "initializeDatePicker"
+    },
+    {
+      "t": 83.98,
+      "event": "step",
+      "index": 5,
+      "kind": "read",
+      "attempt": 2,
+      "verified": null,
+      "stage": null,
+      "headline": "assets/js/utils/ui.js"
+    },
+    {
+      "t": 91.99,
+      "event": "step",
+      "index": 6,
+      "kind": "propose",
+      "attempt": 2,
+      "verified": null,
+      "stage": null,
+      "headline": "The date picker container is a div that is not focusable via keyboard; replacing it with a focusable input allows Tab navigation to reach the date field."
+    },
+    {
+      "t": 136.05,
+      "event": "step",
+      "index": 7,
+      "kind": "verify",
+      "attempt": 2,
+      "verified": false,
+      "stage": "outcome",
+      "headline": "Confirmation shown, but saved for 2026-11-01 09:00 instead of 2026-11-09 09:00; page code changed the typed date to 01/11/2026"
+    },
+    {
+      "t": 158.07,
+      "event": "step",
+      "index": 8,
+      "kind": "search",
+      "attempt": 3,
+      "verified": null,
+      "stage": null,
+      "headline": "applyUnavailableDates"
+    },
+    {
+      "t": 198.12,
+      "event": "step",
+      "index": 9,
+      "kind": "propose",
+      "attempt": 3,
+      "verified": null,
+      "stage": null,
+      "headline": "When the user types a date that changes the month, flatpickr's onMonthChange triggers for the previously displayed month, causing getUnavailableDates to reset the date field. We ignore rapid onMonthChange calls following manual input."
+    },
+    {
+      "t": 238.18,
+      "event": "step",
+      "index": 10,
+      "kind": "verify",
+      "attempt": 3,
+      "verified": false,
+      "stage": "outcome",
+      "headline": "Saved for the right date, but reopening the booking showed 2026-10-29 instead of 2026-11-09"
+    },
+    {
+      "t": 304.27,
+      "event": "step",
+      "index": 11,
+      "kind": "propose",
+      "attempt": 4,
+      "verified": null,
+      "stage": null,
+      "headline": "When reopening a booking in manage mode, the next button click on step 1 resets the date to today, overriding the appointment date set by applyAppointmentData."
+    },
+    {
+      "t": 328.3,
+      "event": "step",
+      "index": 12,
+      "kind": "verify",
+      "attempt": 4,
+      "verified": false,
+      "stage": "keyboard",
+      "headline": "The keyboard journey crashed: keyboard_macro_step_not_advanced"
+    },
+    {
+      "t": 354.34,
+      "event": "step",
+      "index": 13,
+      "kind": "search",
+      "attempt": 5,
+      "verified": null,
+      "stage": null,
+      "headline": "vars\\('date_format'\\)"
+    },
+    {
+      "t": 380.37,
+      "event": "step",
+      "index": 14,
+      "kind": "search",
+      "attempt": 5,
+      "verified": null,
+      "stage": null,
+      "headline": "let monthTimeout;"
+    },
+    {
+      "t": 406.4,
+      "event": "step",
+      "index": 15,
+      "kind": "propose",
+      "attempt": 5,
+      "verified": null,
+      "stage": null,
+      "headline": "When reopening a booking in manage mode, clicking Next on step 1 resets the date to today, overriding the appointment date, and if the date hasn't changed, the hour list doesn't load, causing the date to appear wrong after reopening."
+    },
+    {
+      "t": 424.43,
+      "event": "step",
+      "index": 16,
+      "kind": "verify",
+      "attempt": 5,
+      "verified": false,
+      "stage": "keyboard",
+      "headline": "The keyboard journey crashed: keyboard_macro_step_not_advanced"
+    },
+    {
+      "t": 494.55,
+      "event": "step",
+      "index": 17,
+      "kind": "propose",
+      "attempt": 6,
+      "verified": null,
+      "stage": null,
+      "headline": "The step‑1 Next button handler unconditionally resets the date to today, wiping the manage‑mode appointment date and preventing hour loading; we preserve any existing date and load hours/unavailable dates for that date without resetting the field."
+    },
+    {
+      "t": 554.66,
+      "event": "step",
+      "index": 18,
+      "kind": "verify",
+      "attempt": 6,
+      "verified": true,
+      "stage": "passed",
+      "headline": "Saved correctly, reopened in a fresh browser, regression checks passed"
+    },
+    {
+      "t": 554.66,
+      "event": "run-finished",
+      "state": "verified",
+      "attempts": 6,
+      "cost_usd": 0.1080396
+    },
+    {
+      "t": 560.49,
+      "event": "show-step",
+      "index": 7,
+      "label": "wrong-date"
+    },
+    {
+      "t": 569.32,
+      "event": "show-step",
+      "index": 10,
+      "label": "wrong-reopen"
+    },
+    {
+      "t": 578.16,
+      "event": "show-step",
+      "index": 18,
+      "label": "final"
+    },
+    {
+      "t": 592.19,
+      "event": "proof-scrolled"
+    },
+    {
+      "t": 594.69,
+      "event": "end"
+    }
+  ]
+}

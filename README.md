@@ -16,7 +16,7 @@ A repair agent on **NVIDIA Nemotron 3 Super** (served by **Nebius Token Factory*
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 
 <a href="https://youtu.be/XztxzjYYlO0"><img src="web/media/film-poster.jpg" width="820" alt="Watch the 2-minute screen recording on YouTube"></a>
-<br><sub>A screen recording of the project working: a live Nemotron run, verified, then the patched app booked with the keyboard. No YouTube? <a href="media/accessfinish-live-demo.mp4">Watch the MP4 in the repository (9 MB)</a></sub>
+<br><sub>A screen recording of the project working: a live Nemotron run, verified, then the patched app booked with the keyboard. The run in the film (29 Oct) is one of five takes recorded for it, outside the 54 published runs; <a href="media/live-film/README.md">every take</a>. No YouTube? <a href="media/accessfinish-live-demo.mp4?raw=true">Download the MP4 (about 9 MB)</a></sub>
 
 | **0 / 77** | **2 / 10** | **27 / 27** | **$6.38** |
 | :---: | :---: | :---: | :---: |
@@ -181,6 +181,7 @@ All **54 runs** were made live on [fresh GitHub Actions runners](https://github.
 
 - **Saved phone (seeded fault, our calibration control):** the confirmation page said success while the database stored `0000000000` instead of the number typed. Nemotron traced it to a hard-coded `phone_number` in the booking payload. Verified in **27 of 27** runs, 26 on the first attempt (in 3 of them, the edit applied only after the harness's recorded whitespace re-anchoring), about a cent per run.
 - **Keyboard date (real upstream bug):** fixed by Nemotron, with no root cause supplied, in **2 of 10 runs of agents v4–v5** (0 of 17 before; 2 of 27 overall). v2–v3 allowed 8 attempts and v4–v5 allowed 12; the v5 run was verified on attempt 11.
+- **Why 2 of 10, while the phone control verifies 27 of 27:** the keyboard case is three layers, each hidden until the one before is fixed. The date field can't be reached by keyboard; once it can, the month-change handler overwrites the typed date half a second later; once that is fixed, reopening the booking resets it to today. One patch has to fix all three, with no root cause supplied, in two editable files, with edits that match the source exactly, within 12 attempts, and without breaking a regression check. The second layer stopped more of the attempts that ran than any other: 67 reached a “booked” page that saved the wrong date, and 10 more saved it right but reopened wrong. Every one was rejected. The phone fault is a single bug in one line of the booking payload. The keyboard rate rose with the harness, with the same model: 0 of 17 runs in agents v1–v3, 2 of 10 in v4–v5.
 - **“No root cause supplied”** means Nemotron gets the goal, the acceptance checks (which name the date field and how the verifier types into it), the verifier's evidence and the harness's notes on its own earlier attempts, but never the cause or the fix.
 
 <details>
@@ -250,7 +251,7 @@ Only the booking journey exists today; a second app or journey has not been buil
 
 **In a browser, no install:** open the [live page](https://sultalfaifi.com/accessfinish/). It replays a recorded live run. Click any step to see the verifier's evidence, Nemotron's searches, diagnosis and diff, and the proof card with a downloadable patch.
 
-**Run the agent yourself.** This needs **Node.js 22+** and **Docker** (Linux engine), with no npm dependencies on the host:
+**Run the agent yourself.** This needs **Node.js 22+** and **Docker** (Linux engine), with no npm dependencies on the host. `git clone --depth 1 https://github.com/SultanAlfaifi/accessfinish` skips the history's earlier film renders, a much smaller download.
 
 ```sh
 npm run demo:setup                            # build the pinned sandbox images (several GB, once)
@@ -277,7 +278,7 @@ lib/                       cases, edit validation, model client, Docker helpers,
 integration/portable/      sandbox images, browser workers, outcome evaluator, pinned Easy!Appointments (GPL-3.0)
 scripts/agent.cjs          run the agent from the command line (--case, --publish, --recorded-model)
 scripts/                   evidence index and checks, CI replays, the film pipelines (scripts/film/ records the screen)
-web/                       the replay page and the evidence page (docs/ is the GitHub Pages copy)
+web/                       the replay page and the evidence page (docs/ is the GitHub Pages copy: npm run build:pages)
 evidence/                  every live run and earlier trial, raw; start at evidence/README.md
 media/                     the demo films (screen recording and generated), their narration, takes and shots, README images
 examples/                  the PR comment AccessFinish would post as a merge gate (rendered from a recorded run)

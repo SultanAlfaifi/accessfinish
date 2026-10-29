@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>AccessFinish — guide for judges</title>
+<!-- Source of the one-page judge guide uploaded to Devpost (AccessFinish-judge-guide.pdf). Print with Chromium: A4, backgrounds on. -->
+<style>
+  @page { size: A4; margin: 14mm 16mm 11mm; }
+  :root { --ink: #141d3b; --muted: #5b6478; --blue: #2f5bea; --green: #13795b; --orange: #c2410c; --line: #e2e6ee; --panel: #f5f7fb;
+    --sans: Inter, system-ui, sans-serif; --serif: Georgia, 'Liberation Serif', 'Times New Roman', serif; --mono: 'JetBrains Mono', ui-monospace, monospace; }
+  * { box-sizing: border-box; }
+  html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  body { margin: 0; color: var(--ink); font: 13.4px/1.52 var(--sans); }
+  a { color: var(--blue); text-decoration: none; }
+  code { font: 10.8px var(--mono); background: #eef1f6; border-radius: 4px; padding: 1px 5px; }
+  .brand { display: flex; align-items: center; gap: 9px; font: 700 17.5px var(--sans); }
+  .mark { width: 23px; height: 23px; border-radius: 6px; background: var(--ink); color: #fff; display: grid; place-items: center; font: italic 700 13px var(--serif); }
+  h1 { margin: 16px 0 5px; font: 400 32.5px/1.15 var(--serif); letter-spacing: -0.2px; }
+  h1 span { color: var(--blue); }
+  .lede { margin: 0 0 13px; color: var(--muted); font-size: 13.7px; line-height: 1.5; }
+  .links { display: grid; grid-template-columns: 172px 1fr; gap: 3px 12px; padding: 11px 20px; background: var(--panel); border: 1px solid var(--line); border-radius: 10px; margin-bottom: 11px; }
+  .links b { font-weight: 600; }
+  .facts { display: grid; grid-template-columns: repeat(4, 1fr); gap: 11px; margin-bottom: 14px; }
+  .facts div { border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px 11px; }
+  .facts strong { display: block; font: 700 21px/1.15 var(--sans); color: var(--green); }
+  .facts .bad { color: var(--orange); }
+  .facts span { display: block; color: var(--muted); font-size: 10.9px; line-height: 1.42; }
+  h2 { margin: 0 0 3px; font: 700 15.5px/1.3 var(--sans); }
+  ol { margin: 0 0 14px; padding-left: 20px; }
+  li { margin-bottom: 4px; padding-left: 2px; }
+  p { margin: 0 0 10px; }
+  .note { color: var(--muted); font-size: 10.9px; line-height: 1.45; margin: 0; }
+</style>
+</head>
+<body>
+  <div class="brand"><span class="mark">af</span>AccessFinish</div>
+  <h1>The AI says “fixed.” <span>We check the user can finish.</span></h1>
+  <p class="lede">A repair agent: NVIDIA Nemotron 3 Super on Nebius Token Factory proposes code fixes; AccessFinish drives the real journey by keyboard, reads what was saved, reopens it in a fresh browser, and rejects every fix until it is proven. Track: Coding and Agentic Engineering.</p>
+
+  <div class="links">
+    <b>Demo video (2 min)</b><a href="https://youtu.be/XztxzjYYlO0">youtu.be/XztxzjYYlO0</a>
+    <b>Live replay page</b><a href="https://sultalfaifi.com/accessfinish/">sultalfaifi.com/accessfinish</a>
+    <b>Every run + raw traces</b><a href="https://sultalfaifi.com/accessfinish/evidence.html">sultalfaifi.com/accessfinish/evidence.html</a>
+    <b>Source (MIT)</b><a href="https://github.com/SultanAlfaifi/accessfinish">github.com/SultanAlfaifi/accessfinish</a>
+  </div>
+
+  <div class="facts">
+    <div><strong class="bad">0 / 77</strong><span>false “booked” pages accepted: date saved wrong (67) or reopened wrong (10)</span></div>
+    <div><strong>2 / 10</strong><span>runs of agents v4–v5 where Nemotron fixed a real upstream keyboard bug, no root cause supplied (2 of 27 overall)</span></div>
+    <div><strong>27 / 27</strong><span>seeded control: wrong phone behind a success page, verified in every run</span></div>
+    <div><strong>$6.38</strong><span>estimated, at list price, for all 54 live runs on Nebius Token Factory</span></div>
+  </div>
+
+  <h2>Review it in three minutes</h2>
+  <ol>
+    <li><b>Open the page.</b> It opens on the keyboard case and replays a recorded live run; press <b>Pause</b> or <b>Show all</b> to take over. Offline: <code>npm run replay</code> → http://127.0.0.1:4178.</li>
+    <li><b>Keyboard case: a real upstream bug in Easy!Appointments, fixed by Nemotron with no root cause supplied.</b> Click attempt 2’s red verify step: the page said <i>booked</i>, the database held 1 Nov instead of 2 Nov, and the timeline names the code that changed the typed date (<code>onMonthChange → getUnavailableDates → applyUnavailableDates → setDate</code>). Attempt 4 saves the right date but reopening shows today — the third layer. Attempt 6 is verified; download its patch from the proof card.</li>
+    <li><b>Phone case (second tab): our seeded control.</b> The confirmation page said success but the database held the wrong phone: Nemotron’s diagnosis and one-line diff, then the proof card with the saved row, the fresh-browser reopen and nine checks.</li>
+    <li><b>Every run, including failures.</b> The Evidence page lists all 54 live runs with replay links and raw traces, the results per agent version (v1–v5), and Nemotron’s usage on Token Factory.</li>
+    <li><b>Run it yourself</b> (Node 22+, Docker): <code>npm run demo:setup</code>, set <code>NEBIUS_API_KEY</code>, then <code>node scripts/agent.cjs --case keyboard-date</code>.</li>
+  </ol>
+
+  <h2>Where NVIDIA and Nebius are used</h2>
+  <p>Every diagnosis, code search and edit comes from <code>nvidia/nemotron-3-super-120b-a12b</code> through Nebius Token Factory’s OpenAI-compatible API, with three tools: <code>search_code</code>, <code>read_file</code> (read-only) and <code>propose_repair</code> (<code>lib/agent.cjs</code>). The verifier is deterministic and never calls a model: it builds each candidate in an offline Docker sandbox and checks the keyboard booking, a read-only database read-back, a fresh-browser reopen and regressions (mouse booking with different data, cleared date, reserved slot, untouched records, sandbox isolation).</p>
+  <p class="note">Synthetic data in a pinned copy of open-source Easy!Appointments (GPL-3.0). Two journeys today; the phone fault was seeded on purpose. The 54 published runs were made live on GitHub Actions, 24–26 October 2026; the demo video is a screen recording of a further live run on 29 October.</p>
+</body>
+</html>
