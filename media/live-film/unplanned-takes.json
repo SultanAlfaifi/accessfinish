@@ -1,0 +1,53 @@
+{
+  "recorded_at_utc": "2026-10-29T15:09:52.167Z",
+  "commit": "4f86c41bfc2c2c33bac49fadcca212e0c038bc97",
+  "scenes": "before,live,after",
+  "chosen": "film-take-3",
+  "takes": [
+    {
+      "name": "film-take-1",
+      "complete": true,
+      "verified": false,
+      "attempts": 12,
+      "run_id": "agent-f9255bd25dd9bdb6a369b046",
+      "state": "not_verified",
+      "estimated_cost_usd": 0.4277781
+    },
+    {
+      "name": "film-take-2",
+      "complete": true,
+      "verified": false,
+      "attempts": 12,
+      "run_id": "agent-37235e4606668363b861cfe2",
+      "state": "not_verified",
+      "estimated_cost_usd": 0.2607027
+    },
+    {
+      "name": "film-take-3",
+      "complete": true,
+      "verified": true,
+      "attempts": 6,
+      "run_id": "agent-5151721819c510a713836a9f",
+      "state": "verified",
+      "estimated_cost_usd": 0.1080396
+    },
+    {
+      "name": "film-take-4",
+      "complete": true,
+      "verified": false,
+      "attempts": 12,
+      "run_id": "agent-479a3bdf2ba7abdfd9429dd4",
+      "state": "not_verified",
+      "estimated_cost_usd": 0.36144119999999996
+    },
+    {
+      "name": "film-take-5",
+      "complete": true,
+      "verified": false,
+      "attempts": 12,
+      "run_id": "agent-97abbeb4a2285a5cd7709ade",
+      "state": "not_verified",
+      "estimated_cost_usd": 0.541551
+    }
+  ]
+}

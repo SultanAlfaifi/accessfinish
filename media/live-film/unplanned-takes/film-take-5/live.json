@@ -1,0 +1,673 @@
+{
+  "scene": "live",
+  "date": "2026-11-09",
+  "customer": {
+    "first": "Layla",
+    "last": "Hassan",
+    "email": "layla.hassan@example.invalid",
+    "phone": "0551234567"
+  },
+  "recorded_at_utc": "2026-10-29T15:06:04.716Z",
+  "run_id": "agent-97abbeb4a2285a5cd7709ade",
+  "state": "not_verified",
+  "verified": false,
+  "events": [
+    {
+      "t": 0,
+      "event": "recording",
+      "fps": 15
+    },
+    {
+      "t": 3.5,
+      "event": "server-terminal"
+    },
+    {
+      "t": 7.06,
+      "event": "page-hero"
+    },
+    {
+      "t": 9.46,
+      "event": "agent-panel"
+    },
+    {
+      "t": 12.59,
+      "event": "run-live",
+      "id": "agent-97abbeb4a2285a5cd7709ade"
+    },
+    {
+      "t": 32.7,
+      "event": "peek",
+      "window": "docker ps"
+    },
+    {
+      "t": 39.29,
+      "event": "peek-end"
+    },
+    {
+      "t": 41.29,
+      "event": "step",
+      "index": 0,
+      "kind": "observe",
+      "attempt": null,
+      "verified": false,
+      "stage": null,
+      "headline": "Keyboard user got stuck at the date step: there is no date field to Tab to"
+    },
+    {
+      "t": 43.29,
+      "event": "step",
+      "index": 1,
+      "kind": "propose",
+      "attempt": 1,
+      "verified": null,
+      "stage": null,
+      "headline": "The date picker container is a div without tabindex, so keyboard users cannot focus it; tab skips the date step, causing the verifier to never reach the date field and instead proceed to the next button."
+    },
+    {
+      "t": 65.38,
+      "event": "peek",
+      "window": "docker ps"
+    },
+    {
+      "t": 71.97,
+      "event": "peek-end"
+    },
+    {
+      "t": 73.97,
+      "event": "step",
+      "index": 2,
+      "kind": "verify",
+      "attempt": 1,
+      "verified": false,
+      "stage": "keyboard",
+      "headline": "Keyboard user got stuck at the date step: there is no date field to Tab to"
+    },
+    {
+      "t": 73.97,
+      "event": "step",
+      "index": 3,
+      "kind": "search",
+      "attempt": 2,
+      "verified": null,
+      "stage": null,
+      "headline": "initializeDatePicker"
+    },
+    {
+      "t": 75.98,
+      "event": "step",
+      "index": 4,
+      "kind": "read",
+      "attempt": 2,
+      "verified": null,
+      "stage": null,
+      "headline": "assets/js/utils/ui.js"
+    },
+    {
+      "t": 79.98,
+      "event": "step",
+      "index": 5,
+      "kind": "read",
+      "attempt": 2,
+      "verified": null,
+      "stage": null,
+      "headline": "application/views/components/booking_time_step.php"
+    },
+    {
+      "t": 89.99,
+      "event": "step",
+      "index": 6,
+      "kind": "search",
+      "attempt": 2,
+      "verified": null,
+      "stage": null,
+      "headline": "select-date"
+    },
+    {
+      "t": 98.01,
+      "event": "step",
+      "index": 7,
+      "kind": "propose",
+      "attempt": 2,
+      "verified": null,
+      "stage": null,
+      "headline": "The date picker container is a div that flatpickr does not turn into a focusable input, so keyboard users cannot reach it to type a date; tab skips to the next button."
+    },
+    {
+      "t": 124.03,
+      "event": "step",
+      "index": 8,
+      "kind": "verify",
+      "attempt": 2,
+      "verified": false,
+      "stage": "keyboard",
+      "headline": "Keyboard user got stuck: the expected control never appeared"
+    },
+    {
+      "t": 150.06,
+      "event": "step",
+      "index": 9,
+      "kind": "propose",
+      "attempt": 3,
+      "verified": null,
+      "stage": null,
+      "headline": "The date picker container was changed to a readonly input, preventing keyboard users from entering a date; the verifier could only select all and press Enter, leaving the date unchanged."
+    },
+    {
+      "t": 150.06,
+      "event": "step",
+      "index": 10,
+      "kind": "verify",
+      "attempt": 3,
+      "verified": false,
+      "stage": "apply",
+      "headline": "Rejected before execution: The replacement anchor must match exactly once."
+    },
+    {
+      "t": 156.07,
+      "event": "step",
+      "index": 11,
+      "kind": "propose",
+      "attempt": 4,
+      "verified": null,
+      "stage": null,
+      "headline": "The date picker container was changed to a readonly input, which flatpickr renders but prevents keyboard input, so the verifier could not type a date; the field stayed at the auto‑filled value."
+    },
+    {
+      "t": 198.12,
+      "event": "step",
+      "index": 12,
+      "kind": "verify",
+      "attempt": 4,
+      "verified": false,
+      "stage": "outcome",
+      "headline": "Confirmation shown, but saved for 2026-11-01 09:00 instead of 2026-11-09 09:00; page code changed the typed date to 01/11/2026"
+    },
+    {
+      "t": 214.14,
+      "event": "step",
+      "index": 13,
+      "kind": "search",
+      "attempt": 5,
+      "verified": null,
+      "stage": null,
+      "headline": "applyUnavailableDates"
+    },
+    {
+      "t": 220.15,
+      "event": "step",
+      "index": 14,
+      "kind": "read",
+      "attempt": 5,
+      "verified": null,
+      "stage": null,
+      "headline": "assets/js/http/booking_http_client.js"
+    },
+    {
+      "t": 250.19,
+      "event": "step",
+      "index": 15,
+      "kind": "search",
+      "attempt": 5,
+      "verified": null,
+      "stage": null,
+      "headline": "onMonthChange: \\(selectedDates, dateStr, instance\\) =>"
+    },
+    {
+      "t": 290.24,
+      "event": "step",
+      "index": 16,
+      "kind": "propose",
+      "attempt": 5,
+      "verified": null,
+      "stage": null,
+      "headline": "When a keyboard user types a date in a different month, the date picker's onMonthChange handler resets the date to the first available date in that month, overriding the user's input. We need to preserve the user's typed date by skipping the automatic date setting when the user has manually entered the date."
+    },
+    {
+      "t": 314.27,
+      "event": "step",
+      "index": 17,
+      "kind": "verify",
+      "attempt": 5,
+      "verified": false,
+      "stage": "keyboard",
+      "headline": "Keyboard user got stuck at the date step: there is no date field to Tab to"
+    },
+    {
+      "t": 392.36,
+      "event": "step",
+      "index": 18,
+      "kind": "propose",
+      "attempt": 6,
+      "verified": null,
+      "stage": null,
+      "headline": "When a keyboard user types a date in a different month, the date picker's onMonthChange handler resets the date to the first available date in that month, overriding the user's input. We preserve the user's typed date by tracking manual input and overriding applyUnavailableDates to skip date setting when the user has typed."
+    },
+    {
+      "t": 436.42,
+      "event": "step",
+      "index": 19,
+      "kind": "verify",
+      "attempt": 6,
+      "verified": false,
+      "stage": "outcome",
+      "headline": "Confirmation shown, but saved for 2026-11-01 09:00 instead of 2026-11-09 09:00; page code changed the typed date to 01/11/2026"
+    },
+    {
+      "t": 462.45,
+      "event": "step",
+      "index": 20,
+      "kind": "read",
+      "attempt": 7,
+      "verified": null,
+      "stage": null,
+      "headline": "assets/js/pages/booking.js"
+    },
+    {
+      "t": 482.48,
+      "event": "step",
+      "index": 21,
+      "kind": "search",
+      "attempt": 7,
+      "verified": null,
+      "stage": null,
+      "headline": "initializeRememberMe"
+    },
+    {
+      "t": 512.53,
+      "event": "step",
+      "index": 22,
+      "kind": "propose",
+      "attempt": 7,
+      "verified": null,
+      "stage": null,
+      "headline": "When a keyboard user types a date in a different month, the date picker's onMonthChange handler resets the date to the first available date in that month, overriding the user's input. We prevent this by skipping the onMonthChange handler's getUnavailableDates call when the user has typed a date."
+    },
+    {
+      "t": 538.58,
+      "event": "step",
+      "index": 23,
+      "kind": "verify",
+      "attempt": 7,
+      "verified": false,
+      "stage": "keyboard",
+      "headline": "Keyboard user got stuck at the date step: there is no date field to Tab to"
+    },
+    {
+      "t": 560.61,
+      "event": "step",
+      "index": 24,
+      "kind": "search",
+      "attempt": 8,
+      "verified": null,
+      "stage": null,
+      "headline": "onMonthChange: \\(selectedDates, dateStr, instance\\) => {"
+    },
+    {
+      "t": 562.62,
+      "event": "step",
+      "index": 25,
+      "kind": "search",
+      "attempt": 8,
+      "verified": null,
+      "stage": null,
+      "headline": "onMonthChange:"
+    },
+    {
+      "t": 564.62,
+      "event": "step",
+      "index": 26,
+      "kind": "read",
+      "attempt": 8,
+      "verified": null,
+      "stage": null,
+      "headline": "assets/js/pages/booking.js"
+    },
+    {
+      "t": 566.62,
+      "event": "step",
+      "index": 27,
+      "kind": "search",
+      "attempt": 8,
+      "verified": null,
+      "stage": null,
+      "headline": "onMonthChange:.*selectedDates.*dateStr.*instance"
+    },
+    {
+      "t": 568.63,
+      "event": "step",
+      "index": 28,
+      "kind": "search",
+      "attempt": 8,
+      "verified": null,
+      "stage": null,
+      "headline": "onMonthChange: \\(selectedDates, dateStr, instance\\) => \\{"
+    },
+    {
+      "t": 572.63,
+      "event": "step",
+      "index": 29,
+      "kind": "search",
+      "attempt": 8,
+      "verified": null,
+      "stage": null,
+      "headline": "onMonthChange:.*selectedDates.*dateStr.*instance.*{"
+    },
+    {
+      "t": 574.63,
+      "event": "step",
+      "index": 30,
+      "kind": "read",
+      "attempt": 8,
+      "verified": null,
+      "stage": null,
+      "headline": "assets/js/pages/booking.js"
+    },
+    {
+      "t": 578.64,
+      "event": "step",
+      "index": 31,
+      "kind": "search",
+      "attempt": 8,
+      "verified": null,
+      "stage": null,
+      "headline": "onMonthChange:"
+    },
+    {
+      "t": 580.64,
+      "event": "step",
+      "index": 32,
+      "kind": "search",
+      "attempt": 8,
+      "verified": null,
+      "stage": null,
+      "headline": "onMonthChange:[\\s\\S]*?},"
+    },
+    {
+      "t": 594.67,
+      "event": "step",
+      "index": 33,
+      "kind": "propose",
+      "attempt": 8,
+      "verified": null,
+      "stage": null,
+      "headline": "When a keyboard user types a date in a different month, the date picker's onMonthChange handler resets the date to the first available date in that month, overriding the user's input. We preserve the user's typed date by tracking manual input and skipping the automatic month update when the user has typed."
+    },
+    {
+      "t": 600.68,
+      "event": "step",
+      "index": 34,
+      "kind": "verify",
+      "attempt": 8,
+      "verified": false,
+      "stage": "build",
+      "headline": "Build failed: SyntaxError: /app/assets/js/pages/booking.js: Unexpected token, expected \",\" (152:12)"
+    },
+    {
+      "t": 604.69,
+      "event": "step",
+      "index": 35,
+      "kind": "search",
+      "attempt": 9,
+      "verified": null,
+      "stage": null,
+      "headline": "onMonthChange:.*"
+    },
+    {
+      "t": 606.69,
+      "event": "step",
+      "index": 36,
+      "kind": "read",
+      "attempt": 9,
+      "verified": null,
+      "stage": null,
+      "headline": "assets/js/pages/booking.js"
+    },
+    {
+      "t": 610.7,
+      "event": "step",
+      "index": 37,
+      "kind": "read",
+      "attempt": 9,
+      "verified": null,
+      "stage": null,
+      "headline": "assets/js/pages/booking.js"
+    },
+    {
+      "t": 624.72,
+      "event": "step",
+      "index": 38,
+      "kind": "propose",
+      "attempt": 9,
+      "verified": null,
+      "stage": null,
+      "headline": "When a keyboard user types a date in a different month, the date picker's onMonthChange handler resets the date to the first available date in that month, overriding the user's input. We preserve the user's typed date by tracking manual input and skipping the automatic month update when the user has typed."
+    },
+    {
+      "t": 632.73,
+      "event": "step",
+      "index": 39,
+      "kind": "verify",
+      "attempt": 9,
+      "verified": false,
+      "stage": "build",
+      "headline": "Build failed: SyntaxError: /app/assets/js/pages/booking.js: Unexpected token, expected \",\" (152:12)"
+    },
+    {
+      "t": 638.75,
+      "event": "step",
+      "index": 40,
+      "kind": "search",
+      "attempt": 10,
+      "verified": null,
+      "stage": null,
+      "headline": "initializeRememberMe\\(\\);"
+    },
+    {
+      "t": 640.75,
+      "event": "step",
+      "index": 41,
+      "kind": "search",
+      "attempt": 10,
+      "verified": null,
+      "stage": null,
+      "headline": "Initialize remember me after prefilling from query params"
+    },
+    {
+      "t": 644.76,
+      "event": "step",
+      "index": 42,
+      "kind": "search",
+      "attempt": 10,
+      "verified": null,
+      "stage": null,
+      "headline": "Initialize remember me after prefilling from query params"
+    },
+    {
+      "t": 646.76,
+      "event": "step",
+      "index": 43,
+      "kind": "search",
+      "attempt": 10,
+      "verified": null,
+      "stage": null,
+      "headline": "Initialize remember me after prefilling from query params"
+    },
+    {
+      "t": 660.79,
+      "event": "step",
+      "index": 44,
+      "kind": "propose",
+      "attempt": 10,
+      "verified": null,
+      "stage": null,
+      "headline": "When a keyboard user types a date in a different month, the date picker's onMonthChange handler resets the date to the first available date in that month, overriding the user's input. We preserve the user's typed date by tracking manual input and skipping the automatic month update when the user has typed."
+    },
+    {
+      "t": 668.8,
+      "event": "step",
+      "index": 45,
+      "kind": "verify",
+      "attempt": 10,
+      "verified": false,
+      "stage": "build",
+      "headline": "Build failed: SyntaxError: /app/assets/js/pages/booking.js: Unexpected token, expected \",\" (152:12)"
+    },
+    {
+      "t": 670.81,
+      "event": "step",
+      "index": 46,
+      "kind": "read",
+      "attempt": 11,
+      "verified": null,
+      "stage": null,
+      "headline": "assets/js/pages/booking.js"
+    },
+    {
+      "t": 672.81,
+      "event": "step",
+      "index": 47,
+      "kind": "search",
+      "attempt": 11,
+      "verified": null,
+      "stage": null,
+      "headline": "onYearChange"
+    },
+    {
+      "t": 684.83,
+      "event": "step",
+      "index": 48,
+      "kind": "read",
+      "attempt": 11,
+      "verified": null,
+      "stage": null,
+      "headline": "assets/js/pages/booking.js"
+    },
+    {
+      "t": 686.84,
+      "event": "step",
+      "index": 49,
+      "kind": "search",
+      "attempt": 11,
+      "verified": null,
+      "stage": null,
+      "headline": "^.*onYearChange.*$"
+    },
+    {
+      "t": 688.84,
+      "event": "step",
+      "index": 50,
+      "kind": "search",
+      "attempt": 11,
+      "verified": null,
+      "stage": null,
+      "headline": "onMonthChange|onYearChange"
+    },
+    {
+      "t": 690.84,
+      "event": "step",
+      "index": 51,
+      "kind": "search",
+      "attempt": 11,
+      "verified": null,
+      "stage": null,
+      "headline": "flatpickr\\({5,}"
+    },
+    {
+      "t": 692.85,
+      "event": "step",
+      "index": 52,
+      "kind": "search",
+      "attempt": 11,
+      "verified": null,
+      "stage": null,
+      "headline": "^.{0,100}onYearChange.{0,100}$"
+    },
+    {
+      "t": 696.85,
+      "event": "step",
+      "index": 53,
+      "kind": "read",
+      "attempt": 11,
+      "verified": null,
+      "stage": null,
+      "headline": "assets/js/pages/booking.js"
+    },
+    {
+      "t": 700.86,
+      "event": "step",
+      "index": 54,
+      "kind": "search",
+      "attempt": 11,
+      "verified": null,
+      "stage": null,
+      "headline": "onMonthChange:"
+    },
+    {
+      "t": 702.86,
+      "event": "step",
+      "index": 55,
+      "kind": "search",
+      "attempt": 11,
+      "verified": null,
+      "stage": null,
+      "headline": "Initialize remember me after prefilling from query params"
+    },
+    {
+      "t": 702.86,
+      "event": "step",
+      "index": 56,
+      "kind": "verify",
+      "attempt": 11,
+      "verified": false,
+      "stage": "format",
+      "headline": "Rejected: Nemotron kept looking up code without proposing a repair."
+    },
+    {
+      "t": 718.89,
+      "event": "step",
+      "index": 57,
+      "kind": "propose",
+      "attempt": 12,
+      "verified": null,
+      "stage": null,
+      "headline": "When a keyboard user types a date in a different month, the date picker's onMonthChange and onYearChange handlers reset the date to the first available date in that month, overriding the user's input. We preserve the user's typed date by tracking manual input and skipping these automatic updates when the user has typed."
+    },
+    {
+      "t": 726.91,
+      "event": "step",
+      "index": 58,
+      "kind": "verify",
+      "attempt": 12,
+      "verified": false,
+      "stage": "build",
+      "headline": "Build failed: SyntaxError: /app/assets/js/pages/booking.js: Unexpected token, expected \",\" (152:12)"
+    },
+    {
+      "t": 726.91,
+      "event": "run-finished",
+      "state": "not_verified",
+      "attempts": 12,
+      "cost_usd": 0.541551
+    },
+    {
+      "t": 732.73,
+      "event": "show-step",
+      "index": 12,
+      "label": "wrong-date"
+    },
+    {
+      "t": 741.55,
+      "event": "show-step",
+      "index": 58,
+      "label": "final"
+    },
+    {
+      "t": 756.6,
+      "event": "proof-scrolled"
+    },
+    {
+      "t": 759.1,
+      "event": "end"
+    }
+  ]
+}
