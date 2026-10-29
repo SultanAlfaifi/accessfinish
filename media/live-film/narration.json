@@ -6,7 +6,8 @@
   "beats": [
     {
       "id": "intro",
-      "text": "This is a screen recording. A customer who uses only the keyboard is booking an appointment in Easy Appointments, a real open-source app."
+      "text": "This is a screen recording. A customer who uses only the keyboard is booking an appointment in Easy!Appointments, a real open-source app.",
+      "say": "This is a screen recording. A customer who uses only the keyboard is booking an appointment in Easy Appointments, a real open-source app."
     },
     {
       "id": "stuck",
@@ -51,7 +52,8 @@
     },
     {
       "id": "close",
-      "text": "In our fifty-four published runs, AccessFinish caught seventy-seven booked pages that hid a wrong date, and accepted none of them. The AI says fixed. We check that the user can finish."
+      "text": "In our 54 published runs, AccessFinish caught 77 “booked” pages that hid a wrong date, and accepted none of them. The AI says “fixed.” We check that the user can finish.",
+      "say": "In our fifty-four published runs, AccessFinish caught seventy-seven booked pages that hid a wrong date, and accepted none of them. The AI says fixed. We check that the user can finish."
     }
   ],
   "facts": [
