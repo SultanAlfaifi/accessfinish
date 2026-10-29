@@ -1,53 +1,53 @@
 {
-  "recorded_at_utc": "2026-10-29T15:09:52.167Z",
-  "commit": "4f86c41bfc2c2c33bac49fadcca212e0c038bc97",
+  "recorded_at_utc": "2026-10-29T14:01:27.017Z",
+  "commit": "a2bc73911a63e11a964afccd8c5e05d131808c3f",
   "scenes": "before,live,after",
-  "chosen": "film-take-3",
+  "chosen": "film-take-2",
   "takes": [
     {
       "name": "film-take-1",
-      "complete": true,
+      "complete": false,
       "verified": false,
       "attempts": 12,
-      "run_id": "agent-f9255bd25dd9bdb6a369b046",
+      "run_id": "agent-a0c624bfe19038b5c0b04bd7",
       "state": "not_verified",
-      "estimated_cost_usd": 0.4277781
+      "estimated_cost_usd": 0.31136340000000007
     },
     {
       "name": "film-take-2",
-      "complete": true,
-      "verified": false,
-      "attempts": 12,
-      "run_id": "agent-37235e4606668363b861cfe2",
-      "state": "not_verified",
-      "estimated_cost_usd": 0.2607027
+      "complete": false,
+      "verified": true,
+      "attempts": 5,
+      "run_id": "agent-31b12339b788b3733653fe84",
+      "state": "verified",
+      "estimated_cost_usd": 0.0941241
     },
     {
       "name": "film-take-3",
-      "complete": true,
-      "verified": true,
-      "attempts": 6,
-      "run_id": "agent-5151721819c510a713836a9f",
-      "state": "verified",
-      "estimated_cost_usd": 0.1080396
+      "complete": false,
+      "verified": false,
+      "attempts": 12,
+      "run_id": "agent-ddd7fa4a5775a2f9886d291a",
+      "state": "not_verified",
+      "estimated_cost_usd": 0.3942846
     },
     {
       "name": "film-take-4",
-      "complete": true,
+      "complete": false,
       "verified": false,
       "attempts": 12,
-      "run_id": "agent-479a3bdf2ba7abdfd9429dd4",
+      "run_id": "agent-db3d1326ebe5670985259311",
       "state": "not_verified",
-      "estimated_cost_usd": 0.36144119999999996
+      "estimated_cost_usd": 0.24366569999999996
     },
     {
       "name": "film-take-5",
-      "complete": true,
+      "complete": false,
       "verified": false,
       "attempts": 12,
-      "run_id": "agent-97abbeb4a2285a5cd7709ade",
+      "run_id": "agent-e63ad77f0b78701198b25e45",
       "state": "not_verified",
-      "estimated_cost_usd": 0.541551
+      "estimated_cost_usd": 0.6059357999999999
     }
   ]
 }

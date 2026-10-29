@@ -7,10 +7,10 @@
     "email": "layla.hassan@example.invalid",
     "phone": "0551234567"
   },
-  "recorded_at_utc": "2026-10-29T15:08:07.483Z",
-  "run_id": "agent-37235e4606668363b861cfe2",
-  "state": "not_verified",
-  "verified": false,
+  "recorded_at_utc": "2026-10-29T13:50:46.805Z",
+  "run_id": "agent-31b12339b788b3733653fe84",
+  "state": "verified",
+  "verified": true,
   "events": [
     {
       "t": 0,
@@ -22,29 +22,29 @@
       "event": "server-terminal"
     },
     {
-      "t": 7.04,
+      "t": 6.99,
       "event": "page-hero"
     },
     {
-      "t": 9.44,
+      "t": 9.39,
       "event": "agent-panel"
     },
     {
-      "t": 12.59,
+      "t": 12.52,
       "event": "run-live",
-      "id": "agent-37235e4606668363b861cfe2"
+      "id": "agent-31b12339b788b3733653fe84"
     },
     {
-      "t": 32.69,
+      "t": 32.62,
       "event": "peek",
       "window": "docker ps"
     },
     {
-      "t": 39.28,
+      "t": 39.21,
       "event": "peek-end"
     },
     {
-      "t": 41.29,
+      "t": 43.22,
       "event": "step",
       "index": 0,
       "kind": "observe",
@@ -54,355 +54,205 @@
       "headline": "Keyboard user got stuck at the date step: there is no date field to Tab to"
     },
     {
-      "t": 45.3,
+      "t": 47.22,
       "event": "step",
       "index": 1,
-      "kind": "search",
+      "kind": "propose",
       "attempt": 1,
+      "verified": null,
+      "stage": null,
+      "headline": "The date picker container lacks a tabindex, making it unfocusable for keyboard navigation, so the verifier cannot focus the date field and type the date."
+    },
+    {
+      "t": 65.31,
+      "event": "peek",
+      "window": "docker ps"
+    },
+    {
+      "t": 71.9,
+      "event": "peek-end"
+    },
+    {
+      "t": 73.9,
+      "event": "step",
+      "index": 2,
+      "kind": "verify",
+      "attempt": 1,
+      "verified": false,
+      "stage": "keyboard",
+      "headline": "Keyboard user got stuck at the date step: there is no date field to Tab to"
+    },
+    {
+      "t": 75.9,
+      "event": "step",
+      "index": 3,
+      "kind": "search",
+      "attempt": 2,
       "verified": null,
       "stage": null,
       "headline": "initializeDatePicker"
     },
     {
-      "t": 69.32,
-      "event": "step",
-      "index": 2,
-      "kind": "search",
-      "attempt": 1,
-      "verified": null,
-      "stage": null,
-      "headline": "inline: true"
-    },
-    {
-      "t": 77.33,
-      "event": "step",
-      "index": 3,
-      "kind": "search",
-      "attempt": 1,
-      "verified": null,
-      "stage": null,
-      "headline": "native-date"
-    },
-    {
-      "t": 81.33,
+      "t": 77.91,
       "event": "step",
       "index": 4,
       "kind": "read",
-      "attempt": 1,
+      "attempt": 2,
       "verified": null,
       "stage": null,
       "headline": "assets/js/utils/ui.js"
     },
     {
-      "t": 87.34,
+      "t": 81.91,
       "event": "step",
       "index": 5,
       "kind": "propose",
-      "attempt": 1,
+      "attempt": 2,
       "verified": null,
       "stage": null,
-      "headline": "The date field is a non-focusable div, preventing keyboard users from reaching it via Tab. Changing it to an input makes it focusable while preserving flatpickr functionality."
+      "headline": "The date picker container is a div that flatpickr turns into a non-focusable element; changing it to an input makes it keyboard-focusable and typable."
     },
     {
-      "t": 93.41,
-      "event": "peek",
-      "window": "docker ps"
-    },
-    {
-      "t": 100.01,
-      "event": "peek-end"
-    },
-    {
-      "t": 128.05,
+      "t": 123.97,
       "event": "step",
       "index": 6,
       "kind": "verify",
-      "attempt": 1,
+      "attempt": 2,
       "verified": false,
       "stage": "outcome",
       "headline": "Confirmation shown, but saved for 2026-11-01 09:00 instead of 2026-11-09 09:00; page code changed the typed date to 01/11/2026"
     },
     {
-      "t": 134.06,
+      "t": 127.97,
       "event": "step",
       "index": 7,
       "kind": "search",
-      "attempt": 2,
+      "attempt": 3,
       "verified": null,
       "stage": null,
       "headline": "applyUnavailableDates"
     },
     {
-      "t": 140.06,
+      "t": 129.97,
       "event": "step",
       "index": 8,
       "kind": "read",
-      "attempt": 2,
+      "attempt": 3,
       "verified": null,
       "stage": null,
       "headline": "assets/js/http/booking_http_client.js"
     },
     {
-      "t": 270.21,
+      "t": 139.98,
       "event": "step",
       "index": 9,
-      "kind": "verify",
-      "attempt": 2,
-      "verified": false,
-      "stage": "format",
-      "headline": "Rejected: Nemotron returned a proposal without diagnosis and edits."
+      "kind": "search",
+      "attempt": 3,
+      "verified": null,
+      "stage": null,
+      "headline": "function applyUnavailableDates"
     },
     {
-      "t": 282.23,
+      "t": 176.02,
       "event": "step",
       "index": 10,
       "kind": "propose",
       "attempt": 3,
       "verified": null,
       "stage": null,
-      "headline": "When a user types a date, flatpickr's onMonthChange triggers getUnavailableDates which then overrides the user's selected date with the first enabled day of the month, causing the typed date to be lost."
+      "headline": "The date picker's onMonthChange handler runs after a 500ms timeout when the month changes due to user input, causing the date to be overridden to the first available day of the month. Clearing this timeout on user input prevents the override while preserving month navigation updates."
     },
     {
-      "t": 282.23,
+      "t": 204.05,
       "event": "step",
       "index": 11,
       "kind": "verify",
       "attempt": 3,
       "verified": false,
-      "stage": "format",
-      "headline": "Rejected before execution: every edit was dropped: its old text is empty, so it names no code to replace."
+      "stage": "keyboard",
+      "headline": "Keyboard user got stuck at the date step: there is no date field to Tab to"
     },
     {
-      "t": 314.26,
+      "t": 246.1,
       "event": "step",
       "index": 12,
-      "kind": "propose",
-      "attempt": 4,
-      "verified": null,
-      "stage": null,
-      "headline": "After the user types a date, flatpickr's onMonthChange triggers getUnavailableDates which overrides the user's selected date with the first enabled day of the month, losing the typed date."
-    },
-    {
-      "t": 336.29,
-      "event": "step",
-      "index": 13,
-      "kind": "verify",
-      "attempt": 4,
-      "verified": false,
-      "stage": "keyboard",
-      "headline": "Keyboard user got stuck at the date step: there is no date field to Tab to"
-    },
-    {
-      "t": 372.33,
-      "event": "step",
-      "index": 14,
-      "kind": "propose",
-      "attempt": 5,
-      "verified": null,
-      "stage": null,
-      "headline": "After the user types a date, flatpickr's onMonthChange/onYearChange triggers getUnavailableDates which overrides the user's selected date with the first enabled day of the month, losing the typed date. Additionally, the date field must be focusable for keyboard users."
-    },
-    {
-      "t": 398.37,
-      "event": "step",
-      "index": 15,
-      "kind": "verify",
-      "attempt": 5,
-      "verified": false,
-      "stage": "keyboard",
-      "headline": "Keyboard user got stuck at the date step: there is no date field to Tab to"
-    },
-    {
-      "t": 410.39,
-      "event": "step",
-      "index": 16,
-      "kind": "propose",
-      "attempt": 6,
-      "verified": null,
-      "stage": null,
-      "headline": "After the user types a date, flatpickr's onMonthChange/onYearChange triggers getUnavailableDates which overrides the user's selected date with the first enabled day of the month, losing the typed date. Additionally, the date field must be focusable for keyboard users."
-    },
-    {
-      "t": 454.46,
-      "event": "step",
-      "index": 17,
-      "kind": "verify",
-      "attempt": 6,
-      "verified": false,
-      "stage": "outcome",
-      "headline": "Confirmation shown, but saved for 2026-11-01 09:00 instead of 2026-11-09 09:00; page code changed the typed date to 01/11/2026"
-    },
-    {
-      "t": 478.49,
-      "event": "step",
-      "index": 18,
-      "kind": "propose",
-      "attempt": 7,
-      "verified": null,
-      "stage": null,
-      "headline": "After the user types a date, flatpickr's onMonthChange/onYearChange triggers getUnavailableDates which then overrides the user's selected date with the first enabled day of the month, losing the typed date. We need to preserve the user's typed date when these callbacks run due to user interaction."
-    },
-    {
-      "t": 482.5,
-      "event": "step",
-      "index": 19,
-      "kind": "verify",
-      "attempt": 7,
-      "verified": false,
-      "stage": "build",
-      "headline": "Build failed: SyntaxError: /app/assets/js/pages/booking.js: Unexpected token, expected \",\" (140:26)"
-    },
-    {
-      "t": 504.54,
-      "event": "step",
-      "index": 20,
-      "kind": "propose",
-      "attempt": 8,
-      "verified": null,
-      "stage": null,
-      "headline": "After the user types a date, flatpickr's onMonthChange/onYearChange triggers getUnavailableDates which overrides the user's selected date with the first enabled day of the month, losing the typed date. We preserve the user's typed date by storing it and restoring after the update."
-    },
-    {
-      "t": 544.61,
-      "event": "step",
-      "index": 21,
-      "kind": "verify",
-      "attempt": 8,
-      "verified": false,
-      "stage": "outcome",
-      "headline": "Confirmation shown, but saved for 2026-11-01 09:00 instead of 2026-11-09 09:00; page code changed the typed date to 01/11/2026"
-    },
-    {
-      "t": 560.64,
-      "event": "step",
-      "index": 22,
       "kind": "read",
-      "attempt": 9,
+      "attempt": 4,
       "verified": null,
       "stage": null,
       "headline": "assets/js/http/booking_http_client.js"
     },
     {
-      "t": 592.7,
+      "t": 250.11,
       "event": "step",
-      "index": 23,
+      "index": 13,
       "kind": "propose",
-      "attempt": 9,
+      "attempt": 4,
       "verified": null,
       "stage": null,
-      "headline": "After the user types a date, flatpickr's onMonthChange/onYearChange triggers getUnavailableDates which overrides the user's selected date with the first enabled day of the month, losing the typed date. We preserve the user's typed date by storing it and restoring after the update."
+      "headline": "The date picker container needed to be an input for keyboard focus, and the onChange handler must clear the month-change timeout to prevent overriding the user-selected date with the first available day of the month."
     },
     {
-      "t": 630.78,
+      "t": 296.17,
       "event": "step",
-      "index": 24,
+      "index": 14,
       "kind": "verify",
-      "attempt": 9,
-      "verified": false,
-      "stage": "outcome",
-      "headline": "Confirmation shown, but saved for 2026-11-01 09:00 instead of 2026-11-09 09:00; page code changed the typed date to 01/11/2026"
-    },
-    {
-      "t": 668.85,
-      "event": "step",
-      "index": 25,
-      "kind": "propose",
-      "attempt": 10,
-      "verified": null,
-      "stage": null,
-      "headline": "After the user types a date, flatpickr's onMonthChange/onYearChange triggers getUnavailableDates which overrides the user's selected date with the first enabled day of the month, losing the typed date. We preserve the user's typed date by storing it and restoring after the update, then refreshing available hours."
-    },
-    {
-      "t": 710.95,
-      "event": "step",
-      "index": 26,
-      "kind": "verify",
-      "attempt": 10,
-      "verified": false,
-      "stage": "outcome",
-      "headline": "Confirmation shown, but saved for 2026-11-01 09:00 instead of 2026-11-09 09:00; page code changed the typed date to 01/11/2026"
-    },
-    {
-      "t": 732.99,
-      "event": "step",
-      "index": 27,
-      "kind": "search",
-      "attempt": 11,
-      "verified": null,
-      "stage": null,
-      "headline": "flatpickr"
-    },
-    {
-      "t": 755.03,
-      "event": "step",
-      "index": 28,
-      "kind": "search",
-      "attempt": 11,
-      "verified": null,
-      "stage": null,
-      "headline": "onMonthChange"
-    },
-    {
-      "t": 819.15,
-      "event": "step",
-      "index": 29,
-      "kind": "propose",
-      "attempt": 11,
-      "verified": null,
-      "stage": null,
-      "headline": "After the user types a date, flatpickr's onMonthChange/onYearChange triggers getUnavailableDates which overrides the user's selected date with the first enabled day of the month, losing the typed date. We prevent this by setting a flag when the user types a date and skipping the getUnavailableDates calls if the flag is still set, with a reset timeout longer than the internal delay."
-    },
-    {
-      "t": 857.24,
-      "event": "step",
-      "index": 30,
-      "kind": "verify",
-      "attempt": 11,
-      "verified": false,
-      "stage": "outcome",
-      "headline": "Confirmation shown, but saved for 2026-11-01 09:00 instead of 2026-11-09 09:00; page code changed the typed date to 01/11/2026"
-    },
-    {
-      "t": 903.35,
-      "event": "step",
-      "index": 31,
-      "kind": "propose",
-      "attempt": 12,
-      "verified": null,
-      "stage": null,
-      "headline": "When the user types a date that changes the month, flatpickr's onMonthChange triggers getUnavailableDates which then resets the date to the first enabled day of the month, losing the user's input. We preserve the user's typed date by setting a flag on value update and restoring the date after the unavailable dates update."
-    },
-    {
-      "t": 941.43,
-      "event": "step",
-      "index": 32,
-      "kind": "verify",
-      "attempt": 12,
+      "attempt": 4,
       "verified": false,
       "stage": "outcome",
       "headline": "Saved for the right date, but reopening the booking showed 2026-10-29 instead of 2026-11-09"
     },
     {
-      "t": 941.43,
-      "event": "run-finished",
-      "state": "not_verified",
-      "attempts": 12,
-      "cost_usd": 0.2607027
+      "t": 322.2,
+      "event": "step",
+      "index": 15,
+      "kind": "propose",
+      "attempt": 5,
+      "verified": null,
+      "stage": null,
+      "headline": "In manage mode, clicking Next on step 1 overrides the appointment date with today's date, causing the reopened booking to show the wrong date. The fix is to skip setting the date to today and fetching unavailable hours when in manage mode."
     },
     {
-      "t": 947.26,
+      "t": 380.29,
+      "event": "step",
+      "index": 16,
+      "kind": "verify",
+      "attempt": 5,
+      "verified": true,
+      "stage": "passed",
+      "headline": "Saved correctly, reopened in a fresh browser, regression checks passed"
+    },
+    {
+      "t": 380.29,
+      "event": "run-finished",
+      "state": "verified",
+      "attempts": 5,
+      "cost_usd": 0.0941241
+    },
+    {
+      "t": 386.11,
       "event": "show-step",
       "index": 6,
       "label": "wrong-date"
     },
     {
-      "t": 956.1,
+      "t": 394.93,
       "event": "show-step",
-      "index": 32,
+      "index": 14,
       "label": "wrong-reopen"
     },
     {
-      "t": 963.11,
+      "t": 403.75,
+      "event": "show-step",
+      "index": 16,
+      "label": "final"
+    },
+    {
+      "t": 417.78,
+      "event": "proof-scrolled"
+    },
+    {
+      "t": 420.29,
       "event": "end"
     }
   ]
