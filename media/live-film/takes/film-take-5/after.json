@@ -7,9 +7,9 @@
     "email": "layla.hassan@example.invalid",
     "phone": "0551234567"
   },
-  "recorded_at_utc": "2026-10-29T14:01:05.365Z",
+  "recorded_at_utc": "2026-10-29T15:07:36.576Z",
   "typed_date": "09/11/2026",
-  "booking_hash": "w0DN9BMCjluY",
+  "booking_hash": "NeOP1SZIGsAL",
   "reopened_date": "09/11/2026",
   "events": [
     {
@@ -18,11 +18,11 @@
       "fps": 30
     },
     {
-      "t": 2.6,
+      "t": 2.48,
       "event": "booking-page"
     },
     {
-      "t": 3.27,
+      "t": 3.14,
       "event": "key",
       "key": "Tab",
       "focus": {
@@ -33,7 +33,7 @@
       }
     },
     {
-      "t": 3.58,
+      "t": 3.45,
       "event": "key",
       "key": "Home",
       "focus": {
@@ -44,7 +44,7 @@
       }
     },
     {
-      "t": 4.05,
+      "t": 3.91,
       "event": "key",
       "key": "ArrowDown",
       "focus": {
@@ -55,7 +55,7 @@
       }
     },
     {
-      "t": 4.51,
+      "t": 4.37,
       "event": "key",
       "key": "ArrowDown",
       "focus": {
@@ -66,7 +66,7 @@
       }
     },
     {
-      "t": 5.17,
+      "t": 5.03,
       "event": "key",
       "key": "Tab",
       "focus": {
@@ -77,7 +77,7 @@
       }
     },
     {
-      "t": 5.83,
+      "t": 5.68,
       "event": "key",
       "key": "Tab",
       "focus": {
@@ -88,7 +88,7 @@
       }
     },
     {
-      "t": 7.45,
+      "t": 7.3,
       "event": "key",
       "key": "Enter",
       "focus": {
@@ -99,11 +99,11 @@
       }
     },
     {
-      "t": 7.45,
+      "t": 7.3,
       "event": "date-step"
     },
     {
-      "t": 8.21,
+      "t": 8.06,
       "event": "key",
       "key": "Tab",
       "focus": {
@@ -114,11 +114,11 @@
       }
     },
     {
-      "t": 8.21,
+      "t": 8.06,
       "event": "date-field"
     },
     {
-      "t": 8.62,
+      "t": 8.47,
       "event": "key",
       "key": "Control+A",
       "focus": {
@@ -129,7 +129,7 @@
       }
     },
     {
-      "t": 10.26,
+      "t": 10.11,
       "event": "type",
       "text": "09/11/2026",
       "focus": {
@@ -140,7 +140,7 @@
       }
     },
     {
-      "t": 11.17,
+      "t": 11.02,
       "event": "key",
       "key": "Enter",
       "focus": {
@@ -151,7 +151,7 @@
       }
     },
     {
-      "t": 12.38,
+      "t": 12.23,
       "event": "key",
       "key": "Tab",
       "focus": {
@@ -162,13 +162,13 @@
       }
     },
     {
-      "t": 12.39,
+      "t": 12.23,
       "event": "hours",
       "timezone": "UTC",
       "date_value": "09/11/2026"
     },
     {
-      "t": 12.78,
+      "t": 12.62,
       "event": "key",
       "key": "Tab",
       "focus": {
@@ -179,7 +179,7 @@
       }
     },
     {
-      "t": 13.69,
+      "t": 13.53,
       "event": "key",
       "key": "Enter",
       "focus": {
@@ -190,11 +190,11 @@
       }
     },
     {
-      "t": 13.69,
+      "t": 13.53,
       "event": "slot-chosen"
     },
     {
-      "t": 14.07,
+      "t": 13.92,
       "event": "key",
       "key": "Tab",
       "focus": {
@@ -205,7 +205,7 @@
       }
     },
     {
-      "t": 14.46,
+      "t": 14.3,
       "event": "key",
       "key": "Tab",
       "focus": {
@@ -216,7 +216,7 @@
       }
     },
     {
-      "t": 14.85,
+      "t": 14.69,
       "event": "key",
       "key": "Tab",
       "focus": {
@@ -227,7 +227,7 @@
       }
     },
     {
-      "t": 15.23,
+      "t": 15.07,
       "event": "key",
       "key": "Tab",
       "focus": {
@@ -238,7 +238,7 @@
       }
     },
     {
-      "t": 15.62,
+      "t": 15.46,
       "event": "key",
       "key": "Tab",
       "focus": {
@@ -249,7 +249,7 @@
       }
     },
     {
-      "t": 16,
+      "t": 15.84,
       "event": "key",
       "key": "Tab",
       "focus": {
@@ -260,7 +260,7 @@
       }
     },
     {
-      "t": 16.39,
+      "t": 16.23,
       "event": "key",
       "key": "Tab",
       "focus": {
@@ -271,7 +271,7 @@
       }
     },
     {
-      "t": 16.77,
+      "t": 16.61,
       "event": "key",
       "key": "Tab",
       "focus": {
@@ -282,7 +282,7 @@
       }
     },
     {
-      "t": 17.16,
+      "t": 16.99,
       "event": "key",
       "key": "Tab",
       "focus": {
@@ -293,7 +293,7 @@
       }
     },
     {
-      "t": 17.55,
+      "t": 17.38,
       "event": "key",
       "key": "Tab",
       "focus": {
@@ -304,7 +304,7 @@
       }
     },
     {
-      "t": 17.93,
+      "t": 17.77,
       "event": "key",
       "key": "Tab",
       "focus": {
@@ -315,7 +315,7 @@
       }
     },
     {
-      "t": 18.32,
+      "t": 18.15,
       "event": "key",
       "key": "Tab",
       "focus": {
@@ -326,7 +326,7 @@
       }
     },
     {
-      "t": 18.71,
+      "t": 18.54,
       "event": "key",
       "key": "Tab",
       "focus": {
@@ -337,7 +337,7 @@
       }
     },
     {
-      "t": 19.09,
+      "t": 18.92,
       "event": "key",
       "key": "Tab",
       "focus": {
@@ -348,7 +348,7 @@
       }
     },
     {
-      "t": 19.48,
+      "t": 19.31,
       "event": "key",
       "key": "Tab",
       "focus": {
@@ -359,7 +359,7 @@
       }
     },
     {
-      "t": 19.86,
+      "t": 19.69,
       "event": "key",
       "key": "Tab",
       "focus": {
@@ -370,7 +370,7 @@
       }
     },
     {
-      "t": 20.25,
+      "t": 20.08,
       "event": "key",
       "key": "Tab",
       "focus": {
@@ -381,7 +381,7 @@
       }
     },
     {
-      "t": 20.63,
+      "t": 20.46,
       "event": "key",
       "key": "Tab",
       "focus": {
@@ -392,7 +392,7 @@
       }
     },
     {
-      "t": 21.02,
+      "t": 20.85,
       "event": "key",
       "key": "Tab",
       "focus": {
@@ -403,7 +403,7 @@
       }
     },
     {
-      "t": 21.41,
+      "t": 21.23,
       "event": "key",
       "key": "Tab",
       "focus": {
@@ -414,7 +414,7 @@
       }
     },
     {
-      "t": 21.8,
+      "t": 21.62,
       "event": "key",
       "key": "Tab",
       "focus": {
@@ -425,7 +425,7 @@
       }
     },
     {
-      "t": 22.18,
+      "t": 22.01,
       "event": "key",
       "key": "Tab",
       "focus": {
@@ -436,7 +436,7 @@
       }
     },
     {
-      "t": 22.57,
+      "t": 22.39,
       "event": "key",
       "key": "Tab",
       "focus": {
@@ -447,7 +447,7 @@
       }
     },
     {
-      "t": 22.95,
+      "t": 22.77,
       "event": "key",
       "key": "Tab",
       "focus": {
@@ -458,7 +458,7 @@
       }
     },
     {
-      "t": 23.34,
+      "t": 23.16,
       "event": "key",
       "key": "Tab",
       "focus": {
@@ -469,7 +469,7 @@
       }
     },
     {
-      "t": 23.73,
+      "t": 23.54,
       "event": "key",
       "key": "Tab",
       "focus": {
@@ -480,7 +480,7 @@
       }
     },
     {
-      "t": 24.11,
+      "t": 23.93,
       "event": "key",
       "key": "Tab",
       "focus": {
@@ -491,7 +491,7 @@
       }
     },
     {
-      "t": 24.5,
+      "t": 24.32,
       "event": "key",
       "key": "Tab",
       "focus": {
@@ -502,7 +502,7 @@
       }
     },
     {
-      "t": 24.88,
+      "t": 24.7,
       "event": "key",
       "key": "Tab",
       "focus": {
@@ -513,7 +513,7 @@
       }
     },
     {
-      "t": 25.27,
+      "t": 25.09,
       "event": "key",
       "key": "Tab",
       "focus": {
@@ -524,7 +524,7 @@
       }
     },
     {
-      "t": 25.66,
+      "t": 25.47,
       "event": "key",
       "key": "Tab",
       "focus": {
@@ -535,7 +535,7 @@
       }
     },
     {
-      "t": 26.04,
+      "t": 25.86,
       "event": "key",
       "key": "Tab",
       "focus": {
@@ -546,7 +546,7 @@
       }
     },
     {
-      "t": 26.43,
+      "t": 26.24,
       "event": "key",
       "key": "Tab",
       "focus": {
@@ -557,7 +557,7 @@
       }
     },
     {
-      "t": 27.93,
+      "t": 27.75,
       "event": "key",
       "key": "Enter",
       "focus": {
@@ -568,7 +568,7 @@
       }
     },
     {
-      "t": 28.33,
+      "t": 28.14,
       "event": "key",
       "key": "Tab",
       "focus": {
@@ -579,7 +579,7 @@
       }
     },
     {
-      "t": 29.4,
+      "t": 29.2,
       "event": "type",
       "text": "Layla",
       "focus": {
@@ -590,7 +590,7 @@
       }
     },
     {
-      "t": 29.79,
+      "t": 29.59,
       "event": "key",
       "key": "Tab",
       "focus": {
@@ -601,7 +601,7 @@
       }
     },
     {
-      "t": 30.97,
+      "t": 30.77,
       "event": "type",
       "text": "Hassan",
       "focus": {
@@ -612,7 +612,7 @@
       }
     },
     {
-      "t": 31.36,
+      "t": 31.16,
       "event": "key",
       "key": "Tab",
       "focus": {
@@ -623,7 +623,7 @@
       }
     },
     {
-      "t": 35.02,
+      "t": 34.81,
       "event": "type",
       "text": "layla.hassan@example.invalid",
       "focus": {
@@ -634,7 +634,7 @@
       }
     },
     {
-      "t": 35.41,
+      "t": 35.19,
       "event": "key",
       "key": "Tab",
       "focus": {
@@ -645,7 +645,7 @@
       }
     },
     {
-      "t": 37.04,
+      "t": 36.83,
       "event": "type",
       "text": "0551234567",
       "focus": {
@@ -656,7 +656,7 @@
       }
     },
     {
-      "t": 37.43,
+      "t": 37.22,
       "event": "key",
       "key": "Tab",
       "focus": {
@@ -667,7 +667,7 @@
       }
     },
     {
-      "t": 37.82,
+      "t": 37.6,
       "event": "key",
       "key": "Tab",
       "focus": {
@@ -678,7 +678,7 @@
       }
     },
     {
-      "t": 38.21,
+      "t": 37.99,
       "event": "key",
       "key": "Tab",
       "focus": {
@@ -689,7 +689,7 @@
       }
     },
     {
-      "t": 38.6,
+      "t": 38.37,
       "event": "key",
       "key": "Tab",
       "focus": {
@@ -700,7 +700,7 @@
       }
     },
     {
-      "t": 38.98,
+      "t": 38.76,
       "event": "key",
       "key": "Tab",
       "focus": {
@@ -711,7 +711,7 @@
       }
     },
     {
-      "t": 39.37,
+      "t": 39.14,
       "event": "key",
       "key": "Tab",
       "focus": {
@@ -722,7 +722,7 @@
       }
     },
     {
-      "t": 39.76,
+      "t": 39.53,
       "event": "key",
       "key": "Tab",
       "focus": {
@@ -733,7 +733,7 @@
       }
     },
     {
-      "t": 41.57,
+      "t": 41.34,
       "event": "key",
       "key": "Enter",
       "focus": {
@@ -744,11 +744,11 @@
       }
     },
     {
-      "t": 41.57,
+      "t": 41.34,
       "event": "confirm-step"
     },
     {
-      "t": 41.96,
+      "t": 41.73,
       "event": "key",
       "key": "Tab",
       "focus": {
@@ -759,7 +759,7 @@
       }
     },
     {
-      "t": 42.34,
+      "t": 42.12,
       "event": "key",
       "key": "Tab",
       "focus": {
@@ -770,7 +770,7 @@
       }
     },
     {
-      "t": 42.85,
+      "t": 42.63,
       "event": "key",
       "key": "Enter",
       "focus": {
@@ -781,21 +781,21 @@
       }
     },
     {
-      "t": 46.36,
+      "t": 46.13,
       "event": "confirmation",
-      "url": "http://127.0.0.1:8080/index.php/booking_confirmation/of/w0DN9BMCjluY",
-      "hash": "w0DN9BMCjluY"
+      "url": "http://127.0.0.1:8080/index.php/booking_confirmation/of/NeOP1SZIGsAL",
+      "hash": "NeOP1SZIGsAL"
     },
     {
-      "t": 47.64,
+      "t": 47.42,
       "event": "rows-command"
     },
     {
-      "t": 60.5,
+      "t": 60.25,
       "event": "reopened"
     },
     {
-      "t": 61.11,
+      "t": 60.86,
       "event": "key",
       "key": "Tab",
       "focus": {
@@ -806,7 +806,7 @@
       }
     },
     {
-      "t": 61.72,
+      "t": 61.47,
       "event": "key",
       "key": "Tab",
       "focus": {
@@ -817,7 +817,7 @@
       }
     },
     {
-      "t": 62.33,
+      "t": 62.08,
       "event": "key",
       "key": "Tab",
       "focus": {
@@ -828,7 +828,7 @@
       }
     },
     {
-      "t": 62.93,
+      "t": 62.68,
       "event": "key",
       "key": "Tab",
       "focus": {
@@ -839,7 +839,7 @@
       }
     },
     {
-      "t": 65.46,
+      "t": 65.19,
       "event": "key",
       "key": "Enter",
       "focus": {
@@ -850,13 +850,13 @@
       }
     },
     {
-      "t": 65.46,
+      "t": 65.19,
       "event": "reopened-date",
       "value": "09/11/2026",
       "typed": "09/11/2026"
     },
     {
-      "t": 69.46,
+      "t": 69.2,
       "event": "end"
     }
   ]
