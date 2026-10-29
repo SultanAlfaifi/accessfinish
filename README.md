@@ -16,7 +16,7 @@ A repair agent on **NVIDIA Nemotron 3 Super** (served by **Nebius Token Factory*
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 
 <a href="https://youtu.be/XztxzjYYlO0"><img src="web/media/film-poster.jpg" width="820" alt="Watch the 2-minute screen recording on YouTube"></a>
-<br><sub>A screen recording of the project working: a live Nemotron run, verified, then the patched app booked with the keyboard. No YouTube? <a href="media/accessfinish-live-demo.mp4">Watch the MP4 in the repository (9 MB)</a></sub>
+<br><sub>A screen recording of the project working: a live Nemotron run, verified, then the patched app booked with the keyboard. The run in the film (29 Oct) is one of five takes recorded for it, outside the 54 published runs; <a href="media/live-film/README.md">every take</a>. No YouTube? <a href="media/accessfinish-live-demo.mp4?raw=true">Download the MP4 (about 9 MB)</a></sub>
 
 | **0 / 77** | **2 / 10** | **27 / 27** | **$6.38** |
 | :---: | :---: | :---: | :---: |
@@ -251,7 +251,7 @@ Only the booking journey exists today; a second app or journey has not been buil
 
 **In a browser, no install:** open the [live page](https://sultalfaifi.com/accessfinish/). It replays a recorded live run. Click any step to see the verifier's evidence, Nemotron's searches, diagnosis and diff, and the proof card with a downloadable patch.
 
-**Run the agent yourself.** This needs **Node.js 22+** and **Docker** (Linux engine), with no npm dependencies on the host:
+**Run the agent yourself.** This needs **Node.js 22+** and **Docker** (Linux engine), with no npm dependencies on the host. `git clone --depth 1 https://github.com/SultanAlfaifi/accessfinish` skips the history's earlier film renders, a much smaller download.
 
 ```sh
 npm run demo:setup                            # build the pinned sandbox images (several GB, once)
@@ -278,7 +278,7 @@ lib/                       cases, edit validation, model client, Docker helpers,
 integration/portable/      sandbox images, browser workers, outcome evaluator, pinned Easy!Appointments (GPL-3.0)
 scripts/agent.cjs          run the agent from the command line (--case, --publish, --recorded-model)
 scripts/                   evidence index and checks, CI replays, the film pipelines (scripts/film/ records the screen)
-web/                       the replay page and the evidence page (docs/ is the GitHub Pages copy)
+web/                       the replay page and the evidence page (docs/ is the GitHub Pages copy: npm run build:pages)
 evidence/                  every live run and earlier trial, raw; start at evidence/README.md
 media/                     the demo films (screen recording and generated), their narration, takes and shots, README images
 examples/                  the PR comment AccessFinish would post as a merge gate (rendered from a recorded run)

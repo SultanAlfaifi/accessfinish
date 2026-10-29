@@ -15,6 +15,7 @@
     "replay": "node scripts/replay-preview.cjs",
     "check:records": "node scripts/check-trials.cjs",
     "check:phone-model": "node scripts/check-phone-model.cjs",
-    "check:evidence": "node scripts/check-evidence.cjs"
+    "check:evidence": "node scripts/check-evidence.cjs",
+    "build:pages": "node scripts/finalize-source.cjs"
   }
 }
