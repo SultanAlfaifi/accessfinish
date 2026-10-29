@@ -1,0 +1,148 @@
+name: Film recording
+# Screen-records AccessFinish on fresh runners: a visible Chromium on a virtual 1920x1080 desktop drives
+# the original app with the keyboard, presses Run live on the local page (Nemotron on Nebius Token
+# Factory, verified in the sandbox), then books on the patched app and reads the saved row.
+# Triggered manually, or by a push whose message contains [film] (optionally "takes=N" and
+# "scenes=before,live,after"). Each take is a separate live run; the publish job commits the
+# recording of the best take and the traces of all of them.
+on:
+  workflow_dispatch:
+    inputs:
+      takes:
+        description: 'Live runs to record in parallel (1 to 5).'
+        required: false
+        default: '5'
+      scenes:
+        description: 'Scenes to record, comma-separated: before, live, after.'
+        required: false
+        default: 'before,live,after'
+  push:
+    branches: ['claude/**', dev]
+permissions:
+  contents: write
+  actions: read
+concurrency:
+  group: film-${{ github.ref_name }}
+  cancel-in-progress: false
+jobs:
+  plan:
+    if: github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[film]')
+    runs-on: ubuntu-latest
+    outputs:
+      takes: ${{ steps.plan.outputs.takes }}
+      scenes: ${{ steps.plan.outputs.scenes }}
+    steps:
+      - id: plan
+        env:
+          MESSAGE: ${{ github.event.head_commit.message }}
+          TAKES: ${{ inputs.takes }}
+          SCENES: ${{ inputs.scenes }}
+        run: |
+          takes=${TAKES:-$(grep -o 'takes=[0-9]*' <<<"$MESSAGE" | head -1 | cut -d= -f2)}; takes=${takes:-5}
+          scenes=${SCENES:-$(grep -o 'scenes=[a-z,]*' <<<"$MESSAGE" | head -1 | cut -d= -f2)}; scenes=${scenes:-before,live,after}
+          [[ "$takes" =~ ^[1-5]$ ]] || { echo "takes must be 1 to 5"; exit 1; }
+          [[ "$scenes" =~ ^(before|live|after)(,(before|live|after))*$ ]] || { echo "scenes must list before, live, after"; exit 1; }
+          echo "takes=$(seq -s, 1 "$takes" | sed 's/^/[/;s/$/]/')" >> "$GITHUB_OUTPUT"
+          echo "scenes=$scenes" >> "$GITHUB_OUTPUT"; echo "takes=$takes scenes=$scenes"
+  record:
+    needs: plan
+    strategy:
+      fail-fast: false
+      matrix:
+        take: ${{ fromJSON(needs.plan.outputs.takes) }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 150
+    env:
+      AF_RUNTIME_DIR: .runtime
+      AF_SCENARIO_DATE: '2026-11-09'
+      NEBIUS_API_KEY: ${{ secrets.NEBIUS_API_KEY }}
+      PLAYWRIGHT_MODULE: /tmp/pw/node_modules/playwright
+      OUT: film-take-${{ matrix.take }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 22
+      - name: Desktop, screen capture and a visible browser
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends xvfb openbox xdotool xterm x11-xserver-utils imagemagick ffmpeg fonts-inter fonts-liberation fonts-dejavu-core
+          mkdir -p ~/.config/fontconfig
+          printf '%s\n' '<?xml version="1.0"?><!DOCTYPE fontconfig SYSTEM "fonts.dtd"><fontconfig>' \
+            '<alias><family>sans-serif</family><prefer><family>Inter</family></prefer></alias>' \
+            '<alias><family>system-ui</family><prefer><family>Inter</family></prefer></alias></fontconfig>' > ~/.config/fontconfig/fonts.conf
+          npm install --prefix /tmp/pw --no-audit --no-fund playwright@1.62.1
+          (cd /tmp/pw && npx playwright install --with-deps chromium)
+      - name: Build the isolated sandbox
+        run: npm run demo:setup
+      - name: Scene · the original app, keyboard only
+        if: contains(needs.plan.outputs.scenes, 'before')
+        continue-on-error: true
+        run: |
+          node scripts/film/serve-app.cjs --original
+          node scripts/film/shoot.cjs --scene before --xvfb --out "$OUT"
+          node scripts/film/serve-app.cjs --stop
+      - name: Scene · Run live (Nemotron on Nebius Token Factory)
+        if: contains(needs.plan.outputs.scenes, 'live')
+        continue-on-error: true
+        run: |
+          test -n "$NEBIUS_API_KEY" || { echo "Add the NEBIUS_API_KEY repository secret."; exit 1; }
+          node scripts/film/shoot.cjs --scene live --xvfb --out "$OUT"
+      - name: Scene · the patched app, keyboard only, saved row and reopen
+        if: contains(needs.plan.outputs.scenes, 'after')
+        continue-on-error: true
+        run: |
+          # The live run's accepted patch, or the patch of the recorded verified run when this take has none.
+          mkdir -p "$OUT"; trace=evidence/agent-runs/agent-2c87e16a520f678b45cbbbeb.json
+          if node -e 'process.exit(require("./" + process.argv[1]).state === "verified" ? 0 : 1)' "$OUT/trace.json" 2>/dev/null; then trace="$OUT/trace.json"; fi
+          echo "after_patch_from=$trace" | tee "$OUT/after-source.txt"
+          node scripts/film/serve-app.cjs --trace "$trace"
+          node scripts/film/shoot.cjs --scene after --xvfb --out "$OUT"
+          node scripts/film/serve-app.cjs --stop
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        if: always()
+        with:
+          name: film-take-${{ matrix.take }}
+          path: film-take-${{ matrix.take }}
+          retention-days: 14
+  publish:
+    needs: [plan, record]
+    if: always() && needs.record.result != 'skipped'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Download the takes
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh run download "$GITHUB_RUN_ID" --repo "$GITHUB_REPOSITORY" --pattern 'film-take-*' --dir takes
+      - name: Commit the best take and every take's trace
+        env:
+          SCENES: ${{ needs.plan.outputs.scenes }}
+        run: |
+          node -e '
+            const fs = require("fs"), path = require("path"), dir = "takes", out = "media/live-film";
+            const takes = fs.readdirSync(dir).sort().map(name => {
+              const read = file => { try { return JSON.parse(fs.readFileSync(path.join(dir, name, file), "utf8")); } catch { return null; } };
+              const wanted = process.env.SCENES.split(","), trace = read("trace.json"), scenes = wanted.map(read);
+              const complete = scenes.every(scene => scene && !scene.error) && wanted.every(s => fs.existsSync(path.join(dir, name, s + ".mp4")));
+              return {name, trace, complete, verified: trace?.state === "verified", attempts: trace?.steps?.filter(s => s.kind === "verify").length ?? null};
+            });
+            const rank = take => (take.complete ? 0 : 100) + (take.verified ? take.attempts : 50);
+            const best = [...takes].sort((a, b) => rank(a) - rank(b))[0];
+            fs.mkdirSync(path.join(out, "takes"), {recursive: true});
+            for (const take of takes) {
+              const target = path.join(out, "takes", take.name); fs.mkdirSync(target, {recursive: true});
+              for (const file of fs.readdirSync(path.join(dir, take.name)))
+                if (!file.endsWith(".mp4") || take === best) fs.copyFileSync(path.join(dir, take.name, file), path.join(target, file));
+            }
+            const summary = {recorded_at_utc: new Date().toISOString(), commit: process.env.GITHUB_SHA, scenes: process.env.SCENES, chosen: best.name,
+              takes: takes.map(({name, complete, verified, attempts, trace}) => ({name, complete, verified, attempts, run_id: trace?.id ?? null,
+                state: trace?.state ?? null, estimated_cost_usd: trace?.estimated_cost_usd ?? null}))};
+            fs.writeFileSync(path.join(out, "takes.json"), JSON.stringify(summary, null, 2) + "\n");
+            console.log(JSON.stringify(summary, null, 2));'
+          git config user.name "accessfinish-agent"
+          git config user.email "accessfinish-agent@users.noreply.github.com"
+          git add media/live-film
+          git commit -m "Record the film takes from ${GITHUB_SHA::7}"
+          git pull --rebase origin "$GITHUB_REF_NAME"
+          git push origin "HEAD:$GITHUB_REF_NAME"
