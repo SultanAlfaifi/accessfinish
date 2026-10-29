@@ -2,8 +2,8 @@ name: Film recording
 # Screen-records AccessFinish on fresh runners: a visible Chromium on a virtual 1920x1080 desktop drives
 # the original app with the keyboard, presses Run live on the local page (Nemotron on Nebius Token
 # Factory, verified in the sandbox), then books on the patched app and reads the saved row.
-# Triggered manually, or by a push whose message contains [film] (optionally "takes=N" and
-# "scenes=before,live,after"). Each take is a separate live run; the publish job commits the
+# Triggered manually, or by a push whose message contains [film] or [film takes=N scenes=...] (as
+# in "[film takes=5 scenes=before,live,after]"). Each take is a separate live run; the publish job commits the
 # recording of the best take and the traces of all of them.
 on:
   workflow_dispatch:
@@ -26,7 +26,7 @@ concurrency:
   cancel-in-progress: false
 jobs:
   plan:
-    if: github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[film]')
+    if: github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[film')
     runs-on: ubuntu-latest
     outputs:
       takes: ${{ steps.plan.outputs.takes }}
