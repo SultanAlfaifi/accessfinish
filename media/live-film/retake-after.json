@@ -1,0 +1,17 @@
+{
+  "recorded_at_utc": "2026-10-29T14:14:32.091Z",
+  "commit": "5b53d336baf55cc05baf67771eecdae040449379",
+  "scenes": "after",
+  "chosen": "film-take-1",
+  "takes": [
+    {
+      "name": "film-take-1",
+      "complete": true,
+      "verified": false,
+      "attempts": null,
+      "run_id": null,
+      "state": null,
+      "estimated_cost_usd": null
+    }
+  ]
+}

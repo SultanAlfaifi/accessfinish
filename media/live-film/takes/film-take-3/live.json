@@ -1,0 +1,533 @@
+{
+  "scene": "live",
+  "date": "2026-11-09",
+  "customer": {
+    "first": "Layla",
+    "last": "Hassan",
+    "email": "layla.hassan@example.invalid",
+    "phone": "0551234567"
+  },
+  "recorded_at_utc": "2026-10-29T13:59:10.200Z",
+  "run_id": "agent-ddd7fa4a5775a2f9886d291a",
+  "state": "not_verified",
+  "verified": false,
+  "events": [
+    {
+      "t": 0,
+      "event": "recording",
+      "fps": 15
+    },
+    {
+      "t": 3.5,
+      "event": "server-terminal"
+    },
+    {
+      "t": 7.01,
+      "event": "page-hero"
+    },
+    {
+      "t": 9.43,
+      "event": "agent-panel"
+    },
+    {
+      "t": 12.58,
+      "event": "run-live",
+      "id": "agent-ddd7fa4a5775a2f9886d291a"
+    },
+    {
+      "t": 32.68,
+      "event": "peek",
+      "window": "docker ps"
+    },
+    {
+      "t": 39.28,
+      "event": "peek-end"
+    },
+    {
+      "t": 41.29,
+      "event": "step",
+      "index": 0,
+      "kind": "observe",
+      "attempt": null,
+      "verified": false,
+      "stage": null,
+      "headline": "Keyboard user got stuck at the date step: there is no date field to Tab to"
+    },
+    {
+      "t": 47.3,
+      "event": "step",
+      "index": 1,
+      "kind": "search",
+      "attempt": 1,
+      "verified": null,
+      "stage": null,
+      "headline": "providerOptionCount === 2"
+    },
+    {
+      "t": 53.3,
+      "event": "step",
+      "index": 2,
+      "kind": "read",
+      "attempt": 1,
+      "verified": null,
+      "stage": null,
+      "headline": "application/views/components/booking_time_step.php"
+    },
+    {
+      "t": 57.31,
+      "event": "step",
+      "index": 3,
+      "kind": "propose",
+      "attempt": 1,
+      "verified": null,
+      "stage": null,
+      "headline": "The date container div is not focusable via Tab, preventing keyboard users from reaching the date field."
+    },
+    {
+      "t": 65.38,
+      "event": "peek",
+      "window": "docker ps"
+    },
+    {
+      "t": 71.98,
+      "event": "peek-end"
+    },
+    {
+      "t": 86,
+      "event": "step",
+      "index": 4,
+      "kind": "verify",
+      "attempt": 1,
+      "verified": false,
+      "stage": "keyboard",
+      "headline": "Keyboard user got stuck at the date step: there is no date field to Tab to"
+    },
+    {
+      "t": 88,
+      "event": "step",
+      "index": 5,
+      "kind": "search",
+      "attempt": 2,
+      "verified": null,
+      "stage": null,
+      "headline": "initializeDatePicker"
+    },
+    {
+      "t": 90,
+      "event": "step",
+      "index": 6,
+      "kind": "read",
+      "attempt": 2,
+      "verified": null,
+      "stage": null,
+      "headline": "assets/js/utils/ui.js"
+    },
+    {
+      "t": 98.01,
+      "event": "step",
+      "index": 7,
+      "kind": "propose",
+      "attempt": 2,
+      "verified": null,
+      "stage": null,
+      "headline": "The date container is a div that flatpickr does not make focusable via Tab; changing it to an input field makes it reachable by keyboard navigation."
+    },
+    {
+      "t": 144.07,
+      "event": "step",
+      "index": 8,
+      "kind": "verify",
+      "attempt": 2,
+      "verified": false,
+      "stage": "outcome",
+      "headline": "Confirmation shown, but saved for 2026-11-01 09:00 instead of 2026-11-09 09:00; page code changed the typed date to 01/11/2026"
+    },
+    {
+      "t": 150.08,
+      "event": "step",
+      "index": 9,
+      "kind": "search",
+      "attempt": 3,
+      "verified": null,
+      "stage": null,
+      "headline": "applyUnavailableDates"
+    },
+    {
+      "t": 152.08,
+      "event": "step",
+      "index": 10,
+      "kind": "read",
+      "attempt": 3,
+      "verified": null,
+      "stage": null,
+      "headline": "assets/js/http/booking_http_client.js"
+    },
+    {
+      "t": 178.11,
+      "event": "step",
+      "index": 11,
+      "kind": "search",
+      "attempt": 3,
+      "verified": null,
+      "stage": null,
+      "headline": "onChange:.*selectedDates"
+    },
+    {
+      "t": 178.11,
+      "event": "step",
+      "index": 12,
+      "kind": "read",
+      "attempt": 3,
+      "verified": null,
+      "stage": null,
+      "headline": "assets/js/pages/booking.js"
+    },
+    {
+      "t": 204.13,
+      "event": "step",
+      "index": 13,
+      "kind": "search",
+      "attempt": 3,
+      "verified": null,
+      "stage": null,
+      "headline": "document\\.addEventListener"
+    },
+    {
+      "t": 214.15,
+      "event": "step",
+      "index": 14,
+      "kind": "search",
+      "attempt": 3,
+      "verified": null,
+      "stage": null,
+      "headline": "function applyUnavailableDates"
+    },
+    {
+      "t": 240.18,
+      "event": "step",
+      "index": 15,
+      "kind": "search",
+      "attempt": 3,
+      "verified": null,
+      "stage": null,
+      "headline": "onMonthChange: \\(selectedDates, dateStr, instance\\) => {"
+    },
+    {
+      "t": 288.24,
+      "event": "step",
+      "index": 16,
+      "kind": "search",
+      "attempt": 3,
+      "verified": null,
+      "stage": null,
+      "headline": "inline: true,"
+    },
+    {
+      "t": 296.25,
+      "event": "step",
+      "index": 17,
+      "kind": "search",
+      "attempt": 3,
+      "verified": null,
+      "stage": null,
+      "headline": "function applyUnavailableDates"
+    },
+    {
+      "t": 342.29,
+      "event": "step",
+      "index": 18,
+      "kind": "propose",
+      "attempt": 3,
+      "verified": null,
+      "stage": null,
+      "headline": "The date container was changed to an input to make it focusable, but the onMonthChange handler still overrides the user-typed date with the first available day of the month after a 500ms delay. We prevent this by clearing the monthTimeout and ignoring the next onMonthChange trigger after user input, while also updating unavailable dates for the selected month in the onChange handler."
+    },
+    {
+      "t": 350.31,
+      "event": "step",
+      "index": 19,
+      "kind": "verify",
+      "attempt": 3,
+      "verified": false,
+      "stage": "build",
+      "headline": "Build failed: SyntaxError: /app/assets/js/pages/booking.js: Unexpected token, expected \",\" (167:12)"
+    },
+    {
+      "t": 352.31,
+      "event": "step",
+      "index": 20,
+      "kind": "search",
+      "attempt": 4,
+      "verified": null,
+      "stage": null,
+      "headline": "onChange: \\(selectedDates\\) => {"
+    },
+    {
+      "t": 352.31,
+      "event": "step",
+      "index": 21,
+      "kind": "read",
+      "attempt": 4,
+      "verified": null,
+      "stage": null,
+      "headline": "assets/js/pages/booking.js"
+    },
+    {
+      "t": 364.32,
+      "event": "step",
+      "index": 22,
+      "kind": "propose",
+      "attempt": 4,
+      "verified": null,
+      "stage": null,
+      "headline": "The date container was changed to an input to make it focusable, but the onMonthChange handler still overrides the user-typed date with the first available day of the month after a 500ms delay. We prevent this by clearing the monthTimeout and ignoring the next onMonthChange trigger after user input, while also updating unavailable dates for the selected month in the onChange handler."
+    },
+    {
+      "t": 374.34,
+      "event": "step",
+      "index": 23,
+      "kind": "verify",
+      "attempt": 4,
+      "verified": false,
+      "stage": "build",
+      "headline": "Build failed: SyntaxError: /app/assets/js/pages/booking.js: Unexpected token, expected \",\" (167:12)"
+    },
+    {
+      "t": 410.39,
+      "event": "step",
+      "index": 24,
+      "kind": "propose",
+      "attempt": 5,
+      "verified": null,
+      "stage": null,
+      "headline": "The date container was changed to an input to make it focusable, but the onMonthChange and onYearChange handlers still override the user‑typed date with the first available day of the month after a 500 ms delay. We prevent this by tracking user‑initiated changes and skipping the date‑set step in those handlers."
+    },
+    {
+      "t": 454.48,
+      "event": "step",
+      "index": 25,
+      "kind": "verify",
+      "attempt": 5,
+      "verified": false,
+      "stage": "outcome",
+      "headline": "Confirmation shown, but saved for 2026-11-01 09:00 instead of 2026-11-09 09:00; page code changed the typed date to 01/11/2026"
+    },
+    {
+      "t": 466.5,
+      "event": "step",
+      "index": 26,
+      "kind": "search",
+      "attempt": 6,
+      "verified": null,
+      "stage": null,
+      "headline": "let monthTimeout;"
+    },
+    {
+      "t": 502.56,
+      "event": "step",
+      "index": 27,
+      "kind": "propose",
+      "attempt": 6,
+      "verified": null,
+      "stage": null,
+      "headline": "The date container was changed to an input to make it focusable, but the onMonthChange and onYearChange handlers still override the user‑typed date with the first available day of the month after a 500 ms delay. We prevent this by tracking user‑initiated changes and temporarily overriding the applyUnavailableDates function to ignore the setDate flag when the user has typed a date."
+    },
+    {
+      "t": 548.65,
+      "event": "step",
+      "index": 28,
+      "kind": "verify",
+      "attempt": 6,
+      "verified": false,
+      "stage": "outcome",
+      "headline": "Confirmation shown, but saved for 2026-11-01 09:00 instead of 2026-11-09 09:00; page code changed the typed date to 01/11/2026"
+    },
+    {
+      "t": 574.69,
+      "event": "step",
+      "index": 29,
+      "kind": "search",
+      "attempt": 7,
+      "verified": null,
+      "stage": null,
+      "headline": "function getUnavailableDates\\(providerId, serviceId, selectedDateString, monthChangeStep"
+    },
+    {
+      "t": 576.7,
+      "event": "step",
+      "index": 30,
+      "kind": "read",
+      "attempt": 7,
+      "verified": null,
+      "stage": null,
+      "headline": "assets/js/http/booking_http_client.js"
+    },
+    {
+      "t": 616.77,
+      "event": "step",
+      "index": 31,
+      "kind": "propose",
+      "attempt": 7,
+      "verified": null,
+      "stage": null,
+      "headline": "The date container being a div prevented keyboard focus; changing it to an input fixes focusability. Additionally, the inline: true option causes the date picker to override the user-typed date when the month changes due to typing; removing inline: true prevents this override while preserving keyboard navigation."
+    },
+    {
+      "t": 658.85,
+      "event": "step",
+      "index": 32,
+      "kind": "verify",
+      "attempt": 7,
+      "verified": false,
+      "stage": "outcome",
+      "headline": "Confirmation shown, but saved for 2026-11-01 09:00 instead of 2026-11-09 09:00; page code changed the typed date to 01/11/2026"
+    },
+    {
+      "t": 682.9,
+      "event": "step",
+      "index": 33,
+      "kind": "propose",
+      "attempt": 8,
+      "verified": null,
+      "stage": null,
+      "headline": "The date container was changed to an input to make it focusable, but when the user types a date, the flatpickr's onMonthChange handler (triggered by the date change) calls getUnavailableDates which forcibly sets the date to the first available day of the month, overriding the user's input. We prevent this by overriding the exposed getUnavailableDates method to restore the user-typed date after the call."
+    },
+    {
+      "t": 682.9,
+      "event": "step",
+      "index": 34,
+      "kind": "verify",
+      "attempt": 8,
+      "verified": false,
+      "stage": "apply",
+      "headline": "Rejected before execution: The replacement anchor must match exactly once."
+    },
+    {
+      "t": 690.91,
+      "event": "step",
+      "index": 35,
+      "kind": "search",
+      "attempt": 9,
+      "verified": null,
+      "stage": null,
+      "headline": "App\\.Utils\\.UI\\.setDateTimePickerValue\\(\\$selectDate, new Date\\(\\)\\);"
+    },
+    {
+      "t": 698.93,
+      "event": "step",
+      "index": 36,
+      "kind": "propose",
+      "attempt": 9,
+      "verified": null,
+      "stage": null,
+      "headline": "The date container was changed to an input to make it focusable, but when the user types a date, the flatpickr's onMonthChange/onYearChange handlers (triggered by the date change) call getUnavailableDates which forcibly sets the date to the first available day of the month, overriding the user's input. We prevent this by tracking user‑initiated date changes and restoring the typed date after getUnavailableDates runs."
+    },
+    {
+      "t": 741.03,
+      "event": "step",
+      "index": 37,
+      "kind": "verify",
+      "attempt": 9,
+      "verified": false,
+      "stage": "outcome",
+      "headline": "Confirmation shown, but saved for 2026-11-01 09:00 instead of 2026-11-09 09:00; page code changed the typed date to 01/11/2026"
+    },
+    {
+      "t": 753.06,
+      "event": "step",
+      "index": 38,
+      "kind": "search",
+      "attempt": 10,
+      "verified": null,
+      "stage": null,
+      "headline": "let monthTimeout;"
+    },
+    {
+      "t": 777.12,
+      "event": "step",
+      "index": 39,
+      "kind": "propose",
+      "attempt": 10,
+      "verified": null,
+      "stage": null,
+      "headline": "The date container was changed to an input to make it focusable, but when the user types a date, the flatpickr's onMonthChange/onYearChange handlers (triggered by the date change) initiate an AJAX request to getUnavailableDates, which upon response calls applyUnavailableDates with setDate=true, overriding the user's date with the first available day of the month. We prevent this by overriding getUnavailableDates to restore the user's date after the AJAX response processes."
+    },
+    {
+      "t": 801.18,
+      "event": "step",
+      "index": 40,
+      "kind": "verify",
+      "attempt": 10,
+      "verified": false,
+      "stage": "keyboard",
+      "headline": "The keyboard journey crashed: keyboard_macro_step_not_advanced"
+    },
+    {
+      "t": 819.22,
+      "event": "step",
+      "index": 41,
+      "kind": "propose",
+      "attempt": 11,
+      "verified": null,
+      "stage": null,
+      "headline": "The date container was not focusable via Tab (div). Changing it to an input makes it reachable. However, when the user types a date, the flatpickr's onMonthChange/onYearChange handlers trigger getUnavailableDates which calls applyUnavailableDates with setDate=true, overriding the user's date with the first available day of the month. We prevent this by overriding applyUnavailableDates to ignore the setDate flag when the user has typed a date, and resetting the flag after the override."
+    },
+    {
+      "t": 863.35,
+      "event": "step",
+      "index": 42,
+      "kind": "verify",
+      "attempt": 11,
+      "verified": false,
+      "stage": "outcome",
+      "headline": "Confirmation shown, but saved for 2026-11-01 09:00 instead of 2026-11-09 09:00; page code changed the typed date to 01/11/2026"
+    },
+    {
+      "t": 897.44,
+      "event": "step",
+      "index": 43,
+      "kind": "propose",
+      "attempt": 12,
+      "verified": null,
+      "stage": null,
+      "headline": "The date container was not focusable via Tab (div). Changing it to an input makes it reachable. However, when the user types a date, the flatpickr's onMonthChange/onYearChange handlers (triggered by the date change) call getUnavailableDates which forcibly sets the date to the first available day of the month, overriding the user's input. We prevent this by setting a flag when the user changes the date and having the onMonthChange/onYearChange handlers skip their logic when the flag is set."
+    },
+    {
+      "t": 941.56,
+      "event": "step",
+      "index": 44,
+      "kind": "verify",
+      "attempt": 12,
+      "verified": false,
+      "stage": "outcome",
+      "headline": "Confirmation shown, but saved for 2026-11-01 09:00 instead of 2026-11-09 09:00; page code changed the typed date to 01/11/2026"
+    },
+    {
+      "t": 941.56,
+      "event": "run-finished",
+      "state": "not_verified",
+      "attempts": 12,
+      "cost_usd": 0.3942846
+    },
+    {
+      "t": 947.4,
+      "event": "show-step",
+      "index": 8,
+      "label": "wrong-date"
+    },
+    {
+      "t": 956.24,
+      "event": "show-step",
+      "index": 44,
+      "label": "final"
+    },
+    {
+      "t": 970.45,
+      "event": "proof-scrolled"
+    },
+    {
+      "t": 972.95,
+      "event": "end"
+    }
+  ]
+}

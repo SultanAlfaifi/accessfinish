@@ -1,0 +1,259 @@
+{
+  "scene": "live",
+  "date": "2026-11-09",
+  "customer": {
+    "first": "Layla",
+    "last": "Hassan",
+    "email": "layla.hassan@example.invalid",
+    "phone": "0551234567"
+  },
+  "recorded_at_utc": "2026-10-29T13:50:46.805Z",
+  "run_id": "agent-31b12339b788b3733653fe84",
+  "state": "verified",
+  "verified": true,
+  "events": [
+    {
+      "t": 0,
+      "event": "recording",
+      "fps": 15
+    },
+    {
+      "t": 3.5,
+      "event": "server-terminal"
+    },
+    {
+      "t": 6.99,
+      "event": "page-hero"
+    },
+    {
+      "t": 9.39,
+      "event": "agent-panel"
+    },
+    {
+      "t": 12.52,
+      "event": "run-live",
+      "id": "agent-31b12339b788b3733653fe84"
+    },
+    {
+      "t": 32.62,
+      "event": "peek",
+      "window": "docker ps"
+    },
+    {
+      "t": 39.21,
+      "event": "peek-end"
+    },
+    {
+      "t": 43.22,
+      "event": "step",
+      "index": 0,
+      "kind": "observe",
+      "attempt": null,
+      "verified": false,
+      "stage": null,
+      "headline": "Keyboard user got stuck at the date step: there is no date field to Tab to"
+    },
+    {
+      "t": 47.22,
+      "event": "step",
+      "index": 1,
+      "kind": "propose",
+      "attempt": 1,
+      "verified": null,
+      "stage": null,
+      "headline": "The date picker container lacks a tabindex, making it unfocusable for keyboard navigation, so the verifier cannot focus the date field and type the date."
+    },
+    {
+      "t": 65.31,
+      "event": "peek",
+      "window": "docker ps"
+    },
+    {
+      "t": 71.9,
+      "event": "peek-end"
+    },
+    {
+      "t": 73.9,
+      "event": "step",
+      "index": 2,
+      "kind": "verify",
+      "attempt": 1,
+      "verified": false,
+      "stage": "keyboard",
+      "headline": "Keyboard user got stuck at the date step: there is no date field to Tab to"
+    },
+    {
+      "t": 75.9,
+      "event": "step",
+      "index": 3,
+      "kind": "search",
+      "attempt": 2,
+      "verified": null,
+      "stage": null,
+      "headline": "initializeDatePicker"
+    },
+    {
+      "t": 77.91,
+      "event": "step",
+      "index": 4,
+      "kind": "read",
+      "attempt": 2,
+      "verified": null,
+      "stage": null,
+      "headline": "assets/js/utils/ui.js"
+    },
+    {
+      "t": 81.91,
+      "event": "step",
+      "index": 5,
+      "kind": "propose",
+      "attempt": 2,
+      "verified": null,
+      "stage": null,
+      "headline": "The date picker container is a div that flatpickr turns into a non-focusable element; changing it to an input makes it keyboard-focusable and typable."
+    },
+    {
+      "t": 123.97,
+      "event": "step",
+      "index": 6,
+      "kind": "verify",
+      "attempt": 2,
+      "verified": false,
+      "stage": "outcome",
+      "headline": "Confirmation shown, but saved for 2026-11-01 09:00 instead of 2026-11-09 09:00; page code changed the typed date to 01/11/2026"
+    },
+    {
+      "t": 127.97,
+      "event": "step",
+      "index": 7,
+      "kind": "search",
+      "attempt": 3,
+      "verified": null,
+      "stage": null,
+      "headline": "applyUnavailableDates"
+    },
+    {
+      "t": 129.97,
+      "event": "step",
+      "index": 8,
+      "kind": "read",
+      "attempt": 3,
+      "verified": null,
+      "stage": null,
+      "headline": "assets/js/http/booking_http_client.js"
+    },
+    {
+      "t": 139.98,
+      "event": "step",
+      "index": 9,
+      "kind": "search",
+      "attempt": 3,
+      "verified": null,
+      "stage": null,
+      "headline": "function applyUnavailableDates"
+    },
+    {
+      "t": 176.02,
+      "event": "step",
+      "index": 10,
+      "kind": "propose",
+      "attempt": 3,
+      "verified": null,
+      "stage": null,
+      "headline": "The date picker's onMonthChange handler runs after a 500ms timeout when the month changes due to user input, causing the date to be overridden to the first available day of the month. Clearing this timeout on user input prevents the override while preserving month navigation updates."
+    },
+    {
+      "t": 204.05,
+      "event": "step",
+      "index": 11,
+      "kind": "verify",
+      "attempt": 3,
+      "verified": false,
+      "stage": "keyboard",
+      "headline": "Keyboard user got stuck at the date step: there is no date field to Tab to"
+    },
+    {
+      "t": 246.1,
+      "event": "step",
+      "index": 12,
+      "kind": "read",
+      "attempt": 4,
+      "verified": null,
+      "stage": null,
+      "headline": "assets/js/http/booking_http_client.js"
+    },
+    {
+      "t": 250.11,
+      "event": "step",
+      "index": 13,
+      "kind": "propose",
+      "attempt": 4,
+      "verified": null,
+      "stage": null,
+      "headline": "The date picker container needed to be an input for keyboard focus, and the onChange handler must clear the month-change timeout to prevent overriding the user-selected date with the first available day of the month."
+    },
+    {
+      "t": 296.17,
+      "event": "step",
+      "index": 14,
+      "kind": "verify",
+      "attempt": 4,
+      "verified": false,
+      "stage": "outcome",
+      "headline": "Saved for the right date, but reopening the booking showed 2026-10-29 instead of 2026-11-09"
+    },
+    {
+      "t": 322.2,
+      "event": "step",
+      "index": 15,
+      "kind": "propose",
+      "attempt": 5,
+      "verified": null,
+      "stage": null,
+      "headline": "In manage mode, clicking Next on step 1 overrides the appointment date with today's date, causing the reopened booking to show the wrong date. The fix is to skip setting the date to today and fetching unavailable hours when in manage mode."
+    },
+    {
+      "t": 380.29,
+      "event": "step",
+      "index": 16,
+      "kind": "verify",
+      "attempt": 5,
+      "verified": true,
+      "stage": "passed",
+      "headline": "Saved correctly, reopened in a fresh browser, regression checks passed"
+    },
+    {
+      "t": 380.29,
+      "event": "run-finished",
+      "state": "verified",
+      "attempts": 5,
+      "cost_usd": 0.0941241
+    },
+    {
+      "t": 386.11,
+      "event": "show-step",
+      "index": 6,
+      "label": "wrong-date"
+    },
+    {
+      "t": 394.93,
+      "event": "show-step",
+      "index": 14,
+      "label": "wrong-reopen"
+    },
+    {
+      "t": 403.75,
+      "event": "show-step",
+      "index": 16,
+      "label": "final"
+    },
+    {
+      "t": 417.78,
+      "event": "proof-scrolled"
+    },
+    {
+      "t": 420.29,
+      "event": "end"
+    }
+  ]
+}

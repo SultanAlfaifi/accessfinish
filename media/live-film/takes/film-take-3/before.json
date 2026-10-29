@@ -1,0 +1,353 @@
+{
+  "scene": "before",
+  "date": "2026-11-09",
+  "customer": {
+    "first": "Layla",
+    "last": "Hassan",
+    "email": "layla.hassan@example.invalid",
+    "phone": "0551234567"
+  },
+  "recorded_at_utc": "2026-10-29T13:42:49.993Z",
+  "calendar_reached": false,
+  "focus_trail": [
+    {
+      "id": "select-timezone",
+      "tag": "SELECT",
+      "className": "form-select mb-3",
+      "text": "UTC"
+    },
+    {
+      "id": "",
+      "tag": "BUTTON",
+      "className": "btn btn-outline-secondary w-100 shadow-none available-hour s",
+      "text": "2:15 pm"
+    },
+    {
+      "id": "",
+      "tag": "BUTTON",
+      "className": "btn btn-outline-secondary w-100 shadow-none available-hour",
+      "text": "2:30 pm"
+    },
+    {
+      "id": "button-back-2",
+      "tag": "BUTTON",
+      "className": "btn button-back btn-outline-secondary",
+      "text": "Back"
+    },
+    {
+      "id": "button-next-2",
+      "tag": "BUTTON",
+      "className": "btn button-next btn-dark",
+      "text": "Next"
+    },
+    {
+      "id": "",
+      "tag": "A",
+      "className": "",
+      "text": "Easy!Appointments"
+    },
+    {
+      "id": "",
+      "tag": "A",
+      "className": "backend-link badge bg-primary text-decoration-none px-2 d-in",
+      "text": "Login"
+    },
+    {
+      "id": "",
+      "tag": "BODY",
+      "className": "",
+      "text": "AccessFinish Synthetic Booking\nService │ Jane Doe\n1\n2\n3\n4\nAp"
+    },
+    {
+      "id": "select-timezone",
+      "tag": "SELECT",
+      "className": "form-select mb-3",
+      "text": "UTC"
+    },
+    {
+      "id": "",
+      "tag": "BUTTON",
+      "className": "btn btn-outline-secondary w-100 shadow-none available-hour s",
+      "text": "2:15 pm"
+    },
+    {
+      "id": "",
+      "tag": "BUTTON",
+      "className": "btn btn-outline-secondary w-100 shadow-none available-hour",
+      "text": "2:30 pm"
+    },
+    {
+      "id": "button-back-2",
+      "tag": "BUTTON",
+      "className": "btn button-back btn-outline-secondary",
+      "text": "Back"
+    },
+    {
+      "id": "button-next-2",
+      "tag": "BUTTON",
+      "className": "btn button-next btn-dark",
+      "text": "Next"
+    },
+    {
+      "id": "",
+      "tag": "A",
+      "className": "",
+      "text": "Easy!Appointments"
+    }
+  ],
+  "events": [
+    {
+      "t": 0,
+      "event": "recording",
+      "fps": 30
+    },
+    {
+      "t": 2.54,
+      "event": "booking-page"
+    },
+    {
+      "t": 3.21,
+      "event": "key",
+      "key": "Tab",
+      "focus": {
+        "id": "select-service",
+        "tag": "SELECT",
+        "className": "form-select mb-4",
+        "text": "Please Select"
+      }
+    },
+    {
+      "t": 3.52,
+      "event": "key",
+      "key": "Home",
+      "focus": {
+        "id": "select-service",
+        "tag": "SELECT",
+        "className": "form-select mb-4",
+        "text": "Please Select"
+      }
+    },
+    {
+      "t": 3.99,
+      "event": "key",
+      "key": "ArrowDown",
+      "focus": {
+        "id": "select-service",
+        "tag": "SELECT",
+        "className": "form-select mb-4",
+        "text": "Fixture Alternate"
+      }
+    },
+    {
+      "t": 4.45,
+      "event": "key",
+      "key": "ArrowDown",
+      "focus": {
+        "id": "select-service",
+        "tag": "SELECT",
+        "className": "form-select mb-4",
+        "text": "Service"
+      }
+    },
+    {
+      "t": 5.11,
+      "event": "key",
+      "key": "Tab",
+      "focus": {
+        "id": "select-provider",
+        "tag": "SELECT",
+        "className": "form-select mb-4",
+        "text": "Jane Doe"
+      }
+    },
+    {
+      "t": 5.76,
+      "event": "key",
+      "key": "Tab",
+      "focus": {
+        "id": "button-next-1",
+        "tag": "BUTTON",
+        "className": "btn button-next btn-dark",
+        "text": "Next"
+      }
+    },
+    {
+      "t": 7.38,
+      "event": "key",
+      "key": "Enter",
+      "focus": {
+        "id": "",
+        "tag": "BODY",
+        "className": "",
+        "text": "AccessFinish Synthetic Booking\nService │ Jane Doe\n1\n2\n3\n4\nAp"
+      }
+    },
+    {
+      "t": 7.38,
+      "event": "date-step"
+    },
+    {
+      "t": 8.19,
+      "event": "key",
+      "key": "Tab",
+      "focus": {
+        "id": "select-timezone",
+        "tag": "SELECT",
+        "className": "form-select mb-3",
+        "text": "UTC"
+      }
+    },
+    {
+      "t": 9,
+      "event": "key",
+      "key": "Tab",
+      "focus": {
+        "id": "",
+        "tag": "BUTTON",
+        "className": "btn btn-outline-secondary w-100 shadow-none available-hour s",
+        "text": "2:15 pm"
+      }
+    },
+    {
+      "t": 9.8,
+      "event": "key",
+      "key": "Tab",
+      "focus": {
+        "id": "",
+        "tag": "BUTTON",
+        "className": "btn btn-outline-secondary w-100 shadow-none available-hour",
+        "text": "2:30 pm"
+      }
+    },
+    {
+      "t": 10.61,
+      "event": "key",
+      "key": "Tab",
+      "focus": {
+        "id": "button-back-2",
+        "tag": "BUTTON",
+        "className": "btn button-back btn-outline-secondary",
+        "text": "Back"
+      }
+    },
+    {
+      "t": 11.42,
+      "event": "key",
+      "key": "Tab",
+      "focus": {
+        "id": "button-next-2",
+        "tag": "BUTTON",
+        "className": "btn button-next btn-dark",
+        "text": "Next"
+      }
+    },
+    {
+      "t": 12.23,
+      "event": "key",
+      "key": "Tab",
+      "focus": {
+        "id": "",
+        "tag": "A",
+        "className": "",
+        "text": "Easy!Appointments"
+      }
+    },
+    {
+      "t": 13.04,
+      "event": "key",
+      "key": "Tab",
+      "focus": {
+        "id": "",
+        "tag": "A",
+        "className": "backend-link badge bg-primary text-decoration-none px-2 d-in",
+        "text": "Login"
+      }
+    },
+    {
+      "t": 13.84,
+      "event": "key",
+      "key": "Tab",
+      "focus": {
+        "id": "",
+        "tag": "BODY",
+        "className": "",
+        "text": "AccessFinish Synthetic Booking\nService │ Jane Doe\n1\n2\n3\n4\nAp"
+      }
+    },
+    {
+      "t": 14.65,
+      "event": "key",
+      "key": "Tab",
+      "focus": {
+        "id": "select-timezone",
+        "tag": "SELECT",
+        "className": "form-select mb-3",
+        "text": "UTC"
+      }
+    },
+    {
+      "t": 15.46,
+      "event": "key",
+      "key": "Tab",
+      "focus": {
+        "id": "",
+        "tag": "BUTTON",
+        "className": "btn btn-outline-secondary w-100 shadow-none available-hour s",
+        "text": "2:15 pm"
+      }
+    },
+    {
+      "t": 16.27,
+      "event": "key",
+      "key": "Tab",
+      "focus": {
+        "id": "",
+        "tag": "BUTTON",
+        "className": "btn btn-outline-secondary w-100 shadow-none available-hour",
+        "text": "2:30 pm"
+      }
+    },
+    {
+      "t": 17.07,
+      "event": "key",
+      "key": "Tab",
+      "focus": {
+        "id": "button-back-2",
+        "tag": "BUTTON",
+        "className": "btn button-back btn-outline-secondary",
+        "text": "Back"
+      }
+    },
+    {
+      "t": 17.88,
+      "event": "key",
+      "key": "Tab",
+      "focus": {
+        "id": "button-next-2",
+        "tag": "BUTTON",
+        "className": "btn button-next btn-dark",
+        "text": "Next"
+      }
+    },
+    {
+      "t": 18.69,
+      "event": "key",
+      "key": "Tab",
+      "focus": {
+        "id": "",
+        "tag": "A",
+        "className": "",
+        "text": "Easy!Appointments"
+      }
+    },
+    {
+      "t": 18.69,
+      "event": "calendar-reached",
+      "reached": false
+    },
+    {
+      "t": 21.2,
+      "event": "end"
+    }
+  ]
+}
