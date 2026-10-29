@@ -1,0 +1,123 @@
+{
+  "model_id": "Qwen/Qwen3-TTS-12Hz-0.6B-CustomVoice",
+  "voice": "Aiden",
+  "language": "English",
+  "device": "cpu",
+  "model_load_seconds": 16.4,
+  "sample_rate": 24000,
+  "gap_seconds": 0.45,
+  "duration_seconds": 119.27,
+  "narration_file": "narration.wav",
+  "beats": [
+    {
+      "id": "intro",
+      "text": "This is a screen recording. A customer who uses only the keyboard is booking an appointment in Easy Appointments, a real open-source app.",
+      "spoken": "This is a screen recording. A customer who uses only the keyboard is booking an appointment in Easy Appointments, a real open-source app.",
+      "file": "beats/intro.wav",
+      "start_seconds": 0.0,
+      "end_seconds": 8.32,
+      "generation_seconds": 75.5,
+      "sha256": "d44b21c74f00ab57d0e388a9af18c311a80644e3fb6a81d48dd35eacec2d4836"
+    },
+    {
+      "id": "stuck",
+      "text": "On the date step, the customer presses Tab, again and again. Focus goes around the page, and even into the browser, but it never reaches the calendar.",
+      "spoken": "On the date step, the customer presses Tab, again and again. Focus goes around the page, and even into the browser, but it never reaches the calendar.",
+      "file": "beats/stuck.wav",
+      "start_seconds": 8.77,
+      "end_seconds": 19.81,
+      "generation_seconds": 102.8,
+      "sha256": "734559dde164faac3162e518c4299381154753c2a17773b063eb1269a5de3c05"
+    },
+    {
+      "id": "start",
+      "text": "So we start AccessFinish on this machine, and press Run live. NVIDIA Nemotron 3 Super, on Nebius Token Factory, gets the goal, the evidence and the code. Not the root cause.",
+      "spoken": "So we start AccessFinish on this machine, and press Run live. NVIDIA Nemo-tron 3 Super, on Nebius Token Factory, gets the goal, the evidence and the code. Not the root cause.",
+      "file": "beats/start.wav",
+      "start_seconds": 20.26,
+      "end_seconds": 33.86,
+      "generation_seconds": 115.1,
+      "sha256": "5fcce57d32f78708bfd8b2184e62913110fad0835245d92731713d2dd37a787e"
+    },
+    {
+      "id": "sandbox",
+      "text": "Every attempt runs in an offline sandbox: the app, its database and a real browser, each in its own container. On the original code the keyboard user is stuck, and Nemotron's first fix doesn't change that.",
+      "spoken": "Every attempt runs in an offline sandbox: the app, its database and a real browser, each in its own container. On the original code the keyboard user is stuck, and Nemo-tron's first fix doesn't change that.",
+      "file": "beats/sandbox.wav",
+      "start_seconds": 34.31,
+      "end_seconds": 47.83,
+      "generation_seconds": 115.4,
+      "sha256": "4a6f99faec48384a7f296114f8b0ebc2791c68e63c6fea9f84bdf63da85598f5"
+    },
+    {
+      "id": "wrong",
+      "text": "Attempt two makes the date reachable, and the page says booked. But the database saved November first, not the ninth. Rejected.",
+      "spoken": "Attempt two makes the date reachable, and the page says booked. But the database saved November first, not the ninth. Rejected.",
+      "file": "beats/wrong.wav",
+      "start_seconds": 48.28,
+      "end_seconds": 57.16,
+      "generation_seconds": 73.4,
+      "sha256": "0c458eb073f7b101dd232c687fcde4952cab0218a90231609cb5ef150379fddd"
+    },
+    {
+      "id": "today",
+      "text": "Nemotron searches the code and tries again. Attempt four saves the right date, but reopening the booking shows today. Rejected again.",
+      "spoken": "Nemo-tron searches the code and tries again. Attempt four saves the right date, but reopening the booking shows today. Rejected again.",
+      "file": "beats/today.wav",
+      "start_seconds": 57.61,
+      "end_seconds": 66.73,
+      "generation_seconds": 74.6,
+      "sha256": "5395f4fb45104052152f45c36b1d2d54157e33de750c20677487c4fc99e91e25"
+    },
+    {
+      "id": "verified",
+      "text": "Attempt five keeps attempt four's edits and stops the reset. Verified: saved right, reopened right, and the mouse path still works. Six minutes, and about nine cents of Nemotron.",
+      "spoken": "Attempt five keeps attempt four's edits and stops the reset. Verified: saved right, reopened right, and the mouse path still works. Six minutes, and about nine cents of Nemo-tron.",
+      "file": "beats/verified.wav",
+      "start_seconds": 67.18,
+      "end_seconds": 80.38,
+      "generation_seconds": 108.2,
+      "sha256": "626800515714c0f6878a659caa2fcb8747fcdd04caffaa62fa834a5e77510cfe"
+    },
+    {
+      "id": "book",
+      "text": "Now the patched app, with nothing but the keyboard. Tab reaches the new date field. Type the ninth of November, pick six a.m. UTC, which is nine in Riyadh, fill in the details, and confirm. Booked.",
+      "spoken": "Now the patched app, with nothing but the keyboard. Tab reaches the new date field. Type the ninth of November, pick six a.m. U.T.C., which is nine in Riyadh, fill in the details, and confirm. Booked.",
+      "file": "beats/book.wav",
+      "start_seconds": 80.83,
+      "end_seconds": 95.71,
+      "generation_seconds": 121.7,
+      "sha256": "c0f29f528ecba3b4c848f74b0dd4b5459670a55d6e1f37347b784e7bb192e029"
+    },
+    {
+      "id": "saved",
+      "text": "The database agrees: November ninth, nine o'clock Riyadh time, and the name that was typed.",
+      "spoken": "The database agrees: November ninth, nine o'clock Riyadh time, and the name that was typed.",
+      "file": "beats/saved.wav",
+      "start_seconds": 96.16,
+      "end_seconds": 102.24,
+      "generation_seconds": 55.0,
+      "sha256": "1ac87990028cde4ebc26aa4275b66ddce77697db4724f676678ad49f2999b58f"
+    },
+    {
+      "id": "reopen",
+      "text": "And a fresh browser reopens the booking on the same date.",
+      "spoken": "And a fresh browser reopens the booking on the same date.",
+      "file": "beats/reopen.wav",
+      "start_seconds": 102.69,
+      "end_seconds": 106.69,
+      "generation_seconds": 35.3,
+      "sha256": "ba21bfe0fcb9fbfc5ec7cb2be7a8d74dacb7c050acccd94acca8203bc7a5700f"
+    },
+    {
+      "id": "close",
+      "text": "In our fifty-four published runs, AccessFinish caught seventy-seven booked pages that hid a wrong date, and accepted none of them. The AI says fixed. We check that the user can finish.",
+      "spoken": "In our fifty-four published runs, AccessFinish caught seventy-seven booked pages that hid a wrong date, and accepted none of them. The AI says fixed. We check that the user can finish.",
+      "file": "beats/close.wav",
+      "start_seconds": 107.14,
+      "end_seconds": 118.82,
+      "generation_seconds": 98.2,
+      "sha256": "fab837e32bb95cff6ffccae0e26680396f8d2f6855ef9acc61273710996ba987"
+    }
+  ]
+}
