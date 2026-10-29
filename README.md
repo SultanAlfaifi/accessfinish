@@ -6,7 +6,7 @@
 
 A repair agent on **NVIDIA Nemotron 3 Super** (served by **Nebius Token Factory**) that accepts a fix only when a keyboard-only browser session (real keystrokes in a real browser) can finish the task, the database holds what was typed, and a fresh browser shows it back.
 
-[![Watch the film](https://img.shields.io/badge/%E2%96%B6%20Watch-the%202--minute%20film-ff0000?style=for-the-badge)](https://youtu.be/frrtIo-7kB8)
+[![Watch the film](https://img.shields.io/badge/%E2%96%B6%20Watch-the%202--minute%20film-ff0000?style=for-the-badge)](https://youtu.be/XztxzjYYlO0)
 [![Live demo](https://img.shields.io/badge/Live-replay%20page-2f5bea?style=for-the-badge)](https://sultalfaifi.com/accessfinish/)
 [![Evidence](https://img.shields.io/badge/All%2054%20runs-raw%20evidence-13795b?style=for-the-badge)](https://sultalfaifi.com/accessfinish/evidence.html)
 
@@ -15,8 +15,8 @@ A repair agent on **NVIDIA Nemotron 3 Super** (served by **Nebius Token Factory*
 ![Track](https://img.shields.io/badge/track-Coding%20%26%20Agentic%20Engineering-141d3b)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 
-<a href="https://youtu.be/frrtIo-7kB8"><img src="web/media/film-poster.jpg" width="820" alt="Watch the 2-minute film on YouTube"></a>
-<br><sub>No YouTube? <a href="media/accessfinish-agent-demo.mp4">Watch the MP4 in the repository (20 MB)</a></sub>
+<a href="https://youtu.be/XztxzjYYlO0"><img src="web/media/film-poster.jpg" width="820" alt="Watch the 2-minute screen recording on YouTube"></a>
+<br><sub>A screen recording of the project working: a live Nemotron run, verified, then the patched app booked with the keyboard. No YouTube? <a href="media/accessfinish-live-demo.mp4">Watch the MP4 in the repository (9 MB)</a></sub>
 
 | **0 / 77** | **2 / 10** | **27 / 27** | **$6.38** |
 | :---: | :---: | :---: | :---: |
@@ -276,15 +276,15 @@ lib/fixture.cjs            the verifier: isolated containers, keyboard booking, 
 lib/                       cases, edit validation, model client, Docker helpers, run records
 integration/portable/      sandbox images, browser workers, outcome evaluator, pinned Easy!Appointments (GPL-3.0)
 scripts/agent.cjs          run the agent from the command line (--case, --publish, --recorded-model)
-scripts/                   evidence index and checks, CI replays, the film pipeline (narrate, render, transcribe)
+scripts/                   evidence index and checks, CI replays, the film pipelines (scripts/film/ records the screen)
 web/                       the replay page and the evidence page (docs/ is the GitHub Pages copy)
 evidence/                  every live run and earlier trial, raw; start at evidence/README.md
-media/                     the demo film, its narration and shots, README images
+media/                     the demo films (screen recording and generated), their narration, takes and shots, README images
 examples/                  the PR comment AccessFinish would post as a merge gate (rendered from a recorded run)
 submission/                Devpost story, judge guide, testing instructions, feedback on Nemotron and Token Factory
 test/                      60 tests
 server.cjs                 the local page with Run live (npm start)
-.github/workflows/         clean-execution (CI replay), agent-run (live Nemotron runs), narration (film voice)
+.github/workflows/         clean-execution (CI replay), agent-run (live Nemotron runs), film (screen recording), narration (film voice)
 third_party/               the Easy!Appointments GPL-3.0 licence
 ```
 
@@ -296,7 +296,7 @@ third_party/               the Easy!Appointments GPL-3.0 licence
 - **Edits:** each edit's `old` text must match the file exactly once. Since v3, an anchor that matches exactly once when whitespace is ignored is re-indented and applied, like `git apply --ignore-whitespace`. Ambiguous anchors are never guessed, and every adjustment is recorded next to the model's own text.
 - **Comparable runs:** every trace since v2 (40 of 54) records the agent version, commit, fixture fingerprint, temperature and booking date. One booking date (a Monday in a later month, so the date picker must change month) is pinned per CI job.
 - **Sandbox:** separate containers for the app, database, compiler, browser and verifier. No network, no model key, read-only roots, all capabilities dropped, CPU/memory/PID limits. Model output never becomes a shell command.
-- **The film** is generated, not screen-recorded: real page close-ups ([`capture-film-assets.cjs`](scripts/capture-film-assets.cjs)), a Qwen3-TTS narration checked by Whisper ([`narrate.py`](scripts/narrate.py), [`transcribe-narration.py`](scripts/transcribe-narration.py)) and [`render-agent-film.py`](scripts/render-agent-film.py).
+- **The films:** the [screen recording](media/live-film/README.md) is a visible Chromium on a GitHub Actions runner's desktop, captured with ffmpeg by [`shoot.cjs`](scripts/film/shoot.cjs) while a live run ran, and cut to a Qwen3-TTS narration by [`render-live-film.py`](scripts/film/render-live-film.py); speed-ups are labelled. The earlier film is generated from real page close-ups ([`capture-film-assets.cjs`](scripts/capture-film-assets.cjs)), a Qwen3-TTS narration checked by Whisper ([`narrate.py`](scripts/narrate.py), [`transcribe-narration.py`](scripts/transcribe-narration.py)) and [`render-agent-film.py`](scripts/render-agent-film.py).
 </details>
 
 ## Limits

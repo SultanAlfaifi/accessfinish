@@ -1,6 +1,6 @@
 # The screen-recorded film
 
-`media/accessfinish-live-demo.mp4` is a screen recording of AccessFinish working, edited to under three minutes. Nothing in it is staged or redrawn: a visible Chromium on a 1920×1080 desktop (Xvfb, openbox) on a GitHub Actions runner, captured with ffmpeg while it ran.
+[On YouTube](https://youtu.be/XztxzjYYlO0) · `media/accessfinish-live-demo.mp4` is a screen recording of AccessFinish working, edited to under three minutes. Nothing in it is staged or redrawn: a visible Chromium on a 1920×1080 desktop (Xvfb, openbox) on a GitHub Actions runner, captured with ffmpeg while it ran.
 
 | Scene | What is on screen | Recorded by |
 | --- | --- | --- |
