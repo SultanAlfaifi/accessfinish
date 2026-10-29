@@ -2,8 +2,13 @@
 <html lang="en">
 <head>
   <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="description" content="Every live AccessFinish agent run with Nemotron, including the failures: attempts, verdicts, false confirmations caught, cost and the raw trace of each.">
-  <title>Evidence · AccessFinish</title><link rel="stylesheet" href="agent.css?v=695faa05bbd1b077">
+  <link rel="icon" href="media/favicon.svg" type="image/svg+xml">
+  <meta property="og:type" content="website"><meta property="og:site_name" content="AccessFinish"><meta property="og:url" content="https://sultalfaifi.com/accessfinish/evidence.html">
+  <meta property="og:title" content="Evidence · AccessFinish"><meta property="og:description" content="All 54 published live runs of the AccessFinish agent with Nemotron, including the failures, with the raw trace of each.">
+  <meta property="og:image" content="https://sultalfaifi.com/accessfinish/media/film-poster.jpg"><meta property="og:image:width" content="1280"><meta property="og:image:height" content="720">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="description" content="Every published AccessFinish agent run with Nemotron, including the failures: attempts, verdicts, false confirmations caught, cost and the raw trace of each.">
+  <title>Evidence · AccessFinish</title><link rel="stylesheet" href="agent.css?v=63098d26160dc104">
 </head>
 <body>
 <a class="skip" href="#runs-heading">Skip to the runs</a>
@@ -14,8 +19,8 @@
 <main>
   <section class="hero compact">
     <p class="eyebrow">Evidence</p>
-    <h1>Every live run, including the failures.</h1>
-    <p class="lede">Each row is one run of the agent, made live on GitHub Actions with Nemotron 3 Super on Nebius Token Factory. Nothing is filtered out: runs that never reached a verified fix are listed with the same detail as the ones that did.</p>
+    <h1>Every published run, including the failures.</h1>
+    <p class="lede">Each row is one run of the agent, made live on GitHub Actions with Nemotron 3 Super on Nebius Token Factory. Nothing is filtered out: runs that never reached a verified fix are listed with the same detail as the ones that did. The ten further live runs recorded on 29 October for the <a href="https://youtu.be/XztxzjYYlO0">demo video</a> are kept apart, with their traces, in <a href="https://github.com/SultanAlfaifi/accessfinish/tree/main/media/live-film">media/live-film</a>; two of them verified, including the one in the video.</p>
   </section>
 
   <section class="facts" aria-label="Totals across all runs">
@@ -40,13 +45,13 @@
 
   <section class="runs-section" aria-labelledby="versions-heading">
     <h2 id="versions-heading">How the agent improved</h2>
-    <p>Each version changed the loop after reading the previous version's failed runs; from v2 on, results are never mixed across versions (v1 groups the pre-versioning runs). Each version ran 5 keyboard and 5 phone runs (v1: 7 each), one square per run below. The keyboard case has two bugs: the typed date is reset by page code, and reopening a booking resets it again. "Saved correctly" counts runs in which some attempt fixed the first.</p>
+    <p>Each version changed the loop after reading the previous version's failed runs; from v2 on, results are never mixed across versions (v1 groups the pre-versioning runs). Each version ran 5 keyboard and 5 phone runs (v1: 7 each), one square per run below. The keyboard case has three layers: the date can't be reached by keyboard, the typed date is then reset by page code, and reopening a booking resets it again. "Saved correctly" counts runs in which some attempt fixed the first two.</p>
     <div class="table-scroll" role="region" aria-labelledby="versions-caption" tabindex="0">
       <table class="runs">
         <caption class="sr-only" id="versions-caption">Results per agent version</caption>
         <thead><tr>
           <th scope="col">Version</th><th scope="col" class="num">Keyboard: verified</th><th scope="col" class="num">Keyboard: saved correctly</th><th scope="col">Keyboard runs</th>
-          <th scope="col" class="num">Phone: first-attempt fixes</th><th scope="col" class="num">Executed / attempts</th><th scope="col" class="num">Cost</th><th scope="col">What changed</th>
+          <th scope="col" class="num">Phone: first-attempt fixes</th><th scope="col" class="num">Keyboard: executed / attempts</th><th scope="col" class="num">Cost</th><th scope="col">What changed</th>
         </tr></thead>
         <tbody id="versions"></tbody>
       </table>
@@ -81,6 +86,6 @@
   </section>
 </main>
 <footer><span>AccessFinish — finish the task, verify the result.</span><a href="https://github.com/SultanAlfaifi/accessfinish">MIT · source on GitHub</a></footer>
-<script src="evidence.js?v=46457951d9f2a45d"></script>
+<script src="evidence.js?v=57d4d1991b3ed0ef"></script>
 </body>
 </html>
