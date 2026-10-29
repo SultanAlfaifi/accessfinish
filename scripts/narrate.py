@@ -1,6 +1,7 @@
 """Generate the demo narration with Qwen3-TTS (CustomVoice, speaker Aiden).
 
 python scripts/narrate.py  ->  media/agent-demo/beats/*.wav, narration.wav, timeline.json
+(AF_NARRATION_DIR=media/live-film narrates the screen-recorded film instead.)
 Runs on CPU (slow but fine for ~90 s of speech). The narration text is in
 media/agent-demo/narration.json; timings come from the generated audio.
 A beat's optional "say" field is what is spoken (e.g. a pronunciation respelling);
@@ -10,11 +11,11 @@ A beat's optional "trim_start_seconds" drops that much of its generated audio's 
 (e.g. a filler sound before the first word); the beat file itself stays as generated.
 When every beat is reused, the narration is only reassembled and the model is not loaded.
 """
-import hashlib, json, pathlib, subprocess, time
+import hashlib, json, os, pathlib, subprocess, time
 import numpy as np, soundfile as sf
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
-OUT = ROOT / 'media/agent-demo'
+OUT = ROOT / os.environ.get('AF_NARRATION_DIR', 'media/agent-demo')
 script = json.loads((OUT / 'narration.json').read_text())
 (OUT / 'beats').mkdir(exist_ok=True)
 

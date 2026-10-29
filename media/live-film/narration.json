@@ -1,0 +1,64 @@
+{
+  "voice": "Aiden",
+  "model_id": "Qwen/Qwen3-TTS-12Hz-0.6B-CustomVoice",
+  "language": "English",
+  "gap_seconds": 0.45,
+  "beats": [
+    {
+      "id": "intro",
+      "text": "This is a screen recording. A customer who uses only the keyboard is booking an appointment in Easy!Appointments, a real open-source app.",
+      "say": "This is a screen recording. A customer who uses only the keyboard is booking an appointment in Easy Appointments, a real open-source app."
+    },
+    {
+      "id": "stuck",
+      "text": "On the date step, the customer presses Tab, again and again. Focus goes around the page, and even into the browser, but it never reaches the calendar."
+    },
+    {
+      "id": "start",
+      "text": "So we start AccessFinish on this machine, and press Run live. NVIDIA Nemotron 3 Super, on Nebius Token Factory, gets the goal, the evidence and the code. Not the root cause.",
+      "say": "So we start AccessFinish on this machine, and press Run live. NVIDIA Nemo-tron 3 Super, on Nebius Token Factory, gets the goal, the evidence and the code. Not the root cause."
+    },
+    {
+      "id": "sandbox",
+      "text": "Every attempt runs in an offline sandbox: the app, its database and a real browser, each in its own container. On the original code the keyboard user is stuck, and Nemotron's first fix doesn't change that.",
+      "say": "Every attempt runs in an offline sandbox: the app, its database and a real browser, each in its own container. On the original code the keyboard user is stuck, and Nemo-tron's first fix doesn't change that."
+    },
+    {
+      "id": "wrong",
+      "text": "Attempt two makes the date reachable, and the page says booked. But the database saved November first, not the ninth. Rejected."
+    },
+    {
+      "id": "today",
+      "text": "Nemotron searches the code and tries again. Attempt four saves the right date, but reopening the booking shows today. Rejected again.",
+      "say": "Nemo-tron searches the code and tries again. Attempt four saves the right date, but reopening the booking shows today. Rejected again."
+    },
+    {
+      "id": "verified",
+      "text": "Attempt five keeps attempt four's edits and stops the reset. Verified: saved right, reopened right, and the mouse path still works. Six minutes, and about nine cents of Nemotron.",
+      "say": "Attempt five keeps attempt four's edits and stops the reset. Verified: saved right, reopened right, and the mouse path still works. Six minutes, and about nine cents of Nemo-tron."
+    },
+    {
+      "id": "book",
+      "text": "Now the patched app, with nothing but the keyboard. Tab reaches the new date field. Type the ninth of November, pick six a.m. UTC, which is nine in Riyadh, fill in the details, and confirm. Booked.",
+      "say": "Now the patched app, with nothing but the keyboard. Tab reaches the new date field. Type the ninth of November, pick six a.m. U.T.C., which is nine in Riyadh, fill in the details, and confirm. Booked."
+    },
+    {
+      "id": "saved",
+      "text": "The database agrees: November ninth, nine o'clock Riyadh time, and the name that was typed."
+    },
+    {
+      "id": "reopen",
+      "text": "And a fresh browser reopens the booking on the same date."
+    },
+    {
+      "id": "close",
+      "text": "In our 54 published runs, AccessFinish caught 77 “booked” pages that hid a wrong date, and accepted none of them. The AI says “fixed.” We check that the user can finish.",
+      "say": "In our fifty-four published runs, AccessFinish caught seventy-seven booked pages that hid a wrong date, and accepted none of them. The AI says fixed. We check that the user can finish."
+    }
+  ],
+  "facts": [
+    ["0 / 77", "false “booked” fixes accepted in 54 published live runs"],
+    ["2 / 10", "keyboard runs of agents v4–v5 fixed by Nemotron, no root cause given"],
+    ["27 / 27", "runs verified on the seeded phone control"]
+  ]
+}
