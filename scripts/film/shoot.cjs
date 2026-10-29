@@ -216,18 +216,8 @@ async function after() {
   const [year, month, day] = DATE.split('-'), typed = day + '/' + month + '/' + year;
   await tabTo(page, f => f.id === 'select-date', 12, 750); log('date-field');
   await press(page, 'Control+A', 'Ctrl + A', 400); await type(page, typed); await press(page, 'Enter', 'Enter ↵', 900);
-  await tabTo(page, f => f.id === 'select-timezone', 4, 1200);
-  // The clinic is in Riyadh: pick that time zone by typing the start of its name into the focused list
-  // (native type-ahead), so the slots read in the clinic's own time. If it can't be picked, stay on UTC.
-  const prefix = await page.evaluate(() => {
-    const options = [...document.getElementById('select-timezone').options].map(o => ({value: o.value, label: o.textContent.trim(), text: o.textContent.trim().toLowerCase()}));
-    const target = options.find(o => o.value === 'Asia/Riyadh'); if (!target) return null;
-    for (let n = 1; n <= target.text.length; n++) { const p = target.text.slice(0, n); if (options.filter(o => o.text.startsWith(p)).length === 1) return target.label.slice(0, n); }
-    return null;
-  });
-  if (prefix) { await page.evaluate(text => window.__afKey?.('type “' + text + '”'), prefix); await page.keyboard.type(prefix, {delay: 90}); await sleep(1800); }
-  const zone = await page.evaluate(() => document.getElementById('select-timezone')?.value), hour = zone === 'Asia/Riyadh' ? 9 : 6;
-  log('timezone', {prefix, zone});
+  await press(page, 'Tab', 'Tab', 1200);
+  const zone = await page.evaluate(() => document.getElementById('select-timezone')?.value), hour = zone === 'UTC' ? 6 : 9;
   const slot = new RegExp('^0?' + hour + ':00\\s*(?:am)?$', 'i');
   await page.waitForFunction(() => document.querySelectorAll('.available-hour').length > 0, null, {timeout: 15000}).catch(() => {});
   log('hours', {timezone: zone, date_value: await page.evaluate(() => document.getElementById('select-date')?.value)});
