@@ -74,9 +74,9 @@ async function browserWindow(options = {}) {
 function keyHud() {
   if (location.port !== '8080') return;
   const css = ':focus,:focus-visible{outline:4px solid #f59e0b!important;outline-offset:3px!important;box-shadow:0 0 0 8px rgba(245,158,11,.25)!important}'
-    + '#af-keys{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);z-index:2147483647;display:flex;gap:8px;align-items:center;pointer-events:none;font:600 17px/1 system-ui,sans-serif}'
-    + '#af-keys .k{background:#0f172a;color:#fff;border:1px solid #334155;border-bottom-width:4px;border-radius:10px;padding:10px 14px;box-shadow:0 6px 20px rgba(0,0,0,.25);transition:opacity .5s}'
-    + '#af-keys .k.old{opacity:.35}#af-keys .tag{background:#f59e0b;color:#0f172a;border-radius:999px;padding:8px 12px;font-size:14px;letter-spacing:.02em}';
+    + '#af-keys{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);z-index:2147483647;display:flex;flex-wrap:nowrap;gap:8px;align-items:center;pointer-events:none;white-space:nowrap;font:600 17px/1 system-ui,sans-serif}'
+    + '#af-keys .k{flex:none;background:#0f172a;color:#fff;border:1px solid #334155;border-bottom-width:4px;border-radius:10px;padding:10px 14px;box-shadow:0 6px 20px rgba(0,0,0,.25);transition:opacity .5s}'
+    + '#af-keys .k.old{opacity:.35}#af-keys .tag{flex:none;background:#f59e0b;color:#0f172a;border-radius:999px;padding:8px 12px;font-size:14px;letter-spacing:.02em}';
   const mount = () => {
     if (document.getElementById('af-keys')) return;
     const style = document.createElement('style'); style.textContent = css; document.head.append(style);
@@ -87,7 +87,7 @@ function keyHud() {
     mount(); const bar = document.getElementById('af-keys');
     for (const key of bar.querySelectorAll('.k')) key.classList.add('old');
     const key = document.createElement('span'); key.className = 'k'; key.textContent = label; bar.append(key);
-    while (bar.querySelectorAll('.k').length > 5) bar.querySelector('.k').remove();
+    while (bar.querySelectorAll('.k').length > 4) bar.querySelector('.k').remove();
   };
   document.addEventListener('DOMContentLoaded', mount);
 }
@@ -215,12 +215,23 @@ async function after() {
   await bookingStart(page);
   const [year, month, day] = DATE.split('-'), typed = day + '/' + month + '/' + year;
   await tabTo(page, f => f.id === 'select-date', 12, 750); log('date-field');
-  await press(page, 'Control+A', 'Ctrl + A', 400); await type(page, typed); await press(page, 'Enter', 'Enter ↵', 900); await press(page, 'Tab', 'Tab', 1200);
-  const zone = await page.evaluate(() => document.getElementById('select-timezone')?.value), hour = zone === 'UTC' ? 6 : 9;
+  await press(page, 'Control+A', 'Ctrl + A', 400); await type(page, typed); await press(page, 'Enter', 'Enter ↵', 900);
+  await tabTo(page, f => f.id === 'select-timezone', 4, 1200);
+  // The clinic is in Riyadh: pick that time zone by typing the start of its name into the focused list
+  // (native type-ahead), so the slots read in the clinic's own time. If it can't be picked, stay on UTC.
+  const prefix = await page.evaluate(() => {
+    const options = [...document.getElementById('select-timezone').options].map(o => ({value: o.value, label: o.textContent.trim(), text: o.textContent.trim().toLowerCase()}));
+    const target = options.find(o => o.value === 'Asia/Riyadh'); if (!target) return null;
+    for (let n = 1; n <= target.text.length; n++) { const p = target.text.slice(0, n); if (options.filter(o => o.text.startsWith(p)).length === 1) return target.label.slice(0, n); }
+    return null;
+  });
+  if (prefix) { await page.evaluate(text => window.__afKey?.('type “' + text + '”'), prefix); await page.keyboard.type(prefix, {delay: 90}); await sleep(1800); }
+  const zone = await page.evaluate(() => document.getElementById('select-timezone')?.value), hour = zone === 'Asia/Riyadh' ? 9 : 6;
+  log('timezone', {prefix, zone});
   const slot = new RegExp('^0?' + hour + ':00\\s*(?:am)?$', 'i');
   await page.waitForFunction(() => document.querySelectorAll('.available-hour').length > 0, null, {timeout: 15000}).catch(() => {});
   log('hours', {timezone: zone, date_value: await page.evaluate(() => document.getElementById('select-date')?.value)});
-  await tabTo(page, f => slot.test(f.text), 40, 380); await press(page, 'Enter', 'Enter ↵', 900); log('slot-chosen');
+  await tabTo(page, f => slot.test(f.text), 60, 380); await press(page, 'Enter', 'Enter ↵', 900); log('slot-chosen');
   await tabTo(page, f => f.id === 'button-next-2', 40, 380); await press(page, 'Enter', 'Enter ↵', 1500);
   for (const [id, value] of [['first-name', CUSTOMER.first], ['last-name', CUSTOMER.last], ['email', CUSTOMER.email], ['phone-number', CUSTOMER.phone]]) {
     await tabTo(page, f => f.id === id, 12, 380); await type(page, value);

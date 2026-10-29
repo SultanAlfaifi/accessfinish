@@ -31,6 +31,8 @@ jobs:
     outputs:
       takes: ${{ steps.plan.outputs.takes }}
       scenes: ${{ steps.plan.outputs.scenes }}
+      as: ${{ steps.plan.outputs.as }}
+      trace: ${{ steps.plan.outputs.trace }}
     steps:
       - id: plan
         env:
@@ -43,7 +45,12 @@ jobs:
           [[ "$takes" =~ ^[1-5]$ ]] || { echo "takes must be 1 to 5"; exit 1; }
           [[ "$scenes" =~ ^(before|live|after)(,(before|live|after))*$ ]] || { echo "scenes must list before, live, after"; exit 1; }
           echo "takes=$(seq -s, 1 "$takes" | sed 's/^/[/;s/$/]/')" >> "$GITHUB_OUTPUT"
-          echo "scenes=$scenes" >> "$GITHUB_OUTPUT"; echo "takes=$takes scenes=$scenes"
+          # as=<name>: commit into media/live-film/<name>/ (default takes). trace=<file>: the after scene's patch.
+          as=$(grep -o ' as=[a-z0-9-]*' <<<"$MESSAGE" | head -1 | cut -d= -f2); as=${as:-takes}
+          trace=$(grep -o 'trace=[A-Za-z0-9/._-]*' <<<"$MESSAGE" | head -1 | cut -d= -f2)
+          [[ -z "$trace" || -f "$GITHUB_WORKSPACE/$trace" || "$trace" =~ ^media/live-film/[A-Za-z0-9/._-]+\.json$ ]] || { echo "trace must be a file under media/live-film"; exit 1; }
+          echo "scenes=$scenes" >> "$GITHUB_OUTPUT"; echo "as=$as" >> "$GITHUB_OUTPUT"; echo "trace=$trace" >> "$GITHUB_OUTPUT"
+          echo "takes=$takes scenes=$scenes as=$as trace=$trace"
   record:
     needs: plan
     strategy:
@@ -91,10 +98,13 @@ jobs:
       - name: Scene · the patched app, keyboard only, saved row and reopen
         if: contains(needs.plan.outputs.scenes, 'after')
         continue-on-error: true
+        env:
+          CHOSEN_TRACE: ${{ needs.plan.outputs.trace }}
         run: |
           # The live run's accepted patch, or the patch of the recorded verified run when this take has none.
           mkdir -p "$OUT"; trace=evidence/agent-runs/agent-2c87e16a520f678b45cbbbeb.json
           if node -e 'process.exit(require("./" + process.argv[1]).state === "verified" ? 0 : 1)' "$OUT/trace.json" 2>/dev/null; then trace="$OUT/trace.json"; fi
+          if [ -n "$CHOSEN_TRACE" ]; then trace="$CHOSEN_TRACE"; fi
           echo "after_patch_from=$trace" | tee "$OUT/after-source.txt"
           node scripts/film/serve-app.cjs --trace "$trace"
           node scripts/film/shoot.cjs --scene after --xvfb --out "$OUT"
@@ -118,31 +128,58 @@ jobs:
       - name: Commit the best take and every take's trace
         env:
           SCENES: ${{ needs.plan.outputs.scenes }}
+          AS: ${{ needs.plan.outputs.as }}
         run: |
           node -e '
-            const fs = require("fs"), path = require("path"), dir = "takes", out = "media/live-film";
+            const fs = require("fs"), path = require("path"), dir = "takes", out = "media/live-film", as = process.env.AS;
             const takes = fs.readdirSync(dir).sort().map(name => {
               const read = file => { try { return JSON.parse(fs.readFileSync(path.join(dir, name, file), "utf8")); } catch { return null; } };
-              const wanted = process.env.SCENES.split(","), trace = read("trace.json"), scenes = wanted.map(read);
+              const wanted = process.env.SCENES.split(","), trace = read("trace.json"), scenes = wanted.map(scene => read(scene + ".json"));
               const complete = scenes.every(scene => scene && !scene.error) && wanted.every(s => fs.existsSync(path.join(dir, name, s + ".mp4")));
               return {name, trace, complete, verified: trace?.state === "verified", attempts: trace?.steps?.filter(s => s.kind === "verify").length ?? null};
             });
             const rank = take => (take.complete ? 0 : 100) + (take.verified ? take.attempts : 50);
             const best = [...takes].sort((a, b) => rank(a) - rank(b))[0];
-            fs.mkdirSync(path.join(out, "takes"), {recursive: true});
+            fs.mkdirSync(path.join(out, as), {recursive: true});
             for (const take of takes) {
-              const target = path.join(out, "takes", take.name); fs.mkdirSync(target, {recursive: true});
+              const target = path.join(out, as, take.name); fs.mkdirSync(target, {recursive: true});
               for (const file of fs.readdirSync(path.join(dir, take.name)))
                 if (!file.endsWith(".mp4") || take === best) fs.copyFileSync(path.join(dir, take.name, file), path.join(target, file));
             }
             const summary = {recorded_at_utc: new Date().toISOString(), commit: process.env.GITHUB_SHA, scenes: process.env.SCENES, chosen: best.name,
               takes: takes.map(({name, complete, verified, attempts, trace}) => ({name, complete, verified, attempts, run_id: trace?.id ?? null,
                 state: trace?.state ?? null, estimated_cost_usd: trace?.estimated_cost_usd ?? null}))};
-            fs.writeFileSync(path.join(out, "takes.json"), JSON.stringify(summary, null, 2) + "\n");
+            fs.writeFileSync(path.join(out, as + ".json"), JSON.stringify(summary, null, 2) + "\n");
             console.log(JSON.stringify(summary, null, 2));'
           git config user.name "accessfinish-agent"
           git config user.email "accessfinish-agent@users.noreply.github.com"
           git add media/live-film
-          git commit -m "Record the film takes from ${GITHUB_SHA::7}"
+          git commit -m "Record the film $AS from ${GITHUB_SHA::7}"
+          git pull --rebase origin "$GITHUB_REF_NAME"
+          git push origin "HEAD:$GITHUB_REF_NAME"
+  narrate:
+    # The film's voice-over, from media/live-film/narration.json: Qwen3-TTS, speaker Aiden, as in the first film.
+    if: contains(github.event.head_commit.message, '[narrate-film]')
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    env:
+      AF_NARRATION_DIR: media/live-film
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Install Qwen3-TTS (CPU)
+        run: |
+          sudo apt-get update && sudo apt-get install -y --no-install-recommends sox ffmpeg
+          python3 -m venv /tmp/uv && /tmp/uv/bin/pip install --quiet uv
+          /tmp/uv/bin/uv venv --python 3.12 .venv
+          /tmp/uv/bin/uv pip install --python .venv/bin/python --index-url https://download.pytorch.org/whl/cpu torch==2.8.0 torchaudio==2.8.0
+          /tmp/uv/bin/uv pip install --python .venv/bin/python qwen-tts==0.1.1
+      - name: Generate narration
+        run: .venv/bin/python scripts/narrate.py
+      - name: Commit the audio
+        run: |
+          git config user.name "accessfinish-agent"
+          git config user.email "accessfinish-agent@users.noreply.github.com"
+          git add media/live-film
+          git commit -m "Generate the film narration (Qwen3-TTS, Aiden) from ${GITHUB_SHA::7}"
           git pull --rebase origin "$GITHUB_REF_NAME"
           git push origin "HEAD:$GITHUB_REF_NAME"
